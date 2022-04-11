@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ProficiencyLevelSeeder extends Seeder
 {
@@ -14,6 +15,8 @@ class ProficiencyLevelSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('proficiency_levels')->insert([
+            'name' => 'Beginner',
+        ]);
     }
 }

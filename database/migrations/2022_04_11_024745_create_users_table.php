@@ -20,8 +20,11 @@ return new class extends Migration
             $table->integer('age');
             $table->string('gender');
             $table->string('language');
+            $table->string('email');
             $table->string('role');
             $table->boolean('activated');
+            $table->text('password');
+            $table->string('group');
             $table->timestamps();
         });
     }

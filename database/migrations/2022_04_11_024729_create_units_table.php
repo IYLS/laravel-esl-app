@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('units', function (Blueprint $table) {
             $table->id('id');
-            $table->string('name');
             $table->text('title');
             $table->text('author');
             $table->text('description');
@@ -30,8 +29,8 @@ return new class extends Migration
             $table->string('video_url');
 
             // Foreign keys
-            $table->integer('keyword_id');
-            $table->integer('glossed_word_id');
+            // $table->integer('keyword_id');
+            // $table->integer('glossed_word_id');
             $table->timestamps();
         });
     }

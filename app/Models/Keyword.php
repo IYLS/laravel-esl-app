@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Keyword extends Model
 {
     use HasFactory;
+
+    protected $table = 'keywords';
+    protected $fillable = [
+        'keyword',
+        'description',
+    ];
+    public $timestamps = false;
 }
