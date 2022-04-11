@@ -14,6 +14,7 @@ class ProficiencyLevel extends Model
         'name',
     ];
     public $timestamps = false;
+    public $incrementing = true;
 
 
     public function units() {

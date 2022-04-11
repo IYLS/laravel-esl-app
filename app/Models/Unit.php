@@ -24,7 +24,10 @@ class Unit extends Model
         'dictionary',
         'video_url'
     ];
+
     public $timestamps = false;
+    public $incrementing = true;
+
 
     public function keywords() {
         return $this->hasMany('App\Models\Keyword');

@@ -11,7 +11,7 @@
                     <tr>
                         <td>ID</td>
                         <td>
-                            <input id="id" name="user_id" class="form-control" type="text" placeholder="Type an ID for the new user">
+                            <input id="user_id" name="user_id" class="form-control" type="text" placeholder="Type an ID for the new user">
                         </td>
                     </tr>
                     <tr>
@@ -76,21 +76,3 @@
 </div>
 
 @endsection
-
-    {{-- <script src="/js/User.js" type="module"></script>
-    <script src="/js/users.js" type="module"></script>
-
-    <script>
-        function addNewUser() {
-            const id = document.getElementById('id').value;
-            const name = document.getElementById('name').value;
-            const age = document.getElementById('age').value;
-            const gender = document.getElementById('gender').value;
-            const language = document.getElementById('language').value;
-            const email = document.getElementById('email').value;
-            const role = document.getElementById('role').value;
-            const activated = document.getElementById('activated').value;
-
-            addUser(id, name, age, gender, language, email, role, activated);
-        }
-    </script> --}}

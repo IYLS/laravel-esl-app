@@ -15,4 +15,5 @@ class GlossedWord extends Model
         'description',
     ];
     public $timestamps = false;
+    public $incrementing = true;
 }

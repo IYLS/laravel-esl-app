@@ -15,4 +15,5 @@ class Keyword extends Model
         'description',
     ];
     public $timestamps = false;
+    public $incrementing = true;
 }
