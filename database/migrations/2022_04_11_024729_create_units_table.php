@@ -27,11 +27,10 @@ return new class extends Migration
             $table->text('translation');
             $table->text('dictionary');
             $table->string('video_url');
-
-            // Foreign keys
-            // $table->integer('keyword_id');
-            // $table->integer('glossed_word_id');
+            $table->integer('proficiency_level_id');
             $table->timestamps();
+
+            $table->foreign('proficiency_level_id')->references('id')->on('proficiency_levels');
         });
     }
 

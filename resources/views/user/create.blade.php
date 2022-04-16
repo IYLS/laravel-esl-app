@@ -15,6 +15,18 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>Password</td>
+                        <td>
+                            <div class="input-group">
+                                <input id="password" name="password" type="password" class="form-control" placeholder="Type a password for the new user">
+                                <span class="input-group-btn">
+                                  <a class="btn btn-primary" onclick="revealPassword()">
+                                      <i class="fa fa-eye"></i>
+                                  </a>
+                                </span>
+                            </div>
+                    </tr>
+                    <tr>
                         <td>Name</td>
                         <td>
                             <input id="name" name="name" class="form-control" type="text" placeholder="Type the full name of the new user">
@@ -74,5 +86,17 @@
     </form>
     </div>
 </div>
+
+<script>
+    function revealPassword() {
+        const passwordField = document.getElementById('password');;
+
+        if (passwordField.type == 'text') {
+            passwordField.type = 'password'
+        } else {
+            passwordField.type = 'text'
+        }
+    }
+</script>
 
 @endsection

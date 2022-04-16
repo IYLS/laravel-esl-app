@@ -22,13 +22,14 @@ class UserController extends Controller
     {
         $newUser = new User;
         $newUser->user_id = $request->user_id;
-        $newUser->age = $request->name;
-        $newUser->name = $request->age;
+        $newUser->age = $request->age;
+        $newUser->name = $request->name;
         $newUser->gender = $request->gender;
         $newUser->language = $request->language;
         $newUser->email = $request->email;
         $newUser->role = $request->role;
         $newUser->activated = $request->activated;
+        $newUser->password = $request->password;
         $newUser->save();
 
         return redirect()->route('users.index');

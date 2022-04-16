@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProficiencyLevel;
 use Illuminate\Http\Request;
+use App\Models\Unit;
 
 class ProficiencyLevelController extends Controller
 {
@@ -14,7 +15,8 @@ class ProficiencyLevelController extends Controller
      */
     public function index()
     {
-        //
+        $levels = ProficiencyLevel::all();
+        return view('levels.index', compact('levels'));
     }
 
     /**
@@ -24,7 +26,7 @@ class ProficiencyLevelController extends Controller
      */
     public function create()
     {
-        //
+        return view('levels.create');
     }
 
     /**
@@ -35,7 +37,11 @@ class ProficiencyLevelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $new_level = new ProficiencyLevel;
+        $new_level->name = $request->name;
+        $new_level->save();
+
+        return redirect()->route('levels.index');
     }
 
     /**
@@ -44,9 +50,12 @@ class ProficiencyLevelController extends Controller
      * @param  \App\Models\ProficiencyLevel  $proficiencyLevel
      * @return \Illuminate\Http\Response
      */
-    public function show(ProficiencyLevel $proficiencyLevel)
+    public function show($id)
     {
-        //
+        $proficiencyLevel = ProficiencyLevel::find($id);
+        $units = $proficiencyLevel->units;
+
+        return view('levels.show', compact(['proficiencyLevel', 'units']));
     }
 
     /**
@@ -67,9 +76,14 @@ class ProficiencyLevelController extends Controller
      * @param  \App\Models\ProficiencyLevel  $proficiencyLevel
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ProficiencyLevel $proficiencyLevel)
+    public function update(Request $request, $id)
     {
-        //
+        $level = ProficiencyLevel::find($id);
+
+        $level->name = $request->name;
+        $level->save();
+
+        return redirect()->route('levels.index');
     }
 
     /**

@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\GlossedWord;
+use App\Models\Keyword;
+use App\Models\ProficiencyLevel;
 
 class Unit extends Model
 {
@@ -29,11 +32,17 @@ class Unit extends Model
     public $incrementing = true;
 
 
-    public function keywords() {
-        return $this->hasMany('App\Models\Keyword');
+    public function keywords() 
+    {
+        return $this->hasMany(Keyword::class);
     }
 
-    public function glossedWords() {
-        return $this->hasMany('App\Models\Keyword');
+    public function glossedWords() 
+    {
+        return $this->hasMany(GlossedWord::class);
+    }
+
+    public function level() {
+        return $this->belongsTo(ProficiencyLevel::class);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Unit;
 
 class ProficiencyLevel extends Model
 {
@@ -18,6 +19,6 @@ class ProficiencyLevel extends Model
 
 
     public function units() {
-        return $this->hasMany('App\Models\Unit');
+        return $this->hasMany(Unit::class);
     }
 }

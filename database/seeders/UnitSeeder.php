@@ -85,7 +85,8 @@ class UnitSeeder extends Seeder
             
             Finalmente, electrónicos suaves integrados tienen implicaciones más allá de un rango de diferentes implicaciones incluyendo dispositivos del consumidor y biomédicos. Estos dispositivos que hemos mostrado aquí­ tienen la potencialidad de cambiar fundamentalmente la manera en que podemos unir el espacio entre los electrónicos y la biología y la manera en que estos sistemas se intercambian e interactúan.',
             'dictionary' => '',
-            'video_url' => 'http://www.esl-iyls.com/videos/n1/n1t1.mp4'
+            'video_url' => 'http://www.esl-iyls.com/videos/n1/n1t1.mp4',
+            'proficiency_level_id' => 1
         ]);
     }
 }

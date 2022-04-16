@@ -13,10 +13,13 @@
                     <a class="nav-link" href="#">User manuals</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Manage Users</a>
+                    <a class="nav-link" href="{{ route('users.index') }}">Manage Users</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Edit Levels</a>
+                    <a class="nav-link" href="{{ route('levels.index') }}">Edit Levels</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('units.index') }}">Units</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Tracking Systems</a>

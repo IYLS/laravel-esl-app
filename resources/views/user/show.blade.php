@@ -81,7 +81,7 @@
             <a class="btn btn-secondary" onClick="enableFields()">Edit</a>
             <button class="btn btn-danger">Delete</button>
             <button class="btn btn-primary" type="submit">Save</button>
-            <button class="btn btn-secondary">Cancel</button>
+            <a class="btn btn-secondary" href="{{ route('users.index') }}">Cancel</a>
         </div>
     </form>
     </div>
@@ -100,31 +100,6 @@
             select_elements[i].disabled = false;
         }
     };
-
-    function saveChanges() {
-        var input_elements = document.getElementsByTagName('input');
-        var select_elements = document.getElementsByTagName('select');
-
-        console.log(document.getElementById('name').placeholder);
-
-        for (i = 0; i < input_elements.length; i++) {
-            input_elements[i].disabled = true;
-        }
-
-        for (i = 0; i < select_elements.length; i++) {
-            select_elements[i].disabled = true;
-        }
-
-        const id = document.getElementById('user_id').value;
-        const name = document.getElementById('name').value;
-        const age = document.getElementById('age').value;
-        const gender = document.getElementById('gender').value;
-        const language = document.getElementById('language').value;
-        const email = document.getElementById('email').value;
-        const role = document.getElementById('role').value;
-        const activated = document.getElementById('activated').value;
-        const group = document.getElementById('group').value;
-    }
 </script>
 
 @endsection
