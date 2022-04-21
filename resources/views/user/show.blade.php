@@ -55,8 +55,8 @@
                         <td>Role</td>
                         <td>
                             <select id="role" name="role" class="form-select" disabled>
-                                <option value=true @if ($user->role == "teacher") selected @endif>Teacher</option>
-                                <option value=false @if ($user->role == "student") selected @endif>Student</option>
+                                <option value="teacher" @if ($user->role == "teacher") selected @endif>Teacher</option>
+                                <option value="student" @if ($user->role == "student") selected @endif>Student</option>
                             </select>
                         </td>
                     </tr>

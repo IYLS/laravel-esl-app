@@ -30,6 +30,7 @@ class UserController extends Controller
         $newUser->role = $request->role;
         $newUser->activated = $request->activated;
         $newUser->password = $request->password;
+        $newUser->group = $request->group;
         $newUser->save();
 
         return redirect()->route('users.index');
@@ -60,6 +61,7 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->role = $request->role;
         $user->activated = $request->activated;
+        $user->group = $request->group;
 
         $user->save();
 

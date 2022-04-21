@@ -26,8 +26,8 @@
                                 </span>
                             </div>
                     </tr>
+                    <td>Name</td>
                     <tr>
-                        <td>Name</td>
                         <td>
                             <input id="name" name="name" class="form-control" type="text" placeholder="Type the full name of the new user">
                         </td>
@@ -61,11 +61,17 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>Group</td>
+                        <td>
+                            <input id="group" name="group" class="form-control" type="text" placeholder="Insert the group for the new user">
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Role</td>
                         <td>
                             <select id="role" name="role" class="form-select">
-                                <option value=teacher selected>Teacher</option>
-                                <option value=student>Student</option>
+                                <option value="teacher" selected>Teacher</option>
+                                <option value="student">Student</option>
                             </select>
                         </td>
                     </tr>

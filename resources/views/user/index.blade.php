@@ -13,6 +13,7 @@
 				<th scope="col">Language</th>
 				<th scope="col">Email</th>
 				<th scope="col">Role</th>
+				<th scope="col">Group</th>
 				<th scope="col">Activated</th>
 				<th scope="col">Actions</th>
             </tr>
@@ -27,6 +28,7 @@
 						<td>{{ $user->language }}</td>
 						<td>{{ $user->email }}</td>
 						<td>{{ $user->role }}</td>
+						<td>{{ $user->group }}</td>
 						<td>
                             @if ($user->activated == true) 
                                 Yes
