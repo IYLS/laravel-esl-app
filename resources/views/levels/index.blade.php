@@ -10,12 +10,14 @@
               <div class="card-body">
                 <h5 class="card-title">{{ $level->name }}</h5>
                 <p class="card-text">This level contains the following units:</p></li>
-                @foreach($level->units as $levelUnit)
+                @forelse($level->units as $levelUnit)
                 <ul>
                   <li>
                     <p class="card-text"><small>{{ $levelUnit->title }}</small></p></li>
                 </ul>
-                @endforeach
+                @empty
+                <p class="card-text"><small>No units yet</small></p>
+                @endforelse
                 <a href="{{ route('levels.show', $level->id) }}" class="btn btn-primary">Details</a>
               </div>
             </div>

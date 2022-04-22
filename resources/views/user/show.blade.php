@@ -18,6 +18,18 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>Password</td>
+                        <td>
+                            <div class="input-group">
+                                <input id="password" name="password" type="password" class="form-control" value="{{ $user->password }}">
+                                <span class="input-group-btn">
+                                  <a class="btn btn-primary" onclick="revealPassword()">
+                                      <i class="fa fa-eye"></i>
+                                  </a>
+                                </span>
+                            </div>
+                    </tr>
+                    <tr>
                         <td>Name</td>
                         <td>
                             <input id="name" name="name" class="form-control" type="text" disabled value={{ $user->name }}>
@@ -100,6 +112,16 @@
             select_elements[i].disabled = false;
         }
     };
+
+    function revealPassword() {
+        const passwordField = document.getElementById('password');;
+
+        if (passwordField.type == 'text') {
+            passwordField.type = 'password'
+        } else {
+            passwordField.type = 'text'
+        }
+    }
 </script>
 
 @endsection

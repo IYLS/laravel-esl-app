@@ -26,8 +26,8 @@
                                 </span>
                             </div>
                     </tr>
-                    <td>Name</td>
                     <tr>
+                        <td>Name</td>
                         <td>
                             <input id="name" name="name" class="form-control" type="text" placeholder="Type the full name of the new user">
                         </td>
