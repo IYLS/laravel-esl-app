@@ -2,7 +2,7 @@
 @section('main')
 
 <div class="row d-flex justify-content-center mt-3 mb-3">
-    <div class="col-6 p-5 bg-light mt-2 border shadow rounded">
+    <div class="col-6 col-md-10 p-5 bg-light mt-2 border shadow rounded">
         <h3>Unit details</h3>
         <form action="{{ route('units.update', $unit->id) }}" method="POST">
         @csrf
@@ -72,7 +72,7 @@
                     </td>
                     <td>Proficiency Level:</td>
                     <td>
-                        <select id="proficiency_level" name="proficiency_level" class="form-select">
+                        <select id="proficiency_level" name="proficiency_level" class="form-select" disabled>
                             @foreach($levels as $level)
                             <option value="{{ $level->id }}" @if($level->id == $unit->proficiency_level_id) selected @endif>{{ $level->name }}</option>
                             @endforeach

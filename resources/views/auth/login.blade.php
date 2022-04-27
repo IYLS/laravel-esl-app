@@ -25,12 +25,12 @@
         <title>ESL-IYLS - Login</title>
 
     </head>
-    <body class="d-flex flex-column min-vh-100">
+    <body class="d-flex flex-column min-vh-100" style="background-color:lightsteelblue">
 
         <div class="container h-100">
             <div class="row align-items-center h-100">
                 <div class="col-10 col-sm-10 col-md-8 col-lg-6 col-xl-4 mx-auto">
-                    <div class="bg-white p-4 rounded border border-1 border-white shadow-md">
+                    <div class="bg-white p-4 rounded border border-1 border-white shadow" style="margin-top: 75%;">
                         <form action="">
                             <h3 class="form-label mb-3">Login</h3>
                             <div class="mb-3">
@@ -42,7 +42,7 @@
                                 <input type="password" name="password" protected class="form-control" required aria-label placeholder="Please enter your password">
                             </div>
                             <div class="mb-3">
-                                <a class="btn btn-primary" href="//localhost:8080/">Login</a>
+                                <a class="btn btn-primary" href="{{ route('users.index') }}">Login</a>
                                 <button class="btn btn-secondary" type="submit">Create account</button>
                             </div>
                             <a class="text-link form-link" href="#">Forgot my password</a>
