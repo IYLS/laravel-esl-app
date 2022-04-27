@@ -4,9 +4,9 @@
 <div class="row d-flex justify-content-center mt-3 mb-3">
     <div class="col-6 p-5 bg-light mt-2 border shadow rounded">
         <h3>New unit</h3>
-        <form action="{{ route('users.store') }}" method="POST">
+        <form action="{{ route('units.store') }}" method="POST">
         @csrf
-        <table class="table table-striped">
+        <table class="table table-striped" id="create_unit_table">
                 <tbody>
                     <tr>
                         <td>Title</td>
@@ -90,7 +90,12 @@
                             </select>
                         </td>
                     </tr>
-
+                    <tr>
+                        <td>Keywords</td>
+                        <td>
+                            <a class="btn btn-primary" onclick="addRows()">Add keyword</a>
+                        </td>
+                    </tr>
                 </tbody>
         </table>
         <div>
@@ -99,5 +104,49 @@
     </form>
     </div>
 </div>
+
+<script>
+    function addRows(){ 
+        var table = document.getElementById('create_unit_table');
+        var rowCount = table.rows.length;
+        var cellCount = table.rows[0].cells.length; 
+
+        var newRow = table.insertRow(rowCount);
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+
+        const previousKeywordsCount = countKeywords();
+        const keyword_id = previousKeywordsCount;
+
+        cell1.innerHTML = `<input name='keyword_name_${keyword_id}' type='text' class='form-control' placeholder='Insert Keyword ${keyword_id} name'>`
+        cell2.innerHTML = `<div class="input-group">
+                                <input name='keyword_description_${keyword_id}' type='text' class='form-control' placeholder='Insert Keyword ${keyword_id} description'>
+                                <span class="input-group-btn">
+                                    <a class="btn btn-danger" onclick="removeKeyword(${rowCount})"><i class="fa fa-trash"></i></a>
+                                </span>
+                            </div>
+        `
+    }
+
+    function countKeywords() {
+        const inputFields = document.getElementsByTagName('input');
+        var array = []; 
+
+        for (var i=0; i <= inputFields.length-1; i++) {
+            if (inputFields[i].name.includes('keyword_name')) {
+                console.log(inputFields[i]);
+                array.push(inputFields[i]);
+            }
+        }
+
+        console.log(array.length);
+        return array.length;
+    }
+
+    function removeKeyword(rowNumber) {
+        var table = document.getElementById('create_unit_table');
+        table.deleteRow(rowNumber);
+    }
+</script>
 
 @endsection

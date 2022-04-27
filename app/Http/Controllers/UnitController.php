@@ -38,24 +38,7 @@ class UnitController extends Controller
      */
     public function store(Request $request)
     {
-        $new_unit = new Unit;
-        $new_unit->title = $request->title;
-        $new_unit->author = $request->author;
-        $new_unit->description = $request->description;
-        $new_unit->listening_tips = $request->listening_tips;
-        $new_unit->cultural_notes = $request->cultural_notes;
-        $new_unit->technology_notes = $request->technology_notes;
-        $new_unit->biology_notes = $request->biology_notes;
-        $new_unit->transcript = $request->transcript;
-        $new_unit->glossary = $request->glossary;
-        $new_unit->translation = $request->translation;
-        $new_unit->dictionary = $request->dictionary;
-        $new_unit->video_url = $request->video_url;
-
-        // FIXME: Probar si funciona
-        $new_unit->proficiency_level_id = $request->level;
-
-        return redirect()->route('units.index');
+        echo($request);
     }
 
     /**
