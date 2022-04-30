@@ -1,3 +1,6 @@
+@auth
+@if(Auth::user())
+
 <div class="mt-auto text-white-50 bg-dark p-3">
     <div class="">
         <footer class="d-flex justify-content-center">
@@ -5,3 +8,6 @@
         </footer>
     </div>    
 </div>
+
+@endif
+@endauth

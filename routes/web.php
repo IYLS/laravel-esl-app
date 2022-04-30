@@ -19,6 +19,11 @@ use App\Http\Controllers\UnitController;
 |
 */
 
+// Home
+Route::get('/', [AuthController::class, 'index'])->name('auth.index');
+Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('auth.authenticate');
+
 // Users Routes
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/users/create', [UserController::class, 'create'])->name('users.create');

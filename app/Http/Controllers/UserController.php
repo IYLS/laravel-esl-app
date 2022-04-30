@@ -29,7 +29,7 @@ class UserController extends Controller
         $newUser->email = $request->email;
         $newUser->role = $request->role;
         $newUser->activated = $request->activated;
-        $newUser->password = $request->password;
+        $newUser->password = Hash::make($request->password);
         $newUser->group = $request->group;
         $newUser->save();
 
