@@ -2,7 +2,11 @@
 @section('main')
 
 <div class="container">
-    <h3>Welcome, {{ $user->name }}</h3>
+    @if (Auth::user() != null) 
+    <h3>Welcome, {{ $user->name }}</h3>        
+    @else
+    <h3>Home screen</h3>
+    @endif
 </div>
 
 @include('partials.prompt')

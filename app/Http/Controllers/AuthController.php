@@ -9,9 +9,12 @@ use App\Models\User;
 class AuthController extends Controller
 {
     public function index() {
-        $user = Auth::user();
+        if (Auth::user() != null) {
+            $user = Auth::user();
+            return view('auth.index', compact('user'));
+        }
 
-        return view('auth.index', compact('user'));
+        return redirect()->route('auth.login');
     }
 
     public function login(Request $request) 
