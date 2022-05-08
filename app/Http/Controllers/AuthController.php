@@ -37,6 +37,10 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
+            if (Auth::user()->role == "student") {
+                return redirect()->route('student.level_selection');
+            }
+
             return redirect()->route('auth.index')->with('success', 'You logged in successfully!');
         }
  

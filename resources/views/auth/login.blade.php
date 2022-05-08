@@ -4,7 +4,7 @@
 <div class="container h-100">
     <div class="row align-items-center h-100">
         <div class="col-10 col-sm-10 col-md-8 col-lg-6 col-xl-4 mx-auto">
-            <div class="bg-white p-4 rounded border border-1 border-white shadow" style="margin-top: 75%;">
+            <div class="bg-white p-4 rounded border border-1 border-white shadow" style="margin-top: 25%;">
                 <form action="{{ route('auth.authenticate') }}" method="POST">
                     @csrf
                     <h3 class="form-label mb-3">Login</h3>

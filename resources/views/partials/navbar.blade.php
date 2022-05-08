@@ -43,22 +43,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ route('auth.index') }}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">User manuals</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('users.index') }}">Manage Users</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('levels.index') }}">Edit Levels</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('units.index') }}">Units</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Tracking Systems</a>
+                    <a class="nav-link" href="#">Choose different unit</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('auth.logout') }}">Log out</a>

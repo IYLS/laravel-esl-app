@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProficiencyLevelController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\StudentController;
 
 
 /*
@@ -47,3 +48,7 @@ Route::get('/units/create', [UnitController::class, 'create'])->name('units.crea
 Route::post('/units/store', [UnitController::class, 'store'])->name('units.store');
 Route::put('/units/update/{level}', [UnitController::class, 'update'])->name('units.update');
 Route::get('/units/show/{level}', [UnitController::class, 'show'])->name('units.show');
+
+// Strudent module Routes
+Route::get('/student/level_selection', [StudentController::class, 'level_selection'])->name('student.level_selection');
+Route::get('/student/dashboard', [StudentController::class, 'show'])->name('student.show');
