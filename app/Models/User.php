@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Group;
 
 class User extends Authenticable
 {
@@ -29,4 +30,9 @@ class User extends Authenticable
     ];
     public $timestamps = false;
     public $incrementing = true;
+
+    public function group() 
+    {
+        return $this->belongsTo(Group::class);    
+    }
 }

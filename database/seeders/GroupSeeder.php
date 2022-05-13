@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class ProficiencyLevelSeeder extends Seeder
+class GroupSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,9 +15,9 @@ class ProficiencyLevelSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('proficiency_levels')->insert([
-            ['name' => 'Beginner'],
-            ['name' => 'Intermediate']
+        DB::table('groups')->insert([
+            ['name' => '23'],
+            ['name' => '27']
         ]);
     }
 }

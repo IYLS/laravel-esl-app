@@ -18,16 +18,32 @@ class UserSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'user_id' => 'benjamin_caceres_24_student',
-            'name' => 'Benjamín Cáceres Ramírez',
-            'age' => 24,
-            'email' => Str::random(10).'@gmail.com',
-            'password' => Hash::make('password'),
-            'gender' => 'male',
-            'language' => 'english',
-            'role' => 'student',
-            'activated' => true,
-            'group' => "G32",
+            [            
+                'user_id' => 'benjamin_caceres_24_student',
+                'name' => 'Benjamín Cáceres Ramírez',
+                'age' => 24,
+                'email' => 'benjamin.caceres.ra@gmail.com',
+                'password' => Hash::make('isopropyl360'),
+                'gender' => 'male',
+                'language' => 'english',
+                'role' => 'student',
+                'activated' => true,
+                'group' => "G32",
+                'group_id' => 1,
+            ],
+            [
+                'user_id' => 'admin',
+                'name' => 'Admin',
+                'age' => 24,
+                'email' => 'admin@admin.com',
+                'password' => Hash::make('isopropyl360'),
+                'gender' => 'male',
+                'language' => 'english',
+                'role' => 'teacher',
+                'activated' => true,
+                'group' => "A",
+                'group_id' => 1,
+            ]
         ]);
     }
 }

@@ -7,7 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProficiencyLevelController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\StudentController;
-
+use App\Http\Controllers\GroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +41,13 @@ Route::get('/levels/create', [ProficiencyLevelController::class, 'create'])->nam
 Route::post('/levels/store', [ProficiencyLevelController::class, 'store'])->name('levels.store');
 Route::put('/levels/update/{level}', [ProficiencyLevelController::class, 'update'])->name('levels.update');
 Route::get('/levels/show/{level}', [ProficiencyLevelController::class, 'show'])->name('levels.show');
+
+// ProficiencyLevels Routes
+Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
+Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');
+Route::post('/groups/store', [GroupController::class, 'store'])->name('groups.store');
+Route::put('/groups/update/{level}', [GroupController::class, 'update'])->name('groups.update');
+Route::get('/groups/show/{level}', [GroupController::class, 'show'])->name('groups.show');
 
 // Units Routes
 Route::get('/units', [UnitController::class, 'index'])->name('units.index');

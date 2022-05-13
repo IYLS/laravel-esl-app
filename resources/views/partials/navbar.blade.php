@@ -24,6 +24,9 @@
                     <a class="nav-link" href="{{ route('units.index') }}">Units</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ route('groups.index') }}">Groups</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#">Tracking Systems</a>
                 </li>
                 <li class="nav-item">

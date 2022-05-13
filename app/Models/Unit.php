@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\GlossedWord;
 use App\Models\Keyword;
 use App\Models\ProficiencyLevel;
+use App\Models\Group;
 
 class Unit extends Model
 {
@@ -42,7 +43,13 @@ class Unit extends Model
         return $this->hasMany(GlossedWord::class);
     }
 
-    public function level() {
+    public function level() 
+    {
         return $this->belongsTo(ProficiencyLevel::class);
+    }
+
+    public function group() 
+    {
+        return $this->belongsTo(Group::class);    
     }
 }
