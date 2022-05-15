@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Group;
 
 class UserController extends Controller
 {
@@ -16,7 +17,8 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('user.create');
+        $groups = Group::all();
+        return view('user.create', compact('groups'));
     }
 
     public function store(Request $request)
@@ -31,7 +33,7 @@ class UserController extends Controller
         $newUser->role = $request->role;
         $newUser->activated = $request->activated;
         $newUser->password = Hash::make($request->password);
-        $newUser->group = $request->group;
+        $newUser->group_id = $request->group;
         $newUser->save();
 
         return redirect()->route('users.index');
@@ -62,7 +64,7 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->role = $request->role;
         $user->activated = $request->activated;
-        $user->group = $request->group;
+        $user->group_id = $request->group;
 
         $user->save();
 

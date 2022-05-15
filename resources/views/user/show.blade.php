@@ -21,13 +21,14 @@
                         <td>Password</td>
                         <td>
                             <div class="input-group">
-                                <input id="password" name="password" type="password" class="form-control" value="{{ $user->password }}">
+                                <input id="password" name="password" type="password" class="form-control" disabled value="" placeholder="*********">
                                 <span class="input-group-btn">
                                   <a class="btn btn-primary" onclick="revealPassword()">
                                       <i class="fa fa-eye"></i>
                                   </a>
                                 </span>
                             </div>
+                        <td>
                     </tr>
                     <tr>
                         <td>Name</td>
@@ -84,7 +85,7 @@
                     <tr>
                         <td>Group</td>
                         <td>
-                            <input id="group" name="group" class="form-control" type="text" disabled value={{ $user->group }}>
+                            <input id="group" name="group" class="form-control" type="text" disabled value={{ $user->group->name }}>
                         </td>
                     </tr>
                 </tbody>

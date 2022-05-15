@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('role');
             $table->boolean('activated');
             $table->text('password');
-            $table->string('group');
             $table->integer('group_id');
             $table->timestamps();
 

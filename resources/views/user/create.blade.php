@@ -64,7 +64,11 @@
                     <tr>
                         <td>Group</td>
                         <td>
-                            <input id="group" name="group" class="form-control" type="text" placeholder="Insert the group for the new user">
+                            <select id="group" name="group" class="form-select">
+                                @foreach($groups as $group)
+                                <option value="{{ $group->id }}">{{ $group->name }}</option>
+                                @endforeach
+                            </select>
                         </td>
                     </tr>
                     <tr>

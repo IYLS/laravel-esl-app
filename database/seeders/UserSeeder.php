@@ -28,7 +28,6 @@ class UserSeeder extends Seeder
                 'language' => 'english',
                 'role' => 'student',
                 'activated' => true,
-                'group' => "G32",
                 'group_id' => 1,
             ],
             [
@@ -41,7 +40,6 @@ class UserSeeder extends Seeder
                 'language' => 'english',
                 'role' => 'teacher',
                 'activated' => true,
-                'group' => "A",
                 'group_id' => 1,
             ]
         ]);

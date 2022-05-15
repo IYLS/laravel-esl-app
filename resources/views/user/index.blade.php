@@ -19,28 +19,28 @@
             </tr>
 			</thead>
 			<tbody>
-				@foreach($users as $user)
-					<tr>
-						<td>{{ $user->user_id }}</td>
-						<td>{{ $user->name }}</td>
-						<td>{{ $user->age }}</td>
-						<td>{{ $user->gender }}</td>
-						<td>{{ $user->language }}</td>
-						<td>{{ $user->email }}</td>
-						<td>{{ $user->role }}</td>
-						<td>{{ $user->group }}</td>
-						<td>
-                            @if ($user->activated == true) 
-                                Yes
-                            @else
-                                No
-                            @endif
-                        </td>
-						<td>
-							<a id="details" class="btn btn-primary" href="{{ route('users.show', $user->id) }}">Details</a>
-						</td>
-					</tr>
-                @endforeach
+			@foreach($users as $user)
+				<tr>
+					<td>{{ $user->user_id }}</td>
+					<td>{{ $user->name }}</td>
+					<td>{{ $user->age }}</td>
+					<td>{{ $user->gender }}</td>
+					<td>{{ $user->language }}</td>
+					<td>{{ $user->email }}</td>
+					<td>{{ $user->role }}</td>
+					<td>{{ $user->group->name }}</td>
+					<td>
+						@if ($user->activated == true) 
+							Yes
+						@else
+							No
+						@endif
+					</td>
+					<td>
+						<a id="details" class="btn btn-primary" href="{{ route('users.show', $user->id) }}">Details</a>
+					</td>
+				</tr>
+			@endforeach
             </tbody>
 		</table>
 		<div>
