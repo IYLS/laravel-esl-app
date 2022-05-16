@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('proficiency_levels', function (Blueprint $table) {
             $table->id('id');
             $table->string('name');
-            $table->timestamps();
         });
     }
 

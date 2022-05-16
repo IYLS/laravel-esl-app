@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProficiencyLevelSeeder::class);
         $this->call(GlossedWordSeeder::class);
         $this->call(UserSeeder::class);
-        $this->call(KeywordSeeder::class);
         $this->call(UnitSeeder::class);
+        $this->call(KeywordSeeder::class);
     }
 }

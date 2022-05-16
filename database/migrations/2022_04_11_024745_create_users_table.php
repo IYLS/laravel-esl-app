@@ -25,7 +25,6 @@ return new class extends Migration
             $table->boolean('activated');
             $table->text('password');
             $table->integer('group_id');
-            $table->timestamps();
 
             $table->foreign('group_id')->references('id')->on('groups');
         });

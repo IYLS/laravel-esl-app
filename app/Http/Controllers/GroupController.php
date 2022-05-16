@@ -19,7 +19,14 @@ class GroupController extends Controller
     public function index()
     {
         $groups = Group::all();
-        return view('groups.index', compact('groups'));
+        $students_count = array();
+
+        foreach($groups as $group) {
+            $count = User::where('group_id', $group->id)->count();
+            $students_count["$group->id"] = $count;
+        }
+
+        return view('groups.index', compact('groups'))->with(compact('students_count'));
     }
 
     /**
@@ -60,6 +67,7 @@ class GroupController extends Controller
     public function show($id)
     {
         $group = Group::find($id);
+        $users = User::find();
         return view('groups.show', compact('group'));
     }
 

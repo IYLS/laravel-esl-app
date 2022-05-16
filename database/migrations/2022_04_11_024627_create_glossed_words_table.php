@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id('id');
             $table->text('glossed_word');
             $table->text('description');
-            $table->timestamps();
         });
     }
 

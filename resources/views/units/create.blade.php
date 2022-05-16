@@ -23,7 +23,7 @@
                     <tr>
                         <td>Description</td>
                         <td>
-                            <textarea id="name" name="name" class="form-control" type="text" placeholder="Write a description for this new unit"></textarea>
+                            <textarea id="description" name="description" class="form-control" type="text" placeholder="Write a description for this new unit"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -86,6 +86,16 @@
                             <select id="proficiency_level" name="proficiency_level" class="form-select">
                                 @foreach($levels as $level)
                                 <option value="{{ $level->id }}" selected>{{ $level->name }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Group</td>
+                        <td>
+                            <select id="group" name="group" class="form-select">
+                                @foreach($groups as $group)
+                                <option value="{{ $group->id }}" selected>{{ $group->name }}</option>
                                 @endforeach
                             </select>
                         </td>

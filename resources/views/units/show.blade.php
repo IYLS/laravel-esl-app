@@ -79,6 +79,16 @@
                         </select>
                     </td>
                 </tr>
+                <tr>
+                    <td>Group</td>
+                    <td>
+                        <select id="group" name="group" class="form-select" disabled>
+                            @foreach($groups as $group)
+                            <option value="{{ $group->id }}" @if($group->id == $unit->group_id) selected @endif>{{ $group->name }}</option>
+                            @endforeach
+                        </select>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <div>

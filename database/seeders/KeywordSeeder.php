@@ -16,9 +16,18 @@ class KeywordSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('keywords')->insert([
-            'keyword' => Str::random(10),
-            'description' => Str::random(40),
+        DB::table('keywords')->insert(
+        [
+            [
+                'keyword' => Str::random(10),
+                'description' => Str::random(40),
+                'unit_id' => 1,
+            ],
+            [
+                'keyword' => Str::random(10),
+                'description' => Str::random(40),
+                'unit_id' => 1,
+            ]
         ]);
     }
 }

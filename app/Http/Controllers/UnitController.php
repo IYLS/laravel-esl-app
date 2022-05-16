@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use App\Models\ProficiencyLevel;
+use App\Models\Keyword;
+use App\Models\Group;
 
 class UnitController extends Controller
 {
@@ -27,7 +29,9 @@ class UnitController extends Controller
     public function create()
     {
         $levels = ProficiencyLevel::all();
-        return view('units.create', compact('levels'));
+        $groups = Group::all();
+
+        return view('units.create', compact(['levels', 'groups']));
     }
 
     /**
@@ -38,7 +42,41 @@ class UnitController extends Controller
      */
     public function store(Request $request)
     {
-        echo($request);
+        $new_unit = new Unit;
+        $new_unit->title = $request->title;
+        $new_unit->author = $request->author;
+        $new_unit->description = $request->description;
+        $new_unit->listening_tips = $request->listening_tips;
+        $new_unit->cultural_notes = $request->cultural_notes;
+        $new_unit->technology_notes = $request->technology_notes;
+        $new_unit->biology_notes = $request->biology_notes;
+        $new_unit->transcript = $request->transcript;
+        $new_unit->glossary = $request->glossary;
+        $new_unit->translation = $request->translation;
+        $new_unit->dictionary = $request->dictionary;
+        $new_unit->video_url = $request->video_url;
+        
+        $new_unit->proficiency_level_id = $request->proficiency_level;
+        $new_unit->group_id = $request->group;
+
+        $new_unit->save();
+
+        $keywords = array();
+        $count = 0;
+        $params = $request->collect();
+
+        while ($params->contains("keyword_name_$count")) {
+            $keyword = new Keyword;
+            $keyword->keyword = $request->collect()["keyword_name_$count"];
+            $keyword->description = $request->collect()["keyword_description_$count"];
+            $keyword->unit_id = $new_unit->id;
+
+            $keyword->save();
+
+            $count++;
+        }
+
+        return redirect()->route('units.index')->with('success', 'Unit created successfully!');
     }
 
     /**
@@ -51,8 +89,9 @@ class UnitController extends Controller
     {
         $unit = Unit::find($id);
         $levels = ProficiencyLevel::all();
+        $groups = Group::all();
 
-        return view('units.show', compact('unit', 'levels'));
+        return view('units.show', compact(['unit', 'levels', 'groups']));
     }
 
     /**

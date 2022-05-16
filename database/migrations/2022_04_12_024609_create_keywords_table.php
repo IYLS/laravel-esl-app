@@ -17,7 +17,9 @@ return new class extends Migration
             $table->id('id');
             $table->text('keyword');
             $table->text('description');
-            $table->timestamps();
+            $table->integer('unit_id');
+            
+            $table->foreign('unit_id')->references('id')->on('units');
         });
     }
 

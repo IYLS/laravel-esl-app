@@ -8,7 +8,9 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">{{ $group->name }}</h5>
-                <p class="card-text">This level contains the following units:</p></li>
+                <p class="card-text text-secondary"><small>
+                  {{ $students_count["$group->id"] }} students are in this group
+                </small></p>
                 <a href="{{ route('groups.show', $group->id) }}" class="btn btn-primary">Details</a>
               </div>
             </div>
@@ -18,6 +20,5 @@
 
     <a class="btn btn-primary p-3 m-5" href="{{ route('groups.create') }}">New Group</a>
 </div>
-
 
 @endsection

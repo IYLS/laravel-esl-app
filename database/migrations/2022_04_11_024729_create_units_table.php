@@ -29,7 +29,6 @@ return new class extends Migration
             $table->string('video_url');
             $table->integer('proficiency_level_id');
             $table->integer('group_id');
-            $table->timestamps();
 
             $table->foreign('proficiency_level_id')->references('id')->on('proficiency_levels');
             $table->foreign('group_id')->references('id')->on('groups');
