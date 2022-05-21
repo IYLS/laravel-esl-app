@@ -12,7 +12,9 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('user.index', compact('users'));
+        $groups = Group::all();
+
+        return view('user.index', compact(['users', 'groups']));
     }
 
     public function create()
@@ -44,7 +46,9 @@ class UserController extends Controller
         $users = User::where('id', $id)->get();
         $user = $users[0];
 
-        return view('user.show', compact('user'));
+        $groups = Group::all();
+
+        return view('user.show', compact(['user', 'groups']));
     }
 
     public function edit($id)

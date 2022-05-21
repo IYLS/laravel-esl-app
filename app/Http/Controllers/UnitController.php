@@ -127,6 +127,7 @@ class UnitController extends Controller
         $unit->translation = $request->translation;
         $unit->dictionary = $request->dictionary;
         $unit->video_url = $request->video_url;
+        $unit->proficiency_level_id = $request->proficiency_level;
         $unit->save();
 
         return redirect()->route('units.index');

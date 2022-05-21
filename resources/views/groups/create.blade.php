@@ -15,13 +15,16 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Users</td>
+                        <td>Students</td>
                         <td>
-                            <select class="form-select" name="units" id="units">
+                            <div class="card card-body">
                                 @foreach($users as $user)
-                                <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="{{ $user->id }}"w>
+                                    <label class="form-check-label" for="flexCheckChecked">{{ $user->name }}</label>
+                                </div>
                                 @endforeach
-                            </select>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -40,10 +43,20 @@
                 </tbody>
         </table>
         <div>
-            <button class="btn btn-success" type="submit">Save</button>
+            <button class="btn btn-success" type="submit" onclick="nameStudentFields()">Save</button>
         </div>
     </form>
     </div>
 </div>
+
+<script>
+    function nameStudentFields() {
+        const fields = document.getElementsByClassName('form-check-input');
+
+        for (var i=0; i < fields.length; i++) { 
+            fields[i].setAttribute('name', `user_${i}`);
+        }
+    }
+</script>
 
 @endsection

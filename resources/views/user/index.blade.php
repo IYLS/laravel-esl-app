@@ -28,7 +28,13 @@
 					<td>{{ $user->language }}</td>
 					<td>{{ $user->email }}</td>
 					<td>{{ $user->role }}</td>
-					<td>{{ $user->group->name }}</td>
+					<td>
+						@foreach($groups as $group)
+							@if($user->group_id == $group->id)
+								{{ $group->name }}
+							@endif
+						@endforeach
+					</td>
 					<td>
 						@if ($user->activated == true) 
 							Yes

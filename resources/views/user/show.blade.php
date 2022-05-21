@@ -85,7 +85,11 @@
                     <tr>
                         <td>Group</td>
                         <td>
-                            <input id="group" name="group" class="form-control" type="text" disabled value={{ $user->group->name }}>
+                            <select id="group" name="group" class="form-select" disabled>
+                                @foreach($groups as $group)
+                                    <option value="{{ $group->id }}" @if($user->group_id == $group->id) selected @endif>{{ $group->name }}</option>
+                                @endforeach
+                            </select>
                         </td>
                     </tr>
                 </tbody>

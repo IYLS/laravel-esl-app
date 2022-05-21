@@ -22,7 +22,7 @@ class GroupController extends Controller
         $students_count = array();
 
         foreach($groups as $group) {
-            $count = User::where('group_id', $group->id)->count();
+            $count = User::where('group_id', $group->id)->where('role', 'student')->count();
             $students_count["$group->id"] = $count;
         }
 
@@ -36,7 +36,7 @@ class GroupController extends Controller
      */
     public function create()
     {
-        $users = User::all();
+        $users = User::where('role', 'student')->get();
         $levels = ProficiencyLevel::all();
 
         return view('groups.create', compact(['users', 'levels']));
@@ -50,10 +50,26 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
+
         $group = new Group;
-        $group->id = $request->id;
         $group->name = $request->name;
         $group->save();
+
+
+        $users = array();
+        $count = 0;
+        $params = $request->collect();
+
+        while ($params->contains("user_$count")) {
+
+            $user_id = $request->collect()["user_$count"];
+
+            $user = User::find($user_id);
+            $user->group_id = $group->id;
+            $user->save();
+
+            $count++;
+        }
 
         return redirect()->route('groups.index');
     }
@@ -67,8 +83,10 @@ class GroupController extends Controller
     public function show($id)
     {
         $group = Group::find($id);
-        $users = User::find();
-        return view('groups.show', compact('group'));
+        $users = User::where('role', 'student')->get();
+        $levels = ProficiencyLevel::all();
+        
+        return view('groups.show', compact(['group', 'users', 'levels']));
     }
 
     /**
