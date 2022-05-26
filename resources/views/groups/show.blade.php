@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('main')
 
-
 <div class="row d-flex justify-content-center mt-3 mb-3">
     <div class="col-6 p-5 bg-light mt-2 border shadow rounded">
         <h3>Group {{ $group->name }} details</h3>
@@ -13,7 +12,7 @@
                 <tr>
                     <td>Name</td>
                     <td>
-                        <input id="name" name="name" class="form-control" type="text" placeholder="Type an Name for the new level" disabled>
+                        <input id="name" name="name" class="form-control" type="text" placeholder="Type an Name for the new level" disabled value="{{ $group->name }}">
                     </td>
                 </tr>
                 <tr>
@@ -22,8 +21,8 @@
                         <div class="card card-body">
                             @foreach($users as $user)
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="{{ $user->id }}" id="user_checkbox" disabled=true>
-                                <label class="form-check-label" for="user_checkbox" disabled=true>{{ $user->name }}</label>
+                                <input class="form-check-input" type="checkbox" value="{{ $user->id }}" id="user_checkbox" disabled @if($user->group_id == $group->id) checked @endif>
+                                <label class="form-check-label" for="user_checkbox" disabled>{{ $user->name }}</label>
                             </div>
                             @endforeach
                         </div>
@@ -45,7 +44,7 @@
             </tbody>
     </table>
         <div>
-            <a class="btn btn-secondary" onClick="enableFields()">Edit</a>
+            <a class="btn btn-secondary" onClick="enableFields();">Edit</a>
             <button class="btn btn-danger">Delete</button>
             <button class="btn btn-primary" type="submit">Save</button>
             <a class="btn btn-secondary" href="{{ route('groups.index') }}">Cancel</a>
@@ -56,18 +55,13 @@
 
 <script>
     function enableFields() {
+        const studentFields = document.querySelectorAll('.form-check-input');
+        studentFields.forEach(function(field) { field.disabled = false });
+
+        const studentLabels = document.querySelectorAll('.form-check-label');
+        studentLabels.forEach(function(label) { label.disabled = false });
+
         document.getElementById('name').disabled = false;
-
-        const inputs = document.getElementsByTagName('input');
-        for(input in inputs) {
-            input.disabled = false;
-        }
-
-        const labels = document.getElementsByTagName('label');
-        for(label in labels) {
-            label.disabled = false;
-        }
-
         document.getElementById('units').disabled = false;
     };
 </script>

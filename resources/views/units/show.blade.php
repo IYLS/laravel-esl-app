@@ -7,7 +7,7 @@
         <form action="{{ route('units.update', $unit->id) }}" method="POST">
         @csrf
         @method('PUT')
-        <table class="table">
+        <table class="table table_stripped" id="create_unit_table">
             <tbody>
                 <tr>
                     <td>Title:</td>
@@ -80,7 +80,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Group</td>
+                    <td>Group:</td>
                     <td>
                         <select id="group" name="group" class="form-select" disabled>
                             @foreach($groups as $group)
@@ -88,7 +88,28 @@
                             @endforeach
                         </select>
                     </td>
+                    <td></td><td></td>
                 </tr>
+                <tr>
+                    <td>Keywords:</td>
+                </tr>
+                @for ($i = 0; $i < count($keywords); $i++)
+                <tr>
+                    <td>Keyword {{ $i+1 }}</td>
+                    <td>
+                        <input name='keyword_name_${keyword_id}' type='text' class='form-control' placeholder="Insert Keyword {{ $i }} name" value="{{ $keywords[$i]->keyword }}">
+                    </td>
+                    <td>Description</td>
+                    <td>
+                        <div class="input-group">
+                            <input name="keyword_description_{{ $i }}" type='text' class='form-control' placeholder="Insert Keyword {{ $i }} description" value="{{ $keywords[$i]->description }}">
+                            <span class="input-group-btn">
+                                <a class="btn btn-danger" onclick="removeKeyword(${rowCount})"><i class="fa fa-trash"></i></a>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                @endfor
             </tbody>
         </table>
         <div>
@@ -118,6 +139,48 @@
         for (i = 0; i < textarea_elements.length; i++) {
             textarea_elements[i].disabled = false;
         }
+    }
+
+    function removeKeyword(rowNumber) {
+        var table = document.getElementById('create_unit_table');
+        table.deleteRow(rowNumber);
+    }
+
+    function countKeywords() {
+        const inputFields = document.getElementsByTagName('input');
+        var array = []; 
+
+        for (var i=0; i <= inputFields.length-1; i++) {
+            if (inputFields[i].name.includes('keyword_name')) {
+                console.log(inputFields[i]);
+                array.push(inputFields[i]);
+            }
+        }
+
+        console.log(array.length);
+        return array.length;
+    }
+
+    function addRows(){ 
+        var table = document.getElementById('create_unit_table');
+        var rowCount = table.rows.length;
+        var cellCount = table.rows[0].cells.length; 
+
+        var newRow = table.insertRow(rowCount);
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+
+        const previousKeywordsCount = countKeywords();
+        const keyword_id = previousKeywordsCount;
+
+        cell1.innerHTML = `<input name='keyword_name_${keyword_id}' type='text' class='form-control' placeholder='Insert Keyword ${keyword_id} name'>`
+        cell2.innerHTML = `<div class="input-group">
+                                <input name='keyword_description_${keyword_id}' type='text' class='form-control' placeholder='Insert Keyword ${keyword_id} description'>
+                                <span class="input-group-btn">
+                                    <a class="btn btn-danger" onclick="removeKeyword(${rowCount})"><i class="fa fa-trash"></i></a>
+                                </span>
+                            </div>
+        `
     }
 </script>
 

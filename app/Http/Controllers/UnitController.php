@@ -90,8 +90,9 @@ class UnitController extends Controller
         $unit = Unit::find($id);
         $levels = ProficiencyLevel::all();
         $groups = Group::all();
+        $keywords = Keyword::where('unit_id', $id)->get();
 
-        return view('units.show', compact(['unit', 'levels', 'groups']));
+        return view('units.show', compact(['unit', 'levels', 'groups', 'keywords']));
     }
 
     /**

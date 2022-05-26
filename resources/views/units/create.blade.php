@@ -118,6 +118,7 @@
 <script>
     function addRows(){ 
         var table = document.getElementById('create_unit_table');
+        console.log(table.rows.length);
         var rowCount = table.rows.length;
         var cellCount = table.rows[0].cells.length; 
 
@@ -128,9 +129,9 @@
         const previousKeywordsCount = countKeywords();
         const keyword_id = previousKeywordsCount;
 
-        cell1.innerHTML = `<input name='keyword_name_${keyword_id}' type='text' class='form-control' placeholder='Insert Keyword ${keyword_id} name'>`
+        cell1.innerHTML = `<input name='keyword_name_${keyword_id}' type='text' class='form-control' placeholder='Insert Keyword ${keyword_id+1} name'>`
         cell2.innerHTML = `<div class="input-group">
-                                <input name='keyword_description_${keyword_id}' type='text' class='form-control' placeholder='Insert Keyword ${keyword_id} description'>
+                                <input name='keyword_description_${keyword_id}' type='text' class='form-control' placeholder='Insert Keyword ${keyword_id+1} description'>
                                 <span class="input-group-btn">
                                     <a class="btn btn-danger" onclick="removeKeyword(${rowCount})"><i class="fa fa-trash"></i></a>
                                 </span>
