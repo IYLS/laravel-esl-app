@@ -58,4 +58,4 @@ Route::get('/units/show/{level}', [UnitController::class, 'show'])->name('units.
 
 // Strudent module Routes
 Route::get('/student/level_selection', [StudentController::class, 'level_selection'])->name('student.level_selection');
-Route::get('/student/dashboard', [StudentController::class, 'show'])->name('student.show');
+Route::get('/student/dashboard/{unit}', [StudentController::class, 'show'])->name('student.show');

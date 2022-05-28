@@ -2,15 +2,17 @@
 @section('main')
 
 <div class="container row">
+    <h3 class="p-2">{{ $unit->title }}</h3>
+
     {{-- Video section --}}
-    <div class="col-5">
+    <div class="col-6">
         <div class="ratio ratio-16x9 mt-3">
             <iframe src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" title="YouTube video" allowfullscreen></iframe>
         </div>
     </div>
 
     {{-- Exercises and content section --}}
-    <div class="col-7">
+    <div class="col-6">
         <nav class="">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
               <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#pre-listening" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Pre listening</button>

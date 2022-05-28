@@ -46,7 +46,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Choose different unit</a>
+                    <a class="nav-link text-light">Greetings, {{ Auth::user()->name }}!</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('student.level_selection') }}">Choose different unit</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('auth.logout') }}">Log out</a>

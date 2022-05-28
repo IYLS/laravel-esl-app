@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Unit;
+
 
 class StudentController extends Controller
 {
@@ -43,9 +46,12 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($unit)
     {
-        return view('student.show');
+        $unit = Unit::where('id', $unit)->get()[0];
+
+
+        return view('student.show', compact('unit'));
     }
 
     /**
@@ -82,7 +88,11 @@ class StudentController extends Controller
         //
     }
 
-    public function level_selection(Request $request) {
-        return view('student.level_selection');
+    public function level_selection(Request $request) 
+    {
+        $user = Auth::user();
+        $units = Unit::where('group_id', $user->group_id)->get();
+
+        return view('student.level_selection', compact(['user', 'units']));
     }
 }
