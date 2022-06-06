@@ -4,7 +4,7 @@
 <div class="row d-flex justify-content-center mt-3 mb-3">
     <div class="col-6 p-5 bg-light mt-2 border shadow rounded">
         <h3>Group {{ $group->name }} details</h3>
-        <form action="{{ route('groups.update', $group->id) }}" method="POST">
+        <form action="{{ route('groups.update', $group->id ) }}" method="POST">
         @csrf
         @method('PUT')
         <table class="table table-striped">
@@ -21,7 +21,7 @@
                         <div class="card card-body">
                             @foreach($users as $user)
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="{{ $user->id }}" id="user_checkbox" disabled @if($user->group_id == $group->id) checked @endif>
+                                <input class="form-check-input" type="checkbox" onclick="ifChecked(this);" value="{{ $user->id }}" id="user_checkbox" disabled @if($user->group_id == $group->id) checked name="users[]" @endif>
                                 <label class="form-check-label" for="user_checkbox" disabled>{{ $user->name }}</label>
                             </div>
                             @endforeach
@@ -32,19 +32,16 @@
                     <td>Units</td>
                     <td>
                         <select class="form-select" name="units" id="units" disabled>
-                            @foreach($levels as $level)
-                                <optgroup label="{{ $level->name }}">
-                                @foreach($level->units as $unit)
-                                    <option value="{{ $unit->id }}" selected>{{ $unit->title }}</option>
-                                @endforeach
+                            @foreach($units as $unit)
+                                <option value="{{ $unit->id }}" selected>{{ $unit->title }}</option>
                             @endforeach
                         </select>
                     </td>
                 </tr>
             </tbody>
-    </table>
+        </table>
         <div>
-            <a class="btn btn-secondary" onClick="enableFields();">Edit</a>
+            <a class="btn btn-success" onClick="enableFields()">Edit</a>
             <button class="btn btn-danger">Delete</button>
             <button class="btn btn-primary" type="submit">Save</button>
             <a class="btn btn-secondary" href="{{ route('groups.index') }}">Cancel</a>
@@ -64,6 +61,18 @@
         document.getElementById('name').disabled = false;
         document.getElementById('units').disabled = false;
     };
+    
+    function ifChecked(element) {
+        if (element.checked) {
+            element.name = "users[]";
+            console.log(element.name);
+            console.log(element.value);
+        } else {
+            element.name = "";
+            console.log(element.name);
+            console.log(element.value);
+        }
+    }
 </script>
 
 @endsection

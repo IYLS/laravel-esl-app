@@ -18,9 +18,6 @@
                     <a class="nav-link" href="{{ route('users.index') }}">Manage Users</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('levels.index') }}">Edit Levels</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="{{ route('units.index') }}">Units</a>
                 </li>
                 <li class="nav-item">

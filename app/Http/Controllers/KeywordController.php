@@ -7,79 +7,47 @@ use Illuminate\Http\Request;
 
 class KeywordController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index($unit_id)
     {
-        //
-    }
+        $keywords = Keyword::where('unit_id', $unit_id)->get();
+        return view('keywords.index', compact('keywords', 'unit_id'));
+    }   
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Request $request, $unit_id)
     {
-        //
+        $keyword = new Keyword;
+        $keyword->keyword = $request->word;
+        $keyword->description = $request->description;
+        $keyword->unit_id = $unit_id;
+
+        $keyword->save();
+
+        return redirect()->route('keywords.index', $unit_id);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Keyword  $keyword
-     * @return \Illuminate\Http\Response
-     */
     public function show(Keyword $keyword)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Keyword  $keyword
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Keyword $keyword)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Keyword  $keyword
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Keyword $keyword)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Keyword  $keyword
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Keyword $keyword)
+    public function destroy($unit_id, $keyword_id)
     {
-        //
+        Keyword::destroy($keyword_id);
+        return redirect()->route('keywords.index', $unit_id);
     }
 }

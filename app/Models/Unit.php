@@ -4,9 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\GlossedWord;
 use App\Models\Keyword;
-use App\Models\ProficiencyLevel;
 use App\Models\Group;
 
 class Unit extends Model
@@ -20,13 +18,10 @@ class Unit extends Model
         'description',
         'listening_tips',
         'cultural_notes',
-        'technology_notes',
-        'biology_notes',
         'transcript',
         'glossary',
         'translation',
         'dictionary',
-        'video_url'
     ];
 
     public $timestamps = false;
@@ -36,16 +31,6 @@ class Unit extends Model
     public function keywords() 
     {
         return $this->hasMany(Keyword::class);
-    }
-
-    public function glossedWords() 
-    {
-        return $this->hasMany(GlossedWord::class);
-    }
-
-    public function level() 
-    {
-        return $this->belongsTo(ProficiencyLevel::class);
     }
 
     public function group() 

@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('glossed_words', function (Blueprint $table) {
+        Schema::create('excercises', function (Blueprint $table) {
             $table->id('id');
-            $table->text('glossed_word');
+            $table->text('name');
             $table->text('description');
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('glossed_words');
+        Schema::dropIfExists('excercises_tablew');
     }
 };

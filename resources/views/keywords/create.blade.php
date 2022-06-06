@@ -3,7 +3,7 @@
 
 <div class="row d-flex justify-content-center mt-3 mb-3">
     <div class="col-6 p-5 bg-light mt-2 border shadow rounded">
-        <h3>New Group</h3>
+        <h3>New Keyword</h3>
         <form action="{{ route('groups.store') }}" method="POST">
         @csrf
         <table class="table table-striped">

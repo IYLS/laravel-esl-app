@@ -39,18 +39,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Technology Notes</td>
-                        <td>
-                            <textarea id="technology_notes" name="technology_notes" type="text" class="form-control" placeholder="Write the technology notes for this new unit"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Biology Notes</td>
-                        <td>
-                            <textarea id="biology_notes" name="biology_notes" type="text" class="form-control" placeholder="Write the biology notes for this new unit"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
                         <td>Transcript</td>
                         <td>
                             <textarea id="transcript" name="transcript" type="text" class="form-control" placeholder="Write the transcript for this new unit"></textarea>
@@ -75,22 +63,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Video URL</td>
-                        <td>
-                            <input id="video_url" name="video_url" type="text" class="form-control" placeholder="Write the video url for this new unit">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Proficiency Level</td>
-                        <td>
-                            <select id="proficiency_level" name="proficiency_level" class="form-select">
-                                @foreach($levels as $level)
-                                <option value="{{ $level->id }}" selected>{{ $level->name }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
                         <td>Group</td>
                         <td>
                             <select id="group" name="group" class="form-select">
@@ -103,7 +75,7 @@
                     <tr>
                         <td>Keywords</td>
                         <td>
-                            <a class="btn btn-primary" onclick="addRows()">Add keyword</a>
+                            <a class="btn btn-primary" onclick="addKeyword()">Add keyword</a>
                         </td>
                     </tr>
                 </tbody>
@@ -116,7 +88,7 @@
 </div>
 
 <script>
-    function addRows(){ 
+    function addKeyword(){ 
         var table = document.getElementById('create_unit_table');
         console.log(table.rows.length);
         var rowCount = table.rows.length;
@@ -129,11 +101,11 @@
         const previousKeywordsCount = countKeywords();
         const keyword_id = previousKeywordsCount;
 
-        cell1.innerHTML = `<input name='keyword_name_${keyword_id}' type='text' class='form-control' placeholder='Insert Keyword ${keyword_id+1} name'>`
+        cell1.innerHTML = `<input name='keyword_name_${keyword_id}' type='text' class='form-control' placeholder='Enter keyword name'>`
         cell2.innerHTML = `<div class="input-group">
-                                <input name='keyword_description_${keyword_id}' type='text' class='form-control' placeholder='Insert Keyword ${keyword_id+1} description'>
+                                <input name='keyword_description_${keyword_id}' type='text' class='form-control' placeholder='Enter keyword description'>
                                 <span class="input-group-btn">
-                                    <a class="btn btn-danger" onclick="removeKeyword(${rowCount})"><i class="fa fa-trash"></i></a>
+                                    <a class="btn btn-danger" onclick="removeKeyword(this)"><i class="fa fa-trash"></i></a>
                                 </span>
                             </div>
         `
@@ -154,9 +126,9 @@
         return array.length;
     }
 
-    function removeKeyword(rowNumber) {
-        var table = document.getElementById('create_unit_table');
-        table.deleteRow(rowNumber);
+    function removeKeyword(element) {
+        const row = element.parentNode.parentNode.parentNode.parentNode;
+        document.getElementById("create_unit_table").deleteRow(row.rowIndex);
     }
 </script>
 

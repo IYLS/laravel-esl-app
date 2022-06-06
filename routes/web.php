@@ -4,10 +4,11 @@ use Illuminate\Support\Facades\Route;
 use Facade\FlareClient\View;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ProficiencyLevelController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\KeywordController;
+use App\Http\Controllers\ExcerciseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,27 +36,29 @@ Route::get('/users/show/{user}', [UserController::class, 'show'])->name('users.s
 // Auth Router
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 
-// ProficiencyLevels Routes
-Route::get('/levels', [ProficiencyLevelController::class, 'index'])->name('levels.index');
-Route::get('/levels/create', [ProficiencyLevelController::class, 'create'])->name('levels.create');
-Route::post('/levels/store', [ProficiencyLevelController::class, 'store'])->name('levels.store');
-Route::put('/levels/update/{level}', [ProficiencyLevelController::class, 'update'])->name('levels.update');
-Route::get('/levels/show/{level}', [ProficiencyLevelController::class, 'show'])->name('levels.show');
-
-// ProficiencyLevels Routes
+// Groups Routes
 Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
 Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');
 Route::post('/groups/store', [GroupController::class, 'store'])->name('groups.store');
-Route::put('/groups/update/{level}', [GroupController::class, 'update'])->name('groups.update');
-Route::get('/groups/show/{level}', [GroupController::class, 'show'])->name('groups.show');
+Route::put('/groups/update/{group}', [GroupController::class, 'update'])->name('groups.update');
+Route::get('/groups/show/{group}', [GroupController::class, 'show'])->name('groups.show');
 
 // Units Routes
 Route::get('/units', [UnitController::class, 'index'])->name('units.index');
 Route::get('/units/create', [UnitController::class, 'create'])->name('units.create');
 Route::post('/units/store', [UnitController::class, 'store'])->name('units.store');
-Route::put('/units/update/{level}', [UnitController::class, 'update'])->name('units.update');
-Route::get('/units/show/{level}', [UnitController::class, 'show'])->name('units.show');
+Route::put('/units/update/{unit}', [UnitController::class, 'update'])->name('units.update');
+Route::get('/units/show/{unit}', [UnitController::class, 'show'])->name('units.show');
 
 // Strudent module Routes
 Route::get('/student/level_selection', [StudentController::class, 'level_selection'])->name('student.level_selection');
 Route::get('/student/dashboard/{unit}', [StudentController::class, 'show'])->name('student.show');
+
+// Keywords Routes
+Route::get('/units/{unit}/keywords', [KeywordController::class, 'index'])->name('keywords.index');
+Route::post('/units/{unit}/keywords/store', [KeywordController::class, 'store'])->name('keywords.store');
+Route::delete('/units/{unit}/keywords/{keyword}/destroy', [KeywordController::class, 'destroy'])->name('keywords.destroy');
+Route::delete('/units/{unit}/keywords/{keyword}/update', [KeywordController::class, 'update'])->name('keywords.update');
+
+// Excercises Routes
+Route::get('/units/{unit}/excercises', [ExcerciseController::class, 'index'])->name('excercises.index');

@@ -6,16 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Models\Unit;
 use App\Models\User;
-use App\Models\ProficiencyLevel;
 
 
 class GroupController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public $old_users;
+
     public function index()
     {
         $groups = Group::all();
@@ -29,39 +25,23 @@ class GroupController extends Controller
         return view('groups.index', compact('groups'))->with(compact('students_count'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $users = User::where('role', 'student')->get();
-        $levels = ProficiencyLevel::all();
-
-        return view('groups.create', compact(['users', 'levels']));
+        return view('groups.create', compact(['users']));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-
         $group = new Group;
         $group->name = $request->name;
         $group->save();
-
 
         $users = array();
         $count = 0;
         $params = $request->collect();
 
         while ($params->contains("user_$count")) {
-
             $user_id = $request->collect()["user_$count"];
 
             $user = User::find($user_id);
@@ -74,50 +54,66 @@ class GroupController extends Controller
         return redirect()->route('groups.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $group = Group::find($id);
-        $users = User::where('role', 'student')->get();
-        $levels = ProficiencyLevel::all();
+        $users = User::where('role','student')->get();
+        $units = Unit::where('group_id', $id)->get();
         
-        return view('groups.show', compact(['group', 'users', 'levels']));
+        return view('groups.show', compact(['group', 'users', 'units']));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $old_users = User::where('group_id', $id)->get();
+        $old_users_ids = array();
+
+        foreach($old_users as $user) {
+            array_push($old_users_ids, $user->id);
+        }
+
+        // Usuarios que van a pertenecer al grupo
+        $user_ids = $request->input('users');
+
+        // userId: 3
+
+        if ($user_ids != null) {
+            // Asignar a todos los usuarios al grupo correspondiente
+            foreach($user_ids as $user_id) {
+                $current_user = User::find($user_id);
+                $current_user->group_id = $id;
+                $current_user->save();
+            }
+
+            // Chequear si alguno de los antiguos usuarios ya no pertenece al grupo para borrarlo
+            foreach($old_users as $old_id) {
+                if (!in_array($old_id, $user_ids)) {
+                    $current_user = User::find($user_id);
+                    $current_user->group_id = null;
+                    $current_user->save();
+                }
+            }
+        } else {
+            $users = User::where('role', 'student')->get();
+
+            foreach($users as $user) {
+                $user->group_id = null;
+                $user->save();
+            }
+        }
+
+        $current_group = Group::find($id);
+        $current_group->name = $request->name;
+        $current_group->save();
+
+        return redirect()->route('groups.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

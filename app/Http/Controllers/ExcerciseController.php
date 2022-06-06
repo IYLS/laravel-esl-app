@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\GlossedWord;
 use Illuminate\Http\Request;
 
-class GlossedWordController extends Controller
+class ExcerciseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +13,7 @@ class GlossedWordController extends Controller
      */
     public function index()
     {
-        //
+        return view('excercises.index');
     }
 
     /**
@@ -41,10 +40,10 @@ class GlossedWordController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\GlossedWord  $glossedWord
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(GlossedWord $glossedWord)
+    public function show($id)
     {
         //
     }
@@ -52,10 +51,10 @@ class GlossedWordController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\GlossedWord  $glossedWord
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(GlossedWord $glossedWord)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +63,10 @@ class GlossedWordController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\GlossedWord  $glossedWord
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, GlossedWord $glossedWord)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +74,10 @@ class GlossedWordController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\GlossedWord  $glossedWord
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(GlossedWord $glossedWord)
+    public function destroy($id)
     {
         //
     }

@@ -49,7 +49,8 @@ class StudentController extends Controller
     public function show($unit)
     {
         $unit = Unit::where('id', $unit)->get()[0];
-
+        $keywords;
+        $helpOptions;
 
         return view('student.show', compact('unit'));
     }
