@@ -10,8 +10,6 @@ use App\Models\User;
 
 class GroupController extends Controller
 {
-    public $old_users;
-
     public function index()
     {
         $groups = Group::all();
@@ -58,7 +56,7 @@ class GroupController extends Controller
     {
         $group = Group::find($id);
         $users = User::where('role','student')->get();
-        $units = Unit::where('group_id', $id)->get();
+        $units = Unit::all();
         
         return view('groups.show', compact(['group', 'users', 'units']));
     }
@@ -71,17 +69,13 @@ class GroupController extends Controller
     public function update(Request $request, $id)
     {
         $old_users = User::where('group_id', $id)->get();
-        $old_users_ids = array();
-
         foreach($old_users as $user) {
-            array_push($old_users_ids, $user->id);
+            $user->group_id = null;
+            $user->save();
         }
 
         // Usuarios que van a pertenecer al grupo
         $user_ids = $request->input('users');
-
-        // userId: 3
-
         if ($user_ids != null) {
             // Asignar a todos los usuarios al grupo correspondiente
             foreach($user_ids as $user_id) {
@@ -89,21 +83,22 @@ class GroupController extends Controller
                 $current_user->group_id = $id;
                 $current_user->save();
             }
+        }
 
-            // Chequear si alguno de los antiguos usuarios ya no pertenece al grupo para borrarlo
-            foreach($old_users as $old_id) {
-                if (!in_array($old_id, $user_ids)) {
-                    $current_user = User::find($user_id);
-                    $current_user->group_id = null;
-                    $current_user->save();
-                }
-            }
-        } else {
-            $users = User::where('role', 'student')->get();
+        $old_units = Unit::where('group_id', $id)->get();
+        foreach($old_units as $unit) {
+            $unit->group_id = null;
+            $unit->save();
+        }
 
-            foreach($users as $user) {
-                $user->group_id = null;
-                $user->save();
+        // Unidades que van a pertenecer al grupo
+        $unit_ids = $request->input('units');
+        if ($unit_ids != null) {
+            // Asignar a todos los usuarios al grupo correspondiente
+            foreach($unit_ids as $unit_id) {
+                $current_unit = Unit::find($unit_id);
+                $current_unit->group_id = $id;
+                $current_unit->save();
             }
         }
 

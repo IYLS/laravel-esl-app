@@ -58,7 +58,7 @@ Route::get('/student/dashboard/{unit}', [StudentController::class, 'show'])->nam
 Route::get('/units/{unit}/keywords', [KeywordController::class, 'index'])->name('keywords.index');
 Route::post('/units/{unit}/keywords/store', [KeywordController::class, 'store'])->name('keywords.store');
 Route::delete('/units/{unit}/keywords/{keyword}/destroy', [KeywordController::class, 'destroy'])->name('keywords.destroy');
-Route::delete('/units/{unit}/keywords/{keyword}/update', [KeywordController::class, 'update'])->name('keywords.update');
+Route::post('/units/{unit}/keywords/{keyword}/update', [KeywordController::class, 'update'])->name('keywords.update');
 
 // Excercises Routes
 Route::get('/units/{unit}/excercises', [ExcerciseController::class, 'index'])->name('excercises.index');

@@ -80,7 +80,6 @@
                 <a class="btn btn-secondary" href="{{ route('units.index') }}">Cancel</a>
             </div>
             <div>
-                {{ $unit->id }}
                 <a class="btn btn-info" href="{{ route('keywords.index', $unit->id) }}">Keywords</a>
                 <a class="btn btn-info" href="{{ route('excercises.index', $unit->id) }}">Exercises</a>
             </div>

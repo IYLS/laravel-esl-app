@@ -11,7 +11,7 @@
                 <p class="card-text text-secondary"><small>
                   {{ $students_count["$group->id"] }} students are in this group
                 </small></p>
-                <a href="{{ route('groups.show', $group->id) }}" class="btn btn-primary">Details</a>
+                <a href="{{ route('groups.show', $group->id) }}" class="btn btn-success">Details</a>
               </div>
             </div>
           </div>

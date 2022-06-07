@@ -24,7 +24,7 @@ return new class extends Migration
             $table->text('glossary');
             $table->text('translation');
             $table->text('dictionary');
-            $table->integer('group_id');
+            $table->integer('group_id')->nullable(true);
 
             $table->foreign('group_id')->references('id')->on('groups');
         });

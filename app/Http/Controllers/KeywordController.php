@@ -40,9 +40,15 @@ class KeywordController extends Controller
         //
     }
 
-    public function update(Request $request, Keyword $keyword)
+    public function update(Request $request, $unit_id, $keyword_id)
     {
-        //
+        $keyword = Keyword::find($keyword_id);
+        $keyword->keyword = $request->word;
+        $keyword->description = $request->description;
+
+        $keyword->save();
+
+        return redirect()->route('keywords.index', $unit_id);
     }
 
     public function destroy($unit_id, $keyword_id)

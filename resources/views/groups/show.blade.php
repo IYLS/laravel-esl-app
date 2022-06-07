@@ -21,7 +21,7 @@
                         <div class="card card-body">
                             @foreach($users as $user)
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" onclick="ifChecked(this);" value="{{ $user->id }}" id="user_checkbox" disabled @if($user->group_id == $group->id) checked name="users[]" @endif>
+                                <input class="form-check-input" type="checkbox" onclick="ifUserChecked(this);" value="{{ $user->id }}" id="user_checkbox" disabled @if($user->group_id == $group->id) checked name="users[]" @endif>
                                 <label class="form-check-label" for="user_checkbox" disabled>{{ $user->name }}</label>
                             </div>
                             @endforeach
@@ -31,11 +31,14 @@
                 <tr>
                     <td>Units</td>
                     <td>
-                        <select class="form-select" name="units" id="units" disabled>
+                        <div class="card card-body">
                             @foreach($units as $unit)
-                                <option value="{{ $unit->id }}" selected>{{ $unit->title }}</option>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" onclick="ifUnitChecked(this);" value="{{ $unit->id }}" id="user_checkbox" disabled @if($unit->group_id == $group->id) checked name="units[]" @endif>
+                                <label class="form-check-label" for="user_checkbox" disabled>{{ $unit->title }}</label>
+                            </div>
                             @endforeach
-                        </select>
+                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -62,16 +65,21 @@
         document.getElementById('units').disabled = false;
     };
     
-    function ifChecked(element) {
+    function ifUserChecked(element) {
         if (element.checked) {
             element.name = "users[]";
-            console.log(element.name);
-            console.log(element.value);
         } else {
             element.name = "";
-            console.log(element.name);
-            console.log(element.value);
         }
+    }
+
+    function ifUnitChecked(element) {
+        if (element.checked) {
+            element.name = "units[]";
+        } else {
+            element.name = "";
+        }
+
     }
 </script>
 
