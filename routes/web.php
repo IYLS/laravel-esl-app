@@ -60,5 +60,23 @@ Route::post('/units/{unit}/keywords/store', [KeywordController::class, 'store'])
 Route::delete('/units/{unit}/keywords/{keyword}/destroy', [KeywordController::class, 'destroy'])->name('keywords.destroy');
 Route::delete('/units/{unit}/keywords/{keyword}/update', [KeywordController::class, 'update'])->name('keywords.update');
 
+
 // Excercises Routes
 Route::get('/units/{unit}/excercises', [ExcerciseController::class, 'index'])->name('excercises.index');
+Route::post('/units/{unit}/excercises/create', [ExcerciseController::class, 'create'])->name('excercises.create');
+
+// Multiplce choice Routes
+Route::get('/units/{unit}/excercises/multiple-choice/create', [MultipleChoiceController::class, 'create'])->name('multiple_choice.create');
+Route::post('/units/{unit}/excercises/multiple-choice/store', [MultipleChoiceController::class, 'store'])->name('multiple_choice.store');
+
+// Meet the character Routes
+Route::get('/units/{unit}/excercises/meet-the-characters/create', [MeetCharactersController::class, 'create'])->name('meet_characters.create');
+Route::post('/units/{unit}/excercises/multiple-choice/store', [MeetCharactersController::class, 'store'])->name('meet_characters.store');
+
+// Open answer Routes
+Route::get('/units/{unit}/excercises/open-answer/create', [OpenAnswerController::class, 'create'])->name('open_answer.create');
+Route::post('/units/{unit}/excercises/open-answer/store', [OpenAnswerController::class, 'store'])->name('open_answer.store');
+
+// Drag and Drop Routes
+Route::get('/units/{unit}/excercises/drag-and-drop/create', [DragAndDropController::class, 'create'])->name('drag_and_drop.create');
+Route::post('/units/{unit}/excercises/drag-and-drop/store', [DragAndDropController::class, 'store'])->name('drag_and_drop.store');

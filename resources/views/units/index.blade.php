@@ -3,12 +3,12 @@
 
 <div class="container">
     <table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Author</th>
-            <th scope="col">Details</th>
-        </tr>
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Details</th>
+            </tr>
         </thead>
         <tbody>
             @foreach($units as $unit)
