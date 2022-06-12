@@ -135,7 +135,6 @@
             detailBox.appendChild(child);
         }
     }
-
 </script>
 
 @endsection
