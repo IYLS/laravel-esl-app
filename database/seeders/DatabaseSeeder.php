@@ -8,11 +8,6 @@ use DB;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
     public function run()
     {
         $this->call(GroupSeeder::class);
@@ -20,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UnitSeeder::class);
         $this->call(KeywordSeeder::class);
         $this->call(ExcerciseSeeder::class);
+        $this->call(UnitGroupSeeder::class);
     }
 }

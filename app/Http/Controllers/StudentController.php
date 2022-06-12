@@ -9,81 +9,55 @@ use App\Models\Unit;
 
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($unit)
     {
-        $unit = Unit::where('id', $unit)->get()[0];
-        $keywords;
-        $helpOptions;
+        $unit = Unit::find($unit);
+        $keywords = $unit->keywords;
 
-        return view('student.show', compact('unit'));
+        $help_options = array();
+
+        if ($unit->cultural_notes_enabled) {
+            array_push($help_options, $unit->cultural_notes);
+        }
+        if ($unit->listening_tips_enabled) {
+            array_push($help_options, $unit->listening_tips);
+        }
+        if ($unit->transcript_enabled) {
+            array_push($help_options, $unit->transcript);
+        }
+        if ($unit->glossary_enabled) {
+            array_push($help_options, $unit->glossary);
+        }
+        if ($unit->translation_enabled) {
+            array_push($help_options, $unit->translation);
+        }
+        if ($unit->dictionary_enabled) {
+            array_push($help_options, $unit->dictionary);
+        }
+
+        return view('student.show', compact(['unit', 'keywords', 'help_options']));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
@@ -92,7 +66,7 @@ class StudentController extends Controller
     public function level_selection(Request $request) 
     {
         $user = Auth::user();
-        $units = Unit::where('group_id', $user->group_id)->get();
+        $units = $user->group->units;
 
         return view('student.level_selection', compact(['user', 'units']));
     }

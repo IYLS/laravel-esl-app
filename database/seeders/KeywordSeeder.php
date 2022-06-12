@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class KeywordSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         DB::table('keywords')->insert(
@@ -21,12 +16,12 @@ class KeywordSeeder extends Seeder
             [
                 'keyword' => Str::random(10),
                 'description' => Str::random(40),
-                'unit_id' => 1,
+                'unit_id' => 9078,
             ],
             [
                 'keyword' => Str::random(10),
                 'description' => Str::random(40),
-                'unit_id' => 1,
+                'unit_id' => 9078,
             ]
         ]);
     }

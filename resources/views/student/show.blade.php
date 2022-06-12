@@ -2,30 +2,29 @@
 @section('main')
 
 <div class="p-4 row w-100 h-100">
-
-    <h3 class="p-2">{{ $unit->title }}</h3>
-
+    <h5 class="pl-2">{{ $unit->title }}</h5>
     <div class="row">
         <div class="col-4">
-            <p class="text-secondary"><small>Keywords:</small></p>
-            <a href="#" class="btn btn-link m-1">Listening tips</a>
-            <a href="#" class="btn btn-link m-1">Cultural notes</a>
-            <a href="#" class="btn btn-link m-1">Transcript</a>
-            <a href="#" class="btn btn-link m-1">Glossary</a>
-            <a href="#" class="btn btn-link m-1">Translation</a>
-            <a href="#" class="btn btn-link m-1">Online dictionary</a>
+            <small class="text-secondary">Keywords:</small>
+            @foreach($keywords as $keyword)
+            <a href="#" class="btn btn-primary btn-sm m-1 keyword-btn" onclick="presentKeywordsText(`{{ $keyword->description }}`)">{{ $keyword->keyword }}</a>
+            @endforeach
         </div>
         <div class="col-8">
-            <p class="text-secondary"><small>Help options:</small></p>
-            <a href="#" class="btn btn-link m-1">Listening tips</a>
-            <a href="#" class="btn btn-link m-1">Cultural notes</a>
-            <a href="#" class="btn btn-link m-1">Transcript</a>
-            <a href="#" class="btn btn-link m-1">Glossary</a>
-            <a href="#" class="btn btn-link m-1">Translation</a>
-            <a href="#" class="btn btn-link m-1">Online dictionary</a>
-            <a href="#" class="btn btn-link m-1">Google search</a>
-            <a href="#" class="btn btn-link m-1">Pronunciation aids</a>
+            <small class="text-secondary">Help options: </small>
+            @if($unit->listening_tips_enabled)<a href="#" class="btn btn-primary btn-sm m-1 help-option-btn" onclick="presentHelpOptionsText(`{{ $unit->listening_tips }}`)">Listening tips</a>@endif
+            @if($unit->cultural_notes_enabled)<a href="#" class="btn btn-primary btn-sm m-1 help-option-btn" onclick="presentHelpOptionsText(`{{ $unit->cultural_notes }}`)">Cultural notes</a>@endif
+            @if($unit->transcript_enabled)<a href="#" class="btn btn-primary btn-sm m-1 help-option-btn" onclick="presentHelpOptionsText(`{{ $unit->transcript }}`)">Transcript</a>@endif
+            @if($unit->glossary_enabled)<a href="#" class="btn btn-primary btn-sm m-1 help-option-btn" onclick="presentHelpOptionsText(`{{ $unit->glossary }}`)">Glossary</a>@endif
+            @if($unit->translation_enabled)<a href="#" class="btn btn-primary btn-sm m-1 help-option-btn" onclick="presentHelpOptionsText(`{{ $unit->translation }}`)">Translation</a>@endif
+            @if($unit->dictionary_enabled)<a href="#" class="btn btn-primary btn-sm m-1 help-option-btn" onclick="presentHelpOptionsText(`{{ $unit->dictionary }}`)">Online dictionary</a>@endif
+             {{-- @if($unit->listening_tips_enabled)<a href="#" class="btn btn-primary btn-sm m-1 help-option-btn" onclick="presentHelpOptionsText()">Google search</a>@endif --}}
+             {{-- @if($unit->listening_tips_enabled)<a href="#" class="btn btn-primary btn-sm m-1 help-option-btn" onclick="presentHelpOptionsText()">Pronunciation aids</a>@endif --}}
         </div>
+    </div>
+    <div class="row" id="keywords_content">
+        <div class="col-4" id="keywords_detail"></div>
+        <div class="col-8" id="help_option_detail"></div>
     </div>
 
     {{-- Video section --}}
@@ -60,20 +59,10 @@
                         
                     </div>
                     <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                        <form action="">
-                            <input type="text" placeholder="1">
-                            <input type="text" placeholder="2">
-                            <input type="text" placeholder="3">
-                            <input type="text" placeholder="4">
-                        </form>
+
                     </div>
                     <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                        <form action="">
-                            <input type="text" placeholder="5">
-                            <input type="text" placeholder="6">
-                            <input type="text" placeholder="7">
-                            <input type="text" placeholder="8">
-                        </form>
+
                     </div>
                     <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab"></div>
                     
@@ -84,10 +73,9 @@
             <div class="tab-pane fade" id="while-listening" role="tabpanel" aria-labelledby="nav-profile-tab">
                 <div class="d-flex align-items-start">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</button>
-                        <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</button>
-                        <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</button>
-                        <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button>
+                        <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Evaluating statement</button>
+                        <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Multiple choice</button>
+                        <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Dictation cloze</button>
                     </div>
                     <div class="tab-content" id="v-pills-tabContent">
                         <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">...</div>
@@ -101,28 +89,16 @@
             <div class="tab-pane fade" id="post-listening" role="tabpanel" aria-labelledby="nav-profile-tab">
                 <div class="d-flex align-items-start">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</button>
-                        <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</button>
-                        <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</button>
-                        <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button>
+                        <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Multiple choioce</button>
+                        <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Personal response</button>
                     </div>
                     <div class="tab-content" id="v-pills-tabContent">
                         <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                            <form action="">
-                                <input type="text">
-                                <input type="text">
-                                <input type="text">
-                                <input type="text">
-                            </form>
+
                         </div>
                         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab"></div>
                         <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                            <form action="">
-                                <input type="text">
-                                <input type="text">
-                                <input type="text">
-                                <input type="text">
-                            </form>
+
                         </div>
                         <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
                     </div>
@@ -132,5 +108,34 @@
     </div>
 
 </div>
+
+
+<script>
+    function presentKeywordsText(text) {
+        var detailBox = document.getElementById("keywords_detail");
+
+        if (detailBox.innerHTML != "") {
+            detailBox.removeChild(detailBox.lastChild);
+        } else {
+            var child = document.createElement('p');
+            child.innerHTML = `${text}`;
+            detailBox.appendChild(child);
+        }
+
+    }
+
+    function presentHelpOptionsText(text) {
+        var detailBox = document.getElementById("help_option_detail");
+
+        if (detailBox.innerHTML != "") {
+            detailBox.removeChild(detailBox.lastChild);
+        } else {
+            var child = document.createElement('p');
+            child.innerHTML = `${text}`;
+            detailBox.appendChild(child);
+        }
+    }
+
+</script>
 
 @endsection

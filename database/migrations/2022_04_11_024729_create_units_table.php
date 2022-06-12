@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('units', function (Blueprint $table) {
@@ -18,23 +13,23 @@ return new class extends Migration
             $table->text('title');
             $table->text('author');
             $table->text('description');
-            $table->text('listening_tips');
-            $table->text('cultural_notes');
-            $table->text('transcript');
-            $table->text('glossary');
-            $table->text('translation');
-            $table->text('dictionary');
-            $table->integer('group_id')->nullable(true);
 
-            $table->foreign('group_id')->references('id')->on('groups');
+            $table->text('listening_tips')->nullable(true);
+            $table->text('cultural_notes')->nullable(true);
+            $table->text('transcript')->nullable(true);
+            $table->text('glossary')->nullable(true);
+            $table->text('translation')->nullable(true);
+            $table->text('dictionary')->nullable(true);
+            
+            $table->boolean('listening_tips_enabled');
+            $table->boolean('cultural_notes_enabled');
+            $table->boolean('transcript_enabled');
+            $table->boolean('glossary_enabled');
+            $table->boolean('translation_enabled');
+            $table->boolean('dictionary_enabled');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('units');

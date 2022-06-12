@@ -8,14 +8,14 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('groups', function (Blueprint $table) {
-            $table->id('id');
-            $table->string('name');
+        Schema::create('unit_group', function (Blueprint $table) {
+            $table->foreignId('unit_id')->constrained('units');
+            $table->foreignId('group_id')->constrained('groups');
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('unit_group');
     }
 };
