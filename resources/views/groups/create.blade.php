@@ -31,7 +31,7 @@
                         <td>Units</td>
                         <td>
                             <select class="form-select" name="units" id="units">
-                                @foreach(units as $unit)
+                                @foreach($units as $unit)
                                     <option value="{{ $unit->id }}" selected>{{ $unit->title }}</option>
                                 @endforeach
                             </select>
