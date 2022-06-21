@@ -14,17 +14,17 @@
         <!-- CSS -->
         <link rel="stylesheet" type="text/css" href="{{ asset('/css/app.css') }}">
         
-        <!-- FontAwesome Icons -->
-        <script src="https://kit.fontawesome.com/9c85c53d3e.js" crossorigin="anonymous"></script>
 
         <!-- Google Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600&display=swap" rel="stylesheet"> 
 
-        
-        <title>ESL-IYLS</title>
+        <!-- FontAwesome Icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css">
 
+
+        <title>ESL-IYLS</title>
     </head>
     <body class="d-flex flex-column min-vh-100">
         @include('partials.navbar')

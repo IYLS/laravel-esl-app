@@ -20,8 +20,8 @@
                             <div class="card card-body">
                                 @foreach($users as $user)
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="{{ $user->id }}"w>
-                                    <label class="form-check-label" for="flexCheckChecked">{{ $user->name }}</label>
+                                    <input class="form-check-input" type="checkbox" onclick="ifUserChecked(this);" value="{{ $user->id }}" id="user_checkbox">
+                                    <label class="form-check-label" for="user_checkbox">{{ $user->name }}</label>
                                 </div>
                                 @endforeach
                             </div>
@@ -30,11 +30,14 @@
                     <tr>
                         <td>Units</td>
                         <td>
-                            <select class="form-select" name="units" id="units">
+                            <div class="card card-body">
                                 @foreach($units as $unit)
-                                    <option value="{{ $unit->id }}" selected>{{ $unit->title }}</option>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" onclick="ifUnitChecked(this);" value="{{ $unit->id }}" id="user_checkbox">
+                                    <label class="form-check-label" for="user_checkbox">{{ $unit->title }}</label>
+                                </div>
                                 @endforeach
-                            </select>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -52,6 +55,22 @@
 
         for (var i=0; i < fields.length; i++) { 
             fields[i].setAttribute('name', `user_${i}`);
+        }
+    }
+
+    function ifUserChecked(element) {
+        if (element.checked) {
+            element.name = "users[]";
+        } else {
+            element.name = "";
+        }
+    }
+
+    function ifUnitChecked(element) {
+        if (element.checked) {
+            element.name = "units[]";
+        } else {
+            element.name = "";
         }
     }
 </script>

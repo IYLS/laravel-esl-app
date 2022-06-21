@@ -6,7 +6,7 @@
         <h3>New unit</h3>
         <form action="{{ route('units.store') }}" method="POST">
         @csrf
-        <table class="table table-striped" id="create_unit_table">
+        <table class="table" id="create_unit_table">
                 <tbody>
                     <tr>
                         <td>Title</td>
@@ -26,10 +26,19 @@
                             <textarea id="description" name="description" class="form-control" type="text" placeholder="Write a description for this new unit"></textarea>
                         </td>
                     </tr>
+                    <tr><td><h5>Help options</h5></td></tr>
                     <tr>
                         <td>Listening Tips</td>
                         <td>
                             <textarea id="listening_tips" name="listening_tips" type="text" class="form-control" placeholder="Write the listening tips for this new unit"></textarea>
+                        </td>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="listening_tips_enabled" value="false" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                  Enabled
+                                </label>
+                              </div>
                         </td>
                     </tr>
                     <tr>
@@ -37,11 +46,27 @@
                         <td>
                             <textarea id="cultural_notes" name="cultural_notes" type="text" class="form-control" placeholder="Write the cultural notes for this new unit"></textarea>
                         </td>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="cultural_notes_enabled" value="false" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                  Enabled
+                                </label>
+                              </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>Transcript</td>
                         <td>
                             <textarea id="transcript" name="transcript" type="text" class="form-control" placeholder="Write the transcript for this new unit"></textarea>
+                        </td>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="transcript_enabled" value="false" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                  Enabled
+                                </label>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -49,11 +74,27 @@
                         <td>
                             <textarea id="glossary" name="glossary" type="text" class="form-control" placeholder="Write the glossary for this new unit"></textarea>
                         </td>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="glossary_enabled" value="false" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                  Enabled
+                                </label>
+                              </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>Translation</td>
                         <td>
                             <textarea id="translation" name="translation" type="text" class="form-control" placeholder="Write the translation for this new unit"></textarea>
+                        </td>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="translation_enabled" value="false" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                  Enabled
+                                </label>
+                              </div>
                         </td>
                     </tr>
                     <tr>
@@ -61,15 +102,13 @@
                         <td>
                             <textarea id="dictionary" name="dictionary" type="text" class="form-control" placeholder="Write the dictionary for this new unit"></textarea>
                         </td>
-                    </tr>
-                    <tr>
-                        <td>Group</td>
                         <td>
-                            <select id="group" name="group" class="form-select">
-                                @foreach($groups as $group)
-                                <option value="{{ $group->id }}" selected>{{ $group->name }}</option>
-                                @endforeach
-                            </select>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="dictionary_enabled" value="false" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Enabled
+                                </label>
+                              </div>
                         </td>
                     </tr>
                     <tr>
@@ -129,6 +168,18 @@
     function removeKeyword(element) {
         const row = element.parentNode.parentNode.parentNode.parentNode;
         document.getElementById("create_unit_table").deleteRow(row.rowIndex);
+    }
+
+    function switchIsEnabled(item) {
+        if (item.value == "false") {
+            console.log(`${item.name} is ${item.value}`);
+            item.value = "true";
+        } else {
+            if (item.value == "true") {
+                console.log(`${item.name} is ${item.value}`);
+                item.value = "false";
+            }
+        }
     }
 </script>
 

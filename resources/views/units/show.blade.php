@@ -31,10 +31,22 @@
                     <td>
                         <h6>Listening Tips:</h6>
                         <textarea id="listening_tips" name="listening_tips" type="text" class="form-control" rows="6" disabled>{{ $unit->listening_tips }}</textarea>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" @if($unit->listening_tips_enabled) checked @endif onclick="switchIsEnabled(this)" name="listening_tips_enabled" value="false" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              Enabled
+                            </label>
+                        </div>
                     </td>
                     <td>
                         <h6>Cultural Notes:</h6>
                         <textarea id="cultural_notes" name="cultural_notes" type="text" class="form-control" rows="6" disabled>{{ $unit->cultural_notes }}</textarea>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" @if($unit->cultural_notes_enabled) checked @endif onclick="switchIsEnabled(this)" name="cultural_notes_enabled" value="false" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              Enabled
+                            </label>
+                        </div>
                     </td>
                 </tr>
 
@@ -42,33 +54,47 @@
                     <td>
                         <h6>Transcript:</h6>
                         <textarea id="transcript" name="transcript" type="text" class="form-control" rows="6" disabled>{{ $unit->transcript }}</textarea>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" @if($unit->transcript_enabled) checked @endif onclick="switchIsEnabled(this)" name="transcript_enabled" value="false" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              Enabled
+                            </label>
+                        </div>                        
                     </td>
                     <td>
                         <h6>Glossary:</h6>
                         <textarea id="glossary" name="glossary" type="text" class="form-control" rows="6" disabled>{{ $unit->glossary }}</textarea>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" @if($unit->glossary_enabled) checked @endif onclick="switchIsEnabled(this)" name="glossary_enabled" value="false" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              Enabled
+                            </label>
+                        </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <h6>Translation:</h6>
                         <textarea id="translation" name="translation" type="text" class="form-control" rows="6" disabled>{{ $unit->translation }}</textarea>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" @if($unit->translation_enabled) checked @endif onclick="switchIsEnabled(this)" name="translation_enabled" value="false" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              Enabled
+                            </label>
+                        </div>
                     </td>
                     <td>
                         <h6>Dictionary:</h6>
                         <textarea id="dictionary" name="dictionary" type="text" class="form-control" rows="6" disabled>{{ $unit->dictionary }}</textarea>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" @if($unit->dictionary_enabled) checked @endif onclick="switchIsEnabled(this)" name="dictionary_enabled" value="false" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              Enabled
+                            </label>
+                        </div>
                     </td>
                 </tr>
                 <tr>
-                </tr>
-                <tr>
-                    <td>
-                        <h6>Group:</h6>
-                        <select id="group" name="group" class="form-select" disabled>
-                            @foreach($groups as $group)
-                            <option value="{{ $group->id }}" @if($group->id == $unit->group_id) selected @endif>{{ $group->name }}</option>
-                            @endforeach
-                        </select>
-                    </td>
                 </tr>
             </tbody>
         </table>
@@ -104,6 +130,18 @@
 
         for (i = 0; i < textarea_elements.length; i++) {
             textarea_elements[i].disabled = false;
+        }
+    }
+
+    function switchIsEnabled(item) {
+        if (item.value == "false") {
+            console.log(`${item.name} is ${item.value}`);
+            item.value = "true";
+        } else {
+            if (item.value == "true") {
+                console.log(`${item.name} is ${item.value}`);
+                item.value = "false";
+            }
         }
     }
 </script>

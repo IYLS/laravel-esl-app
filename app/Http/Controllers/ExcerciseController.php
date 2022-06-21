@@ -3,24 +3,38 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Excercise;
 
 class ExcerciseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
+        
+        $pre_listening_excercises = [
+            "Meet the character",
+            "Predicting 1",
+            "What do you hear?",
+            "Vocabulary activation",
+            "Vocabulary practice",
+        ];
+
+        $while_listening_excercises = [
+            "Evaluating statement",
+            "Multiple choice",
+            "Dictation cloze"
+        ];
+
+        $post_listening_excercises = [
+            "Multiple choice 1",
+            "Multiple choice 2",
+            "Personal response 1",
+            "Personal response 2"
+        ];
+
+
         return view('excercises.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //

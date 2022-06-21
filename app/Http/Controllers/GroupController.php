@@ -15,24 +15,33 @@ class GroupController extends Controller
         $groups = Group::all();
         $students_count = array();
 
+        $units = Unit::all();
+        $units_count = array();
+
         foreach($groups as $group) {
-            $count = User::where('group_id', $group->id)->where('role', 'student')->count();
+            $count = $group->users()->count();
             $students_count["$group->id"] = $count;
+
+            $count2 = $group->units()->count();
+            $units_count["$group->id"] = $count2;
         }
 
-        return view('groups.index', compact('groups'))->with(compact('students_count'));
+        return view('groups.index', compact('groups'))->with(compact(['students_count', 'units_count']));
     }
 
     public function create()
     {
         $users = User::where('role', 'student')->get();
-        return view('groups.create', compact(['users']));
+        $units = Unit::all();
+
+        return view('groups.create', compact(['users', 'units']));
     }
 
     public function store(Request $request)
     {
         $group = new Group;
         $group->name = $request->name;
+        
         $group->save();
 
         $users = array();
@@ -57,8 +66,15 @@ class GroupController extends Controller
         $group = Group::find($id);
         $users = User::where('role','student')->get();
         $units = Unit::all();
+
+        $unit_groups = $group->units;
+        $unit_groups_array = array();
+
+        foreach($unit_groups as $unit_group) {
+            array_push($unit_groups_array, $unit_group->id);
+        }
         
-        return view('groups.show', compact(['group', 'users', 'units']));
+        return view('groups.show', compact(['group', 'users', 'units', 'unit_groups_array']));
     }
 
     public function edit($id)
@@ -68,42 +84,20 @@ class GroupController extends Controller
 
     public function update(Request $request, $id)
     {
-        $old_users = User::where('group_id', $id)->get();
-        foreach($old_users as $user) {
-            $user->group_id = null;
-            $user->save();
-        }
-
-        // Usuarios que van a pertenecer al grupo
-        $user_ids = $request->input('users');
-        if ($user_ids != null) {
-            // Asignar a todos los usuarios al grupo correspondiente
-            foreach($user_ids as $user_id) {
-                $current_user = User::find($user_id);
-                $current_user->group_id = $id;
-                $current_user->save();
-            }
-        }
-
-        $old_units = Unit::where('group_id', $id)->get();
-        foreach($old_units as $unit) {
-            $unit->group_id = null;
-            $unit->save();
-        }
-
-        // Unidades que van a pertenecer al grupo
-        $unit_ids = $request->input('units');
-        if ($unit_ids != null) {
-            // Asignar a todos los usuarios al grupo correspondiente
-            foreach($unit_ids as $unit_id) {
-                $current_unit = Unit::find($unit_id);
-                $current_unit->group_id = $id;
-                $current_unit->save();
-            }
-        }
-
         $current_group = Group::find($id);
         $current_group->name = $request->name;
+
+        $user_ids = $request->input('users');
+        foreach($user_ids as $user_id) {
+            $current_user = User::find($user_id);
+            $current_user->group()->associate($current_group)->save();
+        }
+
+        $unit_ids = $request->input('units');
+        if ($unit_ids != null) {
+            $current_group->units()->sync($unit_ids);
+        }
+
         $current_group->save();
 
         return redirect()->route('groups.index');

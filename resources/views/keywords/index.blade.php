@@ -57,6 +57,9 @@
         <button type="button" id="addKeywordButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addKeywordModal">
             Add keyword
         </button>
+        <a type="button" class="btn btn-secondary" href="{{ url()->previous() }}">
+            Go back
+        </a>
     </div>
 </div>
 

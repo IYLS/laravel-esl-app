@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class GroupSeeder extends Seeder
+class UnitGroupSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,22 +15,22 @@ class GroupSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('groups')->insert([
+        DB::table('unit_group')->insert([
             [
-                'id' => 345,
-                'name' => '7°B'
+                'unit_id' => 764,
+                'group_id' => 345
             ],
             [
-                'id' => 645,
-                'name' => '4°A'
+                'unit_id' => 764,
+                'group_id' => 645
             ],
             [
-                'id' => 9964,
-                'name' => '4°C'
+                'unit_id' => 764,
+                'group_id' => 3564
             ],
             [
-                'id' => 3564,
-                'name' => '5°A'
+                'unit_id' => 9078,
+                'group_id' => 3564
             ]
         ]);
     }

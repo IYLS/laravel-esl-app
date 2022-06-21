@@ -22,6 +22,12 @@ class Unit extends Model
         'glossary',
         'translation',
         'dictionary',
+        'listening_tips_enabled',
+        'cultural_notes_enabled',
+        'transcrip_enabledt',
+        'glossary_enabled',
+        'translation_enabled',
+        'dictionary_enabled',
     ];
 
     public $timestamps = false;
@@ -33,8 +39,8 @@ class Unit extends Model
         return $this->hasMany(Keyword::class);
     }
 
-    public function group() 
+    public function groups() 
     {
-        return $this->belongsTo(Group::class);    
+        return $this->belongsToMany(Group::class, 'unit_group');    
     }
 }
