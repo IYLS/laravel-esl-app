@@ -9,17 +9,8 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\ExcerciseController;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\Http\Controllers\MeetCharacterQuestionController;
+use App\Http\Controllers\MeetCharacterExcerciseController;
 
 // Home
 Route::get('/', [AuthController::class, 'index'])->name('auth.index');
@@ -62,3 +53,18 @@ Route::post('/units/{unit}/keywords/{keyword}/update', [KeywordController::class
 
 // Excercises Routes
 Route::get('/units/{unit}/excercises', [ExcerciseController::class, 'index'])->name('excercises.index');
+
+
+// Meet Characters  Routes
+Route::get('/units/{unit}/excercises/create/meet_the_characters', [MeetCharacterExcercise::class, 'create'])->name('excercises.meet_characters.create');
+Route::post('/units/{unit}/excercises/store/meet_the_characters', [MeetCharacterExcercise::class, 'store'])->name('excercises.meet_characters.store');
+
+Route::get('/units/{unit}/excercises/create/meet_the_characters/create/question', [MeetCharacterQuestion::class, 'create'])->name('excercises.meet_characters_question.create');
+Route::get('/units/{unit}/excercises/store/meet_the_characters/store/question', [MeetCharacterQuestion::class, 'store'])->name('excercises.meet_characters_question.store');
+
+// Multiple Choice Routes
+Route::get('/units/{unit}/excercises/create/multiple_choice', [MultipleChoiceExcercise::class, 'create'])->name('excercises.multiple_choice.create');
+Route::post('/units/{unit}/excercises/store/multiple_choice', [MultipleChoiceExcercise::class, 'store'])->name('excercises.multiple_choice.store');
+
+Route::get('/units/{unit}/excercises/create/multiple_choice/create/question', [MultipleChoiceQuestion::class, 'create'])->name('excercises.multiple_choice_question.create');
+Route::get('/units/{unit}/excercises/store/multiple_choice/store/question', [MultipleChoiceQuestion::class, 'store'])->name('excercises.multiple_choice_question.store');

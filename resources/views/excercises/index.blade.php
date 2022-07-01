@@ -13,15 +13,9 @@
 
         <table class="table">
             <thead>
-                <th>
-                    Activity title
-                </th>
-                <th>
-                    Description
-                </th>
-                <th>
-                    Actions
-                </th>
+                <th>Activity title</th>
+                <th>Description</th>
+                <th>Actions</th>
             </thead>
             <tbody>
                 <tr>
@@ -55,7 +49,7 @@
             </tbody>
         </table>
         <div class="d-flex justify-content-center">
-            <button type="button" id="addExcerciseButton2" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewExcerciseModal">Add activity</button>
+            <button type="button" id="addExcerciseButton2" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPreListeningModal">Add activity</button>
         </div>
     </div>
 
@@ -70,15 +64,9 @@
 
         <table class="table">
             <thead>
-                <th>
-                    Activity title
-                </th>
-                <th>
-                    Description
-                </th>
-                <th>
-                    Actions
-                </th>
+                <th>Activity title</th>
+                <th>Description</th>
+                <th>Actions</th>
             </thead>
             <tbody>
                 <tr>
@@ -112,7 +100,7 @@
             </tbody>
         </table>
         <div class="d-flex justify-content-center">
-            <button type="button" id="addExcerciseButton1" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewExcerciseModal">Add activity</button>
+            <button type="button" id="addExcerciseButton1" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addWhileListeningModal">Add activity</button>
         </div>
     </div>
 
@@ -127,15 +115,9 @@
 
         <table class="table">
             <thead>
-                <th>
-                    Activity title
-                </th>
-                <th>
-                    Description
-                </th>
-                <th>
-                    Actions
-                </th>
+                <th>Activity title</th>
+                <th>Description</th>
+                <th>Actions</th>
             </thead>
             <tbody>
                 <tr>
@@ -169,28 +151,64 @@
             </tbody>
         </table>
         <div class="d-flex justify-content-center">
-            <button type="button" id="addExcerciseButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewExcerciseModal">Add activity</button>
+            <button type="button" id="addExcerciseButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPostListeningModal">Add activity</button>
         </div>
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="addNewExcerciseModal" tabindex="-1" aria-labelledby="addNewExcerciseModal" aria-hidden="true">
+<!-- PRE LISTENING -->
+<div class="modal fade" id="addPreListeningModal" tabindex="-1" aria-labelledby="addPreListeningModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addNewExcerciseModal">Select type of excercise to add</h5>
+                <h5 class="modal-title" id="addPreListeningModal">Select type of excercise to add</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
+                </select>
                 <div class="modal-footer">
-                    <a type="submit" href="{{ route('') }}" class="btn btn-primary">Confirm</a>
+                    <a type="submit" href="{{ route('excercises.meet_characters.create') }}" class="btn btn-primary">Confirm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- WHILE LISTENING -->
+<div class="modal fade" id="addWhileListeningModal" tabindex="-1" aria-labelledby="addWhileListeningModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addWhileListeningModal">Select type of excercise to add</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+
+                </select>
+                <div class="modal-footer">
+                    <a type="submit" href="{{ route('excercises.meet_characters.create') }}" class="btn btn-primary">Confirm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- POST LISTENING -->
+<div class="modal fade" id="addPostListeningModal" tabindex="-1" aria-labelledby="addPostListeningModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPostListeningModal">Select type of excercise to add</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+
+                </select>
+                <div class="modal-footer">
+                    <a type="submit" href="{{ route('excercises.meet_characters.create') }}" class="btn btn-primary">Confirm</a>
                 </div>
             </div>
         </div>

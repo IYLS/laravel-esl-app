@@ -14,7 +14,7 @@ class MeetCharacterExcerciseController extends Controller
 
     public function create()
     {
-        //
+        return view('excercises.meet_characters.create');
     }
 
     public function store(Request $request)
