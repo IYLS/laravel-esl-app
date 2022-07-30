@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Model\ExcerciseType;
 
-class ExcerciseTypeController extends Controller
+class OpenEndedExcerciseController extends Controller
 {
     /**
      * Display a listing of the resource.

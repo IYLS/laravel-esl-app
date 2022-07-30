@@ -9,8 +9,8 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\ExcerciseController;
-use App\Http\Controllers\MeetCharacterQuestionController;
-use App\Http\Controllers\MeetCharacterExcerciseController;
+use App\Http\Controllers\VoiceRecognitionQuestionController;
+use App\Http\Controllers\VoiceRecognitionExcerciseController;
 
 // Home
 Route::get('/', [AuthController::class, 'index'])->name('auth.index');
@@ -56,11 +56,11 @@ Route::get('/units/{unit}/excercises', [ExcerciseController::class, 'index'])->n
 
 
 // Meet Characters  Routes
-Route::get('/units/{unit}/excercises/create/meet_the_characters', [MeetCharacterExcercise::class, 'create'])->name('excercises.meet_characters.create');
-Route::post('/units/{unit}/excercises/store/meet_the_characters', [MeetCharacterExcercise::class, 'store'])->name('excercises.meet_characters.store');
+Route::get('/units/{unit}/excercises/create/voice_recognition', [VoiceRecognitionExcercise::class, 'create'])->name('excercises.voice_recognition.create');
+Route::post('/units/{unit}/excercises/store/voice_recognition', [VoiceRecognitionExcercise::class, 'store'])->name('excercises.voice_recognition.store');
 
-Route::get('/units/{unit}/excercises/create/meet_the_characters/create/question', [MeetCharacterQuestion::class, 'create'])->name('excercises.meet_characters_question.create');
-Route::get('/units/{unit}/excercises/store/meet_the_characters/store/question', [MeetCharacterQuestion::class, 'store'])->name('excercises.meet_characters_question.store');
+Route::get('/units/{unit}/excercises/create/voice_recognition/create/question', [VoiceRecognitionQuestion::class, 'create'])->name('excercises.voice_recognition_question.create');
+Route::get('/units/{unit}/excercises/store/voice_recognition/store/question', [VoiceRecognitionQuestion::class, 'store'])->name('excercises.voice_recognition_question.store');
 
 // Multiple Choice Routes
 Route::get('/units/{unit}/excercises/create/multiple_choice', [MultipleChoiceExcercise::class, 'create'])->name('excercises.multiple_choice.create');

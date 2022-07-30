@@ -5,28 +5,28 @@ namespace App\Http\Controllers;
 use App\Models\Keyword;
 use Illuminate\Http\Request;
 
-class MeetCharacterQuestionController extends Controller
+class VoiceRecognitionQuestionController extends Controller
 {
     public function index()
     {
-        return view('meet_character_question.index');
+        return view('voice_recognition_question.index');
     }
 
     public function create()
     {
-        return view('excercises.meet_characters_question.create');
+        return view('excercises.voice_recognition_question.create');
     }
 
     public function store(Request $request)
     {
-        $question = new MeetCharacterQuestion;
+        $question = new VoiceRecognitionQuestion;
 
         $question->image_url = $request->image_url;
         $question->audio_url = $request->audio_url;
 
         $question->save();
 
-        return redirect()->route('meet_character_question.index');
+        return redirect()->route('voice_recognition_question.index');
     }
 
     public function show($id)

@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MeetCharacterExcercise extends ExcerciseType
+class VoiceRecognitionQuestion extends Model
 {
     use HasFactory;
 
-    protected $table = 'meet_characters_excercises';
+    protected $table = 'voice_recognition_questions';
     protected $fillable = [
-        'title',
-        'description',
+        'image_url',
+        'audio_url',
     ];
     public $timestamps = false;
     public $incrementing = true;
 
-    public function questions()
+    public function excercise()
     {
-        return $this->hasMany(MeetCharacterQuestion::class);
+        return $this->belongsTo(VoiceRecognitionExcercise::class);
     }
 }

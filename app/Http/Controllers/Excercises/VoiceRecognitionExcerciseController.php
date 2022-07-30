@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MeetCharacterExcercise;
 use Illuminate\Http\Request;
 
-class MeetCharacterExcerciseController extends Controller
+class VoiceRecognitionExcerciseController extends Controller
 {
     public function index()
     {
@@ -32,7 +32,7 @@ class MeetCharacterExcerciseController extends Controller
         //
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id) 
     {
         //
     }
