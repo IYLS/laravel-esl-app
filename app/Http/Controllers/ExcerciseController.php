@@ -7,9 +7,9 @@ use App\Models\Excercise;
 
 class ExcerciseController extends Controller
 {
-    public function index()
+    public function index($unit_id)
     {
-        return view('excercises.index');
+        return view('excercises.index', compact('unit_id'));
      }
 
     public function create()

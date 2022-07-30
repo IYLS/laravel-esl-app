@@ -168,7 +168,7 @@
                 <select class="form-select form-select-sm" aria-label=".form-select-sm example">
                 </select>
                 <div class="modal-footer">
-                    <a type="submit" href="{{ route('excercises.voice_recognition.create') }}" class="btn btn-primary">Confirm</a>
+                    <a type="submit" href="{{ route('excercises.voice_recognition.create', $unit_id) }}" class="btn btn-primary">Confirm</a>
                 </div>
             </div>
         </div>
@@ -188,7 +188,7 @@
 
                 </select>
                 <div class="modal-footer">
-                    <a type="submit" href="{{ route('excercises.voice_recognition.create') }}" class="btn btn-primary">Confirm</a>
+                    <a type="submit" href="{{ route('excercises.voice_recognition.create', $unit_id) }}" class="btn btn-primary">Confirm</a>
                 </div>
             </div>
         </div>
@@ -208,7 +208,7 @@
 
                 </select>
                 <div class="modal-footer">
-                    <a type="submit" href="{{ route('excercises.voice_recognition.create') }}" class="btn btn-primary">Confirm</a>
+                    <a type="submit" href="{{ route('excercises.voice_recognition.create', $unit_id) }}" class="btn btn-primary">Confirm</a>
                 </div>
             </div>
         </div>
