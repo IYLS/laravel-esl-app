@@ -56,11 +56,11 @@ Route::get('/units/{unit}/excercises', [ExcerciseController::class, 'index'])->n
 
 
 // Meet Characters  Routes
-Route::get('/units/{unit}/excercises/create/voice_recognition', [VoiceRecognitionExcercise::class, 'create'])->name('excercises.voice_recognition.create');
-Route::post('/units/{unit}/excercises/store/voice_recognition', [VoiceRecognitionExcercise::class, 'store'])->name('excercises.voice_recognition.store');
+Route::get('/units/{unit}/excercises/create/voice_recognition', [VoiceRecognitionExcerciseController::class, 'create'])->name('excercises.voice_recognition.create');
+Route::post('/units/{unit}/excercises/store/voice_recognition', [VoiceRecognitionExcerciseController::class, 'store'])->name('excercises.voice_recognition.store');
 
 Route::get('/units/{unit}/excercises/create/voice_recognition/create/question', [VoiceRecognitionQuestion::class, 'create'])->name('excercises.voice_recognition_question.create');
-Route::get('/units/{unit}/excercises/store/voice_recognition/store/question', [VoiceRecognitionQuestion::class, 'store'])->name('excercises.voice_recognition_question.store');
+Route::get('/units/{unit}/excercises/store/voice_recognition/store/question', [VoiceRecognitionQuestionController::class, 'store'])->name('excercises.voice_recognition_question.store');
 
 // Multiple Choice Routes
 Route::get('/units/{unit}/excercises/create/multiple_choice', [MultipleChoiceExcercise::class, 'create'])->name('excercises.multiple_choice.create');

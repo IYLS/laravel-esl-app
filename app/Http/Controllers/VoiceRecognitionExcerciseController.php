@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MeetCharacterExcercise;
+use App\Models\VoiceRecognitionExcercise;
 use Illuminate\Http\Request;
 
 class VoiceRecognitionExcerciseController extends Controller
@@ -14,7 +14,7 @@ class VoiceRecognitionExcerciseController extends Controller
 
     public function create()
     {
-        return view('excercises.meet_characters.create');
+        return view('excercises.voice_recognition.create');
     }
 
     public function store(Request $request)

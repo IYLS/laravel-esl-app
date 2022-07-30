@@ -166,6 +166,11 @@
             </div>
             <div class="modal-body">
                 <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                    <option value="">Multiple choice</option>
+                    <option value="">Voice Recognition</option>
+                    <option value="">Drag & Drop</option>
+                    <option value="">Open-ended</option>
+                    <option value="">Fill-in the gaps</option>
                 </select>
                 <div class="modal-footer">
                     <a type="submit" href="{{ route('excercises.voice_recognition.create', $unit_id) }}" class="btn btn-primary">Confirm</a>
@@ -185,7 +190,11 @@
             </div>
             <div class="modal-body">
                 <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-
+                    <option value="">Multiple choice</option>
+                    <option value="">Voice Recognition</option>
+                    <option value="">Drag & Drop</option>
+                    <option value="">Open-ended</option>
+                    <option value="">Fill-in the gaps</option>
                 </select>
                 <div class="modal-footer">
                     <a type="submit" href="{{ route('excercises.voice_recognition.create', $unit_id) }}" class="btn btn-primary">Confirm</a>
@@ -205,7 +214,11 @@
             </div>
             <div class="modal-body">
                 <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-
+                    <option value="">Multiple choice</option>
+                    <option value="">Voice Recognition</option>
+                    <option value="">Drag & Drop</option>
+                    <option value="">Open-ended</option>
+                    <option value="">Fill-in the gaps</option>
                 </select>
                 <div class="modal-footer">
                     <a type="submit" href="{{ route('excercises.voice_recognition.create', $unit_id) }}" class="btn btn-primary">Confirm</a>
