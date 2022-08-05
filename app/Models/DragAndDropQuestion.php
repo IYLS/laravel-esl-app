@@ -20,5 +20,5 @@ class DragAndDropQuestion extends Model
     public $timestamps = false;
     public $incrementing = true;
 
-    public function excercise() { return $this->belongsTo(DragAndDropExcercise::class, 'question_excercise'); }
+    public function excercise() { return $this->belongsTo(DragAndDropExcercise::class); }
 }

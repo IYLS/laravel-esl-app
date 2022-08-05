@@ -25,6 +25,6 @@ class DragAndDropExcerciseSeeder extends Seeder
                 'type' => 'drag_and_drop',
                 'section_id' => 1
             ],
-            ]);
+        ]);
     }
 }

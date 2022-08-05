@@ -60,7 +60,16 @@
                     </div>
                     <div class="tab-content" id="v-pills-tabContent">
                         @forelse($pre_listening_excercises as $e)
-                        <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">{{ $e->title }}</div>
+                        <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">
+                            
+                            {{--  aqui va el ejercicio en si --}}
+                            @foreach($e->questions() as $question)
+
+                            {{ $question }}
+                            
+                            @endforeach
+                        
+                        </div>
                         @empty
                         <p class="text-secondary">Nothing yet</p>
                         @endforelse
@@ -103,11 +112,7 @@
                 </div>
             </div>
           </div>
-          
-
-
     </div>
-
 </div>
 
 
