@@ -12,20 +12,18 @@ class DragAndDropExcerciseSeeder extends Seeder
     {
         DB::table('drag_and_drop_excercises')->insert([
             [            
-                'id' => 489,
+                'id' => 21,
                 'title' => 'Vocabulary activation',
                 'description' => 'Ejercicio de agarrar, arrastrar y soltar.',
-                'section' => 'pre_listening',
                 'type' => 'drag_and_drop',
-                'unit_id' => 764
+                'section_id' => 1
             ],
             [            
-                'id' => 289,
+                'id' => 10,
                 'title' => 'Vocabulary activation',
                 'description' => 'Ejercicio de agarrar, arrastrar y soltar.',
-                'section' => 'pre_listening',
                 'type' => 'drag_and_drop',
-                'unit_id' => 764
+                'section_id' => 1
             ],
             ]);
     }

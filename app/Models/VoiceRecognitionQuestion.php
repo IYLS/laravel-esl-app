@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\VoiceRecognitionExcercise;
 
 class VoiceRecognitionQuestion extends Model
 {
@@ -17,8 +18,5 @@ class VoiceRecognitionQuestion extends Model
     public $timestamps = false;
     public $incrementing = true;
 
-    public function excercise()
-    {
-        return $this->belongsTo(VoiceRecognitionExcercise::class);
-    }
+    public function excercise() { return $this->belongsTo(VoiceRecognitionExcercise::class); }
 }

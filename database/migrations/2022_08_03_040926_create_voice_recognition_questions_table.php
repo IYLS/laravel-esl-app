@@ -6,24 +6,16 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('voice_recognition_questions', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id('id');
+            $table->integer('excercise_id');
+           
+            $table->foreign('excercise_id')->references('id')->on('voice_recognition_excercises');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('voice_recognition_questions');

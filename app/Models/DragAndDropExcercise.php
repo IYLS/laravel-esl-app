@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\DragAndDropQuestion;
+use App\Models\Section;
 
 class DragAndDropExcercise extends Model
 {
@@ -14,14 +15,11 @@ class DragAndDropExcercise extends Model
     protected $fillable = [ 
         'title',
         'description',
-        'section'
     ];
 
     public $timestamps = false;
     public $incrementing = true;
 
-    public function questions()
-    {
-        return $this->hasMany(DragAndDropQuestion::class);
-    }
+    public function questions() { return $this->hasMany(DragAndDropQuestion::class); }
+    public function section() { return $this->belongsTo(Section::class); }
 }

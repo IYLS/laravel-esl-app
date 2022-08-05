@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\VoiceRecognitionQuestion;
+use App\Models\Section;
 
 class VoiceRecognitionExcercise extends ExcerciseType
 {
@@ -17,8 +19,6 @@ class VoiceRecognitionExcercise extends ExcerciseType
     public $timestamps = false;
     public $incrementing = true;
 
-    public function questions()
-    {
-        return $this->hasMany(VoiceRecognitionQuestion::class);
-    }
+    public function questions() { return $this->hasMany(VoiceRecognitionQuestion::class); }
+    public function section() { return $this->belongsTo(Section::class); }
 }

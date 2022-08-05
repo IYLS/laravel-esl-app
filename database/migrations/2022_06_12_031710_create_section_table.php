@@ -8,16 +8,17 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('multiple_choice_excercises', function (Blueprint $table) {
+        Schema::create('sections', function (Blueprint $table) {
             $table->id('id');
-            $table->integer('section_id');
+            $table->string('name');
+            $table->integer('unit_id');
             
-            $table->foreign('section_id')->references('id')->on('sections');
+            $table->foreign('unit_id')->references('id')->on('units');
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('multiple_choice_excercises');
+        Schema::dropIfExists('section');
     }
 };

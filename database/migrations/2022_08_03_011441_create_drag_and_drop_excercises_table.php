@@ -12,11 +12,11 @@ return new class extends Migration
             $table->id('id');
             $table->string('title');
             $table->string('description');
-            $table->string('section');
-            $table->integer('unit_id');
             $table->string('type');
 
-            $table->foreign('unit_id')->references('id')->on('units');
+            $table->integer('section_id')->nullable(true);
+            
+            $table->foreign('section_id')->references('id')->on('sections');
         });
     }
 
