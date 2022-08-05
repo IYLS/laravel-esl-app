@@ -3,80 +3,54 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\DragAndDropExcercise;
+use App\Models\DragAndDropQuestion;
 
 class DragAndDropExcerciseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create($unit_id, $section, $excercise_id)
     {
-        //
+        $questions = DragAndDropQuestion::all();
+        $excercise = DragAndDropExcercise::where('id', $excercise_id)->get()->first();
+
+        return view('excercises.drag_and_drop.create', compact(['unit_id', 'section', 'questions', 'excercise']));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Request $request, $unit_id, $section)
     {
-        //
+        $new_excercise = new DragAndDropExcercise;
+        $new_excercise->title = $request->title;
+        $new_excercise->description = $request->description;
+        $new_excercise->section = $section;
+        $new_excercise->type = 'drag_and_drop';
+        $new_excercise->unit_id = $unit_id;
+        $new_excercise->save();
+
+        $excercise_id = $new_excercise->id;
+
+        return redirect()->route('excercises.drag_and_drop.create', [$unit_id, $section, $excercise_id]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

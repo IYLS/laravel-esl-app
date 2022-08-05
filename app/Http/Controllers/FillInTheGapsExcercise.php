@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class FillInTheGapsExcercise extends Controller
+class FillInTheGapsExcerciseController extends Controller
 {
     /**
      * Display a listing of the resource.

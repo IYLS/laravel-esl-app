@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('voice_recognition_question', function (Blueprint $table) {
+        Schema::create('voice_recognition_excercises', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('voice_recognition_question');
+        Schema::dropIfExists('voice_recognition_excercises');
     }
 };

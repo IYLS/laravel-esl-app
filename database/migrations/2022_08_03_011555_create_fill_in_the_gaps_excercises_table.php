@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('excercises', function (Blueprint $table) {
-            $table->id('id');
-            $table->text('name');
-            $table->text('description');
+        Schema::create('fill_in_the_gaps_excercises', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('excercises_tablew');
+        Schema::dropIfExists('fill_in_the_gaps_excercises');
     }
 };
