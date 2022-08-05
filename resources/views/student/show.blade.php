@@ -36,75 +36,76 @@
 
     {{-- Exercises and content section --}}
     <div class="col-8 bg-light p-3 rounded shadow">
-        <nav class="p-2">
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#pre-listening" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Pre listening</button>
-              <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#while-listening" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">While listening</button>
-              <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#post-listening" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Post listening</button>
-            </div>
-        </nav>
 
-        <div class="tab-content p-2" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="pre-listening" role="tabpanel" aria-labelledby="nav-home-tab">
-                <div class="d-flex align-items-start">
-                <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Meet the characters!</button>
-                    <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Predicting</button>
-                    <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">What do you hear?</button>
-                    <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Vocabulary activation</button>
-                    <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Vocabulary practice</button>
-                </div>
-                <div class="tab-content" id="v-pills-tabContent">
-                    <div class="tab-pane fade" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                        
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
 
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="pre-listening-tab" data-bs-toggle="tab" data-bs-target="#pre-listening" type="button" role="tab" aria-controls="pre-listening" aria-selected="true">Pre listening</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="while-listening-tab" data-bs-toggle="tab" data-bs-target="#while-listening" type="button" role="tab" aria-controls="while-listening" aria-selected="false">While listening</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="post-listening-tab" data-bs-toggle="tab" data-bs-target="#post-listening" type="button" role="tab" aria-controls="post-listening" aria-selected="false">Post listening</button>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="pre-listening" role="tabpanel" aria-labelledby="pre-listening-tab">
 
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab"></div>
-                    
-                    </div>
-                </div>            
-            </div>
-
-            <div class="tab-pane fade" id="while-listening" role="tabpanel" aria-labelledby="nav-profile-tab">
                 <div class="d-flex align-items-start">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Evaluating statement</button>
-                        <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Multiple choice</button>
-                        <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Dictation cloze</button>
+                        @foreach($pre_listening_excercises as $e)
+                        <button class="nav-link" id="{{ $e->type . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->type . $e->id }}" type="button" role="tab" aria-controls="{{ $e->type . $e->id }}" aria-selected="false">{{ $e->title }}</button>
+                        @endforeach
                     </div>
                     <div class="tab-content" id="v-pills-tabContent">
-                        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">...</div>
-                        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
-                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
-                        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
+                        @forelse($pre_listening_excercises as $e)
+                        <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">{{ $e->title }}</div>
+                        @empty
+                        <p class="text-secondary">Nothing yet</p>
+                        @endforelse
                     </div>
                 </div>
+                  
             </div>
 
-            <div class="tab-pane fade" id="post-listening" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <div class="tab-pane fade" id="while-listening" role="tabpanel" aria-labelledby="while-listening-tab">
                 <div class="d-flex align-items-start">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Multiple choioce</button>
-                        <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Personal response</button>
+                        @foreach($while_listening_excercises as $a)
+                        <button class="nav-link" id="{{ $a->type . $a->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $a->type . $a->id }}" type="button" role="tab" aria-controls="{{ $a->type . $a->id }}" aria-selected="false">{{ $a->title }}</button>
+                        @endforeach
                     </div>
                     <div class="tab-content" id="v-pills-tabContent">
-                        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-
-                        </div>
-                        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab"></div>
-                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-
-                        </div>
-                        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
+                        @forelse($while_listening_excercises as $a)
+                        <div class="tab-pane fade" id="{{ $a->type . $a->id }}" role="tabpanel" aria-labelledby="{{ $a->type . $a->id }}-tab">{{ $a->title }}</div>
+                        @empty
+                        <p class="text-secondary">Nothing yet</p>
+                        @endforelse
                     </div>
                 </div>
             </div>
-        </div>          
+
+            <div class="tab-pane fade" id="post-listening" role="tabpanel" aria-labelledby="post-listening-tab">
+                <div class="d-flex align-items-start">
+                    <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        @foreach($post_listening_excercises as $d)
+                        <button class="nav-link" id="{{ $e->type . $d->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $d->type . $d->id }}" type="button" role="tab" aria-controls="{{ $d->type . $d->id }}" aria-selected="false">{{ $d->title }}</button>
+                        @endforeach
+                    </div>
+                    <div class="tab-content" id="v-pills-tabContent">
+                        @forelse($while_listening_excercises as $d)
+                        <div class="tab-pane fade" id="{{ $d->type . $d->id }}" role="tabpanel" aria-labelledby="{{ $d->type . $d->id }}-tab">{{ $d->title }}</div>
+                        @empty
+                        <p class="text-secondary">Nothing yet</p>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+          </div>
+          
+
+
     </div>
 
 </div>

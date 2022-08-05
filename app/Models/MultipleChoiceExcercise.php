@@ -11,7 +11,7 @@ class MultipleChoiceExcercise extends Model
 {
     use HasFactory;
 
-    protected $table = 'multiple_choice_excercise';
+    protected $table = 'multiple_choice_excercises';
     protected $fillable = [ 
         'title',
         'description',

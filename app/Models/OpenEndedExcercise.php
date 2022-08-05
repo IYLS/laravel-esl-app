@@ -11,7 +11,7 @@ class OpenEndedExcercise extends Model
 {
     use HasFactory;
 
-    protected $table = 'open_ended_excercise';
+    protected $table = 'open_ended_excercises';
     protected $fillable = [ 
         'title',
         'description',
