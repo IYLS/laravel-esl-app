@@ -20,6 +20,6 @@ class FillInTheGapsExcercise extends Model
     public $timestamps = false;
     public $incrementing = true;
 
-    public function questions() { $this->hasMany(FillInTheGapsQuestion::class); }
+    public function questions() { $this->hasMany(FillInTheGapsQuestion::class, 'excercise_id'); }
     public function section() { $this->belongsTo(Section::class); }
 }

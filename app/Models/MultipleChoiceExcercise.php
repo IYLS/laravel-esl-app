@@ -20,6 +20,6 @@ class MultipleChoiceExcercise extends Model
     public $timestamps = false;
     public $incrementing = true;
     
-    public function questions() { return $this->hasMany(MultipleChoiceQuestion::class); }
+    public function questions() { return $this->hasMany(MultipleChoiceQuestion::class, 'excercise_id'); }
     public function section() { return $this->belongsTo(Section::class); }
 }

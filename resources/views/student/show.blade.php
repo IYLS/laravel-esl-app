@@ -54,25 +54,30 @@
 
                 <div class="d-flex align-items-start">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        @foreach($pre_listening_excercises as $e)
-                        <button class="nav-link" id="{{ $e->type . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->type . $e->id }}" type="button" role="tab" aria-controls="{{ $e->type . $e->id }}" aria-selected="false">{{ $e->title }}</button>
+                        @foreach($pre_listening_excercises as $excercise_type)
+                            @foreach($excercise_type as $e)
+                                <button class="nav-link" id="{{ $e->type . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->type . $e->id }}" type="button" role="tab" aria-controls="{{ $e->type . $e->id }}" aria-selected="false">{{ $e->title }}</button>
+                            @endforeach
                         @endforeach
                     </div>
                     <div class="tab-content" id="v-pills-tabContent">
-                        @forelse($pre_listening_excercises as $e)
-                        <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">
-                            
-                            {{--  aqui va el ejercicio en si --}}
-                            @foreach($e->questions() as $question)
+                        @foreach($pre_listening_excercises as $excercise_type)
+                            @foreach($excercise_type as $e)
+                            @if($e->type == 'drag_and_drop')
+                            <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">
 
-                            {{ $question }}
+                                {{--  aqui va el ejercicio en si --}}
+                                @foreach($e->questions as $question)
+                                    <li>Question  {{ $loop->index }} </li>
+                                    <p>{{ $question->concept }}</p>
+                                    <p>{{ $question->description }}</p>
+
+                                @endforeach
                             
+                            </div>
+                            @endif
                             @endforeach
-                        
-                        </div>
-                        @empty
-                        <p class="text-secondary">Nothing yet</p>
-                        @endforelse
+                        @endforeach
                     </div>
                 </div>
                   
@@ -81,16 +86,18 @@
             <div class="tab-pane fade" id="while-listening" role="tabpanel" aria-labelledby="while-listening-tab">
                 <div class="d-flex align-items-start">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        @foreach($while_listening_excercises as $a)
-                        <button class="nav-link" id="{{ $a->type . $a->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $a->type . $a->id }}" type="button" role="tab" aria-controls="{{ $a->type . $a->id }}" aria-selected="false">{{ $a->title }}</button>
+                        @foreach($while_listening_excercises as $excercise_type)
+                            @foreach($excercise_type as $e)
+                            <button class="nav-link" id="{{ $a->type . $a->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $a->type . $a->id }}" type="button" role="tab" aria-controls="{{ $a->type . $a->id }}" aria-selected="false">{{ $a->title }}</button>
+                            @endforeach
                         @endforeach
                     </div>
                     <div class="tab-content" id="v-pills-tabContent">
-                        @forelse($while_listening_excercises as $a)
-                        <div class="tab-pane fade" id="{{ $a->type . $a->id }}" role="tabpanel" aria-labelledby="{{ $a->type . $a->id }}-tab">{{ $a->title }}</div>
-                        @empty
-                        <p class="text-secondary">Nothing yet</p>
-                        @endforelse
+                        @foreach($while_listening_excercises as $excercise_type)
+                            @foreach($excercise_type as $a)
+                                <div class="tab-pane fade" id="{{ $a->type . $a->id }}" role="tabpanel" aria-labelledby="{{ $a->type . $a->id }}-tab">{{ $a->title }}</div>
+                            @endforeach
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -98,16 +105,18 @@
             <div class="tab-pane fade" id="post-listening" role="tabpanel" aria-labelledby="post-listening-tab">
                 <div class="d-flex align-items-start">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        @foreach($post_listening_excercises as $d)
-                        <button class="nav-link" id="{{ $e->type . $d->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $d->type . $d->id }}" type="button" role="tab" aria-controls="{{ $d->type . $d->id }}" aria-selected="false">{{ $d->title }}</button>
+                        @foreach($post_listening_excercises as $excercise_type)
+                            @foreach($excercise_type as $d)
+                                <button class="nav-link" id="{{ $d->type . $d->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $d->type . $d->id }}" type="button" role="tab" aria-controls="{{ $d->type . $d->id }}" aria-selected="false">{{ $d->title }}</button>
+                            @endforeach
                         @endforeach
                     </div>
                     <div class="tab-content" id="v-pills-tabContent">
-                        @forelse($while_listening_excercises as $d)
-                        <div class="tab-pane fade" id="{{ $d->type . $d->id }}" role="tabpanel" aria-labelledby="{{ $d->type . $d->id }}-tab">{{ $d->title }}</div>
-                        @empty
-                        <p class="text-secondary">Nothing yet</p>
-                        @endforelse
+                        @foreach($while_listening_excercises as $excercise_type)
+                            @foreach($excercise_type as $d)
+                                <div class="tab-pane fade" id="{{ $d->type . $d->id }}" role="tabpanel" aria-labelledby="{{ $d->type . $d->id }}-tab">{{ $d->title }}</div>
+                            @endforeach
+                        @endforeach
                     </div>
                 </div>
             </div>

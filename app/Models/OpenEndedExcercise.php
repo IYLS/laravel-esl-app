@@ -20,6 +20,6 @@ class OpenEndedExcercise extends Model
     public $timestamps = false;
     public $incrementing = true;
 
-    public function excercise() { $this->hasMany(OpenEndedQuestion::class); }
+    public function excercise() { $this->hasMany(OpenEndedQuestion::class, 'excercise_id'); }
     public function section() { $this->belongsTo(Section::class); }
 }

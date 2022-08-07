@@ -19,6 +19,6 @@ class VoiceRecognitionExcercise extends ExcerciseType
     public $timestamps = false;
     public $incrementing = true;
 
-    public function questions() { return $this->hasMany(VoiceRecognitionQuestion::class); }
+    public function questions() { return $this->hasMany(VoiceRecognitionQuestion::class, 'excercise_id'); }
     public function section() { return $this->belongsTo(Section::class); }
 }
