@@ -50,7 +50,7 @@
             </li>
           </ul>
           <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="pre-listening" role="tabpanel" aria-labelledby="pre-listening-tab">
+            <div class="tab-pane fade show active m-2" id="pre-listening" role="tabpanel" aria-labelledby="pre-listening-tab">
 
                 <div class="d-flex align-items-start">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -60,22 +60,66 @@
                             @endforeach
                         @endforeach
                     </div>
-                    <div class="tab-content" id="v-pills-tabContent">
+                    <div class="tab-content container" id="v-pills-tabContent">
                         @foreach($pre_listening_excercises as $excercise_type)
                             @foreach($excercise_type as $e)
-                            @if($e->type == 'drag_and_drop')
-                            <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">
 
-                                {{--  aqui va el ejercicio en si --}}
-                                @foreach($e->questions as $question)
-                                    <li>Question  {{ $loop->index }} </li>
-                                    <p>{{ $question->concept }}</p>
-                                    <p>{{ $question->description }}</p>
+                                {{-- Drag and Drop excercise --}}
+                                @if($e->type == 'drag_and_drop')
+                                <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">
+                                    <div class="container">
+                                        <h4>{{ $e->title }}</h4>
+                                        <p class="text-secondary">{{ $e->description }}</p>
+                                        @php
+                                        $concepts = array();
+                                        $descriptions = array();
+                                        @endphp
+                                        @foreach($e->questions as $question)
+                                            @php 
+                                            array_push($concepts, $question->concept);
+                                            array_push($descriptions, $question->description);
+                                            @endphp
+                                        @endforeach
+                                        @php
+                                            shuffle($concepts);
+                                            shuffle($descriptions);
+                                        @endphp
+                                        <div class="row m-2">
+                                            <div class="col-8">
+                                                @foreach($descriptions as $description)
+                                                    <p>{{ $loop->index + 1 . ". " . $description }}</p>
+                                                    <div id="div1-{{ $description }}" class="border rounded" style="width: 300; height: 70px; padding: 10px;" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                                                @endforeach
+                                            </div>
+                                            <div class="col-4">
+                                                <h6>Concepts</h6>
+                                                <div class="rounded border">
+                                                    @foreach($concepts as $concept)
+                                                        <div id="div2-{{ $concept }}" class="m-1 border rounded" style="width: 200px; height: 35px; padding: 10px; text-align: center;" draggable="true" ondragstart="drag(event)">
+                                                            <p>{{ $concept }}</p>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
 
-                                @endforeach
-                            
-                            </div>
-                            @endif
+                                @if($e->type == 'open_ended')
+                                <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">
+                                    <div class="container">
+                                        <h4>{{ $e->title }}</h4>
+                                        <p class="text-secondary">{{ $e->description }}</p>
+                                        <div class="mb-3">
+                                            <p>Question {{ $loop->index . ". " . $e->question }}</p>
+                                            <label for="exampleFormControlTextarea1" class="form-label">Enter the Answer here</label>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                          </div>
+                                    </div>
+                                </div>
+                                @endif
+
                             @endforeach
                         @endforeach
                     </div>
@@ -87,7 +131,7 @@
                 <div class="d-flex align-items-start">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         @foreach($while_listening_excercises as $excercise_type)
-                            @foreach($excercise_type as $e)
+                            @foreach($excercise_type as $a)
                             <button class="nav-link" id="{{ $a->type . $a->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $a->type . $a->id }}" type="button" role="tab" aria-controls="{{ $a->type . $a->id }}" aria-selected="false">{{ $a->title }}</button>
                             @endforeach
                         @endforeach
@@ -149,6 +193,23 @@
             child.innerHTML = `${text}`;
             detailBox.appendChild(child);
         }
+    }
+</script>
+
+{{-- Drag and drop --}}
+<script>
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+    
+    function drag(ev) {
+      ev.dataTransfer.setData("text", ev.target.id);
+    }
+    
+    function drop(ev) {
+      ev.preventDefault();
+      var data = ev.dataTransfer.getData("text");
+      ev.target.appendChild(document.getElementById(data));
     }
 </script>
 

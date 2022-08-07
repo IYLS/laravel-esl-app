@@ -20,12 +20,12 @@
                     <p>{{ $keyword->description }}</p>
                 </td>
                 <td>
-                    <form action="{{ route('keywords.destroy', [$unit_id, $keyword->id]) }}" method="POST">
+                    {{-- <form action="{{ route('keywords.destroy', [$unit_id, $keyword->id]) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger">Delete</button>
                         <button type="button" id="addKeywordButton" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editKeywordModal">Edit</button>
-                    </form>
+                    </form> --}}
                 </td>
             </tr>
             <!-- Modal -->

@@ -8,17 +8,6 @@
 
     <div class="card p-4 m-2">
         <h4>Activity Details</h4>
-        {{-- <form>
-            <div>
-                <label for="title">Title: </label>
-                <input class="form-control" type="text" placeholder="Enter activity title">
-            </div>
-            <br>
-            <div class="mb-3">
-                <label for="description" class="form-label">Description:</label>
-                <input name="description" id="description" class="form-control" type="text" placeholder="Enter activity description">
-            </div>
-        </form> --}}
         <h5>Title: {{ $excercise->title }}</h5>
         <p>Description: {{ $excercise->description }}</p>
     </div>
@@ -39,8 +28,8 @@
                         </ul>
                     </div>
                     <div class="col-2 d-flex flex-column">
-                        <div><a href="#">Eliminar</a></div>
-                        <div><a href="#">Modificar</a></div>
+                        <a href="{{ route('questions.drag_and_drop.destroy', [$unit_id, $excercise->id, $question->id]) }}">Eliminar</a>
+                        {{-- <div><a href="{{ route('excercises.' . $excercise->type . '.create', [$unit_id, $excercise->section_id, $excercise->id]) }}">Modificar</a></div> --}}
                     </div>
                 </div>
             </div>
@@ -56,8 +45,8 @@
     </div>
 
     <div class="d-flex justify-content-center">
-        <button type="button" class="btn btn-success m-1">Save</button>
-        <button type="button" class="btn btn-secondary m-1">Cancel</button>
+        <a class="btn btn-secondary m-1" href="{{ URL::previous() }}">Save</a>
+        <a class="btn btn-secondary m-1" href="{{ URL::previous() }}">Cancel</a>
     </div>
 </div>
 
@@ -70,7 +59,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('questions.drag_and_drop.store', [$unit_id, $section, $excercise->id]) }}" method="POST">
+                <form action="{{ route('questions.drag_and_drop.store', [$unit_id, $excercise->section_id, $excercise->id]) }}" method="POST">
                     @csrf
                     <input id="word" name="word" type="text" class="form-control" placeholder="Type word/concept">
                     <br>

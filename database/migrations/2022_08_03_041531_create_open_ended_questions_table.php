@@ -10,6 +10,8 @@ return new class extends Migration
     {
         Schema::create('open_ended_questions', function (Blueprint $table) {
             $table->id('id');
+            $table->string('title');
+            $table->text('answer')->nullable(true);
             $table->integer('excercise_id');
            
             $table->foreign('excercise_id')->references('id')->on('open_ended_excercises');

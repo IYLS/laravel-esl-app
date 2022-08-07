@@ -15,6 +15,7 @@
             <thead>
                 <th>Activity title</th>
                 <th>Description</th>
+                <th>Type</th>
                 <th>Actions</th>
             </thead>
             <tbody>
@@ -23,38 +24,17 @@
                         <td class="col-2">
                             {{ $excercise->title }}
                         </td>
-                        <td class="col-8">
+                        <td class="col-6">
                             {{ $excercise->description }}
                         </td>
                         <td class="col-2">
-                            <a href="#" class="btn btn-success"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>
+                            {{ $excercise->type }}
+                        </td>
+                        <td class="col-2">
+                            <a href="{{ route('excercises.' . $excercise->type . '.create', [$unit_id, $excercise->section_id, $excercise->id]) }}" class="btn btn-success"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>
                             <a href="#" class="btn btn-danger"><i class="mdi mdi-delete" aria-hidden="true"></i></a>
                         </td>
                     </tr>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="addPreListeningExcerciseModal" tabindex="-1" aria-labelledby="addPreListeningExcerciseModal" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">New Pre-Listening activity</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="{{ route('excercises.' .$excercise->type .'.store', [$unit_id, $excercise->section]) }}" method="POST">
-                                        @csrf
-                                        <input id="title" name="title" type="text" class="form-control" placeholder="Title">
-                                        <br>
-                                        <input id="description" name="description" type="text" class="form-control" placeholder="Description">
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Save</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 @empty
                     <tr>
                         <td>
@@ -66,11 +46,11 @@
         </table>
         <div class="mt-5 d-flex justify-content-around">
             <h5>Add excercises:</h5>
-            <div><button type="button" id="addDragAndDropButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPreListeningExcerciseModal">Drag and Drop</button></div>
-            <div><button type="button" id="addOpenEndedButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPreListeningExcerciseModal">Open Ended</button></div>
-            <div><button type="button" id="addMultipleChoiceButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPreListeningExcerciseModal">Multiple Choice</button></div>
-            <div><button type="button" id="addVoiceRecognitionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPreListeningExcerciseModal">Voice Recognition</button></div>
-            <div><button type="button" id="addFillInTheGapsButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPreListeningExcerciseModal">Fill-in The Gaps</button></div>
+            <div><button type="button" id="addPreListeningDragAndDropButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPreListeningDragAndDropExcerciseModal">Drag and Drop</button></div>
+            <div><button type="button" id="addPreListeningOpenEndedButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPreListeningOpenEndedExcerciseModal">Open Ended</button></div>
+            <div><button type="button" id="addPreListeningMultipleChoiceButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPreListeningMultipleChoiceExcerciseModal">Multiple Choice</button></div>
+            <div><button type="button" id="addPreListeningVoiceRecognitionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPreListeningVoiceRecognitionExcerciseModal">Voice Recognition</button></div>
+            <div><button type="button" id="addPreListeningFillInTheGapsButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPreListeningFillInTheGapsExcerciseModal">Fill-in The Gaps</button></div>
         </div>
     </div>
 
@@ -87,6 +67,7 @@
             <thead>
                 <th>Activity title</th>
                 <th>Description</th>
+                <th>Type</th>
                 <th>Actions</th>
             </thead>
             <tbody>
@@ -95,38 +76,17 @@
                         <td class="col-2">
                             {{ $excercise->title }}
                         </td>
-                        <td class="col-8">
+                        <td class="col-6">
                             {{ $excercise->description }}
+                        </td>
+                        <td class="col-2">
+                            {{ $excercise->type }}
                         </td>
                         <td class="col-2">
                             <a href="#" class="btn btn-success"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>
                             <a href="#" class="btn btn-danger"><i class="mdi mdi-delete" aria-hidden="true"></i></a>
                         </td>
                     </tr>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="addWhileListeningExcerciseModal" tabindex="-1" aria-labelledby="addWhileListeningExcerciseModal" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">New While-Listening activity</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="{{ route('excercises.' .$excercise->type .'.store', [$unit_id, $excercise->section]) }}" method="POST">
-                                        @csrf
-                                        <input id="title" name="title" type="text" class="form-control" placeholder="Title">
-                                        <br>
-                                        <input id="description" name="description" type="text" class="form-control" placeholder="Description">
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Save</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 @empty
                     <tr>
                         <td>
@@ -138,11 +98,11 @@
         </table>
         <div class="mt-5 d-flex justify-content-around">
             <h5>Add excercises:</h5>
-            <div><button type="button" id="addDragAndDropWhileListeningExcerciseButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addWhileListeningExcerciseModal">Drag and Drop</button></div>
-            <div><button type="button" id="addOpenEndedWhileListeningExcerciseButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addWhileListeningExcerciseModal">Open Ended</button></div>
-            <div><button type="button" id="addMultipleChoiceWhileListeningExcerciseButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addWhileListeningExcerciseModal">Multiple Choice</button></div>
-            <div><button type="button" id="addVoiceRecognitionWhileListeningExcerciseButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addWhileListeningExcerciseModal">Voice Recognition</button></div>
-            <div><button type="button" id="addFillInWithGapsWhileListeningExcerciseButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addWhileListeningExcerciseModal">Fill-in The Gaps</button></div>
+            <div><button type="button" id="addWhileListeningDragAndDropButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addWhileListeningDragAndDropExcerciseModal">Drag and Drop</button></div>
+            <div><button type="button" id="addWhileListeningOpenEndedButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addWhileListeningOpenEndedExcerciseModal">Open Ended</button></div>
+            <div><button type="button" id="addWhileListeningMultipleChoiceButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addWhileListeningMultipleChoiceExcerciseModal">Multiple Choice</button></div>
+            <div><button type="button" id="addWhileListeningVoiceRecognitionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addWhileListeningVoiceRecognitionExcerciseModal">Voice Recognition</button></div>
+            <div><button type="button" id="addWhileListeningFillInTheGapsButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addWhileListeningFillInTheGapsExcerciseModal">Fill-in The Gaps</button></div>
         </div>
     </div>
 
@@ -159,6 +119,7 @@
             <thead>
                 <th>Activity title</th>
                 <th>Description</th>
+                <th>Type</th>
                 <th>Actions</th>
             </thead>
             <tbody>
@@ -167,38 +128,17 @@
                         <td class="col-2">
                             {{ $excercise->title }}
                         </td>
-                        <td class="col-8">
+                        <td class="col-6">
                             {{ $excercise->description }}
+                        </td>
+                        <td class="col-2">
+                            {{ $excercise->type }}
                         </td>
                         <td class="col-2">
                             <a href="#" class="btn btn-success"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>
                             <a href="#" class="btn btn-danger"><i class="mdi mdi-delete" aria-hidden="true"></i></a>
                         </td>
                     </tr>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="addPostListeningExcerciseModal" tabindex="-1" aria-labelledby="addPostListeningExcerciseModal" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="addPostListeningExcerciseModal">New Post-Listening activity</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="{{ route('excercises.' .$excercise->type .'.store', [$unit_id, $excercise->section]) }}" method="POST">
-                                        @csrf
-                                        <input id="title" name="title" type="text" class="form-control" placeholder="Title">
-                                        <br>
-                                        <input id="description" name="description" type="text" class="form-control" placeholder="Description">
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Save</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 @empty
                     <tr>
                         <td>
@@ -210,11 +150,374 @@
         </table>
         <div class="mt-5 d-flex justify-content-around">
             <h5>Add excercises:</h5>
-            <div><button type="button" id="addDragAndDropPostListeningExcerciseButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPostListeningExcerciseModal">Drag and Drop</button></div>
-            <div><button type="button" id="addOpenEndedPostListeningExcerciseButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPostListeningExcerciseModal">Open Ended</button></div>
-            <div><button type="button" id="addMultipleChoicePostListeningExcerciseButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPostListeningExcerciseModal">Multiple Choice</button></div>
-            <div><button type="button" id="addVoiceRecognitionPostListeningExcerciseButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPostListeningExcerciseModal">Voice Recognition</button></div>
-            <div><button type="button" id="addFillInTheGapsListeningExcerciseButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPostListeningExcerciseModal">Fill-in The Gaps</button></div>
+            <div><button type="button" id="addPostListeningDragAndDropButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPostListeningDragAndDropExcerciseModal">Drag and Drop</button></div>
+            <div><button type="button" id="addPostListeningOpenEndedutton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPostListeningOpenEndedExcerciseModal">Open Ended</button></div>
+            <div><button type="button" id="addPostListeningMultipleChoiceButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPostListeningMultipleChoiceExcerciseModal">Multiple Choice</button></div>
+            <div><button type="button" id="addPostListeningVoiceRecognitionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPostListeningVoiceRecognitionExcerciseModal">Voice Recognition</button></div>
+            <div><button type="button" id="addPostListeningFillInTheGapsButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPostListeningFillInTheGapsExcerciseModal">Fill-in The Gaps</button></div>
+        </div>
+    </div>
+</div>
+
+{{-- Pre listening modals --}}
+<!-- Drag and Drop Modal -->
+<div class="modal fade" id="addPreListeningDragAndDropExcerciseModal" tabindex="-1" aria-labelledby="addPreListeningDragAndDropExcerciseModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Drag and Drop activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('excercises.drag_and_drop.store', [$unit_id, 'pre_listening']) }}" method="POST">
+                    @csrf
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title">
+                    <br>
+                    <input id="description" name="description" type="text" class="form-control" placeholder="Description">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Open ended modal -->
+<div class="modal fade" id="addPreListeningOpenEndedExcerciseModal" tabindex="-1" aria-labelledby="addPreListeningOpenEndedExcerciseModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Open Ended activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('excercises.open_ended.store', [$unit_id, 'pre_listening']) }}" method="POST">
+                    @csrf
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title">
+                    <br>
+                    <input id="description" name="description" type="text" class="form-control" placeholder="Description">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Multiple choice modal -->
+<div class="modal fade" id="addPreListeningMultipleChoiceExcerciseModal" tabindex="-1" aria-labelledby="addPreListeningMultipleChoiceExcerciseModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Multiple Choice activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('excercises.multiple_choice.store', [$unit_id, 'pre_listening']) }}" method="POST">
+                    @csrf
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title">
+                    <br>
+                    <input id="description" name="description" type="text" class="form-control" placeholder="Description">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Voice Recognition odal -->
+<div class="modal fade" id="addPreListeningVoiceRecognitionExcerciseModal" tabindex="-1" aria-labelledby="addPreListeningVoiceRecognitionExcerciseModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Voice Recognition activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('excercises.voice_recognition.store', [$unit_id, 'pre_listening']) }}" method="POST">
+                    @csrf
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title">
+                    <br>
+                    <input id="description" name="description" type="text" class="form-control" placeholder="Description">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Fill-in the Gaps odal -->
+<div class="modal fade" id="addPreListeningFillInTheGapsExcerciseModal" tabindex="-1" aria-labelledby="addPreListeningFillInTheGapsExcerciseModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Voice Recognition activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('excercises.fill_in_the_gaps.store', [$unit_id, 'pre_listening']) }}" method="POST">
+                    @csrf
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title">
+                    <br>
+                    <input id="description" name="description" type="text" class="form-control" placeholder="Description">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- While listening modals --}}
+<!-- Drag and Drop Modal -->
+<div class="modal fade" id="addWhileListeningDragAndDropExcerciseModal" tabindex="-1" aria-labelledby="addWhileListeningDragAndDropExcerciseModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Drag and Drop activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('excercises.drag_and_drop.store', [$unit_id, 'while_listening']) }}" method="POST">
+                    @csrf
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title">
+                    <br>
+                    <input id="description" name="description" type="text" class="form-control" placeholder="Description">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Open ended odal -->
+<div class="modal fade" id="addWhileListeningOpenEndedExcerciseModal" tabindex="-1" aria-labelledby="addWhileListeningOpenEndedExcerciseModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Open Ended activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('excercises.open_ended.store', [$unit_id, 'while_listening']) }}" method="POST">
+                    @csrf
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title">
+                    <br>
+                    <input id="description" name="description" type="text" class="form-control" placeholder="Description">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Multiple choice modal -->
+<div class="modal fade" id="addWhileListeningMultipleChoiceChoiceExcerciseModal" tabindex="-1" aria-labelledby="addWhileListeningMultipleChoiceChoiceExcerciseModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Multiple Choice activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('excercises.multiple_choice.store', [$unit_id, 'while_listening']) }}" method="POST">
+                    @csrf
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title">
+                    <br>
+                    <input id="description" name="description" type="text" class="form-control" placeholder="Description">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Voice Recognition odal -->
+<div class="modal fade" id="addWhileListeningVoiceRecognitionExcerciseModal" tabindex="-1" aria-labelledby="addWhileListeningVoiceRecognitionExcerciseModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Voice Recognition activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('excercises.voice_recognition.store', [$unit_id, 'while_listening']) }}" method="POST">
+                    @csrf
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title">
+                    <br>
+                    <input id="description" name="description" type="text" class="form-control" placeholder="Description">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Fill-in the Gaps modal -->
+<div class="modal fade" id="addWhileListeningFillInTheGapsExcerciseModal" tabindex="-1" aria-labelledby="addWhileListeningFillInTheGapsExcerciseModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Voice Recognition activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('excercises.fill_in_the_gaps.store', [$unit_id, 'while_listening']) }}" method="POST">
+                    @csrf
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title">
+                    <br>
+                    <input id="description" name="description" type="text" class="form-control" placeholder="Description">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Post listening modals --}}
+<!-- Drag and Drop Modal -->
+<div class="modal fade" id="addPostListeningDragAndDropExcerciseModal" tabindex="-1" aria-labelledby="addPostListeningDragAndDropExcerciseModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Drag and Drop activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('excercises.drag_and_drop.store', [$unit_id, 'post_listening']) }}" method="POST">
+                    @csrf
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title">
+                    <br>
+                    <input id="description" name="description" type="text" class="form-control" placeholder="Description">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Open ended odal -->
+<div class="modal fade" id="addPostListeningOpenEndedExcerciseModal" tabindex="-1" aria-labelledby="addPostListeningOpenEndedExcerciseModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Open Ended activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('excercises.open_ended.store', [$unit_id, 'post_listening']) }}" method="POST">
+                    @csrf
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title">
+                    <br>
+                    <input id="description" name="description" type="text" class="form-control" placeholder="Description">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Multiple choice modal -->
+<div class="modal fade" id="addPostListeningMultipleChoiceChoiceExcerciseModal" tabindex="-1" aria-labelledby="addPostListeningMultipleChoiceChoiceExcerciseModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Multiple Choice activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('excercises.multiple_choice.store', [$unit_id, 'post_listening']) }}" method="POST">
+                    @csrf
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title">
+                    <br>
+                    <input id="description" name="description" type="text" class="form-control" placeholder="Description">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Voice Recognition odal -->
+<div class="modal fade" id="addPostListeningVoiceRecognitionExcerciseModal" tabindex="-1" aria-labelledby="addPostListeningVoiceRecognitionExcerciseModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Voice Recognition activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('excercises.voice_recognition.store', [$unit_id, 'post_listening']) }}" method="POST">
+                    @csrf
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title">
+                    <br>
+                    <input id="description" name="description" type="text" class="form-control" placeholder="Description">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Fill-in the Gaps odal -->
+<div class="modal fade" id="addPostListeningFillInTheGapsExcerciseModal" tabindex="-1" aria-labelledby="addPostListeningFillInTheGapsExcerciseModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Voice Recognition activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('excercises.fill_in_the_gaps.store', [$unit_id, 'post_listening']) }}" method="POST">
+                    @csrf
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title">
+                    <br>
+                    <input id="description" name="description" type="text" class="form-control" placeholder="Description">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

@@ -8,13 +8,23 @@ use DB;
 
 class OpenEndedExcerciseSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-        //
+        DB::table('open_ended_excercises')->insert([
+            [            
+                'id' => 29,
+                'title' => 'Explain',
+                'description' => 'Explain your thoughts',
+                'type' => 'open_ended',
+                'section_id' => 1
+            ],
+            [            
+                'id' => 95,
+                'title' => 'Explain',
+                'description' => 'Explain your thoughts',
+                'type' => 'open_ended',
+                'section_id' => 2
+            ],
+        ]);    
     }
 }

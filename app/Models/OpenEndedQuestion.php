@@ -11,5 +11,14 @@ class OpenEndedQuestion extends Model
 {
     use HasFactory;
 
+    protected $table = 'open_ended_questions';
+    protected $fillable = [ 
+        'title',
+        'answer',
+    ];
+
+    public $timestamps = false;
+    public $incrementing = true;
+
     public function excercise() { return $this->belongsTo(OpenEndedExcercise::class); }
 }

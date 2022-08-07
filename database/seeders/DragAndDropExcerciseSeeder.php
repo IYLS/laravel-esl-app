@@ -23,7 +23,7 @@ class DragAndDropExcerciseSeeder extends Seeder
                 'title' => 'Vocabulary activation',
                 'description' => 'Ejercicio de agarrar, arrastrar y soltar.',
                 'type' => 'drag_and_drop',
-                'section_id' => 1
+                'section_id' => 2
             ],
         ]);
     }

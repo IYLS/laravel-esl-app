@@ -15,6 +15,7 @@ class DragAndDropExcercise extends Model
     protected $fillable = [ 
         'title',
         'description',
+        'type'
     ];
 
     public $timestamps = false;
