@@ -8,11 +8,6 @@ use DB;
 
 class UnitSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         DB::table('units')->insert([
@@ -33,6 +28,8 @@ class UnitSeeder extends Seeder
                 'translation_enabled' => true,
                 'glossary_enabled' => true,
                 'dictionary_enabled' => true,
+                'video_url' => 'public/files/n1t2.mp4',
+                'video_name' => 'n1t2.mp4'
             ],
             [   
                 'id' => 9078,
@@ -51,6 +48,8 @@ class UnitSeeder extends Seeder
                 'translation_enabled' => true,
                 'glossary_enabled' => true,
                 'dictionary_enabled' => true,
+                'video_url' => 'public/files/n1t3.mp4',
+                'video_name' => 'n1t3.mp4'
             ],
             [   
                 'id' => 7645,
@@ -69,6 +68,8 @@ class UnitSeeder extends Seeder
                 'translation_enabled' => true,
                 'glossary_enabled' => true,
                 'dictionary_enabled' => true,
+                'video_url' => 'public/files/n1t5.mp4',
+                'video_name' => 'n1t5.mp4'
             ],
         ]);
     }

@@ -71,11 +71,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="audio" class="form-label">Select audio file</label>
-                        <input class="form-control" type="file" name="audio" id="audio">
+                        <input class="form-control" type="file" name="audio" id="audio" accept="audio/*">
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">Select image file</label>
-                        <input class="form-control" type="file" name="image" id="image">
+                        <input class="form-control" type="file" name="image" id="image" accept="image/*">
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary" id="submit">Submit</button>

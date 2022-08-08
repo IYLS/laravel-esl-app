@@ -4,7 +4,7 @@
 <div class="row d-flex justify-content-center mt-3 mb-3">
     <div class="col-6 p-5 bg-light mt-2 border shadow rounded">
         <h3>New unit</h3>
-        <form action="{{ route('units.store') }}" method="POST">
+        <form enctype="multipart/form-data" action="{{ route('units.store') }}" method="POST">
         @csrf
         <table class="table" id="create_unit_table">
                 <tbody>
@@ -109,6 +109,17 @@
                                     Enabled
                                 </label>
                               </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Video
+                        </td>
+                        <td>
+                            <div class="mb-3">
+                                <label for="video" class="form-label">Select unit video</label>
+                                <input class="form-control" type="file" name="video" id="video" accept="video/*">
+                            </div>
                         </td>
                     </tr>
                     <tr>

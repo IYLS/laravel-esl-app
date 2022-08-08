@@ -46,6 +46,12 @@ class UnitController extends Controller
         $new_unit->dictionary = $request->dictionary;
         $new_unit->dictionary_enabled = $request->dictionary_enabled == 'true' ? true : false;
 
+        $video_file_name = $request->file('video')->getClientOriginalName();
+        $video_file_url = $request->file('video')->storeAs('public/files', $video_file_name);
+
+        $new_unit->video_name = $video_file_name;
+        $new_unit->video_url = $video_file_url;
+
         $new_unit->save();
 
         $pre = new Section;
@@ -102,6 +108,12 @@ class UnitController extends Controller
 
         $unit->dictionary = $request->dictionary;
         $unit->dictionary_enabled = $request->dictionary_enabled == 'true' ? true : false;
+
+        $video_file_name = $request->file('video')->getClientOriginalName();
+        $video_file_url = $request->file('video')->storeAs('public/files', $video_file_name);
+
+        $new_unit->video_name = $video_file_name;
+        $new_unit->video_url = $video_file_url;
 
         $unit->save();
 

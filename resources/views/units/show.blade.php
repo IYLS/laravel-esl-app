@@ -4,7 +4,7 @@
 <div class="row d-flex justify-content-center mt-3 mb-3">
     <div class="col-6 col-md-10 p-5 bg-light mt-2 border shadow rounded">
         <h3>Unit details</h3>
-        <form action="{{ route('units.update', $unit->id) }}" method="POST">
+        <form enctype="multipart/form-data" action="{{ route('units.update', $unit->id) }}" method="POST">
         @csrf
         @method('PUT')
         <table class="table" id="create_unit_table">
@@ -91,6 +91,15 @@
                             <label class="form-check-label" for="flexCheckDefault">
                               Enabled
                             </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h6>Video</h6>
+                        <div class="mb-3">
+                            <label for="video" class="form-label">Select unit video</label>
+                            <input class="form-control" type="file" name="video" id="video" accept="video/*" value="{{ asset('/storage/files/'.$unit->video_name) }}">
                         </div>
                     </td>
                 </tr>

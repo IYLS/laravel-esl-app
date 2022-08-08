@@ -27,6 +27,9 @@ return new class extends Migration
             $table->boolean('glossary_enabled');
             $table->boolean('translation_enabled');
             $table->boolean('dictionary_enabled');
+
+            $table->string('video_url');
+            $table->string('video_name');
         });
     }
 
