@@ -28,7 +28,8 @@
                             {{ $excercise->description }}
                         </td>
                         <td class="col-2">
-                            {{ $excercise->type }}
+                            @php $excercise_type = str_replace('_', ' ', $excercise->type) @endphp
+                            {{ $excercise_type }}
                         </td>
                         <td class="col-2">
                             <a href="{{ route('excercises.' . $excercise->type . '.create', [$unit_id, $excercise->section_id, $excercise->id]) }}" class="btn btn-success"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>
@@ -80,7 +81,8 @@
                             {{ $excercise->description }}
                         </td>
                         <td class="col-2">
-                            {{ $excercise->type }}
+                            @php $excercise_type = str_replace('_', ' ', $excercise->type) @endphp
+                            {{ $excercise_type }}
                         </td>
                         <td class="col-2">
                             <a href="#" class="btn btn-success"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>
@@ -132,7 +134,8 @@
                             {{ $excercise->description }}
                         </td>
                         <td class="col-2">
-                            {{ $excercise->type }}
+                            @php $excercise_type = str_replace('_', ' ', $excercise->type) @endphp
+                            {{ $excercise_type }}
                         </td>
                         <td class="col-2">
                             <a href="#" class="btn btn-success"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>

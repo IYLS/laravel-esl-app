@@ -30,7 +30,7 @@
     {{-- Video section --}}
     <div class="col-4">
         <div class="ratio ratio-16x9 mt-3">
-            <iframe src="{{ asset('/storage/files/'.$unit->video_name) }}" title="YouTube video" allowfullscreen></iframe>
+            <iframe src="{{ asset('/storage/files/'.$unit->video_name) }}" title="YouTube video" allowfullscreen contorls captions></iframe>
         </div>
     </div>
 
