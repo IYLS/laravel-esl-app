@@ -15,6 +15,7 @@ class VoiceRecognitionExcercise extends ExcerciseType
     protected $fillable = [
         'title',
         'description',
+        'type'
     ];
     public $timestamps = false;
     public $incrementing = true;

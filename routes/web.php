@@ -67,13 +67,13 @@ Route::get('/units/{unit}/excercises', [ExcerciseController::class, 'index'])->n
 Route::post('/units/{unit}/excercises/add', [ExcerciseController::class, 'add'])->name('excercises.add');
 
 // Voice recognition  Routes
-Route::get('/units/{unit}/excercises/create/voice_recognition/{section}', [VoiceRecognitionExcerciseController::class, 'create'])->name('excercises.voice_recognition.create');
+Route::get('/units/{unit}/excercises/create/voice_recognition/{section}/{excercise}', [VoiceRecognitionExcerciseController::class, 'create'])->name('excercises.voice_recognition.create');
 Route::post('/units/{unit}/excercises/store/voice_recognition/{section}', [VoiceRecognitionExcerciseController::class, 'store'])->name('excercises.voice_recognition.store');
 Route::delete('/units/{unit}/excercises/destroy/{excercise}', [VoiceRecognitionExcerciseController::class, 'destroy'])->name('excercises.voice_recognition.destroy');
 Route::get('/units/{unit}/excercises/show/{excercise}', [VoiceRecognitionExcerciseController::class, 'show'])->name('excercises.voice_recognition.show');
 
 Route::get('/units/{unit}/excercises/create/voice_recognition/{excercise}/question', [VoiceRecognitionQuestion::class, 'create'])->name('questions.voice_recognition_question.create');
-Route::post('/units/{unit}/excercises/store/voice_recognition/{excercise}/question', [VoiceRecognitionQuestionController::class, 'store'])->name('questions.voice_recognition_question.store');
+Route::post('/units/{unit}/excercises/store/voice_recognition/{section}/{excercise}/question', [VoiceRecognitionQuestionController::class, 'store'])->name('questions.voice_recognition.store');
 Route::delete('/units/{unit}/excercises/destroy/{excercise}/{question}', [VoiceRecognitionQuestionController::class, 'destroy'])->name('questions.voice_recognition.destroy');
 Route::get('/units/{unit}/excercises/{excercise}/questions/show/{question}', [VoiceRecognitionQuestionController::class, 'show'])->name('questions.voice_recognition.show');
 

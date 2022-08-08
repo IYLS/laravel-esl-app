@@ -13,8 +13,8 @@ class DragAndDropQuestion extends Model
 
     protected $table = 'drag_and_drop_questions';
     protected $fillable = [ 
-        'concept',
-        'description'
+        'word',
+        'definition'
     ];
 
     public $timestamps = false;

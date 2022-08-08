@@ -37,7 +37,6 @@
     {{-- Exercises and content section --}}
     <div class="col-8 bg-light p-3 rounded shadow">
 
-
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
               <button class="nav-link active" id="pre-listening-tab" data-bs-toggle="tab" data-bs-target="#pre-listening" type="button" role="tab" aria-controls="pre-listening" aria-selected="true">Pre listening</button>
@@ -52,7 +51,7 @@
           <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active m-2" id="pre-listening" role="tabpanel" aria-labelledby="pre-listening-tab">
 
-                <div class="d-flex align-items-start">
+                <div class="d-flex align-items-start mt-2">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         @foreach($pre_listening_excercises as $excercise_type)
                             @foreach($excercise_type as $e)
@@ -71,35 +70,40 @@
                                         <h4>{{ $e->title }}</h4>
                                         <p class="text-secondary">{{ $e->description }}</p>
                                         @php
-                                        $concepts = array();
-                                        $descriptions = array();
+                                        $words = array();
+                                        $definitions = array();
                                         @endphp
                                         @foreach($e->questions as $question)
                                             @php 
-                                            array_push($concepts, $question->concept);
-                                            array_push($descriptions, $question->description);
+                                            array_push($words, $question->word);
+                                            array_push($definitions, $question->definition);
                                             @endphp
                                         @endforeach
                                         @php
-                                            shuffle($concepts);
-                                            shuffle($descriptions);
+                                            shuffle($words);
+                                            shuffle($definitions);
                                         @endphp
-                                        <div class="row m-2">
-                                            <div class="col-8">
-                                                @foreach($descriptions as $description)
-                                                    <p>{{ $loop->index + 1 . ". " . $description }}</p>
-                                                    <div id="div1-{{ $description }}" class="border rounded" style="width: 300; height: 70px; padding: 10px;" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                                                @endforeach
-                                            </div>
-                                            <div class="col-4">
-                                                <h6>Concepts</h6>
-                                                <div class="rounded border">
-                                                    @foreach($concepts as $concept)
-                                                        <div id="div2-{{ $concept }}" class="m-1 border rounded" style="width: 200px; height: 35px; padding: 10px; text-align: center;" draggable="true" ondragstart="drag(event)">
-                                                            <p>{{ $concept }}</p>
-                                                        </div>
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-3">
+                                                <h5>Words</h5>
+                                                <br>
+                                                <div class="mt-1 mb-1">
+                                                    @foreach($words as $word)
+                                                    <div id="div2-{{ $word }}" class="m-1" style="width: 200px; height: 35px;" draggable="true" ondragstart="drag(event)">
+                                                        <p>{{ $loop->index + 1 . ". " .$word }}</p>
+                                                    </div>
                                                     @endforeach
                                                 </div>
+                                            </div>
+                                            <div class="col-9">
+                                                <h5>Definitions</h5>
+                                                <br>
+                                                @foreach($definitions as $definition)
+                                                    <div class="row mt-1 mb-1">
+                                                        <div class="border-bottom col-4" id="div1-{{ $definition }}"  style="width: 200; height: 35px;" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                                                        <div class="col-8">{{ $definition }}</div>
+                                                    </div>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
@@ -111,13 +115,39 @@
                                     <div class="container">
                                         <h4>{{ $e->title }}</h4>
                                         <p class="text-secondary">{{ $e->description }}</p>
+                                        @forelse($e->questions as $question)
                                         <div class="mb-3">
-                                            <p>Question {{ $loop->index . ". " . $e->question }}</p>
-                                            <label for="exampleFormControlTextarea1" class="form-label">Enter the Answer here</label>
-                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                          </div>
+                                            <p>{{ $loop->index + 1 . ". " . $question->title }}</p>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Enter the Answer here"></textarea>
+                                        </div>
+                                        @empty
+                                        <div>
+                                            <p class="text-secondary">Empty</p>
+                                        </div>
+                                        @endforelse
                                     </div>
                                 </div>
+                                @endif
+
+                                @if($e->type == 'voice_recognition')
+                                <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">
+                                    <div class="container">
+                                        <h4>{{ $e->title }}</h4>
+                                        <p class="text-secondary">{{ $e->description }}</p>
+                                        <div class="row">
+                                        @foreach($e->questions as $question)
+                                        <div class="col-6 mt-1 text-center">
+                                            <p>{{ $question->title }}</p>
+                                            <img src="{{ asset('storage/files/'.$question->image_name) }}" class="img-fluid col-6" alt="img">
+                                            <audio controls class="col-6">
+                                                <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
+                                            </audio> 
+                                        </div>
+                                        @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+
                                 @endif
 
                             @endforeach

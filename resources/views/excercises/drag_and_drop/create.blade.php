@@ -20,10 +20,10 @@
                     <div class="col-10">
                         <ul>
                             <li>
-                                <p>Concept: {{ $question->concept }}</p>
+                                <p>Word: {{ $question->word }}</p>
                             </li>
                             <li>
-                                <p>Matching description: {{ $question->description }}</p>
+                                <p>Matching definition: {{ $question->definition }}</p>
                             </li>
                         </ul>
                     </div>
@@ -61,9 +61,9 @@
             <div class="modal-body">
                 <form action="{{ route('questions.drag_and_drop.store', [$unit_id, $excercise->section_id, $excercise->id]) }}" method="POST">
                     @csrf
-                    <input id="word" name="word" type="text" class="form-control" placeholder="Type word/concept">
+                    <input id="word" name="word" type="text" class="form-control" placeholder="Type the word">
                     <br>
-                    <input id="description" name="description" type="text" class="form-control" placeholder="Type the matching word/description">
+                    <input id="definition" name="definition" type="text" class="form-control" placeholder="Type the matching definition">
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save</button>

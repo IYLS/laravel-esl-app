@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('drag_and_drop_questions', function (Blueprint $table) {
             $table->id('id');
-            $table->string('concept');
-            $table->string('description');
+            $table->string('word');
+            $table->string('definition');
             $table->integer('excercise_id');
 
             $table->foreign('excercise_id')->references('id')->on('drag_and_drop_excercises');

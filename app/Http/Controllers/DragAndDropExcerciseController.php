@@ -16,7 +16,7 @@ class DragAndDropExcerciseController extends Controller
 
     public function create($unit_id, $section_id, $excercise_id)
     {
-        $questions = DragAndDropQuestion::all();
+        $questions = DragAndDropQuestion::where('excercise_id', $excercise_id)->get();
         $excercise = DragAndDropExcercise::where('id', $excercise_id)->get()->first();
 
         return view('excercises.drag_and_drop.create', compact(['unit_id', 'section_id', 'questions', 'excercise']));

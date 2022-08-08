@@ -13,14 +13,14 @@ class DragAndDropQuestionSeeder extends Seeder
         DB::table('drag_and_drop_questions')->insert([
             [            
                 'id' => 21,
-                'concept' => 'Walter Jr',
-                'description' => 'Kid with impaired motor control',
+                'word' => 'Walter Jr',
+                'definition' => 'Kid with impaired motor control',
                 'excercise_id' => 21
             ],
             [            
                 'id' => 34,
-                'concept' => 'Walter White',
-                'description' => 'Bald man with hat',
+                'word' => 'Walter White',
+                'definition' => 'Bald man with hat',
                 'excercise_id' => 21
             ],
         ]);

@@ -12,8 +12,11 @@ class VoiceRecognitionQuestion extends Model
 
     protected $table = 'voice_recognition_questions';
     protected $fillable = [
+        'title',
         'image_url',
+        'image_name',
         'audio_url',
+        'audio_name',
     ];
     public $timestamps = false;
     public $incrementing = true;

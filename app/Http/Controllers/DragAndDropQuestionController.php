@@ -21,8 +21,8 @@ class DragAndDropQuestionController extends Controller
     public function store(Request $request, $unit_id, $section_id, $excercise_id)
     {
         $new_question = new DragAndDropQuestion;
-        $new_question->concept = $request->concept;
-        $new_question->description = $request->description;
+        $new_question->word = $request->word;
+        $new_question->definition = $request->definition;
         $new_question->excercise_id = $excercise_id;
         $new_question->save();
 

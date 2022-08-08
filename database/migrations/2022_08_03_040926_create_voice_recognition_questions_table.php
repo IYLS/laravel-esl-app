@@ -10,6 +10,11 @@ return new class extends Migration
     {
         Schema::create('voice_recognition_questions', function (Blueprint $table) {
             $table->id('id');
+            $table->string('image_url');
+            $table->string('image_name');
+            $table->string('audio_url');
+            $table->string('audio_name');
+            $table->string('title');
             $table->integer('excercise_id');
            
             $table->foreign('excercise_id')->references('id')->on('voice_recognition_excercises');
