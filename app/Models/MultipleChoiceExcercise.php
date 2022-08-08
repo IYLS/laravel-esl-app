@@ -15,6 +15,11 @@ class MultipleChoiceExcercise extends Model
     protected $fillable = [ 
         'title',
         'description',
+        'instructions',
+        'type',
+        'subtype',
+        'image_name',
+        'video_name'
     ];
 
     public $timestamps = false;

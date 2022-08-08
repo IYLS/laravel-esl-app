@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SectionSeeder::class);
         $this->call(MultipleChoiceExcerciseSeeder::class);
         $this->call(MultipleChoiceQuestionSeeder::class);
+        $this->call(MultipleChoiceAlternativeSeeder::class);
         $this->call(VoiceRecognitionExcerciseSeeder::class);
         $this->call(VoiceRecognitionQuestionSeeder::class);
         $this->call(FillInTheGapsExcerciseSeeder::class);

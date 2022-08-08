@@ -13,18 +13,11 @@ class OpenEndedExcerciseSeeder extends Seeder
         DB::table('open_ended_excercises')->insert([
             [            
                 'id' => 29,
-                'title' => 'Explain',
-                'description' => 'Explain your thoughts',
+                'title' => 'Personal response',
+                'description' => '',
                 'type' => 'open_ended',
                 'section_id' => 1
             ],
-            [            
-                'id' => 95,
-                'title' => 'Explain',
-                'description' => 'Explain your thoughts',
-                'type' => 'open_ended',
-                'section_id' => 2
-            ],
-        ]);    
+        ]);
     }
 }

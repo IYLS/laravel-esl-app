@@ -14,17 +14,10 @@ class DragAndDropExcerciseSeeder extends Seeder
             [            
                 'id' => 21,
                 'title' => 'Vocabulary activation',
-                'description' => 'Ejercicio de agarrar, arrastrar y soltar.',
+                'description' => 'Match the words with their correct definition. Check the previous exercise to understand the context of the words',
                 'type' => 'drag_and_drop',
                 'section_id' => 1
-            ],
-            [            
-                'id' => 10,
-                'title' => 'Vocabulary activation',
-                'description' => 'Ejercicio de agarrar, arrastrar y soltar.',
-                'type' => 'drag_and_drop',
-                'section_id' => 2
-            ],
+            ]
         ]);
     }
 }

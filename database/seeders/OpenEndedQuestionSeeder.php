@@ -13,13 +13,7 @@ class OpenEndedQuestionSeeder extends Seeder
         DB::table('open_ended_questions')->insert([
             [            
                 'id' => 8,
-                'title' => "Hank, Walt's brother-in-law, is a DEA agent. What does DEA stand for?",
-                'answer' => null,
-                'excercise_id' => 29
-            ],
-            [            
-                'id' => 5,
-                'title' => "Walter White's transformation from nerdy high school chemistry teacher to criminal kingpin all started with what specific medical diagnosis?",
+                'title' => "Imagine Steven is your friend and he is feeling bad. What do you want to tell him to make him feel better? Read the examples and write a message for him.",
                 'answer' => null,
                 'excercise_id' => 29
             ],

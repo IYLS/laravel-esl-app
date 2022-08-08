@@ -13,7 +13,7 @@ class UnitSeeder extends Seeder
         DB::table('units')->insert([
             [   
                 'id' => 764,
-                'title' => 'Talk 1 - Music',
+                'title' => "Steven's Universe",
                 'author' => 'Roozbeh Ghaffari',
                 'description' => 'This unit is about music',
                 'listening_tips' => 'asd',
@@ -29,11 +29,11 @@ class UnitSeeder extends Seeder
                 'glossary_enabled' => true,
                 'dictionary_enabled' => true,
                 'video_url' => 'public/files/n1t2.mp4',
-                'video_name' => 'n1t2.mp4'
+                'video_name' => 'Steven_raw.mp4'
             ],
             [   
                 'id' => 9078,
-                'title' => 'Talk 2 - Soft Electronics',
+                'title' => "Talk 2 - Soft Electronics",
                 'author' => 'Roozbeh Ghaffari',
                 'description' => 'This unit is about soft electronics',
                 'listening_tips' => 'asd',

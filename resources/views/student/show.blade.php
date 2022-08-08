@@ -30,7 +30,7 @@
     {{-- Video section --}}
     <div class="col-4">
         <div class="ratio ratio-16x9 mt-3">
-            <iframe src="{{ asset('/storage/files/'.$unit->video_name) }}" title="YouTube video" allowfullscreen contorls captions></iframe>
+            <iframe src="{{ asset('/storage/files') . "/" . $unit->video_name }}" title="Video" allowfullscreen controls></iframe>
         </div>
     </div>
 
@@ -61,6 +61,254 @@
                     </div>
                     <div class="tab-content container" id="v-pills-tabContent">
                         @foreach($pre_listening_excercises as $excercise_type)
+                            @foreach($excercise_type as $e)
+                                
+                                {{-- Drag and Drop excercise --}}
+                                @if($e->type == 'drag_and_drop')
+                                <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">
+                                    <div class="container">
+                                        <h4>{{ $e->title }}</h4>
+                                        <p class="text-secondary">{{ $e->description }}</p>
+                                        @php
+                                        $words = array();
+                                        $definitions = array();
+                                        @endphp
+                                        @foreach($e->questions as $question)
+                                            @php 
+                                            array_push($words, $question->word);
+                                            array_push($definitions, $question->definition);
+                                            @endphp
+                                        @endforeach
+                                        @php
+                                            shuffle($words);
+                                            shuffle($definitions);
+                                        @endphp
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-3">
+                                                <h5>Words</h5>
+                                                <br>
+                                                <div class="mt-1 mb-1">
+                                                    @foreach($words as $word)
+                                                    <div id="div2-{{ $word }}" class="m-1" style="width: 200px; height: 35px;" draggable="true" ondragstart="drag(event)">
+                                                        <p>{{ $loop->index + 1 . ". " .$word }}</p>
+                                                    </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                            <div class="col-9">
+                                                <h5>Definitions</h5>
+                                                <br>
+                                                @foreach($definitions as $definition)
+                                                    <div class="row mt-1 mb-1">
+                                                        <div class="border-bottom col-4" id="div1-{{ $definition }}"  style="width: 200; height: 35px;" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                                                        <div class="col-8">{{ $definition }}</div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+
+                                @if($e->type == 'open_ended')
+                                <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">
+                                    <div class="container">
+                                        <h4>{{ $e->title }}</h4>
+                                        <p class="text-secondary">{{ $e->description }}</p>
+                                        @forelse($e->questions as $question)
+                                        <div class="mb-3">
+                                            <p>{{ $loop->index + 1 . ". " . $question->title }}</p>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Enter the Answer here"></textarea>
+                                        </div>
+                                        @empty
+                                        <div>
+                                            <p class="text-secondary">Empty</p>
+                                        </div>
+                                        @endforelse
+                                    </div>
+                                </div>
+                                @endif
+
+                                @if($e->type == 'voice_recognition')
+                                <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">
+                                    <div class="container">
+                                        <h4>{{ $e->title }}</h4>
+                                        <p class="text-secondary">{{ $e->description }}</p>
+                                        <div class="row">
+                                        @foreach($e->questions as $question)
+                                        <div class="col-5 mt-1 text-center">
+                                            <p>{{ $question->title }}</p>
+                                            <img src="{{ asset('storage/files/'.$question->image_name) }}" class="img-fluid col-6" alt="img">
+                                            <audio controls class="col-6">
+                                                <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
+                                            </audio> 
+                                        </div>
+                                        @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+
+                                @if($e->type == 'multiple_choice')
+                                <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">
+                                    <div class="container">
+                                        <h4>{{ $e->title }}</h4>
+                                        <p class="text-secondary">{{ $e->description }}</p>
+
+                                        {{-- Subtype 1 = Predicting --}}
+                                        @if($e->subtype == 1)
+                                            <div class="row m-3">
+                                                <img src="{{ asset('storage/files/'.$e->image_name) }}" class="img-fluid col-8" alt="img">
+                                            </div>
+                                            <br>
+                                            <p>{{ $e->instructions }}</p>
+                                            <br>
+                                            
+                                            @foreach($e->questions as $question)
+                                                @php $statements = explode(";", $question->statement); @endphp
+
+                                                <ol type="I">
+                                                    @foreach($statements as $s) 
+                                                    <li>{{ $s }}</li> 
+                                                    @endforeach
+                                                </ol>
+                                                <br>
+                                                <ol type="a">
+                                                    @foreach($question->alternatives as $a)
+                                                    <li>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="exampleRadios" id="{{ $question->id . $a->id }}" value="option1" >
+                                                            <label class="form-check-label" for="exampleRadios1">{{ $a->title }}</label>
+                                                        </div>    
+                                                    </li>
+                                                    @endforeach
+                                                </ol>
+                                            @endforeach
+                                            
+
+                                        {{-- Subtype 2 = What do you hear? --}}
+                                        @elseif($e->subtype == 2)
+                                            <ol type="1">
+                                                
+                                                @foreach($e->questions as $question)
+                                                <div class="border rounded p-3 mt-3 mb-3 shadow">
+                                                    @php 
+                                                    $statement = str_replace(";;","_______", $question->statement)
+                                                    @endphp
+                                                    <li>{{ $statement }}</li>
+                                                    <br>
+                                                    <audio controls class="col-6">
+                                                        <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
+                                                    </audio> 
+                                                    <div class="mt-2">
+                                                        <ol type="a">
+                                                            @foreach($question->alternatives as $a)
+                                                            <li>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="radio" name="{{ $question->id }}" id="{{ $question->id . $a->id }}" value="option1" >
+                                                                    <label class="form-check-label" for="{{ $question->id . $a->id }}">{{ $a->title }}</label>
+                                                                </div>    
+                                                            </li>
+                                                            @endforeach
+                                                        </ol>
+                                                    </div>
+
+                                                    <br>
+                                                </div>
+                                                @endforeach
+                                                
+                                            </ol>
+                                        {{-- Subtype 3 = Evaluating statements --}}
+                                        @elseif($e->subtype == 3)
+                                        <ol type="1">
+                                                
+                                            @foreach($e->questions as $question)
+                                            <div class="border rounded p-3 mt-3 mb-3 shadow">
+                                                <li>{{ $question->statement }}</li>
+                                                <br>
+                                                <div class="mt-2">
+                                                    <ol type="a">
+                                                        <li>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="{{ $question->id }}" id="{{ $question->id . "true" }}" value="option1" >
+                                                                <label class="form-check-label" for="{{ $question->id . "true" }}">True</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="{{ $question->id }}" id="{{ $question->id . "false" }}" value="option1">
+                                                                <label class="form-check-label" for="{{ $question->id . "false" }}">False</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="{{ $question->id }}" id="{{ $question->id . "not sure" }}" value="option1">
+                                                                <label class="form-check-label" for="{{ $question->id . "not sure" }}">I'm not sure</label>
+                                                            </div>
+                                                        </li>
+                                                    </ol>
+                                                </div>
+                                                <br>
+                                            </div>
+                                            @endforeach
+                                        </ol>
+
+                                        {{-- Subtype 4 = Multiple Choice --}}
+                                        @elseif($e->subtype == 4)
+                                        <ol type="1">
+                                                
+                                            @foreach($e->questions as $question)
+                                            <div class="border rounded p-3 mt-3 mb-3 shadow">
+                                                <li>{{ $question->statement }}</li>
+                                                <br>
+                                                <div class="mt-2">
+                                                    <ol type="a">
+                                                        @foreach($question->alternatives as $a)
+                                                        <li>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="{{ $question->id }}" id="{{ $question->id . "true" }}" value="option1" >
+                                                                <label class="form-check-label" for="{{ $question->id . "true" }}">{{ $a->title }}</label>
+                                                            </div>
+                                                        </li>
+                                                        @endforeach
+                                                    </ol>
+                                                </div>
+                                                <br>
+                                            </div>
+                                            @endforeach
+                                            
+                                        </ol>
+                                        @endif
+                                    </div>
+                                </div>
+                                @endif
+
+                                @if($e->type == 'fill_in_the_gaps')
+                                <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">
+                                    <div class="container">
+                                        {{-- Fill-in the gaps --}}
+                                    </div>
+                                </div>
+                                @endif
+
+                            @endforeach
+                        @endforeach
+                    </div>
+                </div>
+                  
+            </div>
+
+            <div class="tab-pane fade" id="while-listening" role="tabpanel" aria-labelledby="while-listening-tab">
+                <div class="d-flex align-items-start mt-2">
+                    <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        @foreach($while_listening_excercises as $excercise_type)
+                            @foreach($excercise_type as $a)
+                            <button class="nav-link" id="{{ $a->type . $a->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $a->type . $a->id }}" type="button" role="tab" aria-controls="{{ $a->type . $a->id }}" aria-selected="false">{{ $a->title }}</button>
+                            @endforeach
+                        @endforeach
+                    </div>
+                    <div class="tab-content" id="v-pills-tabContent">
+                        @foreach($while_listening_excercises as $excercise_type)
                             @foreach($excercise_type as $e)
 
                                 {{-- Drag and Drop excercise --}}
@@ -136,7 +384,7 @@
                                         <p class="text-secondary">{{ $e->description }}</p>
                                         <div class="row">
                                         @foreach($e->questions as $question)
-                                        <div class="col-6 mt-1 text-center">
+                                        <div class="col-5 mt-1 text-center">
                                             <p>{{ $question->title }}</p>
                                             <img src="{{ asset('storage/files/'.$question->image_name) }}" class="img-fluid col-6" alt="img">
                                             <audio controls class="col-6">
@@ -149,34 +397,155 @@
                                 </div>
                                 @endif
 
-                            @endforeach
-                        @endforeach
-                    </div>
-                </div>
-                  
-            </div>
+                                @if($e->type == 'multiple_choice')
+                                <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">
+                                    <div class="container">
+                                        <h4>{{ $e->title }}</h4>
+                                        <p class="text-secondary">{{ $e->description }}</p>
 
-            <div class="tab-pane fade" id="while-listening" role="tabpanel" aria-labelledby="while-listening-tab">
-                <div class="d-flex align-items-start">
-                    <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        @foreach($while_listening_excercises as $excercise_type)
-                            @foreach($excercise_type as $a)
-                            <button class="nav-link" id="{{ $a->type . $a->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $a->type . $a->id }}" type="button" role="tab" aria-controls="{{ $a->type . $a->id }}" aria-selected="false">{{ $a->title }}</button>
-                            @endforeach
+                                        {{-- Subtype 1 = Predicting --}}
+                                        @if($e->subtype == 1)
+                                            <div class="row m-3">
+                                                <img src="{{ asset('storage/files/'.$e->image_name) }}" class="img-fluid col-8" alt="img">
+                                            </div>
+                                            <br>
+                                            <p>{{ $e->instructions }}</p>
+                                            <br>
+                                            
+                                            @foreach($e->questions as $question)
+                                                @php $statements = explode(";", $question->statement); @endphp
+
+                                                <ol type="I">
+                                                    @foreach($statements as $s) 
+                                                    <li>{{ $s }}</li> 
+                                                    @endforeach
+                                                </ol>
+                                                <br>
+                                                <ol type="a">
+                                                    @foreach($question->alternatives as $a)
+                                                    <li>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="exampleRadios" id="{{ $question->id . $a->id }}" value="option1" >
+                                                            <label class="form-check-label" for="exampleRadios1">{{ $a->title }}</label>
+                                                        </div>    
+                                                    </li>
+                                                    @endforeach
+                                                </ol>
+                                            @endforeach
+                                            
+
+                                        {{-- Subtype 2 = What do you hear? --}}
+                                        @elseif($e->subtype == 2)
+                                            <ol type="1">
+                                                
+                                                @foreach($e->questions as $question)
+                                                <div class="border rounded p-3 mt-3 mb-3 shadow">
+                                                    @php 
+                                                    $statement = str_replace(";;","_______", $question->statement)
+                                                    @endphp
+                                                    <li>{{ $statement }}</li>
+                                                    <br>
+                                                    <audio controls class="col-6">
+                                                        <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
+                                                    </audio> 
+                                                    <div class="mt-2">
+                                                        <ol type="a">
+                                                            @foreach($question->alternatives as $a)
+                                                            <li>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="radio" name="{{ $question->id }}" id="{{ $question->id . $a->id }}" value="option1" >
+                                                                    <label class="form-check-label" for="{{ $question->id . $a->id }}">{{ $a->title }}</label>
+                                                                </div>    
+                                                            </li>
+                                                            @endforeach
+                                                        </ol>
+                                                    </div>
+
+                                                    <br>
+                                                </div>
+                                                @endforeach
+                                                
+                                            </ol>
+                                        {{-- Subtype 3 = Evaluating statements --}}
+                                        @elseif($e->subtype == 3)
+                                        <ol type="1">
+                                                
+                                            @foreach($e->questions as $question)
+                                            <div class="border rounded p-3 mt-3 mb-3 shadow">
+                                                <li>{{ $question->statement }}</li>
+                                                <br>
+                                                <div class="mt-2">
+                                                    <ol type="a">
+                                                        <li>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="{{ $question->id }}" id="{{ $question->id . "true" }}" value="option1" >
+                                                                <label class="form-check-label" for="{{ $question->id . "true" }}">True</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="{{ $question->id }}" id="{{ $question->id . "false" }}" value="option1">
+                                                                <label class="form-check-label" for="{{ $question->id . "false" }}">False</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="{{ $question->id }}" id="{{ $question->id . "not sure" }}" value="option1">
+                                                                <label class="form-check-label" for="{{ $question->id . "not sure" }}">I'm not sure</label>
+                                                            </div>
+                                                        </li>
+                                                    </ol>
+                                                </div>
+                                                <br>
+                                            </div>
+                                            @endforeach
+                                        </ol>
+                                        
+                                        {{-- Subtype 4 = Multiple Choice --}}
+                                        @elseif($e->subtype == 4)
+                                        <ol type="1">
+                                                
+                                            @foreach($e->questions as $question)
+                                            <div class="border rounded p-3 mt-3 mb-3 shadow">
+                                                <li>{{ $question->statement }}</li>
+                                                <br>
+                                                <div class="mt-2">
+                                                    <ol type="a">
+                                                        @foreach($question->alternatives as $a)
+                                                        <li>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="{{ $question->id }}" id="{{ $question->id . "true" }}" value="option1" >
+                                                                <label class="form-check-label" for="{{ $question->id . "true" }}">{{ $a->title }}</label>
+                                                            </div>
+                                                        </li>
+                                                        @endforeach
+                                                    </ol>
+                                                </div>
+                                                <br>
+                                            </div>
+                                            @endforeach
+                                            
+                                        </ol>
+                                        @endif
+                                    </div>
+                                </div>
+                                @endif
+
+                                @if($e->type == 'fill_in_the_gaps')
+                                <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">
+                                    <div class="container">
+                                        {{-- Fill-in the gaps --}}
+                                    </div>
+                                </div>
+                                @endif
                         @endforeach
-                    </div>
-                    <div class="tab-content" id="v-pills-tabContent">
-                        @foreach($while_listening_excercises as $excercise_type)
-                            @foreach($excercise_type as $a)
-                                <div class="tab-pane fade" id="{{ $a->type . $a->id }}" role="tabpanel" aria-labelledby="{{ $a->type . $a->id }}-tab">{{ $a->title }}</div>
-                            @endforeach
                         @endforeach
                     </div>
                 </div>
             </div>
 
             <div class="tab-pane fade" id="post-listening" role="tabpanel" aria-labelledby="post-listening-tab">
-                <div class="d-flex align-items-start">
+                <div class="d-flex align-items-start mt-2">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         @foreach($post_listening_excercises as $excercise_type)
                             @foreach($excercise_type as $d)
@@ -185,9 +554,237 @@
                         @endforeach
                     </div>
                     <div class="tab-content" id="v-pills-tabContent">
-                        @foreach($while_listening_excercises as $excercise_type)
+                        @foreach($post_listening_excercises as $excercise_type)
                             @foreach($excercise_type as $d)
-                                <div class="tab-pane fade" id="{{ $d->type . $d->id }}" role="tabpanel" aria-labelledby="{{ $d->type . $d->id }}-tab">{{ $d->title }}</div>
+
+                                {{-- Drag and Drop excercise --}}
+                                @if($d->type == 'drag_and_drop')
+                                <div class="tab-pane fade" id="{{ $d->type . $d->id }}" role="tabpanel" aria-labelledby="{{ $d->type . $d->id }}-tab">
+                                    <div class="container">
+                                        <h4>{{ $d->title }}</h4>
+                                        <p class="text-secondary">{{ $d->description }}</p>
+                                        @php
+                                        $words = array();
+                                        $definitions = array();
+                                        @endphp
+                                        @foreach($d->questions as $question)
+                                            @php 
+                                            array_push($words, $question->word);
+                                            array_push($definitions, $question->definition);
+                                            @endphp
+                                        @endforeach
+                                        @php
+                                            shuffle($words);
+                                            shuffle($definitions);
+                                        @endphp
+                                        <div class="row mt-2 mb-2">
+                                            <div class="col-3">
+                                                <h5>Words</h5>
+                                                <br>
+                                                <div class="mt-1 mb-1">
+                                                    @foreach($words as $word)
+                                                    <div id="div2-{{ $word }}" class="m-1" style="width: 200px; height: 35px;" draggable="true" ondragstart="drag(event)">
+                                                        <p>{{ $loop->index + 1 . ". " .$word }}</p>
+                                                    </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                            <div class="col-9">
+                                                <h5>Definitions</h5>
+                                                <br>
+                                                @foreach($definitions as $definition)
+                                                    <div class="row mt-1 mb-1">
+                                                        <div class="border-bottom col-4" id="div1-{{ $definition }}"  style="width: 200; height: 35px;" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                                                        <div class="col-8">{{ $definition }}</div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+
+                                @if($d->type == 'open_ended')
+                                <div class="tab-pane fade" id="{{ $d->type . $d->id }}" role="tabpanel" aria-labelledby="{{ $d->type . $d->id }}-tab">
+                                    <div class="container">
+                                        <h4>{{ $d->title }}</h4>
+                                        <p class="text-secondary">{{ $d->description }}</p>
+                                        @forelse($d->questions as $question)
+                                        <div class="mb-3">
+                                            <p>{{ $loop->index + 1 . ". " . $question->title }}</p>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Enter the Answer here"></textarea>
+                                        </div>
+                                        @empty
+                                        <div>
+                                            <p class="text-secondary">Empty</p>
+                                        </div>
+                                        @endforelse
+                                    </div>
+                                </div>
+                                @endif
+
+                                @if($d->type == 'voice_recognition')
+                                <div class="tab-pane fade" id="{{ $d->type . $d->id }}" role="tabpanel" aria-labelledby="{{ $d->type . $d->id }}-tab">
+                                    <div class="container">
+                                        <h4>{{ $d->title }}</h4>
+                                        <p class="text-secondary">{{ $d->description }}</p>
+                                        <div class="row">
+                                        @foreach($d->questions as $question)
+                                        <div class="col-5 mt-1 text-center">
+                                            <p>{{ $question->title }}</p>
+                                            <img src="{{ asset('storage/files/'.$question->image_name) }}" class="img-fluid col-6" alt="img">
+                                            <audio controls class="col-6">
+                                                <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
+                                            </audio> 
+                                        </div>
+                                        @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+
+                                @if($d->type == 'multiple_choice')
+                                <div class="tab-pane fade" id="{{ $d->type . $d->id }}" role="tabpanel" aria-labelledby="{{ $d->type . $d->id }}-tab">
+                                    <div class="container">
+                                        <h4>{{ $d->title }}</h4>
+                                        <p class="text-secondary">{{ $d->description }}</p>
+
+                                        {{-- Subtype 1 = Predicting --}}
+                                        @if($d->subtype == 1)
+                                            <div class="row m-3">
+                                                <img src="{{ asset('storage/files/'.$d->image_name) }}" class="img-fluid col-8" alt="img">
+                                            </div>
+                                            <br>
+                                            <p>{{ $d->instructions }}</p>
+                                            <br>
+                                            
+                                            @foreach($d->questions as $question)
+                                                @php $statements = explode(";", $question->statement); @endphp
+
+                                                <ol type="I">
+                                                    @foreach($statements as $s) 
+                                                    <li>{{ $s }}</li> 
+                                                    @endforeach
+                                                </ol>
+                                                <br>
+                                                <ol type="a">
+                                                    @foreach($question->alternatives as $a)
+                                                    <li>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="exampleRadios" id="{{ $question->id . $a->id }}" value="option1" >
+                                                            <label class="form-check-label" for="exampleRadios1">{{ $a->title }}</label>
+                                                        </div>    
+                                                    </li>
+                                                    @endforeach
+                                                </ol>
+                                            @endforeach
+                                            
+
+                                        {{-- Subtype 2 = What do you hear? --}}
+                                        @elseif($d->subtype == 2)
+                                            <ol type="1">
+                                                
+                                                @foreach($d->questions as $question)
+                                                <div class="border rounded p-3 mt-3 mb-3 shadow">
+                                                    @php 
+                                                    $statement = str_replace(";;","_______", $question->statement)
+                                                    @endphp
+                                                    <li>{{ $statement }}</li>
+                                                    <br>
+                                                    <audio controls class="col-6">
+                                                        <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
+                                                    </audio> 
+                                                    <div class="mt-2">
+                                                        <ol type="a">
+                                                            @foreach($question->alternatives as $a)
+                                                            <li>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="radio" name="{{ $question->id }}" id="{{ $question->id . $a->id }}" value="option1" >
+                                                                    <label class="form-check-label" for="{{ $question->id . $a->id }}">{{ $a->title }}</label>
+                                                                </div>    
+                                                            </li>
+                                                            @endforeach
+                                                        </ol>
+                                                    </div>
+
+                                                    <br>
+                                                </div>
+                                                @endforeach
+                                                
+                                            </ol>
+                                        {{-- Subtype 3 = Evaluating statements --}}
+                                        @elseif($d->subtype == 3)
+                                        <ol type="1">
+                                                
+                                            @foreach($d->questions as $question)
+                                            <div class="border rounded p-3 mt-3 mb-3 shadow">
+                                                <li>{{ $question->statement }}</li>
+                                                <br>
+                                                <div class="mt-2">
+                                                    <ol type="a">
+                                                        <li>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="{{ $question->id }}" id="{{ $question->id . "true" }}" value="option1" >
+                                                                <label class="form-check-label" for="{{ $question->id . "true" }}">True</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="{{ $question->id }}" id="{{ $question->id . "false" }}" value="option1">
+                                                                <label class="form-check-label" for="{{ $question->id . "false" }}">False</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="{{ $question->id }}" id="{{ $question->id . "not sure" }}" value="option1">
+                                                                <label class="form-check-label" for="{{ $question->id . "not sure" }}">I'm not sure</label>
+                                                            </div>
+                                                        </li>
+                                                    </ol>
+                                                </div>
+                                                <br>
+                                            </div>
+                                            @endforeach
+                                        </ol>
+                                        
+                                        {{-- Subtype 4 = Multiple Choice --}}
+                                        @elseif($d->subtype == 4)
+                                        <ol type="1">
+                                            
+                                            @foreach($d->questions as $question)
+                                            <div class="border rounded p-3 mt-3 mb-3 shadow">
+                                                <li>{{ $question->statement }}</li>
+                                                <br>
+                                                <div class="mt-2">
+                                                    <ol type="a">
+                                                        @foreach($question->alternatives as $a)
+                                                        <li>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="{{ $question->id }}" id="{{ $question->id . "true" }}" value="option1" >
+                                                                <label class="form-check-label" for="{{ $question->id . "true" }}">{{ $a->title }}</label>
+                                                            </div>
+                                                        </li>
+                                                        @endforeach
+                                                    </ol>
+                                                </div>
+                                                <br>
+                                            </div>
+                                            @endforeach
+                                            
+                                        </ol>
+                                        @endif
+                                    </div>
+                                </div>
+                                @endif
+
+                                @if($d->type == 'fill_in_the_gaps')
+                                <div class="tab-pane fade" id="{{ $d->type . $d->id }}" role="tabpanel" aria-labelledby="{{ $d->type . $d->id }}-tab">
+                                    <div class="container">
+                                        {{-- Fill-in the gaps --}}
+                                    </div>
+                                </div>
+                                @endif
+
                             @endforeach
                         @endforeach
                     </div>
@@ -209,7 +806,6 @@
             child.innerHTML = `${text}`;
             detailBox.appendChild(child);
         }
-
     }
 
     function presentHelpOptionsText(text) {
