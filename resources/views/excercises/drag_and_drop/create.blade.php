@@ -26,10 +26,11 @@
                                 <p>Matching definition: {{ $question->definition }}</p>
                             </li>
                         </ul>
-                    </div>
-                    <div class="col-2 d-flex flex-column">
-                        <a href="{{ route('questions.drag_and_drop.destroy', [$unit_id, $excercise->id, $question->id]) }}">Eliminar</a>
-                        {{-- <div><a href="{{ route('excercises.' . $excercise->type . '.create', [$unit_id, $excercise->section_id, $excercise->id]) }}">Modificar</a></div> --}}
+                        <div class="col-2 d-flex justify-content-center">
+                            <button class="btn btn-danger btn-sm m-1">Delete</button>
+                            <br>
+                            <button class="btn btn-warning btn-sm m-1">Edit</button>
+                        </div>
                     </div>
                 </div>
             </div>

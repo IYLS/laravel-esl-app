@@ -15,28 +15,34 @@
     <div class="card p-4 m-2">
         <h4>Activity questions</h4>        
         @forelse($questions as $question)
-            <div class="card mt-1 mb-1 p-1">
+            <div class="card mt-1 mb-1 p-4">
                 <div class="row">
                     <div class="col-10">
-                        <ul>
+                        <p>Statements</p>
+                        <ol type="I">
+                            @php 
+                                $statements = explode(";", $question->statement);
+                            @endphp
+                            @foreach($statements as $statement)
                             <li>
-                                <p>Question: {{ $question->title }}</p>
+                                {{ $statement }}
                             </li>
-                            <li>
-                                <p>Alternatives</p>
-                                @foreach($question->alternatives as $alt)
-                                <p>{{ $alt->title }}</p>
-                                @endforeach
-                            </li>
-                        </ul>
+                            @endforeach
+                        </ol>
+                        <p>Alternatives</p>
+                        <ol type="a">
+                            @foreach($question->alternatives as $alt)
+                            <li>{{ $alt->title }}</li>
+                            @endforeach
+                        </ol>
                     </div>
-                    <div class="col-2 d-flex flex-column">
-                        {{-- <form action="{{ route('questions.open_ended.destroy', [$unit_id, $excercise->id, $question->id]) }}" method="POST">
-                            @csrf
-                            @method('DELETE') --}}
-                            <button class="btn btn-danger">Delete</button>
-                            <button class="btn btn-warning">Edit</button>
-                        {{-- </form> --}}
+                    <div class="col-2 d-flex justify-content-center">
+                        <div>
+                            <button class="btn btn-danger btn-sm">Delete</button>
+                        </div>
+                        <div>
+                            <button class="btn btn-warning btn-sm">Edit</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -66,7 +72,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('questions.open_ended.store', [$unit_id, $excercise->section_id, $excercise->id]) }}" method="POST">
+                <form action="{{ route('questions.multiple_choice.store', [$unit_id, $excercise->section_id, $excercise->id]) }}" method="POST">
                     @csrf
                     <input id="question" name="question" type="text" class="form-control" placeholder="Type here the question to be answered by students">
                     <div class="modal-footer">

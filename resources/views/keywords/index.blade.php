@@ -26,6 +26,9 @@
                         <button class="btn btn-danger">Delete</button>
                         <button type="button" id="addKeywordButton" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editKeywordModal">Edit</button>
                     </form> --}}
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                    <br>
+                    <button class="btn btn-warning btn-sm">Edit</button>
                 </td>
             </tr>
             <!-- Modal -->

@@ -10,5 +10,16 @@ class FillInTheGapsQuestion extends Model
 {
     use HasFactory;
 
-    public function excercise() { $this->belongsTo(FillInTheGapsExcercise::class); }
+    protected $table = 'fill_in_the_gaps_questions';
+    protected $fillable = [ 
+        'title',
+        'statement',
+        'matching_word',
+        'audio_name',
+    ];
+
+    public $timestamps = false;
+    public $incrementing = true;
+
+    public function excercise() { return $this->belongsTo(FillInTheGapsExcercise::class); }
 }

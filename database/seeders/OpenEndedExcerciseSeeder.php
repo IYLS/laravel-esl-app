@@ -16,7 +16,7 @@ class OpenEndedExcerciseSeeder extends Seeder
                 'title' => 'Personal response',
                 'description' => '',
                 'type' => 'open_ended',
-                'section_id' => 1
+                'section_id' => 3
             ],
         ]);
     }

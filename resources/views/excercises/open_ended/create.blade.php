@@ -24,12 +24,12 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="col-2 d-flex flex-column">
-                        {{-- <form action="{{ route('questions.open_ended.destroy', [$unit_id, $excercise->id, $question->id]) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger">Delete</button>
-                        </form> --}}
+                    <div class="col-2 d-flex justify-content-center">
+                        <button class="btn btn-danger btn-sm m-1">Delete</button>
+                        <br>
+                        {{-- <a href="{{ route('questions.drag_and_drop.destroy', [$unit_id, $excercise->id, $question->id]) }}">Eliminar</a> --}}
+                        <button class="btn btn-warning btn-sm m-1">Edit</button>
+                        {{-- <div><a href="{{ route('excercises.' . $excercise->type . '.create', [$unit_id, $excercise->section_id, $excercise->id]) }}">Modificar</a></div> --}}
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@
     </div>
 
     <div class="d-flex justify-content-center">
-        <a class="btn btn-secondary m-1" href="{{ URL::previous() }}">Save</a>
+        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$unit_id]) }}">Save</a>
         <a class="btn btn-secondary m-1" href="{{ URL::previous() }}">Cancel</a>
     </div>
 </div>

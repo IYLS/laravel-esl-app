@@ -15,11 +15,13 @@ class FillInTheGapsExcercise extends Model
     protected $fillable = [ 
         'title',
         'description',
+        'type',
+        'subtype'
     ];
 
     public $timestamps = false;
     public $incrementing = true;
 
-    public function questions() { $this->hasMany(FillInTheGapsQuestion::class, 'excercise_id'); }
-    public function section() { $this->belongsTo(Section::class); }
+    public function questions() { return $this->hasMany(FillInTheGapsQuestion::class, 'excercise_id'); }
+    public function section() { return $this->belongsTo(Section::class); }
 }

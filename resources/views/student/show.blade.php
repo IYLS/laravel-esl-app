@@ -1,6 +1,10 @@
 @extends('layouts.app')
 @section('main')
 
+<style>
+    .strikable { text-decoration: line-through; }
+</style>
+
 <div class="p-4 row w-100 h-100">
     <h5 class="pl-2">{{ $unit->title }}</h5>
     <div class="row">
@@ -161,7 +165,7 @@
                                                 <img src="{{ asset('storage/files/'.$e->image_name) }}" class="img-fluid col-8" alt="img">
                                             </div>
                                             <br>
-                                            <p>{{ $e->instructions }}</p>
+                                            <h5>{{ $e->instructions }}</h5>
                                             <br>
                                             
                                             @foreach($e->questions as $question)
@@ -409,7 +413,7 @@
                                                 <img src="{{ asset('storage/files/'.$e->image_name) }}" class="img-fluid col-8" alt="img">
                                             </div>
                                             <br>
-                                            <p>{{ $e->instructions }}</p>
+                                            <h5>{{ $e->instructions }}</h5>
                                             <br>
                                             
                                             @foreach($e->questions as $question)
@@ -534,7 +538,59 @@
                                 @if($e->type == 'fill_in_the_gaps')
                                 <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">
                                     <div class="container">
-                                        {{-- Fill-in the gaps --}}
+                                        <h4>{{ $e->title }}</h4>
+                                        <p class="text-secondary">{{ $e->description }}</p>
+                                        
+                                        @if($e->subtype == 1) 
+                                            
+                                            @foreach($e->questions as $question)
+                                            <div class="border rounded p-3">
+                                                <p>Item {{ $loop->index + 1 }}</p>
+                                                <div class="row mt-2 mb-2">
+                                                    <audio controls class="col-12">
+                                                        <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
+                                                    </audio> 
+                                                </div>
+                                                <div class="mt-4 mb-4">
+                                                    @php
+                                                    $gaps_count = substr_count($question->statement, ";;");
+                                                    $strips = explode(";;", $question->statement);
+                                                    @endphp
+
+                                                    @foreach($strips as $strip)
+                                                    {{ $strip }} @if($loop->index < $gaps_count) <input class="mt-1 mb-1 me-1 ms-1" type="text"" style="height: 24px; border-radius: 4px; border: 0.5px solid #ccc; padding: 8px;"> @endif
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                            @endforeach
+
+                                        @elseif($e->subtype == 2)
+                                            
+                                            <div class="p-4">
+                                                <h5>Available words</h5>
+                                                <div class="d-flex">
+                                                    <ul class="list-group list-group-horizontal">
+                                                        @foreach($e->questions as $question)
+                                                            <li class="matching_word list-group-item">{{ $question->matching_word }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                                <div class="mt-4 mb-2">
+                                                    <ol type="1">
+                                                        @foreach($e->questions as $question)
+                                                            @php
+                                                                $statement = $question->statement;
+                                                                $statement_split = explode(";;", $statement);
+                                                            @endphp
+                                                            <li>
+                                                                <p>{{ $statement_split[0] }} <input class="mt-1 mb-1 me-1 ms-1" type="text"" style="height: 24px; border-radius: 4px; border: 0.5px solid #ccc; padding: 8px;"> {{ $statement_split[1] }} </p>
+                                                            </li>
+                                                        @endforeach
+                                                    </ol>
+                                                </div>
+                                            </div>
+
+                                        @endif
                                     </div>
                                 </div>
                                 @endif
@@ -655,13 +711,13 @@
                                                 <img src="{{ asset('storage/files/'.$d->image_name) }}" class="img-fluid col-8" alt="img">
                                             </div>
                                             <br>
-                                            <p>{{ $d->instructions }}</p>
+                                            <h5>{{ $e->instructions }}</h5>
                                             <br>
                                             
                                             @foreach($d->questions as $question)
                                                 @php $statements = explode(";", $question->statement); @endphp
 
-                                                <ol type="I">
+                                                <ol type="I" class="p-3">
                                                     @foreach($statements as $s) 
                                                     <li>{{ $s }}</li> 
                                                     @endforeach
@@ -780,7 +836,9 @@
                                 @if($d->type == 'fill_in_the_gaps')
                                 <div class="tab-pane fade" id="{{ $d->type . $d->id }}" role="tabpanel" aria-labelledby="{{ $d->type . $d->id }}-tab">
                                     <div class="container">
-                                        {{-- Fill-in the gaps --}}
+                                        
+                                        {{ $e }}
+
                                     </div>
                                 </div>
                                 @endif
@@ -836,6 +894,21 @@
       var data = ev.dataTransfer.getData("text");
       ev.target.appendChild(document.getElementById(data));
     }
+</script>
+
+<script>
+const boxes = document.querySelectorAll('.matching_word');
+
+for (const box of boxes) {
+  box.addEventListener('click', function handleClick() {
+    if('strikable' in box.classList) {
+        box.classList.remove('strikable');
+    } else {
+        box.classList.add('strikable');
+    }
+    
+  });
+}
 </script>
 
 @endsection

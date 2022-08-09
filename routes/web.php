@@ -78,13 +78,13 @@ Route::delete('/units/{unit}/excercises/destroy/{excercise}/{question}', [VoiceR
 Route::get('/units/{unit}/excercises/{excercise}/questions/show/{question}', [VoiceRecognitionQuestionController::class, 'show'])->name('questions.voice_recognition.show');
 
 // Multiple Choice Routes
-Route::get('/units/{unit}/excercises/create/multiple_choice/{section}', [MultipleChoiceExcerciseController::class, 'create'])->name('excercises.multiple_choice.create');
+Route::get('/units/{unit}/excercises/create/multiple_choice/{section}/{excercise}', [MultipleChoiceExcerciseController::class, 'create'])->name('excercises.multiple_choice.create');
 Route::post('/units/{unit}/excercises/store/multiple_choice/{section}', [MultipleChoiceExcerciseController::class, 'store'])->name('excercises.multiple_choice.store');
 Route::delete('/units/{unit}/excercises/destroy/{excercise}', [MultipleChoiceExcerciseController::class, 'destroy'])->name('excercises.multiple_choice.destroy');
 Route::get('/units/{unit}/excercises/show/{excercise}', [MultipleChoiceExcerciseController::class, 'show'])->name('excercises.multiple_choice.show');
 
 Route::get('/units/{unit}/excercises/create/multiple_choice/{excercise}/question', [MultipleChoiceQuestionController::class, 'create'])->name('questions.multiple_choice_question.create');
-Route::post('/units/{unit}/excercises/store/multiple_choice/{excercise}/question', [MultipleChoiceQuestionController::class, 'store'])->name('questions.multiple_choice_question.store');
+Route::post('/units/{unit}/excercises/store/multiple_choice/{excercise}/{question/question}', [MultipleChoiceQuestionController::class, 'store'])->name('questions.multiple_choice_question.store');
 Route::delete('/units/{unit}/excercises/destroy/{excercise}/{question}', [MultipleChoiceQuestionController::class, 'destroy'])->name('questions.multiple_choice.destroy');
 Route::get('/units/{unit}/excercises/{excercise}/questions/show/{question}', [MultipleChoiceQuestionController::class, 'show'])->name('questions.multiple_choice.show');
 

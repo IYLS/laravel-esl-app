@@ -10,6 +10,9 @@ return new class extends Migration
     {
         Schema::create('fill_in_the_gaps_questions', function (Blueprint $table) {
             $table->id('id');
+            $table->text('statement');
+            $table->string('audio_name')->nullable(true);
+            $table->string('matching_word')->nullable(true);
             $table->integer('excercise_id');
            
             $table->foreign('excercise_id')->references('id')->on('fill_in_the_gaps_excercises');

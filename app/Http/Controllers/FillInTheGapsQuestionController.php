@@ -3,82 +3,42 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\FillInTheGapsQuestion;
 
 class FillInTheGapsQuestionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $new_question = new FillInTheGapsQuestion;
+        $new_question->statement = $request->statement;
+        $new_question->audio_name = $request->audio_name;
+        $new_question->excercise_id = $request->excercise_id;
+
+        $new_question->save();
+
+        return redirect()->route('excercises.fill_in_the_gaps.create', [$unit_id, $section_id, $excercise_id]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show($unit_id, $excercise_id)
     {
-        //
+        return route('excercises.fill_in_the_gaps.create', [$unit_id, $excercise->section_id, $excercise_id]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy($unit_id, $excercise_id, $question_id)
     {
-        //
+        $question = FillInTheGapsQuestion::find($question_id);
+        $question->delete();
+
+        return redirect()->route('excercises.fill_in_the_gaps.show', [$unit_id, $excercise_id]);
     }
 }
