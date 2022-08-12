@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id('id');
             $table->string('title');
             $table->text('answer')->nullable(true);
+            $table->softDeletes();
             $table->integer('excercise_id');
            
             $table->foreign('excercise_id')->references('id')->on('open_ended_excercises');

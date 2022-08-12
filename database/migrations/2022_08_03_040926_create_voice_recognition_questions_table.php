@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('audio_name');
             $table->string('title');
             $table->integer('excercise_id');
+            $table->softDeletes();
            
             $table->foreign('excercise_id')->references('id')->on('voice_recognition_excercises');
         });

@@ -25,10 +25,14 @@
                         </ul>
                     </div>
                     <div class="col-2 d-flex justify-content-center">
-                        <button class="btn btn-danger btn-sm m-1">Delete</button>
+                        {{-- <button class="btn btn-danger btn-sm m-1">Delete</button> --}}
                         <br>
-                        {{-- <a href="{{ route('questions.drag_and_drop.destroy', [$unit_id, $excercise->id, $question->id]) }}">Eliminar</a> --}}
-                        <button class="btn btn-warning btn-sm m-1">Edit</button>
+                        <form action="{{ route('questions.open_ended.destroy', [$unit_id, $excercise->id, $question->id]) }}" method="POST">
+                            @method('DELETE')
+                            @csrf
+                            <button class="btn btn-danger btn-sm m-1" type="submit">Delete</a>
+                            <button class="btn btn-warning btn-sm m-1">Edit</button>
+                        </form>
                         {{-- <div><a href="{{ route('excercises.' . $excercise->type . '.create', [$unit_id, $excercise->section_id, $excercise->id]) }}">Modificar</a></div> --}}
                     </div>
                 </div>
@@ -42,6 +46,9 @@
         <div>
             <button type="button" id="addQuestionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addQuestionModal">Add item</button>
         </div>
+    </div>
+    <div class="card p-4 m-2">
+        <h4>Feedback section</h4>
     </div>
 
     <div class="d-flex justify-content-center">

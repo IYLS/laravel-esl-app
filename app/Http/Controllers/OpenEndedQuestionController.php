@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\OpenEndedQuestion;
+use App\Models\OpenEndedExcercise;
 
 class OpenEndedQuestionController extends Controller
 {
@@ -34,9 +35,10 @@ class OpenEndedQuestionController extends Controller
 
     public function destroy($unit_id, $excercise_id, $question_id)
     {
+        $excercise = OpenEndedExcercise::find($excercise_id);
         $question = OpenEndedQuestion::find($question_id);
         $question->delete();
 
-        return redirect()->route('excercises.open_ended.show', [$unit_id, $excercise_id]);
+        return redirect()->route('excercises.open_ended.create', [$unit_id, $excercise->section_id, $excercise_id]);
     }
 }

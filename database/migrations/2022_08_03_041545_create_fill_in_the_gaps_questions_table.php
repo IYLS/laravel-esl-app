@@ -14,7 +14,8 @@ return new class extends Migration
             $table->string('audio_name')->nullable(true);
             $table->string('matching_word')->nullable(true);
             $table->integer('excercise_id');
-           
+            $table->softDeletes();
+
             $table->foreign('excercise_id')->references('id')->on('fill_in_the_gaps_excercises');
         });
     }

@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('statement');
             $table->string('audio_name')->nullable(true);
             $table->integer('excercise_id');
+            $table->softDeletes();
            
             $table->foreign('excercise_id')->references('id')->on('multiple_choice_excercises');
         });

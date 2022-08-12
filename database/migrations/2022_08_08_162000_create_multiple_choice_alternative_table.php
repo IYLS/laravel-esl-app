@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('title');
             $table->boolean('correct_alt')->nullable(true);
             $table->integer('question_id');
+            $table->softDeletes();
 
             $table->foreign('question_id')->references('id')->on('multiple_choice_questions');
         });

@@ -50,7 +50,7 @@ class MultipleChoiceExcerciseController extends Controller
         //
     }
 
-    public function destroy($unit_id, $section_id, $excercise_id)
+    public function destroy($unit_id, $excercise_id)
     {
         $excercise = MultipleChoiceExcercise::find($excercise_id);
         $excercise->delete();

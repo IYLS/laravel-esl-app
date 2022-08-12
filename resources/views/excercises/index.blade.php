@@ -32,8 +32,13 @@
                             {{ $excercise_type }}
                         </td>
                         <td class="col-2">
-                            <a href="{{ route('excercises.' . $excercise->type . '.create', [$unit_id, $excercise->section_id, $excercise->id]) }}" class="btn btn-success"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>
-                            <a href="#" class="btn btn-danger"><i class="mdi mdi-delete" aria-hidden="true"></i></a>
+                            <form action="{{ route("excercises.$excercise->type.destroy", [$unit_id, $excercise->id]) }}" method="POST">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete" aria-hidden="true"></i></button>
+                            </form>
+
+                            <a href="{{ route("excercises.$excercise->type.create", [$unit_id, $excercise->section_id, $excercise->id]) }}" class="btn btn-success"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>
                         </td>
                     </tr>
                 @empty
@@ -85,8 +90,13 @@
                             {{ $excercise_type }}
                         </td>
                         <td class="col-2">
-                            <a href="#" class="btn btn-success"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>
-                            <a href="#" class="btn btn-danger"><i class="mdi mdi-delete" aria-hidden="true"></i></a>
+                            <form action="{{ route("excercises.$excercise->type.destroy", [$unit_id, $excercise->id]) }}" method="POST">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete" aria-hidden="true"></i></button>
+                            </form>
+
+                            <a href="{{ route("excercises.$excercise->type.create", [$unit_id, $excercise->section_id, $excercise->id]) }}" class="btn btn-success"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>
                         </td>
                     </tr>
                 @empty
@@ -138,8 +148,13 @@
                             {{ $excercise_type }}
                         </td>
                         <td class="col-2">
-                            <a href="#" class="btn btn-success"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>
-                            <a href="#" class="btn btn-danger"><i class="mdi mdi-delete" aria-hidden="true"></i></a>
+                            <form action="{{ route("excercises.$excercise->type.destroy", [$unit_id, $excercise->id]) }}" method="POST">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete" aria-hidden="true"></i></button>
+                            </form>
+
+                            <a href="{{ route("excercises.$excercise->type.create", [$unit_id, $excercise->section_id, $excercise->id]) }}" class="btn btn-success"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>
                         </td>
                     </tr>
                 @empty

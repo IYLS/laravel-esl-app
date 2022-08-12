@@ -14,6 +14,8 @@ return new class extends Migration
             $table->string('description');
             $table->string('type');
             $table->integer('subtype');
+            $table->softDeletes();
+
             $table->integer('section_id');
             
             $table->foreign('section_id')->references('id')->on('sections');

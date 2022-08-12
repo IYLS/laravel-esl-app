@@ -14,10 +14,11 @@ return new class extends Migration
             $table->string('description');
             $table->string('instructions')->nullable(true);
             $table->string('type');
-            $table->integer('subtype');
+            $table->integer('subtype')->nullable(true);
             $table->string('image_name')->nullable(true);
             $table->string('video_name')->nullable(true);
             $table->integer('section_id');
+            $table->softDeletes();
 
             $table->foreign('section_id')->references('id')->on('sections');
         });

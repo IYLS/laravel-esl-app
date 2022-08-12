@@ -9,7 +9,7 @@ class VoiceRecognitionQuestionController extends Controller
 {
     public function create()
     {
-        return view('excercises.voice_recognition_question.create');
+        return view('excercises.voice_recognition.create');
     }
 
     public function store(Request $request, $unit_id, $section_id, $excercise_id)

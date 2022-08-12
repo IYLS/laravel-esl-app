@@ -51,9 +51,10 @@ class OpenEndedExcerciseController extends Controller
         //
     }
 
-    public function destroy($unit_id, $section_id, $excercise_id)
+    public function destroy($unit_id, $excercise_id)
     {
         $excercise = OpenEndedExcercise::find($excercise_id);
+        $excercise->questions()->delete();
         $excercise->delete();
 
         return redirect()->route('excercises.index', [$unit_id]);

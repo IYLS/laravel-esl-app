@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('description');
             $table->string('type');
+            $table->softDeletes();
 
             $table->integer('section_id')->nullable(true);
             
