@@ -21,12 +21,15 @@
                         
                     </div>
                     <div class="col-2 d-flex justify-content-center">
-                        <div>
-                            <button class="btn btn-danger btn-sm">Delete</button>
-                        </div>
-                        <div>
-                            <button class="btn btn-warning btn-sm">Edit</button>
-                        </div>
+                        {{-- <button class="btn btn-danger btn-sm m-1">Delete</button> --}}
+                        <br>
+                        <form action="{{ route('questions.fill_in_the_gaps.destroy', [$unit_id, $excercise->id, $question->id]) }}" method="POST">
+                            @method('DELETE')
+                            @csrf
+                            <button class="btn btn-danger btn-sm m-1" type="submit">Delete</a>
+                            <button class="btn btn-warning btn-sm m-1">Edit</button>
+                        </form>
+                        {{-- <div><a href="{{ route('excercises.' . $excercise->type . '.create', [$unit_id, $excercise->section_id, $excercise->id]) }}">Modificar</a></div> --}}
                     </div>
                 </div>
             </div>
@@ -42,8 +45,8 @@
     </div>
 
     <div class="d-flex justify-content-center">
-        <a class="btn btn-secondary m-1" href="{{ URL::previous() }}">Save</a>
-        <a class="btn btn-secondary m-1" href="{{ URL::previous() }}">Cancel</a>
+        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$unit_id]) }}">Save</a>
+        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$unit_id]) }}">Cancel</a>
     </div>
 </div>
 

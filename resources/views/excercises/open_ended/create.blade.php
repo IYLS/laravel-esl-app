@@ -53,7 +53,7 @@
 
     <div class="d-flex justify-content-center">
         <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$unit_id]) }}">Save</a>
-        <a class="btn btn-secondary m-1" href="{{ URL::previous() }}">Cancel</a>
+        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$unit_id]) }}">Cancel</a>
     </div>
 </div>
 

@@ -48,6 +48,6 @@ class DragAndDropQuestionController extends Controller
         $question = DragAndDropQuestion::find($question_id);
         $question->delete();
 
-        return redirect()->route('excercises.drag_and_drop.show', [$unit_id, $excercise_id]);
+        return redirect()->route('excercises.drag_and_drop.create', [$unit_id, $question->excercise->section_id, $excercise_id]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\VoiceRecognitionQuestion;
+use App\Models\VoiceRecognitionExcercise;
 use Illuminate\Http\Request;
 
 class VoiceRecognitionQuestionController extends Controller
@@ -49,9 +50,9 @@ class VoiceRecognitionQuestionController extends Controller
 
     public function destroy($unit_id, $excercise_id, $question_id)
     {
-        $question = VoiceRecognitionQuestion::find($question_id);
+        $excercise = VoiceRecognitionExcercise::find($excercise_id);
         $question->delete();
 
-        return redirect()->route('excercises.open_ended.show', [$unit_id, $excercise_id]);
+        return redirect()->route('excercises.voice_recognition.create', [$unit_id, $question->excercise->section_id, $excercise_id]);
     }
 }

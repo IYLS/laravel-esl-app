@@ -20,7 +20,7 @@ class OpenEndedQuestionController extends Controller
 
     public function show($unit_id, $excercise_id)
     {
-        return route('excercises.open_ended.create', [$unit_id, $excercise->section_id, $excercise_id]);
+        // return route('excercises.open_ended.create', [$unit_id, $excercise->section_id, $excercise_id]);
     }
 
     public function edit($id)
@@ -36,9 +36,8 @@ class OpenEndedQuestionController extends Controller
     public function destroy($unit_id, $excercise_id, $question_id)
     {
         $excercise = OpenEndedExcercise::find($excercise_id);
-        $question = OpenEndedQuestion::find($question_id);
         $question->delete();
 
-        return redirect()->route('excercises.open_ended.create', [$unit_id, $excercise->section_id, $excercise_id]);
+        return redirect()->route('excercises.open_ended.create', [$unit_id, $question->excercise->section_id, $excercise_id]);
     }
 }

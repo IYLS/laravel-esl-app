@@ -3,7 +3,7 @@
 
 <div class="container">
     <div class="mt-2 p-2">
-        <h2>Open Ended questions activity</h2>
+        <h2>Multiple Choice questions activity</h2>
     </div>
 
     <div class="card p-4 m-2">
@@ -37,12 +37,12 @@
                         </ol>
                     </div>
                     <div class="col-2 d-flex justify-content-center">
-                        <div>
-                            <button class="btn btn-danger btn-sm">Delete</button>
-                        </div>
-                        <div>
-                            <button class="btn btn-warning btn-sm">Edit</button>
-                        </div>
+                        <form action="{{ route('questions.multiple_choice.destroy', [$unit_id, $excercise->id, $question->id]) }}" method="POST">
+                            @method('DELETE')
+                            @csrf
+                            <button class="btn btn-danger btn-sm m-1" type="submit">Delete</a>
+                            <button class="btn btn-warning btn-sm m-1">Edit</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -58,8 +58,8 @@
     </div>
 
     <div class="d-flex justify-content-center">
-        <a class="btn btn-secondary m-1" href="{{ URL::previous() }}">Save</a>
-        <a class="btn btn-secondary m-1" href="{{ URL::previous() }}">Cancel</a>
+        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$unit_id]) }}">Save</a>
+        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$unit_id]) }}">Cancel</a>
     </div>
 </div>
 

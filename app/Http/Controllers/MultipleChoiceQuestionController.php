@@ -36,10 +36,10 @@ class MultipleChoiceQuestionController extends Controller
 
     public function destroy($unit_id, $excercise_id, $question_id)
     {
-        $question = OpenEndedQuestion::find($question_id);
+        $question = MultipleChoiceQuestion::find($question_id);
         $question->delete();
 
-        return redirect()->route('excercises.multiple_choice.show', [$unit_id, $excercise_id]);
+        return redirect()->route('excercises.multiple_choice.create', [$unit_id, $question->excercise->section_id, $excercise_id]);
     }
 
     public function storeAlternative()

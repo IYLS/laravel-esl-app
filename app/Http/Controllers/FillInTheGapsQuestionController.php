@@ -39,6 +39,6 @@ class FillInTheGapsQuestionController extends Controller
         $question = FillInTheGapsQuestion::find($question_id);
         $question->delete();
 
-        return redirect()->route('excercises.fill_in_the_gaps.show', [$unit_id, $excercise_id]);
+        return redirect()->route('excercises.fill_in_the_gaps.create', [$unit_id, $question->excercise->section_id, $excercise_id]);
     }
 }
