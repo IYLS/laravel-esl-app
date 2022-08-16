@@ -14,7 +14,9 @@ class ExcerciseController extends Controller
         $while_listening_excercises = $this->getExcercises($unit_id, 'while_listening');
         $post_listening_excercises = $this->getExcercises($unit_id, 'post_listening');
 
-        return view('excercises.index', compact('unit_id', 'pre_listening_excercises', 'while_listening_excercises', 'post_listening_excercises'));
+        $unit_name = $post_listening_excercises->first()->section->unit->title;
+
+        return view('excercises.index', compact('unit_name', 'unit_id', 'pre_listening_excercises', 'while_listening_excercises', 'post_listening_excercises'));
      }
 
     public function create()

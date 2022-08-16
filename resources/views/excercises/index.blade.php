@@ -2,6 +2,9 @@
 @section('main')
 
 <div class="container">
+    <div class="m-2">
+        <h2>{{ $unit_name . " Unit" }}</h2>
+    </div>
     <div class="card p-4 m-4 shadow border-0">
         <div class="row">
             <div class="card-body d-flex justify-content-between">
