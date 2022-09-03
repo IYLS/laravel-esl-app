@@ -8,19 +8,19 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('open_ended_questions', function (Blueprint $table) {
+        Schema::create('alternatives', function (Blueprint $table) {
             $table->id('id');
             $table->string('title');
-            $table->text('answer')->nullable(true);
+            $table->boolean('correct_alt')->nullable(true);
+            $table->integer('question_id');
             $table->softDeletes();
-            $table->integer('excercise_id');
-           
-            $table->foreign('excercise_id')->references('id')->on('open_ended_excercises');
+
+            $table->foreign('question_id')->references('id')->on('questions');
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('open_ended_questions');
+        Schema::dropIfExists('alternatives');
     }
 };

@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\MultipleChoiceQuestion;
+use App\Models\Question;
 
-class MultipleChoiceAlternative extends Model
+class Alternative extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'multiple_choice_alternatives';
+    protected $table = 'alternatives';
     protected $fillable = [ 
         'title',
         'correct_alt',
@@ -20,5 +20,5 @@ class MultipleChoiceAlternative extends Model
     public $timestamps = false;
     public $incrementing = true;
     
-    public function question() { return $this->belongsTo(MultipleChoiceQuestion::class); }
+    public function question() { return $this->belongsTo(Question::class); }
 }

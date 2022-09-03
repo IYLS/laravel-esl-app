@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\MultipleChoiceExcercise;
 use App\Models\MultipleChoiceQuestion;
 use App\Models\Section;
+use App\Models\Feedback;
 
 class MultipleChoiceExcerciseController extends Controller
 {
@@ -13,6 +14,7 @@ class MultipleChoiceExcerciseController extends Controller
     {
         $questions = MultipleChoiceQuestion::where('excercise_id', $excercise_id)->get();
         $excercise = MultipleChoiceExcercise::where('id', $excercise_id)->get()->first();
+        $feedback = Feedback::where('excercise_id', $excercise_id)->get()->first();
         
         return view('excercises.multiple_choice.create', compact('unit_id', 'excercise', 'questions'));
     }

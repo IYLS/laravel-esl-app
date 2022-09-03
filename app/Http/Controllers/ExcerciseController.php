@@ -3,20 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Excercise;
-use App\Models\Section;
+use App\Models\Unit;
 
 class ExcerciseController extends Controller
 {
     public function index($unit_id)
     {   
-        $pre_listening_excercises = $this->getExcercises($unit_id, 'pre_listening');
-        $while_listening_excercises = $this->getExcercises($unit_id, 'while_listening');
-        $post_listening_excercises = $this->getExcercises($unit_id, 'post_listening');
-
-        $unit_name = $post_listening_excercises->first()->section->unit->title;
-
-        return view('excercises.index', compact('unit_name', 'unit_id', 'pre_listening_excercises', 'while_listening_excercises', 'post_listening_excercises'));
+        $unit = Unit::where("id", $unit_id)->first();
+        return view('excercises.index', compact('unit'));
      }
 
     public function create()
@@ -52,15 +46,7 @@ class ExcerciseController extends Controller
     private function getExcercises($unit_id, $section_name)
     {
         $section = Section::where('unit_id', $unit_id)->where('name', $section_name)->get()->first();
-
-        $voice_recognition = $section->voiceRecognitionExcercises()->get();
-        $multiple_choice = $section->multipleChoiceExcercises()->get();
-        $fill_in_the_gaps = $section->fillInTheGapsExcercises()->get();
-        $drag_and_drop = $section->dragAndDropExcercises()->get();
-        $open_ended = $section->openEndedExcercises()->get();
-        
-        $excercises = $drag_and_drop->merge($open_ended)->merge($fill_in_the_gaps)->merge($multiple_choice)->merge($voice_recognition);
-
+        $excercises = $section->excercises()->get();
         return $excercises;
     }
 }

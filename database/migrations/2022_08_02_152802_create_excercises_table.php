@@ -8,22 +8,25 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('fill_in_the_gaps_excercises', function (Blueprint $table) {
+        Schema::create('excercises', function (Blueprint $table) {
             $table->id('id');
             $table->string('title');
-            $table->string('description');
+            $table->string('description')->nullable(true);
+            $table->string('instructions')->nullable(true);
             $table->string('type');
-            $table->integer('subtype');
+            $table->string('subtype')->nullable(true);
+            $table->string('image_name')->nullable(true);
+            $table->string('video_name')->nullable(true);
             $table->softDeletes();
 
             $table->integer('section_id');
-            
+
             $table->foreign('section_id')->references('id')->on('sections');
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('fill_in_the_gaps_excercises');
+        Schema::dropIfExists('excercises');
     }
 };

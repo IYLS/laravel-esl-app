@@ -9,8 +9,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('feedback_types', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id('id');
+            $table->string('name');
+            $table->text('description');
+            $table->softDeletes();
         });
     }
 

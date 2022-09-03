@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\FillInTheGapsExcercise;
 use App\Models\FillInTheGapsQuestion;
 use App\Models\Section;
+use App\Models\Feedback;
 
 class FillInTheGapsExcerciseController extends Controller
 {
@@ -13,6 +14,7 @@ class FillInTheGapsExcerciseController extends Controller
     {
         $questions = FillInTheGapsQuestion::where('excercise_id', $excercise_id)->get();
         $excercise = FillInTheGapsExcercise::where('id', $excercise_id)->get()->first();
+        $feedback = Feedback::where('excercise_id', $excercise_id)->get()->first();
         
         return view('excercises.fill_in_the_gaps.create', compact('unit_id', 'excercise', 'questions'));
     }

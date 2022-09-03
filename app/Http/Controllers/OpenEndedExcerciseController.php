@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\OpenEndedExcercise;
 use App\Models\OpenEndedQuestion;
 use App\Models\Section;
+use App\Models\Feedback;
 
 class OpenEndedExcerciseController extends Controller
 {
@@ -18,6 +19,7 @@ class OpenEndedExcerciseController extends Controller
     {
         $questions = OpenEndedQuestion::where('excercise_id', $excercise_id)->get();
         $excercise = OpenEndedExcercise::where('id', $excercise_id)->get()->first();
+        $feedback = Feedback::where('excercise_id', $excercise_id)->get()->first();
         
         return view('excercises.open_ended.create', compact('unit_id', 'excercise', 'questions'));
     }

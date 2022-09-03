@@ -6,11 +6,11 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use DB;
 
-class MultipleChoiceAlternativeSeeder extends Seeder
+class AlternativeSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('multiple_choice_alternatives')->insert([
+        DB::table('alternatives')->insert([
             [            
                 'id' => 14,
                 'title' => 'Only I',

@@ -17,4 +17,6 @@ class FeedbackType extends Model
     ];
     public $timestamps = false;
     public $incrementing = true;
+
+    public function existingFeedback() { return $this->hasMany(Feedback::class, 'feedback_type_id'); }
 }

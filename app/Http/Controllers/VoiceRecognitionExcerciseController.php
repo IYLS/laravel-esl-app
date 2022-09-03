@@ -6,6 +6,7 @@ use App\Models\VoiceRecognitionExcercise;
 use Illuminate\Http\Request;
 use App\Models\VoiceRecognitionQuestion;
 use App\Models\Section;
+use App\Models\Feedback;
 
 class VoiceRecognitionExcerciseController extends Controller
 {
@@ -18,6 +19,7 @@ class VoiceRecognitionExcerciseController extends Controller
     {
         $questions = VoiceRecognitionQuestion::where('excercise_id', $excercise_id)->get();
         $excercise = VoiceRecognitionExcercise::where('id', $excercise_id)->get()->first();
+        $feedback = Feedback::where('excercise_id', $excercise_id)->get()->first();
 
         return view('excercises.voice_recognition.create', compact(['unit_id', 'section_id', 'questions', 'excercise']));
     }

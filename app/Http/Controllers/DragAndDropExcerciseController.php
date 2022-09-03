@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\DragAndDropExcercise;
 use App\Models\DragAndDropQuestion;
+use App\Models\Feedback;
 use App\Models\Section;
+
 
 class DragAndDropExcerciseController extends Controller
 {
@@ -18,8 +20,9 @@ class DragAndDropExcerciseController extends Controller
     {
         $questions = DragAndDropQuestion::where('excercise_id', $excercise_id)->get();
         $excercise = DragAndDropExcercise::where('id', $excercise_id)->get()->first();
+        $feedback = Feedback::where('excercise_id', $excercise_id)->get()->first();
 
-        return view('excercises.drag_and_drop.create', compact(['unit_id', 'section_id', 'questions', 'excercise']));
+        return view('excercises.drag_and_drop.create', compact(['unit_id', 'section_id', 'questions', 'excercise', 'feedback']));
     }
 
     public function store(Request $request, $unit_id, $section_name)

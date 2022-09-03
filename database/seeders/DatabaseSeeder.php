@@ -16,16 +16,10 @@ class DatabaseSeeder extends Seeder
         $this->call(KeywordSeeder::class);
         $this->call(UnitGroupSeeder::class);
         $this->call(SectionSeeder::class);
-        $this->call(MultipleChoiceExcerciseSeeder::class);
-        $this->call(MultipleChoiceQuestionSeeder::class);
-        $this->call(MultipleChoiceAlternativeSeeder::class);
-        $this->call(VoiceRecognitionExcerciseSeeder::class);
-        $this->call(VoiceRecognitionQuestionSeeder::class);
-        $this->call(FillInTheGapsExcerciseSeeder::class);
-        $this->call(FillInTheGapsQuestionSeeder::class);
-        $this->call(DragAndDropExcerciseSeeder::class);
-        $this->call(DragAndDropQuestionSeeder::class);
-        $this->call(OpenEndedExcerciseSeeder::class);
-        $this->call(OpenEndedQuestionSeeder::class);
+        $this->call(ExcerciseSeeder::class);
+        $this->call(QuestionSeeder::class);
+        $this->call(AlternativeSeeder::class);
+        $this->call(FeedbackTypeSeeder::class);
+        $this->call(FeedbackSeeder::class);
     }
 }

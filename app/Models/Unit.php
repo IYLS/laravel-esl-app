@@ -25,7 +25,7 @@ class Unit extends Model
         'dictionary',
         'listening_tips_enabled',
         'cultural_notes_enabled',
-        'transcrip_enabledt',
+        'transcript_enabled',
         'glossary_enabled',
         'translation_enabled',
         'dictionary_enabled',
@@ -36,18 +36,7 @@ class Unit extends Model
     public $timestamps = false;
     public $incrementing = true;
 
-    public function sections()
-    {
-        return $this->hasMany(Section::class);
-    }
-
-    public function keywords()
-    {
-        return $this->hasMany(Keyword::class);
-    }
-
-    public function groups() 
-    {
-        return $this->belongsToMany(Group::class, 'unit_group');    
-    }
+    public function sections() { return $this->hasMany(Section::class); }
+    public function keywords() { return $this->hasMany(Keyword::class); }
+    public function groups() { return $this->belongsToMany(Group::class, 'unit_group'); }
 }
