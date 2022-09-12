@@ -14,7 +14,7 @@
 
     <div class="card p-4 m-2">
         <h4>Activity items</h4>
-        @forelse($questions as $question)
+        @forelse($excercise->questions as $question)
             <div class="card mt-1 mb-1 p-1">
                 <div class="row">
                     <div class="col-10">
@@ -28,7 +28,7 @@
                         </ul>
                         <div class="col-2 d-flex justify-content-center">
                             <br>
-                            <form action="{{ route('questions.destroy', [$unit_id, $question->excercise->excerciseType->name, $excercise->id, $question->id]) }}" method="POST">
+                            <form action="{{ route('questions.destroy', [$excercise->id, $question->id]) }}" method="POST">
                                 @method('DELETE')
                                 @csrf
                                 <button class="btn btn-danger btn-sm m-1" type="submit">Delete</a>
@@ -71,8 +71,8 @@
     </div>
 
     <div class="d-flex justify-content-center">
-        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$unit_id]) }}">Save</a>
-        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$unit_id]) }}">Cancel</a>
+        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$excercise->section->unit_id]) }}">Save</a>
+        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$excercise->section->unit_id]) }}">Cancel</a>
     </div>
 </div>
 

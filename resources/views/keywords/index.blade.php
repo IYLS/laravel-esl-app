@@ -20,7 +20,7 @@
                     <p>{{ $keyword->description }}</p>
                 </td>
                 <td>
-                    {{-- <form action="{{ route('keywords.destroy', [$unit_id, $keyword->id]) }}" method="POST">
+                    {{-- <form action="{{ route('keywords.destroy', [$excercise->section->unit_id, $keyword->id]) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger">Delete</button>
@@ -40,7 +40,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('keywords.update', [$unit_id, $keyword->id]) }}" method="POST">
+                            <form action="{{ route('keywords.update', [$excercise->section->unit_id, $keyword->id]) }}" method="POST">
                                 @csrf
                                 <input id="word" name="word" type="text" class="form-control" placeholder="Enter keyword" value="{{ $keyword->keyword }}">
                                 <br>
@@ -75,7 +75,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('keywords.store', $unit_id) }}" method="POST">
+                <form action="{{ route('keywords.store', $excercise->section->unit_id) }}" method="POST">
                     @csrf
                     <input id="word" name="word" type="text" class="form-control" placeholder="Enter keyword">
                     <br>

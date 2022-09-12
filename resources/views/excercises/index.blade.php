@@ -42,7 +42,7 @@
                                     <button type="submit" class="btn-sm btn btn-danger"><i class="mdi mdi-delete" aria-hidden="true"></i></button>
                                 </form>
     
-                                <a href="{{ route("excercises.show", [$unit->id, $excercise->excerciseType->underscore_name, $excercise->section_id, $excercise->id]) }}" class="btn-sm btn btn-success me-1 ms-1"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>
+                                <a href="{{ route("excercises.show", $excercise->id) }}" class="btn-sm btn btn-success me-1 ms-1"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>
                             </div>
                         </td>
                     </tr>

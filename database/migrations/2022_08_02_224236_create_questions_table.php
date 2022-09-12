@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('audio_name')->nullable(true);
             $table->string('type');
 
+            $table->softDeletes();
+
             $table->integer('excercise_id');
 
             $table->foreign('excercise_id')->references('id')->on('excercises');

@@ -14,26 +14,25 @@
 
     <div class="card p-4 m-2">
         <h4>Activity questions</h4>        
-        @forelse($questions as $question)
-            <div class="card mt-1 mb-1 p-1">
+        @forelse($excercise->questions as $question)
+            <div class="card mt-1 mb-1 p-4">
                 <div class="row">
                     <div class="col-10">
+                        <p>Question:</p>
                         <ul>
                             <li>
-                                <p>Question: {{ $question->title }}</p>
+                                <p>{{ $question->statement }}</p>
                             </li>
                         </ul>
                     </div>
                     <div class="col-2 d-flex justify-content-center">
-                        {{-- <button class="btn btn-danger btn-sm m-1">Delete</button> --}}
                         <br>
-                        <form action="{{ route('questions.open_ended.destroy', [$unit_id, $excercise->id, $question->id]) }}" method="POST">
+                        <form action="{{ route('questions.destroy', [$excercise->id, $question->id]) }}" method="POST">
                             @method('DELETE')
                             @csrf
-                            <button class="btn btn-danger btn-sm m-1" type="submit">Delete</a>
-                            <button class="btn btn-warning btn-sm m-1">Edit</button>
+                            <button class="btn btn-danger btn-sm m-1" type="submit">Delete</button>
+                            <a class="btn btn-warning btn-sm m-1">Edit</a>
                         </form>
-                        {{-- <div><a href="{{ route('excercises.' . $excercise->type . '.create', [$unit_id, $excercise->section_id, $excercise->id]) }}">Modificar</a></div> --}}
                     </div>
                 </div>
             </div>
@@ -52,8 +51,8 @@
     </div>
 
     <div class="d-flex justify-content-center">
-        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$unit_id]) }}">Save</a>
-        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$unit_id]) }}">Cancel</a>
+        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$excercise->section->unit_id]) }}">Save</a>
+        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$excercise->section->unit_id]) }}">Cancel</a>
     </div>
 </div>
 
@@ -66,7 +65,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('questions.store', [$unit_id, $excercise->section_id, $excercise->id]) }}" method="POST">
+                <form action="{{ route('questions.store', [$excercise->section->unit_id, $excercise->section_id, $excercise->id]) }}" method="POST">
                     @csrf
                     <input id="question" name="question" type="text" class="form-control" placeholder="Type here the question to be answered by students">
                     <div class="modal-footer">

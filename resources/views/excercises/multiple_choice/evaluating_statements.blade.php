@@ -1,3 +1,5 @@
+{{-- EVALUATING STATEMENT --}}
+
 <ol type="1">
     @foreach($e->questions as $question)
         <div class="border rounded p-3 mt-3 mb-3 shadow">

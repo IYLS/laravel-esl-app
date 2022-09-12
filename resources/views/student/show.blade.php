@@ -80,19 +80,19 @@
 
                                         {{-- Subtype 1 = Predicting --}}
                                         @if($e->subtype == 1)
-                                            @include('excercises.multiple_choice.subtype_1', ['e' => $e])
+                                            @include('excercises.multiple_choice.predicting', ['e' => $e])
 
                                         {{-- Subtype 2 = What do you hear? --}}
                                         @elseif($e->subtype == 2)
-                                            @include('excercises.multiple_choice.subtype_2', ['e' => $e])
+                                            @include('excercises.multiple_choice.what_do_you_hear', ['e' => $e])
 
                                         {{-- Subtype 3 = Evaluating statements --}}
                                         @elseif($e->subtype == 3)
-                                            @include('excercises.multiple_choice.subtype_3', ['e' => $e])
+                                            @include('excercises.multiple_choice.evaluating_statements', ['e' => $e])
 
                                         {{-- Subtype 4 = Multiple Choice --}}
                                         @elseif($e->subtype == 4)
-                                            @include('excercises.multiple_choice.subtype_4', ['e' => $e])
+                                            @include('excercises.multiple_choice.multiple_choice', ['e' => $e])
                                         @endif
                                     </div>
                                 </div>

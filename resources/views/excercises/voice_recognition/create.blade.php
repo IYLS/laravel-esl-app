@@ -14,7 +14,7 @@
 
     <div class="card p-4 m-2">
         <h4>Activity items</h4>        
-        @forelse($questions as $question)
+        @forelse($excercise->questions as $question)
             <h5 class="mt-2">Item {{ $loop->index + 1 }}</h5>
             <div class="card mt-1 mb-1 p-1">
                 <div class="row">
@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-2 d-flex justify-content-center">
                         <br>
-                        <form action="{{ route('questions.destroy', [$unit_id, $question->excercise_type_id, $excercise->id, $question->id]) }}" method="POST">
+                        <form action="{{ route('questions.destroy', [$excercise->id, $question->id]) }}" method="POST">
                             @method('DELETE')
                             @csrf
                             <button class="btn btn-danger btn-sm m-1" type="submit">Delete</a>
@@ -54,12 +54,14 @@
     </div>
 
     <div class="d-flex justify-content-center">
-        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$unit_id]) }}">Save</a>
-        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$unit_id]) }}">Cancel</a>
+        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$excercise->section->unit_id]) }}">Save</a>
+        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$excercise->section->unit_id]) }}">Cancel</a>
     </div>
 </div>
 
-<!-- Modal -->
+@include('excercises.question_modal', ['excercise' => $excercise]);
+
+{{-- <!-- Modal -->
 <div class="modal fade" id="addQuestionModal" tabindex="-1" aria-labelledby="addQuestionModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -68,7 +70,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form enctype="multipart/form-data" action="{{ route('questions.store', [$unit_id, $excercise->section_id, $excercise->id]) }}" method="POST">
+                <form enctype="multipart/form-data" action="{{ route('questions.store', [$excercise->section->unit_id, $excercise->section_id, $excercise->id]) }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label" for="title">Item title:</label>
@@ -89,6 +91,6 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 @endsection

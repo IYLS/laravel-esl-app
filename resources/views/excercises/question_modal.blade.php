@@ -1,3 +1,4 @@
+@php $type = $excercise->excerciseType->underscore_name; @endphp
 <div class="modal fade" id="addQuestionModal" tabindex="-1" aria-labelledby="addQuestionModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -6,49 +7,59 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('questions.store', [$excercise->id, $excercise->section_id, $excercise->excercise_type_id]) }}" method="POST">
+                <form @if($type == "voice_recognition") enctype="multipart/form-data" @endif action="{{ route('questions.store', [$excercise->id, $excercise->section_id, $excercise->excercise_type_id]) }}" method="POST">
                     @csrf
-                    @switch($excercise->excerciseType->underscore_name)
+                    @php
+                    $statement_placeholder = "";
+                    $answer_placeholder = "";
+                    @endphp
+                    @switch($type)
                     @case('drag_and_drop')
                         @php 
-                            $statement_placeholder = "drag_and_drop";
-                            $answer_placeholder = "drag_and_drop";
+                            $statement_placeholder = "Word";
+                            $answer_placeholder = 'Matching description';
                         @endphp
                         @break
                     @case('fill_in_the_gaps')
                         @php 
-                            $statement_placeholder = "fill_in_the_gaps";
-                            $answer_placeholder = "fill_in_the_gaps";
+                            $statement_placeholder = "Statement";
+                            $answer_placeholder = "Concept";
                         @endphp
                         @break
                     @case('multiple_choice')
-                        @php 
-                            $statement_placeholder = "multiple_choice";
-                            $answer_placeholder = "multiple_choice";
+                        @php  
+                            $statement_placeholder = "Question statement";
                         @endphp
                         @break
                     @case('open_ended')
                         @php 
                             $statement_placeholder = "open_ended";
-                            $answer_placeholder = "open_ended";
                         @endphp
                         @break
                     @case('voice_recognition')
                         @php 
-                            $statement_placeholder = "voice_recognition";
-                            $answer_placeholder = "voice_recognition";
+                            $statement_placeholder = "Item title";
                         @endphp
                         @break
                     @default
-                        @php 
-                            $statement_placeholder = "asd";
-                            $answer_placeholder = "asd";
-                        @endphp
-                        @break
                     @endswitch
 
-                    <input id="statement" name="statement" type="text" class="form-control" placeholder={{ $statement_placeholder }}>
-                    <input id="answer" name="answer" type="text" class="form-control" placeholder={{ $answer_placeholder }}>
+                    <input id="statement" name="statement" type="text" class="form-control" placeholder="{{ $statement_placeholder }}">
+                    <br>
+                    
+                    @if($type != 'multiple_choice' && $type != 'open_ended' && $type != 'voice_recognition')
+                        <input id="answer" name="answer" type="text" class="form-control" placeholder="{{ $answer_placeholder }}">
+                    @elseif($type == 'voice_recognition')
+                        <div class="mb-3">
+                            <label for="audio" class="form-label">Select audio file</label>
+                            <input class="form-control" type="file" name="audio" id="audio" accept="audio/*">
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Select image file</label>
+                            <input class="form-control" type="file" name="image" id="image" accept="image/*">
+                        </div>
+                    @endif
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save</button>

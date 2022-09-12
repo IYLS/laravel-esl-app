@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreQuestionRequest;
 use App\Http\Requests\UpdateQuestionRequest;
 use App\Models\Question;
+use App\Models\Excercise;
 
 class QuestionController extends Controller
 {
@@ -38,8 +39,11 @@ class QuestionController extends Controller
         //
     }
 
-    public function destroy($unit_id, $)
+    public function destroy($excercise_id, $question_id)
     {
-        //
+        $question = Question::find($question_id);
+        $question->delete();
+
+        return redirect()->route('excercises.show', $question->excercise_id);
     }
 }

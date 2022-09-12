@@ -53,7 +53,7 @@ Route::post('/units/{unit}/keywords/{keyword}/update', [KeywordController::class
 // Excercises Routes
 Route::get('/units/{unit}/excercises', [ExcerciseController::class, 'index'])->name('excercises.index');
 Route::post('/units/{unit}/excercises/add', [ExcerciseController::class, 'add'])->name('excercises.add');
-Route::get('/units/{unit}/excercises/show/type/{type}/section/{section}/excercise/{excercise}', [ExcerciseController::class, 'show'])->name('excercises.show');
+Route::get('/excercises/{excercise}', [ExcerciseController::class, 'show'])->name('excercises.show');
 Route::post('/units/{unit}/excercises/store/{type}/section/{section}', [ExcerciseController::class, 'store'])->name('excercises.store');
 Route::get('/units/{unit}/excercises/create/{type}/section/{section}', [ExcerciseController::class, 'create'])->name('excercises.create');
 Route::delete('/units/{unit}/excercises/destroy/{type}/{excercise}', [ExcerciseController::class, 'destroy'])->name('excercises.destroy');

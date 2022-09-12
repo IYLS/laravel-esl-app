@@ -41,13 +41,12 @@ class ExcerciseController extends Controller
         return redirect()->route('excercises.create', [$unit_id, $section_id, $excercise->id]);
     }
 
-    public function show($unit_id, $type_name, $section_id, $excercise_id)
+    public function show($excercise_id)
     {
         $excercise = Excercise::find($excercise_id);
-        $feedback = Feedback::where('excercise_id', $excercise->id)->get()->first();
-        $questions = Question::where('excercise_id', $excercise->id)->get();
+        $type_name = $excercise->excerciseType->underscore_name;
 
-        return view("excercises.$type_name.create", compact(['unit_id', 'section_id', 'questions', 'excercise', 'feedback']));
+        return view("excercises.$type_name.create", compact('excercise'));
     }
 
     public function edit($id)
@@ -66,7 +65,7 @@ class ExcerciseController extends Controller
         $excercise = Excercise::find($excercise_id);
         $excercise->delete();
 
-        return redirect()->route('excercises.index', [$unit_id, $types]);
+        return redirect()->route('excercises.index', [$excercise->section->unit_id, $types]);
     }
 
     private function getExcercises($unit_id, $section_name)
