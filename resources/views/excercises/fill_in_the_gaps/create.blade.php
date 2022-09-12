@@ -21,15 +21,14 @@
                         
                     </div>
                     <div class="col-2 d-flex justify-content-center">
-                        {{-- <button class="btn btn-danger btn-sm m-1">Delete</button> --}}
                         <br>
-                        <form action="{{ route('questions.fill_in_the_gaps.destroy', [$unit_id, $excercise->id, $question->id]) }}" method="POST">
+                        <form action="{{ route('questions.destroy', [$unit_id, $question->excercise_type_id, $excercise->id, $question->id]) }}" method="POST">
                             @method('DELETE')
                             @csrf
                             <button class="btn btn-danger btn-sm m-1" type="submit">Delete</a>
                             <button class="btn btn-warning btn-sm m-1">Edit</button>
                         </form>
-                        {{-- <div><a href="{{ route('excercises.' . $excercise->type . '.create', [$unit_id, $excercise->section_id, $excercise->id]) }}">Modificar</a></div> --}}
+
                     </div>
                 </div>
             </div>
@@ -59,7 +58,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('questions.multiple_choice.store', [$unit_id, $excercise->section_id, $excercise->id]) }}" method="POST">
+                <form action="{{ route('questions.store', [$unit_id, $excercise->section_id, $excercise->id]) }}" method="POST">
                     @csrf
                     <input id="question" name="question" type="text" class="form-control" placeholder="Type here the question to be answered by students">
                     <div class="modal-footer">

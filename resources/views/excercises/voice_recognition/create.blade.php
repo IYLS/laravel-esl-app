@@ -21,7 +21,7 @@
                     <div class="col-10">
                         <ul>
                             <li>
-                                <p>Item title: {{ $question->title }}</p>
+                                <p>Item title: {{ $question->statement }}</p>
                             </li>
                             <li>
                                 <p>Audio url: {{ $question->audio_url }}</p>
@@ -32,15 +32,13 @@
                         </ul>
                     </div>
                     <div class="col-2 d-flex justify-content-center">
-                        {{-- <button class="btn btn-danger btn-sm m-1">Delete</button> --}}
                         <br>
-                        <form action="{{ route('questions.voice_recognition.destroy', [$unit_id, $excercise->id, $question->id]) }}" method="POST">
+                        <form action="{{ route('questions.destroy', [$unit_id, $question->excercise_type_id, $excercise->id, $question->id]) }}" method="POST">
                             @method('DELETE')
                             @csrf
                             <button class="btn btn-danger btn-sm m-1" type="submit">Delete</a>
                             <button class="btn btn-warning btn-sm m-1">Edit</button>
                         </form>
-                        {{-- <div><a href="{{ route('excercises.' . $excercise->type . '.create', [$unit_id, $excercise->section_id, $excercise->id]) }}">Modificar</a></div> --}}
                     </div>
                 </div>
             </div>
@@ -70,7 +68,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form enctype="multipart/form-data" action="{{ route('questions.voice_recognition.store', [$unit_id, $excercise->section_id, $excercise->id]) }}" method="POST">
+                <form enctype="multipart/form-data" action="{{ route('questions.store', [$unit_id, $excercise->section_id, $excercise->id]) }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label" for="title">Item title:</label>

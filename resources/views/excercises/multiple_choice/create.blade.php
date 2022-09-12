@@ -37,7 +37,7 @@
                         </ol>
                     </div>
                     <div class="col-2 d-flex justify-content-center">
-                        <form action="{{ route('questions.multiple_choice.destroy', [$unit_id, $excercise->id, $question->id]) }}" method="POST">
+                        <form action="{{ route('questions.destroy', [$question->excercise_id, $question->id]) }}" method="POST">
                             @method('DELETE')
                             @csrf
                             <button class="btn btn-danger btn-sm m-1" type="submit">Delete</a>
@@ -63,26 +63,6 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="addQuestionModal" tabindex="-1" aria-labelledby="addQuestionModal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addQuestionModal">New Question</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('questions.multiple_choice.store', [$unit_id, $excercise->section_id, $excercise->id]) }}" method="POST">
-                    @csrf
-                    <input id="question" name="question" type="text" class="form-control" placeholder="Type here the question to be answered by students">
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+@include('excercises.question_modal')
 
 @endsection

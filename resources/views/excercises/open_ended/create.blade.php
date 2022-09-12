@@ -66,7 +66,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('questions.open_ended.store', [$unit_id, $excercise->section_id, $excercise->id]) }}" method="POST">
+                <form action="{{ route('questions.store', [$unit_id, $excercise->section_id, $excercise->id]) }}" method="POST">
                     @csrf
                     <input id="question" name="question" type="text" class="form-control" placeholder="Type here the question to be answered by students">
                     <div class="modal-footer">

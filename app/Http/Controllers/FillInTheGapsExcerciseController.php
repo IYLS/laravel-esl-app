@@ -51,7 +51,7 @@ class FillInTheGapsExcerciseController extends Controller
 
     public function destroy($unit_id, $excercise_id)
     {
-        $excercise = FillInTheGapsExcercise::find($excercise_id);
+        $excercise = Excercise::find($excercise_id);
         $excercise->questions()->delete();
         $excercise->delete();
 

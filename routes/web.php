@@ -9,17 +9,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\ExcerciseController;
-use App\Http\Controllers\VoiceRecognitionQuestionController;
-use App\Http\Controllers\VoiceRecognitionExcerciseController;
-use App\Http\Controllers\DragAndDropExcerciseController;
-use App\Http\Controllers\DragAndDropQuestionController;
-use App\Http\Controllers\MultipleChoiceExcerciseController;
-use App\Http\Controllers\MultipleChoiceQuestionController;
-use App\Http\Controllers\OpenEndedExcerciseController;
-use App\Http\Controllers\OpenEndedQuestionController;
-use App\Http\Controllers\FillInTheGapsExcerciseController;
-use App\Http\Controllers\FillInTheGapsQuestionController;
-
+use App\Http\Controllers\QuestionController;
 
 // Home
 Route::get('/', [AuthController::class, 'index'])->name('auth.index');
@@ -60,63 +50,16 @@ Route::post('/units/{unit}/keywords/store', [KeywordController::class, 'store'])
 Route::delete('/units/{unit}/keywords/{keyword}/destroy', [KeywordController::class, 'destroy'])->name('keywords.destroy');
 Route::post('/units/{unit}/keywords/{keyword}/update', [KeywordController::class, 'update'])->name('keywords.update');
 
-
-
 // Excercises Routes
 Route::get('/units/{unit}/excercises', [ExcerciseController::class, 'index'])->name('excercises.index');
 Route::post('/units/{unit}/excercises/add', [ExcerciseController::class, 'add'])->name('excercises.add');
+Route::get('/units/{unit}/excercises/show/type/{type}/section/{section}/excercise/{excercise}', [ExcerciseController::class, 'show'])->name('excercises.show');
+Route::post('/units/{unit}/excercises/store/{type}/section/{section}', [ExcerciseController::class, 'store'])->name('excercises.store');
+Route::get('/units/{unit}/excercises/create/{type}/section/{section}', [ExcerciseController::class, 'create'])->name('excercises.create');
+Route::delete('/units/{unit}/excercises/destroy/{type}/{excercise}', [ExcerciseController::class, 'destroy'])->name('excercises.destroy');
 
-// Voice recognition  Routes
-Route::get('/units/{unit}/excercises/create/voice_recognition/{section}/{excercise}', [VoiceRecognitionExcerciseController::class, 'create'])->name('excercises.voice_recognition.create');
-Route::post('/units/{unit}/excercises/store/voice_recognition/{section}', [VoiceRecognitionExcerciseController::class, 'store'])->name('excercises.voice_recognition.store');
-Route::delete('/units/{unit}/excercises/destroy/voice_recognition/{excercise}', [VoiceRecognitionExcerciseController::class, 'destroy'])->name('excercises.voice_recognition.destroy');
-Route::get('/units/{unit}/excercises/show/voice_recognition/{excercise}', [VoiceRecognitionExcerciseController::class, 'show'])->name('excercises.voice_recognition.show');
-
-Route::get('/units/{unit}/excercises/create/voice_recognition/{excercise}/question', [VoiceRecognitionQuestion::class, 'create'])->name('questions.voice_recognition.create');
-Route::post('/units/{unit}/excercises/store/voice_recognition/{section}/{excercise}/question', [VoiceRecognitionQuestionController::class, 'store'])->name('questions.voice_recognition.store');
-Route::delete('/units/{unit}/excercises/destroy/voice_recognition/{excercise}/{question}', [VoiceRecognitionQuestionController::class, 'destroy'])->name('questions.voice_recognition.destroy');
-Route::get('/units/{unit}/excercises/{excercise}/questions/show/voice_recognition/{question}', [VoiceRecognitionQuestionController::class, 'show'])->name('questions.voice_recognition.show');
-
-// Multiple Choice Routes
-Route::get('/units/{unit}/excercises/create/multiple_choice/{section}/{excercise}', [MultipleChoiceExcerciseController::class, 'create'])->name('excercises.multiple_choice.create');
-Route::post('/units/{unit}/excercises/store/multiple_choice/{section}', [MultipleChoiceExcerciseController::class, 'store'])->name('excercises.multiple_choice.store');
-Route::delete('/units/{unit}/excercises/destroy/multiple_choice/{excercise}', [MultipleChoiceExcerciseController::class, 'destroy'])->name('excercises.multiple_choice.destroy');
-Route::get('/units/{unit}/excercises/show/multiple_choice/{excercise}', [MultipleChoiceExcerciseController::class, 'show'])->name('excercises.multiple_choice.show');
-
-Route::get('/units/{unit}/excercises/create/multiple_choice/{excercise}/question', [MultipleChoiceQuestionController::class, 'create'])->name('questions.multiple_choice.create');
-Route::post('/units/{unit}/excercises/store/multiple_choice/{excercise}/{question/question}', [MultipleChoiceQuestionController::class, 'store'])->name('questions.multiple_choice.store');
-Route::delete('/units/{unit}/excercises/destroy/multiple_choice/{excercise}/{question}', [MultipleChoiceQuestionController::class, 'destroy'])->name('questions.multiple_choice.destroy');
-Route::get('/units/{unit}/excercises/{excercise}/questions/show/multiple_choice/{question}', [MultipleChoiceQuestionController::class, 'show'])->name('questions.multiple_choice.show');
-
-// Drag and drop Routes
-Route::get('/units/{unit}/excercises/create/drag_and_drop/{section}/{excercise}', [DragAndDropExcerciseController::class, 'create'])->name('excercises.drag_and_drop.create');
-Route::post('/units/{unit}/excercises/store/drag_and_drop/{section}', [DragAndDropExcerciseController::class, 'store'])->name('excercises.drag_and_drop.store');
-Route::delete('/units/{unit}/excercises/destroy/drag_and_drop/{excercise}', [DragAndDropExcerciseController::class, 'destroy'])->name('excercises.drag_and_drop.destroy');
-Route::get('/units/{unit}/excercises/show/drag_and_drop/{excercise}', [DragAndDropExcerciseController::class, 'show'])->name('excercises.drag_and_drop.show');
-
-Route::get('/units/{unit}/excercises/create/drag_and_drop/{excercise}/question', [DragAndDropQuestionController::class, 'create'])->name('questions.drag_and_drop.create');
-Route::post('/units/{unit}/excercises/store/drag_and_drop/{excercise}/question', [DragAndDropQuestionController::class, 'store'])->name('questions.drag_and_drop.store');
-Route::delete('/units/{unit}/excercises/destroy/drag_and_drop/{excercise}/{question}', [DragAndDropQuestionController::class, 'destroy'])->name('questions.drag_and_drop.destroy');
-Route::get('/units/{unit}/excercises/{excercise}/questions/show/drag_and_drop/{question}', [DragAndDropQuestionController::class, 'show'])->name('questions.drag_and_drop.show');
-
-// Open ended Routes
-Route::get('/units/{unit}/excercises/create/open_ended/{section}/{excercise}', [OpenEndedExcerciseController::class, 'create'])->name('excercises.open_ended.create');
-Route::post('/units/{unit}/excercises/store/open_ended/{section}', [OpenEndedExcerciseController::class, 'store'])->name('excercises.open_ended.store');
-Route::delete('/units/{unit}/excercises/destroy/open_ended/{excercise}', [OpenEndedExcerciseController::class, 'destroy'])->name('excercises.open_ended.destroy');
-Route::get('/units/{unit}/excercises/show/open_ended/{excercise}', [OpenEndedQuestionController::class, 'show'])->name('excercises.open_ended.show');
-
-Route::get('/units/{unit}/excercises/create/open_ended/{excercise}/question', [OpenEndedQuestionController::class, 'create'])->name('questions.open_ended.create');
-Route::post('/units/{unit}/excercises/store/open_ended/{section}/{excercise}/question', [OpenEndedQuestionController::class, 'store'])->name('questions.open_ended.store');
-Route::delete('/units/{unit}/excercises/destroy/open_ended/{excercise}/{question}', [OpenEndedQuestionController::class, 'destroy'])->name('questions.open_ended.destroy');
-Route::get('/units/{unit}/excercises/{excercise}/questions/show/open_ended/{question}', [OpenEndedQuestionController::class, 'show'])->name('questions.open_ended.show');
-
-// Fill In The Gaps Routes
-Route::get('/units/{unit}/excercises/create/fill_in_the_gaps/{section}', [FillInTheGapsExcerciseController::class, 'create'])->name('excercises.fill_in_the_gaps.create');
-Route::post('/units/{unit}/excercises/store/fill_in_the_gaps/{section}', [FillInTheGapsExcerciseController::class, 'store'])->name('excercises.fill_in_the_gaps.store');
-Route::delete('/units/{unit}/excercises/destroy/fill_in_the_gaps/{excercise}', [FillInTheGapsExcerciseController::class, 'destroy'])->name('excercises.fill_in_the_gaps.destroy');
-Route::get('/units/{unit}/excercises/show/fill_in_the_gaps/{excercise}', [FillInTheGapsExcerciseController::class, 'show'])->name('excercises.fill_in_the_gaps.show');
-
-Route::get('/units/{unit}/excercises/create/fill_in_the_gaps/{excercise}/question', [FillInTheGapsQuestionController::class, 'create'])->name('questions.fill_in_the_gaps.create');
-Route::post('/units/{unit}/excercises/store/fill_in_the_gaps/{excercise}/question', [FillInTheGapsQuestionController::class, 'store'])->name('questions.fill_in_the_gaps.store');
-Route::delete('/units/{unit}/excercises/destroy/fill_in_the_gaps/{excercise}/{question}', [FillInTheGapsQuestionController::class, 'destroy'])->name('questions.fill_in_the_gaps.destroy');
-Route::get('/units/{unit}/excercises/{excercise}/questions/show/fill_in_the_gaps/{question}', [FillInTheGapsExcerciseController::class, 'show'])->name('questions.fill_in_the_gaps.show');
+// Questions Routes
+Route::get('/units/{unit}/excercises/create/{type}/{excercise}/question', [QuestionController::class, 'create'])->name('questions.create');
+Route::get('/units/{unit}/excercises/{excercise}/questions/show/{type}/{question}', [QuestionController::class, 'show'])->name('questions.show');
+Route::post('/excercises/{excercise}/store/section/{section}/type/{type}/question', [QuestionController::class, 'store'])->name('questions.store');
+Route::delete('/excercises/{excercise}/questions/destroy/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');

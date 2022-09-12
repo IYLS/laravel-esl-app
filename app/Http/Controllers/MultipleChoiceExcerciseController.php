@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\MultipleChoiceExcercise;
-use App\Models\MultipleChoiceQuestion;
+use App\Models\Excercise;
+use App\Models\Question;
 use App\Models\Section;
 use App\Models\Feedback;
 
@@ -12,8 +12,8 @@ class MultipleChoiceExcerciseController extends Controller
 {
     public function create($unit_id, $section_id, $excercise_id)
     {
-        $questions = MultipleChoiceQuestion::where('excercise_id', $excercise_id)->get();
-        $excercise = MultipleChoiceExcercise::where('id', $excercise_id)->get()->first();
+        $questions = Question::where('excercise_id', $excercise_id)->get();
+        $excercise = Excercise::where('id', $excercise_id)->get()->first();
         $feedback = Feedback::where('excercise_id', $excercise_id)->get()->first();
         
         return view('excercises.multiple_choice.create', compact('unit_id', 'excercise', 'questions'));
@@ -23,7 +23,7 @@ class MultipleChoiceExcerciseController extends Controller
     {
         $section = Section::where('name', $section_name)->where('unit_id', $unit_id)->get()->first();
 
-        $new_excercise = new MultipleChoiceExcercise;
+        $new_excercise = new Excercise;
         $new_excercise->title = $request->title;
         $new_excercise->description = $request->description;
         $new_excercise->instructions = $request->instructions;
@@ -54,9 +54,10 @@ class MultipleChoiceExcerciseController extends Controller
 
     public function destroy($unit_id, $excercise_id)
     {
-        $excercise = MultipleChoiceExcercise::find($excercise_id);
+        $types = ExcerciseType::all();
+        $excercise = Excercise::find($excercise_id);
         $excercise->delete();
 
-        return redirect()->route('excercises.index', [$unit_id]);
+        return redirect()->route('excercises.index', [$unit_id, $types]);
     }
 }

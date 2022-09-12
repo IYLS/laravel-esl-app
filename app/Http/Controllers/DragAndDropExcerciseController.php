@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\DragAndDropExcercise;
-use App\Models\DragAndDropQuestion;
+use App\Models\Excercise;
+use App\Models\ExcerciseType;
+use App\Models\Question;
 use App\Models\Feedback;
 use App\Models\Section;
 
@@ -18,8 +19,8 @@ class DragAndDropExcerciseController extends Controller
 
     public function create($unit_id, $section_id, $excercise_id)
     {
-        $questions = DragAndDropQuestion::where('excercise_id', $excercise_id)->get();
-        $excercise = DragAndDropExcercise::where('id', $excercise_id)->get()->first();
+        $questions = Question::where('excercise_id', $excercise_id)->get();
+        $excercise = Excercise::where('id', $excercise_id)->get()->first();
         $feedback = Feedback::where('excercise_id', $excercise_id)->get()->first();
 
         return view('excercises.drag_and_drop.create', compact(['unit_id', 'section_id', 'questions', 'excercise', 'feedback']));
@@ -57,11 +58,12 @@ class DragAndDropExcerciseController extends Controller
     }
 
     public function destroy($unit_id, $excercise_id)
-    {
-        $excercise = DragAndDropExcercise::find($excercise_id);
+    {   
+        $types = ExcerciseType::all();
+        $excercise = Excercise::find($excercise_id);
         $excercise->questions()->delete();
         $excercise->delete();
 
-        return redirect()->route('excercises.index', [$unit_id]);
+        return redirect()->route('excercises.index', [$unit_id, $types]);
     }
 }

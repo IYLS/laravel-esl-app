@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Section;
 use App\Models\Question;
+use App\Models\ExcerciseType;
 
 class Excercise extends Model
 {
@@ -17,7 +18,6 @@ class Excercise extends Model
         'title',
         'description',
         'instructions',
-        'type',
         'subtype',
         'image_name',
         'video_name'
@@ -28,4 +28,5 @@ class Excercise extends Model
 
     public function questions() { return $this->hasMany(Question::class, 'excercise_id'); }
     public function section() { return $this->belongsTo(Section::class); }
+    public function excerciseType() { return $this->belongsTo(ExcerciseType::class); }
 }

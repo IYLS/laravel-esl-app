@@ -16,11 +16,11 @@ class ExcerciseSeeder extends Seeder
                 'title' => 'Vocabulary activation',
                 'description' => 'Match the words with their correct definition. Check the previous exercise to understand the context of the words',
                 'instructions' => null,
-                'type' => 'drag_and_drop',
                 'subtype' => null,
                 'image_name' => null,
                 'video_name' => null,
-                'section_id' => 1
+                'section_id' => 1,
+                'excercise_type_id' => 1
             ],
             [            
                 'id' => 12,
@@ -29,9 +29,9 @@ class ExcerciseSeeder extends Seeder
                 'instructions' => 'The pictures summarize the video. Read the predictions below and choose the letter that best represents what you think will happen.',
                 'image_name' => 'steven_universe.png',
                 'video_name' => 'n1t2.mp4',
-                'type' => 'multiple_choice',
                 'subtype' => 1,
-                'section_id' => 1
+                'section_id' => 1,
+                'excercise_type_id' => 2
             ],
             [            
                 'id' => 13,
@@ -40,9 +40,9 @@ class ExcerciseSeeder extends Seeder
                 'instructions' => null,
                 'image_name' => 'FdaSPOVrX2KSfHbYpLoDg5bHTjq0p50c152oGIGr.jpg',
                 'video_name' => 'n1t2.mp4',
-                'type' => 'multiple_choice',
                 'subtype' => 2,
-                'section_id' => 1
+                'section_id' => 1,
+                'excercise_type_id' => 2
             ],
             [            
                 'id' => 14,
@@ -51,9 +51,9 @@ class ExcerciseSeeder extends Seeder
                 'instructions' => null,
                 'image_name' => null,
                 'video_name' => null,
-                'type' => 'multiple_choice',
                 'subtype' => 3,
-                'section_id' => 2
+                'section_id' => 2,
+                'excercise_type_id' => 2
             ],
             [            
                 'id' => 15,
@@ -62,9 +62,9 @@ class ExcerciseSeeder extends Seeder
                 'instructions' => null,
                 'image_name' => null,
                 'video_name' => null,
-                'type' => 'multiple_choice',
                 'subtype' => 4,
-                'section_id' => 3
+                'section_id' => 3,
+                'excercise_type_id' => 2
             ],
             [            
                 'id' => 16,
@@ -73,9 +73,9 @@ class ExcerciseSeeder extends Seeder
                 'instructions' => null,
                 'image_name' => null,
                 'video_name' => null,
-                'type' => 'voice_recognition',
                 'subtype' => null,
-                'section_id' => 1
+                'section_id' => 1,
+                'excercise_type_id' => 5
             ],
             [            
                 'id' => 17,
@@ -84,9 +84,9 @@ class ExcerciseSeeder extends Seeder
                 'instructions' => null,
                 'image_name' => null,
                 'video_name' => null,
-                'type' => 'open_ended',
                 'subtype' => null,
-                'section_id' => 3
+                'section_id' => 3,
+                'excercise_type_id' => 4
             ],
             [            
                 'id' => 18,
@@ -95,9 +95,9 @@ class ExcerciseSeeder extends Seeder
                 'instructions' => null,
                 'image_name' => null,
                 'video_name' => null,
-                'type' => 'fill_in_the_gaps',
                 'subtype' => 1,
-                'section_id' => 2
+                'section_id' => 2,
+                'excercise_type_id' => 3
             ],
             [            
                 'id' => 19,
@@ -106,11 +106,10 @@ class ExcerciseSeeder extends Seeder
                 'instructions' => null,
                 'image_name' => null,
                 'video_name' => null,
-                'type' => 'fill_in_the_gaps',
                 'subtype' => 2,
-                'section_id' => 2
+                'section_id' => 2,
+                'excercise_type_id' => 3
             ]
-
         ]);
     }
 }
