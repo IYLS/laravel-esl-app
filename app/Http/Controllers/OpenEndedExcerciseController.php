@@ -32,7 +32,6 @@ class OpenEndedExcerciseController extends Controller
         $new_excercise->title = $request->title;
         $new_excercise->description = $request->description;
         $new_excercise->section_id = $section->id;
-        $new_excercise->type = 'open_ended';
         $new_excercise->save();
 
         return redirect()->route('excercises.open_ended.create', [$unit_id, $section->id, $new_excercise->id]);

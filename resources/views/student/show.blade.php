@@ -56,12 +56,12 @@
                 <div class="d-flex align-items-start mt-2">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         @foreach($section->excercises as $e)
-                            <button class="nav-link" id="{{ $e->type . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->type . $e->id }}" type="button" role="tab" aria-controls="{{ $e->type . $e->id }}" aria-selected="false">{{ $e->title }}</button>
+                            <button class="nav-link" id="{{ $e->excerciseType->underscore_name . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->excerciseType->underscore_name . $e->id }}" type="button" role="tab" aria-controls="{{ $e->excerciseType->underscore_name . $e->id }}" aria-selected="false">{{ $e->title }}</button>
                         @endforeach
                     </div>
                     <div class="tab-content container" id="v-pills-tabContent">
                         @foreach($section->excercises as $e)
-                            @switch($e->type)
+                            @switch($e->excerciseType->underscore_name)
 
                             @case('drag_and_drop')
                                 @include('excercises.drag_and_drop.dds', ['e' => $e])
@@ -73,7 +73,7 @@
                                 @include('excercises.voice_recognition.asd', ['e' => $e])
                                 @break
                             @case('multiple_choice')
-                                <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">
+                                <div class="tab-pane fade" id="{{ $e->excerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->excerciseType->underscore_name . $e->id }}-tab">
                                     <div class="container">
                                         <h4>{{ $e->title }}</h4>
                                         <p class="text-secondary">{{ $e->description }}</p>
@@ -98,7 +98,7 @@
                                 </div>
                                 @break
                             @case('fill_in_the_gaps')
-                            <div class="tab-pane fade" id="{{ $e->type . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->type . $e->id }}-tab">
+                            <div class="tab-pane fade" id="{{ $e->excerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->excerciseType->underscore_name . $e->id }}-tab">
                                 <div class="container">
                                     <h4>{{ $e->title }}</h4>
                                     <p class="text-secondary">{{ $e->description }}</p>

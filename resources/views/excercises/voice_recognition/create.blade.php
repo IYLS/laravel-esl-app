@@ -53,44 +53,14 @@
         </div>
     </div>
 
+    @include('feedback.show')
+
     <div class="d-flex justify-content-center">
         <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$excercise->section->unit_id]) }}">Save</a>
         <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$excercise->section->unit_id]) }}">Cancel</a>
     </div>
 </div>
 
-@include('excercises.question_modal', ['excercise' => $excercise]);
-
-{{-- <!-- Modal -->
-<div class="modal fade" id="addQuestionModal" tabindex="-1" aria-labelledby="addQuestionModal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addQuestionModal">New Item</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form enctype="multipart/form-data" action="{{ route('questions.store', [$excercise->section->unit_id, $excercise->section_id, $excercise->id]) }}" method="POST">
-                    @csrf
-                    <div class="mb-3">
-                        <label class="form-label" for="title">Item title:</label>
-                        <input class="form-control" name="title" id="title" type="text" placeholder="Type item's title">
-                    </div>
-                    <div class="mb-3">
-                        <label for="audio" class="form-label">Select audio file</label>
-                        <input class="form-control" type="file" name="audio" id="audio" accept="audio/*">
-                    </div>
-                    <div class="mb-3">
-                        <label for="image" class="form-label">Select image file</label>
-                        <input class="form-control" type="file" name="image" id="image" accept="image/*">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" id="submit">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div> --}}
+@include('excercises.modals.question_modal');
 
 @endsection

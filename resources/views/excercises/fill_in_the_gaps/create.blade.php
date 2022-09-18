@@ -13,12 +13,18 @@
     </div>
 
     <div class="card p-4 m-2">
-        <h4>Activity questions</h4>        
+        <h4>Activity questions</h4>
         @forelse($excercise->questions as $question)
             <div class="card mt-1 mb-1 p-4">
                 <div class="row">
-                    <div class="col-10">
+                    <h6>Item {{ $loop->index + 1}}</h6>
+                    @php $statements = explode(";;", $question->statement) @endphp
+                    <div class="col-10 d-flex">
+                        <p style="height: 20px;"> {{ $statements[0] }} </p>
                         
+                        <input style="height: 20px; width: 100px; text-align: center; border-bottom: solid 0.7px lightgrey; border-top: none; border-left: none; border-right: none;" class="ms-2 me-2 text-primary fw-bold" type="text" value="{{ $question->answer }}" disabled>
+
+                        <p style="height: 20px;">{{ $statements[1] }}</p>
                     </div>
                     <div class="col-2 d-flex justify-content-center">
                         <br>
@@ -43,32 +49,14 @@
         </div>
     </div>
 
+    @include('feedback.show')
+
     <div class="d-flex justify-content-center">
         <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$excercise->section->unit_id]) }}">Save</a>
         <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$excercise->section->unit_id]) }}">Cancel</a>
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="addQuestionModal" tabindex="-1" aria-labelledby="addQuestionModal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addQuestionModal">New Question</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('questions.store', [$excercise->section->unit_id, $excercise->section_id, $excercise->id]) }}" method="POST">
-                    @csrf
-                    <input id="question" name="question" type="text" class="form-control" placeholder="Type here the question to be answered by students">
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+@include('excercises.modals.question_modal')
 
 @endsection

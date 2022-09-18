@@ -46,9 +46,8 @@
             <button type="button" id="addQuestionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addQuestionModal">Add item</button>
         </div>
     </div>
-    <div class="card p-4 m-2">
-        <h4>Feedback section</h4>
-    </div>
+
+    @include('feedback.show')
 
     <div class="d-flex justify-content-center">
         <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$excercise->section->unit_id]) }}">Save</a>
@@ -56,26 +55,6 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="addQuestionModal" tabindex="-1" aria-labelledby="addQuestionModal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addQuestionModal">New Question</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('questions.store', [$excercise->section->unit_id, $excercise->section_id, $excercise->id]) }}" method="POST">
-                    @csrf
-                    <input id="question" name="question" type="text" class="form-control" placeholder="Type here the question to be answered by students">
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+@include('excercises.modals.question_modal')
 
 @endsection

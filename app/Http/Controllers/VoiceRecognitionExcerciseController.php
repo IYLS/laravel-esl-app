@@ -32,7 +32,6 @@ class VoiceRecognitionExcerciseController extends Controller
         $new_excercise->title = $request->title;
         $new_excercise->description = $request->description;
         $new_excercise->section_id = $section->id;
-        $new_excercise->type = 'voice_recognition';
         $new_excercise->save();
 
         $excercise_id = $new_excercise->id;

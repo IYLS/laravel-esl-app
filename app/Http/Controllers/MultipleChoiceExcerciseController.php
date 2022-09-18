@@ -31,7 +31,6 @@ class MultipleChoiceExcerciseController extends Controller
         $new_excercise->section_id = $section->id;
         $new_excercise->image_name = $request->image_name;
         $new_excercise->video_name = $request->video_name;
-        $new_excercise->type = 'open_ended';
         $new_excercise->save();
 
         return redirect()->route('excercises.multiple_choice.create', [$unit_id, $section->id, $new_excercise->id]);

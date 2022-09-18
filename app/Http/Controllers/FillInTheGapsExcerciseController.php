@@ -28,7 +28,6 @@ class FillInTheGapsExcerciseController extends Controller
         $new_excercise->description = $request->description;
         $new_excercise->subtype = $request->subtype;
         $new_excercise->section_id = $section->id;
-        $new_excercise->type = 'fill_in_the_gaps';
         $new_excercise->save();
 
         return redirect()->route('excercises.multiple_choice.create', [$unit_id, $section->id, $new_excercise->id]);

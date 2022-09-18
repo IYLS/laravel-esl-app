@@ -43,32 +43,12 @@
                 <p class="text-center text-secondary">No items added.</p>
             </div>
         @endforelse
-
         <div>
             <button type="button" id="addQuestionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addQuestionModal">Add item</button>
         </div>
     </div>
 
-    <div class="card p-4 m-2">
-        <h4>Feedback</h4>        
-        <div class="card mt-1 mb-1 p-1">
-            <div class="row">
-                <div class="col-10">
-                    @if(true)
-                    <div class="m-3">
-                        <p>Type: Elavorative</p>
-                    </div>
-                    @else
-
-                    @endif
-                </div>
-            </div>
-        </div>
-
-        <div>
-            <button type="button" id="addQuestionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addQuestionModal">Add item</button>
-        </div>
-    </div>
+    @include('feedback.show')
 
     <div class="d-flex justify-content-center">
         <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$excercise->section->unit_id]) }}">Save</a>
@@ -76,6 +56,6 @@
     </div>
 </div>
 
-@include('excercises.question_modal')
+@include('excercises.modals.question_modal')
 
 @endsection

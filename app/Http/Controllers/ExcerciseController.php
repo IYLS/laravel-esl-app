@@ -8,6 +8,7 @@ use App\Models\ExcerciseType;
 use App\Models\Excercise;
 use App\Models\Question;
 use App\Models\Feedback;
+use App\Models\FeedbackType;
 use App\Models\Section;
 
 class ExcerciseController extends Controller
@@ -19,34 +20,40 @@ class ExcerciseController extends Controller
         return view('excercises.index', compact('unit', 'types'));
      }
 
-     public function create($unit_id, $excercise_type_id, $section_id)
+     public function create(Request $request, $unit_id, $excercise_type_id, $section_id)
      {
         $type = ExcerciseType::find($excercise_type_id);
 
-        return view("excercises.$type->underscore_name.create", compact(['unit_id', 'section_id']));
+        $title = $request->title;
+        $description = $request->description;
+
+        return view("excercises.$type->underscore_name.create", compact(['unit_id', 'section_id', 'title', 'description']));
     }
 
-    public function store(Request $request, $unit_id, $section_id)
+    public function store(Request $request, $unit_id, $type_id, $section_id)
     {
-        $section = Section::find($section_id);
-
         $excercise = new Excercise;
         $excercise->title = $request->title;
         $excercise->description = $request->description;
-        $excercise->excercise_type_id = $request->type;
-        $excercise->section_id = $section->id;
-        $excercise->type = $request->type;
+        $excercise->excercise_type_id = $type_id;
+        $excercise->section_id = $section_id;
+
+        if(isset($request->type)) {
+            $excercise->subtype = $request->type;
+        }
+
         $excercise->save();
 
-        return redirect()->route('excercises.create', [$unit_id, $section_id, $excercise->id]);
+        return redirect()->route('excercises.show', $excercise->id);
     }
 
     public function show($excercise_id)
     {
         $excercise = Excercise::find($excercise_id);
+        $feedback_types = FeedbackType::all();
         $type_name = $excercise->excerciseType->underscore_name;
 
-        return view("excercises.$type_name.create", compact('excercise'));
+        return view("excercises.$type_name.create", compact('excercise', 'feedback_types'));
     }
 
     public function edit($id)
@@ -59,13 +66,12 @@ class ExcerciseController extends Controller
         //
     }
 
-    public function destroy($excercise_id)
+    public function destroy($unit_id, $excercise_type_id, $excercise_id)
     {
-        $types = ExcerciseTypes::all();
         $excercise = Excercise::find($excercise_id);
         $excercise->delete();
 
-        return redirect()->route('excercises.index', [$excercise->section->unit_id, $types]);
+        return redirect()->route('excercises.index', [$excercise->section->unit_id]);
     }
 
     private function getExcercises($unit_id, $section_name)
@@ -73,5 +79,27 @@ class ExcerciseController extends Controller
         $section = Section::where('unit_id', $unit_id)->where('name', $section_name)->get()->first();
         $excercises = $section->excercises()->get();
         return $excercises;
+    }
+
+    private function subtype($id)
+    {
+        $name = "";
+
+        switch($id){
+            case 1: 
+                $name = "predicting";
+                break;
+            case 2: 
+                $name = "what_do_you_hear";
+                break;
+            case 3:
+                $name = "evaluating_statements";
+                break;
+            case 4:
+                $name = "multiple_choice";
+                break;
+        }
+
+        return $name;
     }
 }

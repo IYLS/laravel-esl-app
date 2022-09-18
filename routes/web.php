@@ -63,3 +63,8 @@ Route::get('/units/{unit}/excercises/create/{type}/{excercise}/question', [Quest
 Route::get('/units/{unit}/excercises/{excercise}/questions/show/{type}/{question}', [QuestionController::class, 'show'])->name('questions.show');
 Route::post('/excercises/{excercise}/store/section/{section}/type/{type}/question', [QuestionController::class, 'store'])->name('questions.store');
 Route::delete('/excercises/{excercise}/questions/destroy/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
+
+
+
+
+Route::post('/feedback/{excercise}/store', [FeedbackController::class, 'store'])->name('feedback.store');

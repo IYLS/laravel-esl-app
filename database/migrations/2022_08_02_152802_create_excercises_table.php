@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('description')->nullable(true);
             $table->string('instructions')->nullable(true);
-            $table->string('subtype')->nullable(true);
+            $table->integer('subtype')->nullable(true);
             $table->string('image_name')->nullable(true);
             $table->string('video_name')->nullable(true);
             $table->softDeletes();

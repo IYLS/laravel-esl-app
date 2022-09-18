@@ -34,7 +34,6 @@ class DragAndDropExcerciseController extends Controller
         $new_excercise->title = $request->title;
         $new_excercise->description = $request->description;
         $new_excercise->section_id = $section->id;
-        $new_excercise->type = 'drag_and_drop';
         $new_excercise->save();
 
         $excercise_id = $new_excercise->id;

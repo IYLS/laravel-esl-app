@@ -39,85 +39,85 @@ class AlternativeSeeder extends Seeder
                 'id' => 22,
                 'title' => 'healed',
                 'correct_alt' => true,
-                'question_id' => 1
+                'question_id' => 51
             ],
             [            
                 'id' => 23,
                 'title' => 'heel',
                 'correct_alt' => true,
-                'question_id' => 1
+                'question_id' => 51
             ],
             [            
                 'id' => 24,
                 'title' => 'see',
                 'correct_alt' => true,
-                'question_id' => 2
+                'question_id' => 52
             ],
             [            
                 'id' => 25,
                 'title' => 'seem',
                 'correct_alt' => true,
-                'question_id' => 2
+                'question_id' => 52
             ],
             [            
                 'id' => 26,
                 'title' => 'recorded',
                 'correct_alt' => true,
-                'question_id' => 3
+                'question_id' => 53
             ],
             [
                 'id' => 27,
                 'title' => 'recovered',
                 'correct_alt' => true,
-                'question_id' => 3
+                'question_id' => 53
             ],
             [
                 'id' => 28,
                 'title' => 'wrong',
                 'correct_alt' => true,
-                'question_id' => 4
+                'question_id' => 54
             ],
             [            
                 'id' => 29,
                 'title' => 'long',
                 'correct_alt' => true,
-                'question_id' => 4
+                'question_id' => 54
             ],
             [
                 'id' => 30,
                 'title' => 'laughing',
                 'correct_alt' => true,
-                'question_id' => 5
+                'question_id' => 55
             ],
             [
                 'id' => 31,
                 'title' => 'lasting',
                 'correct_alt' => true,
-                'question_id' => 5
+                'question_id' => 55
             ],
             [
                 'id' => 32,
                 'title' => 'rice',
                 'correct_alt' => true,
-                'question_id' => 6
+                'question_id' => 56
             ],
             [
                 'id' => 33,
                 'title' => 'races',
                 'correct_alt' => true,
-                'question_id' => 6
+                'question_id' => 56
             ],
             [
                 'id' => 34,
                 'title' => 'freaked out',
                 'correct_alt' => true,
-                'question_id' => 7
+                'question_id' => 57
             ],
             [
                 'id' => 35,
                 'title' => 'found out',
                 'correct_alt' => true,
-                'question_id' => 7
+                'question_id' => 57
             ],
             [
                 'id' => 36,

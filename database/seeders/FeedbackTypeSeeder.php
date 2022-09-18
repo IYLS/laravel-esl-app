@@ -46,11 +46,6 @@ class FeedbackTypeSeeder extends Seeder
                 'name' => 'Knowledge of correct response',
                 'description' => 'Mensaje de texto en donde se dice cuál es la respuesta correcta y por qué. Este feedback es a nivel de preguntas dentro de un ejercicio y se habilita luego de que el estudiante de click a “check”.',
             ],
-            [            
-                'id' => 8,
-                'name' => 'None',
-                'description' => 'El ejercicio no tiene feedback',
-            ],
         ]);
     }
 }

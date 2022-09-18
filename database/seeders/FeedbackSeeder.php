@@ -17,6 +17,7 @@ class FeedbackSeeder extends Seeder
                 'audio_name' => null,
                 'feedback_type_id' => 1,
                 'excercise_id' => 14,
+                'question_id' => 51
             ],
         ]);
     }

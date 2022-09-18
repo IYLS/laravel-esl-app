@@ -12,84 +12,75 @@ class QuestionSeeder extends Seeder
     {
         DB::table('questions')->insert([
             [            
-                'id' => 1,
+                'id' => 51,
                 'statement' => 'It almost looks as if the bones ;; themselves the instant the injuries occurred',
                 'audio_name' => '1.mp3',
                 'answer' => null,
                 'image_name' => null,
-                'type' => 'multiple_choice',
                 'excercise_id' => 13
             ],
             [            
-                'id' => 2,
+                'id' => 52,
                 'statement' => 'Well, you ;; to have made a series of miraculous recoveries.  ',
                 'audio_name' => '2.mp3',
                 'answer' => null,
                 'image_name' => null,
-                'type' => 'multiple_choice',
                 'excercise_id' => 13
             ],
             [            
-                'id' => 3,
+                'id' => 53,
                 'statement' => 'Have you ;; mentally?',
                 'audio_name' => '3.mp3',
                 'answer' => null,
                 'image_name' => null,
-                'type' => 'multiple_choice',
                 'excercise_id' => 13
             ],
             [            
-                'id' => 4,
+                'id' => 54,
                 'statement' => 'You think there’s something ;; with my brain?',
                 'audio_name' => '4.mp3',
                 'answer' => null,
                 'image_name' => null,
-                'type' => 'multiple_choice',
                 'excercise_id' => 13
             ],
             [            
-                'id' => 5,
+                'id' => 55,
                 'statement' => 'Childhood trauma can have a ;; impact on how your body responds to stress. ',
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => '5.mp3',
-                'type' => 'multiple_choice',
                 'excercise_id' => 13
             ],
             [            
-                'id' => 6,
+                'id' => 56,
                 'statement' => 'The brain releases the hormone cortisol, your heart ;;, your muscles tense.',
                 'audio_name' => '6.mp3',
                 'answer' => null,
                 'image_name' => null,
-                'type' => 'multiple_choice',
                 'excercise_id' => 13
             ],
             [            
-                'id' => 7,
+                'id' => 57,
                 'statement' => 'I kinda ;; when they canceled my favorite ice cream.',
                 'audio_name' => '7.mp3',
                 'answer' => null,
                 'image_name' => null,
-                'type' => 'multiple_choice',
                 'excercise_id' => 13
             ],
             [
-                'id' => 8,
+                'id' => 58,
                 'statement' => "Steven’s body has suffered numerous fractures.",
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'multiple_choice',
                 'excercise_id' => 14
             ],
             [
-                'id' => 9,
+                'id' => 59,
                 'statement' => "Steven’s bones recovered normally.",
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'multiple_choice',
                 'excercise_id' => 14
             ],
             [
@@ -98,7 +89,6 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'multiple_choice',
                 'excercise_id' => 14
             ],
             [
@@ -107,7 +97,6 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'multiple_choice',
                 'excercise_id' => 14
             ],
             [
@@ -116,7 +105,6 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'multiple_choice',
                 'excercise_id' => 14
             ],
             [
@@ -125,7 +113,6 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'multiple_choice',
                 'excercise_id' => 14
             ],
             [            
@@ -134,7 +121,6 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => 'dictation_cloze.mp3',
-                'type' => 'multiple_choice',
                 'excercise_id' => 12
             ],
             [
@@ -143,7 +129,6 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'multiple_choice',
                 'excercise_id' => 15
             ],
             [
@@ -152,7 +137,6 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'open_ended',
                 'excercise_id' => 17
             ],
             [
@@ -161,7 +145,6 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => 'Doctor.jpg',
                 'audio_name' => 'voice_recognition.mp3',
-                'type' => 'voice_recognition',
                 'excercise_id' => 16
             ],
             [
@@ -170,7 +153,6 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => 'Steven.jpg',
                 'audio_name' => 'Steven.mp3',
-                'type' => 'voice_recognition',
                 'excercise_id' => 16
             ],
             [            
@@ -180,7 +162,6 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'fill_in_the_gaps',
                 'excercise_id' => 18
             ],
             [            
@@ -188,7 +169,6 @@ class QuestionSeeder extends Seeder
                 'statement' => "I believe that ;; friendships are the best.",
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'fill_in_the_gaps',
                 'answer' => 'lasting',
                 'excercise_id' => 19
             ],
@@ -198,7 +178,6 @@ class QuestionSeeder extends Seeder
                 'answer' => 'freak out',
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'fill_in_the_gaps',
                 'excercise_id' => 19
             ],
             [            
@@ -207,7 +186,6 @@ class QuestionSeeder extends Seeder
                 'answer' => 'recover',
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'fill_in_the_gaps',
                 'excercise_id' => 19
             ],
             [            
@@ -216,7 +194,6 @@ class QuestionSeeder extends Seeder
                 'answer' => 'seem to',
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'fill_in_the_gaps',
                 'excercise_id' => 19
             ],
             [            
@@ -225,7 +202,6 @@ class QuestionSeeder extends Seeder
                 'answer' => 'wrong',
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'fill_in_the_gaps',
                 'excercise_id' => 19
             ],
             [            
@@ -234,7 +210,6 @@ class QuestionSeeder extends Seeder
                 'answer' => 'races',
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'fill_in_the_gaps',
                 'excercise_id' => 19
             ],
             [            
@@ -243,7 +218,6 @@ class QuestionSeeder extends Seeder
                 'answer' => 'healed',
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'fill_in_the_gaps',
                 'excercise_id' => 19
             ],
             [            
@@ -252,7 +226,6 @@ class QuestionSeeder extends Seeder
                 'answer' => 'Something that is incorrect or not true.',
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'drag_and_drop',
                 'excercise_id' => 11
             ],
             [            
@@ -261,7 +234,6 @@ class QuestionSeeder extends Seeder
                 'answer' => 'To become completely healthy again after an illness or injury.',
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'drag_and_drop',
                 'excercise_id' => 11
             ],
             [            
@@ -270,7 +242,6 @@ class QuestionSeeder extends Seeder
                 'answer' => 'To make or become well again, especially after an injury.',
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'drag_and_drop',
                 'excercise_id' => 11
             ],
             [            
@@ -279,7 +250,6 @@ class QuestionSeeder extends Seeder
                 'answer' => 'To appear to be.',
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'drag_and_drop',
                 'excercise_id' => 11
             ],
             [            
@@ -288,7 +258,6 @@ class QuestionSeeder extends Seeder
                 'answer' => 'To become or cause someone to be extremely emotional.',
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'drag_and_drop',
                 'excercise_id' => 11
             ],
             [            
@@ -297,7 +266,6 @@ class QuestionSeeder extends Seeder
                 'answer' => 'Something that continues to exist for a long time or forever.',
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'drag_and_drop',
                 'excercise_id' => 11
             ],
             [            
@@ -306,7 +274,6 @@ class QuestionSeeder extends Seeder
                 'answer' => 'To move or go fast.',
                 'image_name' => null,
                 'audio_name' => null,
-                'type' => 'drag_and_drop',
                 'excercise_id' => 11
             ],
         ]);

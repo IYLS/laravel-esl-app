@@ -44,20 +44,36 @@
                     @default
                     @endswitch
 
-                    <input id="statement" name="statement" type="text" class="form-control" placeholder="{{ $statement_placeholder }}">
-                    <br>
-                    
-                    @if($type != 'multiple_choice' && $type != 'open_ended' && $type != 'voice_recognition')
-                        <input id="answer" name="answer" type="text" class="form-control" placeholder="{{ $answer_placeholder }}">
-                    @elseif($type == 'voice_recognition')
-                        <div class="mb-3">
-                            <label for="audio" class="form-label">Select audio file</label>
-                            <input class="form-control" type="file" name="audio" id="audio" accept="audio/*">
-                        </div>
-                        <div class="mb-3">
-                            <label for="image" class="form-label">Select image file</label>
-                            <input class="form-control" type="file" name="image" id="image" accept="image/*">
-                        </div>
+                    @if($type == 'open_ended')
+
+                        <textarea id="statement" name="statement" type="text" cols="40" class="form-control" placeholder="{{ $statement_placeholder }}"></textarea>
+                        <br>
+
+                    @else
+                        <input id="statement" name="statement" type="text" class="form-control" placeholder="{{ $statement_placeholder }}">
+                        <br>
+
+                        @if($type != 'multiple_choice' && $type != 'open_ended' && $type != 'voice_recognition')
+                            <input id="answer" name="answer" type="text" class="form-control" placeholder="{{ $answer_placeholder }}">
+                        @elseif($type == 'voice_recognition')
+                            <div class="mb-3">
+                                <label for="audio" class="form-label">Select audio file</label>
+                                <input class="form-control" type="file" name="audio" id="audio" accept="audio/*">
+                            </div>
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Select image file</label>
+                                <input class="form-control" type="file" name="image" id="image" accept="image/*">
+                            </div>
+                        @endif
+
+                        @if($type == 'fill_in_the_gaps')
+                            <p class="text-secondary"><small>Use a semicolon (;;) at the end of each statement. Except the last one.</small></p>
+                        @endif
+
+                        @if($excercise->subtype == 1)
+                            <p class="text-secondary"><small>Use a semicolon (;) at the end of each statement. Except the last one.</small></p>
+                        @endif
+
                     @endif
 
                     <div class="modal-footer">

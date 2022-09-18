@@ -8,12 +8,13 @@
 
     <div class="card p-4 m-2">
         <h4>Activity Details</h4>
-        <h5>Title: {{ $excercise->title }}</h5>
+        <p>Title: {{ $excercise->title }}</p>
         <p>Description: {{ $excercise->description }}</p>
+        <p>Subtype: {{ $excercise->subtype }}</p>
     </div>
 
     <div class="card p-4 m-2">
-        <h4>Activity questions</h4>        
+        <h4>Activity questions</h4>
         @forelse($excercise->questions as $question)
             @if($excercise->subtype == 1 || $excercise->subtype == 4)
                 <div class="card mt-1 mb-1 p-4">
@@ -125,12 +126,14 @@
         </div>
     </div>
 
+    @include('feedback.show')
+
     <div class="d-flex justify-content-center">
         <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$excercise->section->unit_id]) }}">Save</a>
         <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$excercise->section->unit_id]) }}">Cancel</a>
     </div>
 </div>
 
-@include('excercises.question_modal')
+@include('excercises.modals.question_modal')
 
 @endsection
