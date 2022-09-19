@@ -52,12 +52,12 @@
                 <div class="card mt-1 mb-1 p-4">
                     <div class="row">
                         <div class="col-10">
-                            <p>Item {{ $loop->index + 1 }}</p>
                             @php 
                                 $statements = explode(";;", $question->statement);
                                 $alternatives = $question->alternatives
                             @endphp
                             <div class="d-flex">
+                                <p>{{ $loop->index + 1 }}. &nbsp;</p>
                                 <p>{{ $statements[0] }}</p>
                                 <p class="text-primary">&nbsp;
                                     @if($alternatives[0]->correct_alt == true)
@@ -122,7 +122,7 @@
         @endforelse
 
         <div>
-            <button type="button" id="addQuestionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addQuestionModal">Add item</button>
+            <button type="button" id="addQuestionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addQuestionModal">Add question</button>
         </div>
     </div>
 

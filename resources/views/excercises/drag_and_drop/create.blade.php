@@ -15,26 +15,21 @@
     <div class="card p-4 m-2">
         <h4>Activity items</h4>
         @forelse($excercise->questions as $question)
-            <div class="card mt-1 mb-1 p-1">
+            <div class="card mt-1 mb-1 p-4">
                 <div class="row">
-                    <div class="col-10">
-                        <ul>
-                            <li>
-                                <p>Word: {{ $question->statement }}</p>
-                            </li>
-                            <li>
-                                <p>Matching definition: {{ $question->answer }}</p>
-                            </li>
-                        </ul>
-                        <div class="col-2 d-flex justify-content-center">
-                            <br>
-                            <form action="{{ route('questions.destroy', [$excercise->id, $question->id]) }}" method="POST">
-                                @method('DELETE')
-                                @csrf
-                                <button class="btn btn-danger btn-sm m-1" type="submit">Delete</a>
-                                <button class="btn btn-warning btn-sm m-1">Edit</button>
-                            </form>
-                        </div>
+                    <div class="col-10 d-flex">
+                        <p>{{ $loop->index + 1 }}. &nbsp;</p>
+                        <p class="text-primary"><strong>{{ ucfirst($question->statement) }}</strong></p>:
+                        <p>&nbsp;{{ $question->answer }}</p>
+                    </div>
+                    <div class="col-2 d-flex justify-content-center">
+                        <br>
+                        <form action="{{ route('questions.destroy', [$excercise->id, $question->id]) }}" method="POST">
+                            @method('DELETE')
+                            @csrf
+                            <button class="btn btn-danger btn-sm m-1" type="submit">Delete</a>
+                            <button class="btn btn-warning btn-sm m-1">Edit</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -44,7 +39,7 @@
             </div>
         @endforelse
         <div>
-            <button type="button" id="addQuestionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addQuestionModal">Add item</button>
+            <button type="button" id="addQuestionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addQuestionModal">Add question</button>
         </div>
     </div>
 

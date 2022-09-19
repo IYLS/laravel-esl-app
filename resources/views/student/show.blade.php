@@ -39,9 +39,9 @@
             @foreach($unit->sections as $section)
                 <li class="nav-item" role="presentation">
                     @if($loop->index == 0)
-                        <button class="nav-link active" id="{{ $section->name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $section->name}}" type="button" role="tab" aria-controls="{{ $section->name }}" aria-selected="true">{{ $section->name }}</button>
+                        <button class="nav-link active" id="{{ $section->underscore_name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="true">{{ $section->underscore_name }}</button>
                     @else
-                        <button class="nav-link" id="{{ $section->name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $section->name}}" type="button" role="tab" aria-controls="{{ $section->name }}" aria-selected="false">{{ $section->name }}</button>
+                        <button class="nav-link" id="{{ $section->underscore_name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="false">{{ $section->underscore_name }}</button>
                     @endif
                 </li>
             @endforeach
@@ -49,9 +49,9 @@
         <div class="tab-content" id="myTabContent">
             @foreach($unit->sections as $section)
                 @if($loop->index == 0)
-                    <div class="tab-pane fade show active m-2" id="{{ $section->name }}" role="tabpanel" aria-labelledby="{{ $section->name }}-tab">
+                    <div class="tab-pane fade show active m-2" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
                 @else
-                    <div class="tab-pane fade" id="{{ $section->name }}" role="tabpanel" aria-labelledby="{{ $section->name }}-tab">
+                    <div class="tab-pane fade" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
                 @endif
                 <div class="d-flex align-items-start mt-2">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -106,24 +106,24 @@
                                     @if($e->subtype == 1) 
                                         
                                         @foreach($e->questions as $question)
-                                        <div class="border rounded p-3">
-                                            <p>Item {{ $loop->index + 1 }}</p>
-                                            <div class="row mt-2 mb-2">
-                                                <audio controls class="col-12">
-                                                    <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
-                                                </audio> 
-                                            </div>
-                                            <div class="mt-4 mb-4">
-                                                @php
-                                                $gaps_count = substr_count($question->statement, ";;");
-                                                $strips = explode(";;", $question->statement);
-                                                @endphp
+                                            <div class="border rounded p-3">
+                                                <p>{{ $loop->index + 1 }}. &nbsp;</p>
+                                                <div class="row mt-2 mb-2">
+                                                    <audio controls class="col-12">
+                                                        <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
+                                                    </audio> 
+                                                </div>
+                                                <div class="mt-4 mb-4">
+                                                    @php
+                                                    $gaps_count = substr_count($question->statement, ";;");
+                                                    $strips = explode(";;", $question->statement);
+                                                    @endphp
 
-                                                @foreach($strips as $strip)
-                                                {{ $strip }} @if($loop->index < $gaps_count) <input class="mt-1 mb-1 me-1 ms-1" type="text"" style="height: 24px; border-radius: 4px; border: 0.5px solid #ccc; padding: 8px;"> @endif
-                                                @endforeach
+                                                    @foreach($strips as $strip)
+                                                    {{ $strip }} @if($loop->index < $gaps_count) <input class="mt-1 mb-1 me-1 ms-1" type="text"" style="height: 24px; border-radius: 4px; border: 0.5px solid #ccc; padding: 8px;"> @endif
+                                                    @endforeach
+                                                </div>
                                             </div>
-                                        </div>
                                         @endforeach
 
                                     @elseif($e->subtype == 2)

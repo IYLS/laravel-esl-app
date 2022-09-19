@@ -67,12 +67,14 @@
                         @endif
 
                         @if($type == 'fill_in_the_gaps')
-                            <p class="text-secondary"><small>Use a semicolon (;;) at the end of each statement. Except the last one.</small></p>
+                            @if($excercise->subtype == 2)
+                                <p class="text-secondary"><small>Use a semicolon (;) at the end of each statement. Except the last one.</small></p>
+                            @elseif($excercise->subtype == 1)
+                                <p class="text-secondary"><small>Use a semicolon (;;) at the end of each statement. Except the last one.</small></p>
+                            @endif
                         @endif
 
-                        @if($excercise->subtype == 1)
-                            <p class="text-secondary"><small>Use a semicolon (;) at the end of each statement. Except the last one.</small></p>
-                        @endif
+
 
                     @endif
 

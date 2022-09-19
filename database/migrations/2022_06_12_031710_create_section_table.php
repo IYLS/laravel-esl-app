@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('sections', function (Blueprint $table) {
             $table->id('id');
             $table->string('name');
+            $table->string('underscore_name');
             $table->integer('unit_id');
             
             $table->foreign('unit_id')->references('id')->on('units');
