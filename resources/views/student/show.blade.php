@@ -18,7 +18,7 @@
             @endforeach
         </div>
         <div class="col-8">
-            @include('excercises.help_options', ['unit' => $unit])
+            @include('exercises.help_options', ['unit' => $unit])
         </div>
     </div>
     <div class="row" id="keywords_content">
@@ -55,50 +55,50 @@
                 @endif
                 <div class="d-flex align-items-start mt-2">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        @foreach($section->excercises as $e)
-                            <button class="nav-link" id="{{ $e->excerciseType->underscore_name . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->excerciseType->underscore_name . $e->id }}" type="button" role="tab" aria-controls="{{ $e->excerciseType->underscore_name . $e->id }}" aria-selected="false">{{ $e->title }}</button>
+                        @foreach($section->exercises as $e)
+                            <button class="nav-link" id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" type="button" role="tab" aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" aria-selected="false">{{ $e->title }}</button>
                         @endforeach
                     </div>
                     <div class="tab-content container" id="v-pills-tabContent">
-                        @foreach($section->excercises as $e)
-                            @switch($e->excerciseType->underscore_name)
+                        @foreach($section->exercises as $e)
+                            @switch($e->exerciseType->underscore_name)
 
                             @case('drag_and_drop')
-                                @include('excercises.drag_and_drop.dds', ['e' => $e])
+                                @include('exercises.drag_and_drop.dds', ['e' => $e])
                                 @break
                             @case('open_ended')
-                                @include('excercises.open_ended.subtype', ['e' => $e])
+                                @include('exercises.open_ended.subtype', ['e' => $e])
                                 @break
                             @case('voice_recognition')
-                                @include('excercises.voice_recognition.asd', ['e' => $e])
+                                @include('exercises.voice_recognition.asd', ['e' => $e])
                                 @break
                             @case('multiple_choice')
-                                <div class="tab-pane fade" id="{{ $e->excerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->excerciseType->underscore_name . $e->id }}-tab">
+                                <div class="tab-pane fade" id="{{ $e->exerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->exerciseType->underscore_name . $e->id }}-tab">
                                     <div class="container">
                                         <h4>{{ $e->title }}</h4>
                                         <p class="text-secondary">{{ $e->description }}</p>
 
                                         {{-- Subtype 1 = Predicting --}}
                                         @if($e->subtype == 1)
-                                            @include('excercises.multiple_choice.predicting', ['e' => $e])
+                                            @include('exercises.multiple_choice.predicting', ['e' => $e])
 
                                         {{-- Subtype 2 = What do you hear? --}}
                                         @elseif($e->subtype == 2)
-                                            @include('excercises.multiple_choice.what_do_you_hear', ['e' => $e])
+                                            @include('exercises.multiple_choice.what_do_you_hear', ['e' => $e])
 
                                         {{-- Subtype 3 = Evaluating statements --}}
                                         @elseif($e->subtype == 3)
-                                            @include('excercises.multiple_choice.evaluating_statements', ['e' => $e])
+                                            @include('exercises.multiple_choice.evaluating_statements', ['e' => $e])
 
                                         {{-- Subtype 4 = Multiple Choice --}}
                                         @elseif($e->subtype == 4)
-                                            @include('excercises.multiple_choice.multiple_choice', ['e' => $e])
+                                            @include('exercises.multiple_choice.multiple_choice', ['e' => $e])
                                         @endif
                                     </div>
                                 </div>
                                 @break
                             @case('fill_in_the_gaps')
-                            <div class="tab-pane fade" id="{{ $e->excerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->excerciseType->underscore_name . $e->id }}-tab">
+                            <div class="tab-pane fade" id="{{ $e->exerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->exerciseType->underscore_name . $e->id }}-tab">
                                 <div class="container">
                                     <h4>{{ $e->title }}</h4>
                                     <p class="text-secondary">{{ $e->description }}</p>

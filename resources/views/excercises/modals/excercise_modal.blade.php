@@ -1,5 +1,5 @@
 <!-- Multiple choice modal -->
-<div class="modal fade" id="add_{{ $type->underscore_name }}_excercise_modal" tabindex="-1" aria-labelledby="add_{{ $type->underscore_name }}_excercise_modal" aria-hidden="true">
+<div class="modal fade" id="add_{{ $type->underscore_name }}_exercise_modal" tabindex="-1" aria-labelledby="add_{{ $type->underscore_name }}_exercise_modal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('excercises.store', [$unit->id, $type, $section_id]) }}" method="POST">
+                <form action="{{ route('exercises.store', [$unit->id, $type, $section_id]) }}" method="POST">
                     @csrf
                     <input id="title" name="title" type="text" class="form-control" placeholder="Title">
                     <br>

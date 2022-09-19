@@ -6,11 +6,11 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use DB;
 
-class ExcerciseSeeder extends Seeder
+class ExerciseSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('excercises')->insert([
+        DB::table('exercises')->insert([
             [            
                 'id' => 11,
                 'title' => 'Vocabulary activation',
@@ -20,7 +20,7 @@ class ExcerciseSeeder extends Seeder
                 'image_name' => null,
                 'video_name' => null,
                 'section_id' => 1,
-                'excercise_type_id' => 1
+                'exercise_type_id' => 1
             ],
             [            
                 'id' => 12,
@@ -31,7 +31,7 @@ class ExcerciseSeeder extends Seeder
                 'video_name' => 'n1t2.mp4',
                 'subtype' => 1,
                 'section_id' => 1,
-                'excercise_type_id' => 2
+                'exercise_type_id' => 2
             ],
             [            
                 'id' => 13,
@@ -42,7 +42,7 @@ class ExcerciseSeeder extends Seeder
                 'video_name' => 'n1t2.mp4',
                 'subtype' => 2,
                 'section_id' => 1,
-                'excercise_type_id' => 2
+                'exercise_type_id' => 2
             ],
             [            
                 'id' => 14,
@@ -53,7 +53,7 @@ class ExcerciseSeeder extends Seeder
                 'video_name' => null,
                 'subtype' => 3,
                 'section_id' => 2,
-                'excercise_type_id' => 2
+                'exercise_type_id' => 2
             ],
             [            
                 'id' => 15,
@@ -64,7 +64,7 @@ class ExcerciseSeeder extends Seeder
                 'video_name' => null,
                 'subtype' => 4,
                 'section_id' => 3,
-                'excercise_type_id' => 2
+                'exercise_type_id' => 2
             ],
             [            
                 'id' => 16,
@@ -75,7 +75,7 @@ class ExcerciseSeeder extends Seeder
                 'video_name' => null,
                 'subtype' => null,
                 'section_id' => 1,
-                'excercise_type_id' => 5
+                'exercise_type_id' => 5
             ],
             [            
                 'id' => 17,
@@ -86,7 +86,7 @@ class ExcerciseSeeder extends Seeder
                 'video_name' => null,
                 'subtype' => null,
                 'section_id' => 3,
-                'excercise_type_id' => 4
+                'exercise_type_id' => 4
             ],
             [            
                 'id' => 18,
@@ -97,7 +97,7 @@ class ExcerciseSeeder extends Seeder
                 'video_name' => null,
                 'subtype' => 1,
                 'section_id' => 2,
-                'excercise_type_id' => 3
+                'exercise_type_id' => 3
             ],
             [            
                 'id' => 19,
@@ -108,7 +108,7 @@ class ExcerciseSeeder extends Seeder
                 'video_name' => null,
                 'subtype' => 2,
                 'section_id' => 2,
-                'excercise_type_id' => 3
+                'exercise_type_id' => 3
             ]
         ]);
     }

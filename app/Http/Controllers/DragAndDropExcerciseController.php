@@ -3,42 +3,42 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Excercise;
-use App\Models\ExcerciseType;
+use App\Models\Exercise;
+use App\Models\ExerciseType;
 use App\Models\Question;
 use App\Models\Feedback;
 use App\Models\Section;
 
 
-class DragAndDropExcerciseController extends Controller
+class DragAndDropExerciseController extends Controller
 {
     public function index()
     {
         //
     }
 
-    public function create($unit_id, $section_id, $excercise_id)
+    public function create($unit_id, $section_id, $exercise_id)
     {
-        $questions = Question::where('excercise_id', $excercise_id)->get();
-        $excercise = Excercise::where('id', $excercise_id)->get()->first();
-        $feedback = Feedback::where('excercise_id', $excercise_id)->get()->first();
+        $questions = Question::where('exercise_id', $exercise_id)->get();
+        $exercise = Exercise::where('id', $exercise_id)->get()->first();
+        $feedback = Feedback::where('exercise_id', $exercise_id)->get()->first();
 
-        return view('excercises.drag_and_drop.create', compact(['unit_id', 'section_id', 'questions', 'excercise', 'feedback']));
+        return view('exercises.drag_and_drop.create', compact(['unit_id', 'section_id', 'questions', 'exercise', 'feedback']));
     }
 
     public function store(Request $request, $unit_id, $section_name)
     {
         $section = Section::where('name', $section_name)->where('unit_id', $unit_id)->get()->first();
 
-        $new_excercise = new DragAndDropExcercise;
-        $new_excercise->title = $request->title;
-        $new_excercise->description = $request->description;
-        $new_excercise->section_id = $section->id;
-        $new_excercise->save();
+        $new_exercise = new DragAndDropExercise;
+        $new_exercise->title = $request->title;
+        $new_exercise->description = $request->description;
+        $new_exercise->section_id = $section->id;
+        $new_exercise->save();
 
-        $excercise_id = $new_excercise->id;
+        $exercise_id = $new_exercise->id;
 
-        return redirect()->route('excercises.drag_and_drop.create', [$unit_id, $section_id, $excercise_id]);
+        return redirect()->route('exercises.drag_and_drop.create', [$unit_id, $section_id, $exercise_id]);
     }
 
     public function show($id)
@@ -56,13 +56,13 @@ class DragAndDropExcerciseController extends Controller
         //
     }
 
-    public function destroy($unit_id, $excercise_id)
+    public function destroy($unit_id, $exercise_id)
     {   
-        $types = ExcerciseType::all();
-        $excercise = Excercise::find($excercise_id);
-        $excercise->questions()->delete();
-        $excercise->delete();
+        $types = ExerciseType::all();
+        $exercise = Exercise::find($exercise_id);
+        $exercise->questions()->delete();
+        $exercise->delete();
 
-        return redirect()->route('excercises.index', [$unit_id, $types]);
+        return redirect()->route('exercises.index', [$unit_id, $types]);
     }
 }

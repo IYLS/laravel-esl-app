@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Excercise;
+use App\Models\Exercise;
 
-class ExcerciseType extends Model
+class ExerciseType extends Model
 {
     use HasFactory;
 
-    protected $table = 'excercise_types';
+    protected $table = 'exercise_types';
 
     protected $fillable = [
         'name',
@@ -20,5 +20,5 @@ class ExcerciseType extends Model
 
     public $incrementing = true;
 
-    public function excercises() { return $this->hasMany(Excercise::class, 'excercise_type_id'); }
+    public function exercises() { return $this->hasMany(Exercise::class, 'exercise_type_id'); }
 }

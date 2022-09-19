@@ -116,7 +116,7 @@
             </div>
             <div>
                 <a class="btn btn-info" href="{{ route('keywords.index', $unit->id) }}">Keywords</a>
-                <a class="btn btn-info" href="{{ route('excercises.index', $unit->id) }}">Exercises</a>
+                <a class="btn btn-info" href="{{ route('exercises.index', $unit->id) }}">Exercises</a>
             </div>
         </div>
     </form>

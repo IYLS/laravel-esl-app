@@ -16,7 +16,7 @@ class FeedbackSeeder extends Seeder
                 'message' => 'Good Job!',
                 'audio_name' => null,
                 'feedback_type_id' => 1,
-                'excercise_id' => 14,
+                'exercise_id' => 14,
                 'question_id' => 51
             ],
         ]);

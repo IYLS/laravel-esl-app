@@ -12,6 +12,8 @@ return new class extends Migration
             $table->id('id');
             $table->string('name');
             $table->text('description');
+            $table->string('level');
+            $table->boolean('text_based');
             $table->softDeletes();
         });
     }

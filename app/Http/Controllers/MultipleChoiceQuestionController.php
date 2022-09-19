@@ -7,21 +7,21 @@ use App\Models\MultipleChoiceQuestion;
 
 class MultipleChoiceQuestionController extends Controller
 {
-    public function store(Request $request, $unit_id, $section_id, $excercise_id)
+    public function store(Request $request, $unit_id, $section_id, $exercise_id)
     {
         $new_question = new MultipleChoiceQuestion;
         $new_question->statement = $request->statement;
         $new_question->audio_name = $request->audio_name;
-        $new_question->excercise_id = $request->excercise_id;
+        $new_question->exercise_id = $request->exercise_id;
 
         $new_question->save();
 
-        return redirect()->route('excercises.multiple_choice.create', [$unit_id, $section_id, $excercise_id]);
+        return redirect()->route('exercises.multiple_choice.create', [$unit_id, $section_id, $exercise_id]);
     }
 
-    public function show($unit_id, $excercise_id)
+    public function show($unit_id, $exercise_id)
     {
-        return route('excercises.multiple_choice.create', [$unit_id, $excercise->section_id, $excercise_id]);
+        return route('exercises.multiple_choice.create', [$unit_id, $exercise->section_id, $exercise_id]);
     }
 
     public function edit($id)
@@ -34,12 +34,12 @@ class MultipleChoiceQuestionController extends Controller
         //
     }
 
-    public function destroy($unit_id, $excercise_id, $question_id)
+    public function destroy($unit_id, $exercise_id, $question_id)
     {
         $question = MultipleChoiceQuestion::find($question_id);
         $question->delete();
 
-        return redirect()->route('excercises.multiple_choice.create', [$unit_id, $question->excercise->section_id, $excercise_id]);
+        return redirect()->route('exercises.multiple_choice.create', [$unit_id, $question->exercise->section_id, $exercise_id]);
     }
 
     public function storeAlternative()

@@ -23,26 +23,26 @@
                 <th>Actions</th>
             </thead>
             <tbody>
-                @forelse($section->excercises as $excercise)
+                @forelse($section->exercises as $exercise)
                     <tr>
                         <td class="col-2">
-                            {{ $excercise->title }}
+                            {{ $exercise->title }}
                         </td>
                         <td class="col-6">
-                            {{ $excercise->description }}
+                            {{ $exercise->description }}
                         </td>
                         <td class="col-2">
-                            {{ $excercise->excerciseType->name }}
+                            {{ $exercise->exerciseType->name }}
                         </td>
                         <td class="col-2">
                             <div class="d-flex">
-                                <form action="{{ route("excercises.destroy", [$excercise->section->unit_id, $excercise->excercise_type_id, $excercise->id]) }}" method="POST">
+                                <form action="{{ route("exercises.destroy", [$exercise->section->unit_id, $exercise->exercise_type_id, $exercise->id]) }}" method="POST">
                                     @method('DELETE')
                                     @csrf
                                     <button type="submit" class="btn-sm btn btn-danger"><i class="mdi mdi-delete" aria-hidden="true"></i></button>
                                 </form>
     
-                                <a href="{{ route("excercises.show", $excercise->id) }}" class="btn-sm btn btn-success me-1 ms-1"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>
+                                <a href="{{ route("exercises.show", $exercise->id) }}" class="btn-sm btn btn-success me-1 ms-1"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>
                             </div>
                         </td>
                     </tr>
@@ -56,13 +56,13 @@
             </tbody>
         </table>
         <div class="mt-3 d-flex justify-content-center">
-            <div class="mt-1 ms-1 me-1"><h6>Add excercise:</h6></div>
+            <div class="mt-1 ms-1 me-1"><h6>Add exercise:</h6></div>
             @forelse($types as $type)
             <div class="ms-1 me-1">
-                <button type="button" id="add_{{ $type->underscore_name }}_button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add_{{ $type->underscore_name}}_excercise_modal">
+                <button type="button" id="add_{{ $type->underscore_name }}_button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add_{{ $type->underscore_name}}_exercise_modal">
                     {{ $type->name }}
                 </button>
-                @include('excercises.modals.excercise_modal', ['section_id' => $excercise->section->id, 'type' => $type])
+                @include('exercises.modals.exercise_modal', ['section_id' => $exercise->section->id, 'type' => $type])
             </div>
             @empty
             @endforelse
@@ -70,16 +70,16 @@
         <div class="mt-3 d-flex justify-content-center">
             <div class="mt-1 ms-1 me-1"><h6>Add Metacognition:</h6></div>
             <div class="ms-1 me-1">
-                <button type="button" id="addPreListeningDragAndDropButton" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addDragAndDropExcerciseModal">Choosing</button>
+                <button type="button" id="addPreListeningDragAndDropButton" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addDragAndDropExerciseModal">Choosing</button>
             </div>
             <div class="ms-1 me-1">
-                <button type="button" id="addPreListeningOpenEndedButton" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addOpenEndedExcerciseModal">Open Ended</button>
+                <button type="button" id="addPreListeningOpenEndedButton" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addOpenEndedExerciseModal">Open Ended</button>
             </div>
             <div class="ms-1 me-1">
-                <button type="button" id="addPreListeningMultipleChoiceButton" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addMultipleChoiceExcerciseModal">Form</button>
+                <button type="button" id="addPreListeningMultipleChoiceButton" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addMultipleChoiceExerciseModal">Form</button>
             </div>
             <div class="ms-1 me-1">
-                <button type="button" id="addPreListeningVoiceRecognitionButton" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addVoiceRecognitionExcerciseModal">Voice Recognition</button>
+                <button type="button" id="addPreListeningVoiceRecognitionButton" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addVoiceRecognitionExerciseModal">Voice Recognition</button>
             </div>
         </div>
 

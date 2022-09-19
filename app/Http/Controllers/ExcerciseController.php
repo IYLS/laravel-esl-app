@@ -4,56 +4,56 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Unit;
-use App\Models\ExcerciseType;
-use App\Models\Excercise;
+use App\Models\ExerciseType;
+use App\Models\Exercise;
 use App\Models\Question;
 use App\Models\Feedback;
 use App\Models\FeedbackType;
 use App\Models\Section;
 
-class ExcerciseController extends Controller
+class ExerciseController extends Controller
 {
     public function index($unit_id)
     {   
-        $types = ExcerciseType::all();
+        $types = ExerciseType::all();
         $unit = Unit::where("id", $unit_id)->first();
-        return view('excercises.index', compact('unit', 'types'));
+        return view('exercises.index', compact('unit', 'types'));
      }
 
-     public function create(Request $request, $unit_id, $excercise_type_id, $section_id)
+     public function create(Request $request, $unit_id, $exercise_type_id, $section_id)
      {
-        $type = ExcerciseType::find($excercise_type_id);
+        $type = ExerciseType::find($exercise_type_id);
 
         $title = $request->title;
         $description = $request->description;
 
-        return view("excercises.$type->underscore_name.create", compact(['unit_id', 'section_id', 'title', 'description']));
+        return view("exercises.$type->underscore_name.create", compact(['unit_id', 'section_id', 'title', 'description']));
     }
 
     public function store(Request $request, $unit_id, $type_id, $section_id)
     {
-        $excercise = new Excercise;
-        $excercise->title = $request->title;
-        $excercise->description = $request->description;
-        $excercise->excercise_type_id = $type_id;
-        $excercise->section_id = $section_id;
+        $exercise = new Exercise;
+        $exercise->title = $request->title;
+        $exercise->description = $request->description;
+        $exercise->exercise_type_id = $type_id;
+        $exercise->section_id = $section_id;
 
         if(isset($request->type)) {
-            $excercise->subtype = $request->type;
+            $exercise->subtype = $request->type;
         }
 
-        $excercise->save();
+        $exercise->save();
 
-        return redirect()->route('excercises.show', $excercise->id);
+        return redirect()->route('exercises.show', $exercise->id);
     }
 
-    public function show($excercise_id)
+    public function show($exercise_id)
     {
-        $excercise = Excercise::find($excercise_id);
+        $exercise = Exercise::find($exercise_id);
         $feedback_types = FeedbackType::all();
-        $type_name = $excercise->excerciseType->underscore_name;
+        $type_name = $exercise->exerciseType->underscore_name;
 
-        return view("excercises.$type_name.create", compact('excercise', 'feedback_types'));
+        return view("exercises.$type_name.create", compact('exercise', 'feedback_types'));
     }
 
     public function edit($id)
@@ -66,19 +66,19 @@ class ExcerciseController extends Controller
         //
     }
 
-    public function destroy($unit_id, $excercise_type_id, $excercise_id)
+    public function destroy($unit_id, $exercise_type_id, $exercise_id)
     {
-        $excercise = Excercise::find($excercise_id);
-        $excercise->delete();
+        $exercise = Exercise::find($exercise_id);
+        $exercise->delete();
 
-        return redirect()->route('excercises.index', [$excercise->section->unit_id]);
+        return redirect()->route('exercises.index', [$exercise->section->unit_id]);
     }
 
-    private function getExcercises($unit_id, $section_name)
+    private function getExercises($unit_id, $section_name)
     {
         $section = Section::where('unit_id', $unit_id)->where('name', $section_name)->get()->first();
-        $excercises = $section->excercises()->get();
-        return $excercises;
+        $exercises = $section->exercises()->get();
+        return $exercises;
     }
 
     private function subtype($id)

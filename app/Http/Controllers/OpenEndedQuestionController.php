@@ -4,23 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\OpenEndedQuestion;
-use App\Models\OpenEndedExcercise;
+use App\Models\OpenEndedExercise;
 
 class OpenEndedQuestionController extends Controller
 {
-    public function store(Request $request, $unit_id, $section_id, $excercise_id)
+    public function store(Request $request, $unit_id, $section_id, $exercise_id)
     {
         $new_question = new OpenEndedQuestion;
         $new_question->title = $request->question;
-        $new_question->excercise_id = $excercise_id;
+        $new_question->exercise_id = $exercise_id;
         $new_question->save();
 
-        return redirect()->route('excercises.open_ended.create', [$unit_id, $section_id, $excercise_id]);
+        return redirect()->route('exercises.open_ended.create', [$unit_id, $section_id, $exercise_id]);
     }
 
-    public function show($unit_id, $excercise_id)
+    public function show($unit_id, $exercise_id)
     {
-        // return route('excercises.open_ended.create', [$unit_id, $excercise->section_id, $excercise_id]);
+        // return route('exercises.open_ended.create', [$unit_id, $exercise->section_id, $exercise_id]);
     }
 
     public function edit($id)
@@ -33,11 +33,11 @@ class OpenEndedQuestionController extends Controller
         //
     }
 
-    public function destroy($unit_id, $excercise_id, $question_id)
+    public function destroy($unit_id, $exercise_id, $question_id)
     {
-        $excercise = OpenEndedExcercise::find($excercise_id);
+        $exercise = OpenEndedExercise::find($exercise_id);
         $question->delete();
 
-        return redirect()->route('excercises.open_ended.create', [$unit_id, $question->excercise->section_id, $excercise_id]);
+        return redirect()->route('exercises.open_ended.create', [$unit_id, $question->exercise->section_id, $exercise_id]);
     }
 }

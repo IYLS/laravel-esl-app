@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('excercises', function (Blueprint $table) {
+        Schema::create('exercises', function (Blueprint $table) {
             $table->id('id');
             $table->string('title');
             $table->string('description')->nullable(true);
@@ -19,15 +19,15 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->integer('section_id');
-            $table->integer('excercise_type_id');
+            $table->integer('exercise_type_id');
 
             $table->foreign('section_id')->references('id')->on('sections');
-            $table->foreign('excercise_type_id')->references('id')->on('excercise_types');
+            $table->foreign('exercise_type_id')->references('id')->on('exercise_types');
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('excercises');
+        Schema::dropIfExists('exercises');
     }
 };

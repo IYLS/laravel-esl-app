@@ -3,34 +3,34 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\FillInTheGapsExcercise;
+use App\Models\FillInTheGapsExercise;
 use App\Models\FillInTheGapsQuestion;
 use App\Models\Section;
 use App\Models\Feedback;
 
-class FillInTheGapsExcerciseController extends Controller
+class FillInTheGapsExerciseController extends Controller
 {
-    public function create($unit_id, $section_id, $excercise_id)
+    public function create($unit_id, $section_id, $exercise_id)
     {
-        $questions = FillInTheGapsQuestion::where('excercise_id', $excercise_id)->get();
-        $excercise = FillInTheGapsExcercise::where('id', $excercise_id)->get()->first();
-        $feedback = Feedback::where('excercise_id', $excercise_id)->get()->first();
+        $questions = FillInTheGapsQuestion::where('exercise_id', $exercise_id)->get();
+        $exercise = FillInTheGapsExercise::where('id', $exercise_id)->get()->first();
+        $feedback = Feedback::where('exercise_id', $exercise_id)->get()->first();
         
-        return view('excercises.fill_in_the_gaps.create', compact('unit_id', 'excercise', 'questions'));
+        return view('exercises.fill_in_the_gaps.create', compact('unit_id', 'exercise', 'questions'));
     }
 
     public function store(Request $request, $unit_id, $section_name)
     {
         $section = Section::where('name', $section_name)->where('unit_id', $unit_id)->get()->first();
 
-        $new_excercise = new FillInTheGapsExcercise;
-        $new_excercise->title = $request->title;
-        $new_excercise->description = $request->description;
-        $new_excercise->subtype = $request->subtype;
-        $new_excercise->section_id = $section->id;
-        $new_excercise->save();
+        $new_exercise = new FillInTheGapsExercise;
+        $new_exercise->title = $request->title;
+        $new_exercise->description = $request->description;
+        $new_exercise->subtype = $request->subtype;
+        $new_exercise->section_id = $section->id;
+        $new_exercise->save();
 
-        return redirect()->route('excercises.multiple_choice.create', [$unit_id, $section->id, $new_excercise->id]);
+        return redirect()->route('exercises.multiple_choice.create', [$unit_id, $section->id, $new_exercise->id]);
     }
 
     public function show($id)
@@ -48,12 +48,12 @@ class FillInTheGapsExcerciseController extends Controller
         //
     }
 
-    public function destroy($unit_id, $excercise_id)
+    public function destroy($unit_id, $exercise_id)
     {
-        $excercise = Excercise::find($excercise_id);
-        $excercise->questions()->delete();
-        $excercise->delete();
+        $exercise = Exercise::find($exercise_id);
+        $exercise->questions()->delete();
+        $exercise->delete();
 
-        return redirect()->route('excercises.index', [$unit_id]);
+        return redirect()->route('exercises.index', [$unit_id]);
     }
 }

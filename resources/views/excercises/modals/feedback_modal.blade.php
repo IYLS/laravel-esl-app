@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('feedback.store', [$excercise->id]) }}" method="POST">
+                <form action="{{ route('feedback.create', [$exercise->id]) }}" method="POST">
                     @csrf
                     <select id="type" name="type" class="form-select">
                         <option value="" selected disabled>Select a type of feedback</option>

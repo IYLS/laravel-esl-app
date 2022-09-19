@@ -8,15 +8,15 @@
 
     <div class="card p-4 m-2">
         <h4>Activity Details</h4>
-        <p>Title: {{ $excercise->title }}</p>
-        <p>Description: {{ $excercise->description }}</p>
-        <p>Subtype: {{ $excercise->subtype }}</p>
+        <p>Title: {{ $exercise->title }}</p>
+        <p>Description: {{ $exercise->description }}</p>
+        <p>Subtype: {{ $exercise->subtype }}</p>
     </div>
 
     <div class="card p-4 m-2">
         <h4>Activity questions</h4>
-        @forelse($excercise->questions as $question)
-            @if($excercise->subtype == 1 || $excercise->subtype == 4)
+        @forelse($exercise->questions as $question)
+            @if($exercise->subtype == 1 || $exercise->subtype == 4)
                 <div class="card mt-1 mb-1 p-4">
                     <div class="row">
                         <div class="col-10">
@@ -39,7 +39,7 @@
                             </ol>
                         </div>
                         <div class="col-2 d-flex justify-content-center">
-                            <form action="{{ route('questions.destroy', [$question->excercise_id, $question->id]) }}" method="POST">
+                            <form action="{{ route('questions.destroy', [$question->exercise_id, $question->id]) }}" method="POST">
                                 @method('DELETE')
                                 @csrf
                                 <button class="btn btn-danger btn-sm m-1" type="submit">Delete</button>
@@ -48,7 +48,7 @@
                         </div>
                     </div>
                 </div>
-            @elseif($excercise->subtype == 2)
+            @elseif($exercise->subtype == 2)
                 <div class="card mt-1 mb-1 p-4">
                     <div class="row">
                         <div class="col-10">
@@ -75,7 +75,7 @@
                             </div>
                         </div>
                         <div class="col-2 d-flex justify-content-center">
-                            <form action="{{ route('questions.destroy', [$question->excercise_id, $question->id]) }}" method="POST">
+                            <form action="{{ route('questions.destroy', [$question->exercise_id, $question->id]) }}" method="POST">
                                 @method('DELETE')
                                 @csrf
                                 <button class="btn btn-danger btn-sm m-1" type="submit">Delete</button>
@@ -84,7 +84,7 @@
                         </div>
                     </div>
                 </div>
-            @elseif($excercise->subtype == 3)
+            @elseif($exercise->subtype == 3)
                 <div class="card mt-1 mb-1 p-4">
                     <div class="row">
                         <div class="col-10">
@@ -105,7 +105,7 @@
                             </ul>
                         </div>
                         <div class="col-2 d-flex justify-content-center">
-                            <form action="{{ route('questions.destroy', [$question->excercise_id, $question->id]) }}" method="POST">
+                            <form action="{{ route('questions.destroy', [$question->exercise_id, $question->id]) }}" method="POST">
                                 @method('DELETE')
                                 @csrf
                                 <button class="btn btn-danger btn-sm m-1" type="submit">Delete</button>
@@ -129,11 +129,11 @@
     @include('feedback.show')
 
     <div class="d-flex justify-content-center">
-        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$excercise->section->unit_id]) }}">Save</a>
-        <a class="btn btn-secondary m-1" href="{{ route('excercises.index', [$excercise->section->unit_id]) }}">Cancel</a>
+        <a class="btn btn-secondary m-1" href="{{ route('exercises.index', [$exercise->section->unit_id]) }}">Save</a>
+        <a class="btn btn-secondary m-1" href="{{ route('exercises.index', [$exercise->section->unit_id]) }}">Cancel</a>
     </div>
 </div>
 
-@include('excercises.modals.question_modal')
+@include('exercises.modals.question_modal')
 
 @endsection

@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\VoiceRecognitionQuestion;
-use App\Models\VoiceRecognitionExcercise;
+use App\Models\VoiceRecognitionExercise;
 use Illuminate\Http\Request;
 
 class VoiceRecognitionQuestionController extends Controller
 {
     public function create()
     {
-        return view('excercises.voice_recognition.create');
+        return view('exercises.voice_recognition.create');
     }
 
-    public function store(Request $request, $unit_id, $section_id, $excercise_id)
+    public function store(Request $request, $unit_id, $section_id, $exercise_id)
     {
         $audio_file_name = $request->file('audio')->getClientOriginalName();
         $audio_file_path = $request->file('audio')->storeAs('public/files', $audio_file_name);
@@ -27,15 +27,15 @@ class VoiceRecognitionQuestionController extends Controller
         $new_question->audio_url = $audio_file_path;
         $new_question->audio_name = $audio_file_name;
         $new_question->title = $request->title;        
-        $new_question->excercise_id = $excercise_id;
+        $new_question->exercise_id = $exercise_id;
         $new_question->save();
 
-        return redirect()->route('excercises.voice_recognition.create', [$unit_id, $section_id, $excercise_id]);
+        return redirect()->route('exercises.voice_recognition.create', [$unit_id, $section_id, $exercise_id]);
     }
 
-    public function show($unit_id, $excercise_id)
+    public function show($unit_id, $exercise_id)
     {
-        return route('excercises.voice_recognition.create', [$unit_id, $excercise->section_id, $excercise_id]);
+        return route('exercises.voice_recognition.create', [$unit_id, $exercise->section_id, $exercise_id]);
     }
 
     public function edit($id)
@@ -48,11 +48,11 @@ class VoiceRecognitionQuestionController extends Controller
         //
     }
 
-    public function destroy($unit_id, $excercise_id, $question_id)
+    public function destroy($unit_id, $exercise_id, $question_id)
     {
-        $excercise = VoiceRecognitionExcercise::find($excercise_id);
+        $exercise = VoiceRecognitionExercise::find($exercise_id);
         $question->delete();
 
-        return redirect()->route('excercises.voice_recognition.create', [$unit_id, $question->excercise->section_id, $excercise_id]);
+        return redirect()->route('exercises.voice_recognition.create', [$unit_id, $question->exercise->section_id, $exercise_id]);
     }
 }

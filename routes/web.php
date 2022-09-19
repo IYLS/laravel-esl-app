@@ -8,8 +8,9 @@ use App\Http\Controllers\UnitController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\KeywordController;
-use App\Http\Controllers\ExcerciseController;
+use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\FeedbackController;
 
 // Home
 Route::get('/', [AuthController::class, 'index'])->name('auth.index');
@@ -50,21 +51,22 @@ Route::post('/units/{unit}/keywords/store', [KeywordController::class, 'store'])
 Route::delete('/units/{unit}/keywords/{keyword}/destroy', [KeywordController::class, 'destroy'])->name('keywords.destroy');
 Route::post('/units/{unit}/keywords/{keyword}/update', [KeywordController::class, 'update'])->name('keywords.update');
 
-// Excercises Routes
-Route::get('/units/{unit}/excercises', [ExcerciseController::class, 'index'])->name('excercises.index');
-Route::post('/units/{unit}/excercises/add', [ExcerciseController::class, 'add'])->name('excercises.add');
-Route::get('/excercises/{excercise}', [ExcerciseController::class, 'show'])->name('excercises.show');
-Route::post('/units/{unit}/excercises/store/{type}/section/{section}', [ExcerciseController::class, 'store'])->name('excercises.store');
-Route::get('/units/{unit}/excercises/create/{type}/section/{section}', [ExcerciseController::class, 'create'])->name('excercises.create');
-Route::delete('/units/{unit}/excercises/destroy/{type}/{excercise}', [ExcerciseController::class, 'destroy'])->name('excercises.destroy');
+// Exercises Routes
+Route::get('/units/{unit}/exercises', [ExerciseController::class, 'index'])->name('exercises.index');
+Route::post('/units/{unit}/exercises/add', [ExerciseController::class, 'add'])->name('exercises.add');
+Route::get('/exercises/{exercise}', [ExerciseController::class, 'show'])->name('exercises.show');
+Route::post('/units/{unit}/exercises/store/{type}/section/{section}', [ExerciseController::class, 'store'])->name('exercises.store');
+Route::get('/units/{unit}/exercises/create/{type}/section/{section}', [ExerciseController::class, 'create'])->name('exercises.create');
+Route::delete('/units/{unit}/exercises/destroy/{type}/{exercise}', [ExerciseController::class, 'destroy'])->name('exercises.destroy');
 
 // Questions Routes
-Route::get('/units/{unit}/excercises/create/{type}/{excercise}/question', [QuestionController::class, 'create'])->name('questions.create');
-Route::get('/units/{unit}/excercises/{excercise}/questions/show/{type}/{question}', [QuestionController::class, 'show'])->name('questions.show');
-Route::post('/excercises/{excercise}/store/section/{section}/type/{type}/question', [QuestionController::class, 'store'])->name('questions.store');
-Route::delete('/excercises/{excercise}/questions/destroy/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
+Route::get('/units/{unit}/exercises/create/{type}/{exercise}/question', [QuestionController::class, 'create'])->name('questions.create');
+Route::get('/units/{unit}/exercises/{exercise}/questions/show/{type}/{question}', [QuestionController::class, 'show'])->name('questions.show');
+Route::post('/exercises/{exercise}/store/section/{section}/type/{type}/question', [QuestionController::class, 'store'])->name('questions.store');
+Route::delete('/exercises/{exercise}/questions/destroy/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
 
 
 
 
-Route::post('/feedback/{excercise}/store', [FeedbackController::class, 'store'])->name('feedback.store');
+Route::post('/feedback/{exercise}/store', [FeedbackController::class, 'store'])->name('feedback.store');
+Route::post('/feedback/{exercise}/create', [FeedbackController::class, 'create'])->name('feedback.create');

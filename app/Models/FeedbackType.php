@@ -13,7 +13,9 @@ class FeedbackType extends Model
 
     protected $fillable = [
         'name',
-        'description'
+        'description',
+        'level',
+        'text_based'
     ];
     public $timestamps = false;
     public $incrementing = true;

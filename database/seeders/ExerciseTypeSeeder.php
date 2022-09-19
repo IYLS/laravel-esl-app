@@ -6,11 +6,11 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use DB;
 
-class ExcerciseTypeSeeder extends Seeder
+class ExerciseTypeSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('excercise_types')->insert([
+        DB::table('exercise_types')->insert([
             [            
                 'id' => 1,
                 'name' => 'Drag and Drop',

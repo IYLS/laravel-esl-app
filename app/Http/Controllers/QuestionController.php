@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Question;
-use App\Models\Excercise;
+use App\Models\Exercise;
 
 class QuestionController extends Controller
 {
@@ -18,17 +18,17 @@ class QuestionController extends Controller
         //
     }
 
-    public function store(Request $request, $excercise_id, $section_id, $excercise_type_id)
+    public function store(Request $request, $exercise_id, $section_id, $exercise_type_id)
     {
         $question = new Question;
         $question->statement = $request->statement;
         $question->answer = $request->answer;
-        $question->excercise_id = $excercise_id;
+        $question->exercise_id = $exercise_id;
         $question->audio_name = $request->audio_name;
         $question->image_name = $request->image_name;
         $question->save();
 
-        return redirect()->route('excercises.show', [$excercise_id]);
+        return redirect()->route('exercises.show', [$exercise_id]);
     }
 
     public function show(Question $question)
@@ -46,11 +46,11 @@ class QuestionController extends Controller
         //
     }
 
-    public function destroy($excercise_id, $question_id)
+    public function destroy($exercise_id, $question_id)
     {
         $question = Question::find($question_id);
         $question->delete();
 
-        return redirect()->route('excercises.show', $question->excercise_id);
+        return redirect()->route('exercises.show', $question->exercise_id);
     }
 }

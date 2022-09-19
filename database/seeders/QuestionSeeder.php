@@ -17,7 +17,7 @@ class QuestionSeeder extends Seeder
                 'audio_name' => '1.mp3',
                 'answer' => null,
                 'image_name' => null,
-                'excercise_id' => 13
+                'exercise_id' => 13
             ],
             [            
                 'id' => 52,
@@ -25,7 +25,7 @@ class QuestionSeeder extends Seeder
                 'audio_name' => '2.mp3',
                 'answer' => null,
                 'image_name' => null,
-                'excercise_id' => 13
+                'exercise_id' => 13
             ],
             [            
                 'id' => 53,
@@ -33,7 +33,7 @@ class QuestionSeeder extends Seeder
                 'audio_name' => '3.mp3',
                 'answer' => null,
                 'image_name' => null,
-                'excercise_id' => 13
+                'exercise_id' => 13
             ],
             [            
                 'id' => 54,
@@ -41,7 +41,7 @@ class QuestionSeeder extends Seeder
                 'audio_name' => '4.mp3',
                 'answer' => null,
                 'image_name' => null,
-                'excercise_id' => 13
+                'exercise_id' => 13
             ],
             [            
                 'id' => 55,
@@ -49,7 +49,7 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => '5.mp3',
-                'excercise_id' => 13
+                'exercise_id' => 13
             ],
             [            
                 'id' => 56,
@@ -57,7 +57,7 @@ class QuestionSeeder extends Seeder
                 'audio_name' => '6.mp3',
                 'answer' => null,
                 'image_name' => null,
-                'excercise_id' => 13
+                'exercise_id' => 13
             ],
             [            
                 'id' => 57,
@@ -65,7 +65,7 @@ class QuestionSeeder extends Seeder
                 'audio_name' => '7.mp3',
                 'answer' => null,
                 'image_name' => null,
-                'excercise_id' => 13
+                'exercise_id' => 13
             ],
             [
                 'id' => 58,
@@ -73,7 +73,7 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 14
+                'exercise_id' => 14
             ],
             [
                 'id' => 59,
@@ -81,7 +81,7 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 14
+                'exercise_id' => 14
             ],
             [
                 'id' => 10,
@@ -89,7 +89,7 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 14
+                'exercise_id' => 14
             ],
             [
                 'id' => 11,
@@ -97,7 +97,7 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 14
+                'exercise_id' => 14
             ],
             [
                 'id' => 12,
@@ -105,7 +105,7 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 14
+                'exercise_id' => 14
             ],
             [
                 'id' => 13,
@@ -113,7 +113,7 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 14
+                'exercise_id' => 14
             ],
             [            
                 'id' => 14,
@@ -121,7 +121,7 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => 'dictation_cloze.mp3',
-                'excercise_id' => 12
+                'exercise_id' => 12
             ],
             [
                 'id' => 15,
@@ -129,7 +129,7 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 15
+                'exercise_id' => 15
             ],
             [
                 'id' => 16,
@@ -137,7 +137,7 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 17
+                'exercise_id' => 17
             ],
             [
                 'id' => 18,
@@ -145,7 +145,7 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => 'Doctor.jpg',
                 'audio_name' => 'voice_recognition.mp3',
-                'excercise_id' => 16
+                'exercise_id' => 16
             ],
             [
                 'id' => 19,
@@ -153,7 +153,7 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => 'Steven.jpg',
                 'audio_name' => 'Steven.mp3',
-                'excercise_id' => 16
+                'exercise_id' => 16
             ],
             [            
                 'id' => 20,
@@ -162,7 +162,7 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 18
+                'exercise_id' => 18
             ],
             [            
                 'id' => 21,
@@ -170,7 +170,7 @@ class QuestionSeeder extends Seeder
                 'image_name' => null,
                 'audio_name' => null,
                 'answer' => 'lasting',
-                'excercise_id' => 19
+                'exercise_id' => 19
             ],
             [            
                 'id' => 22,
@@ -178,7 +178,7 @@ class QuestionSeeder extends Seeder
                 'answer' => 'freak out',
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 19
+                'exercise_id' => 19
             ],
             [            
                 'id' => 23,
@@ -186,7 +186,7 @@ class QuestionSeeder extends Seeder
                 'answer' => 'recover',
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 19
+                'exercise_id' => 19
             ],
             [            
                 'id' => 24,
@@ -194,7 +194,7 @@ class QuestionSeeder extends Seeder
                 'answer' => 'seem to',
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 19
+                'exercise_id' => 19
             ],
             [            
                 'id' => 25,
@@ -202,7 +202,7 @@ class QuestionSeeder extends Seeder
                 'answer' => 'wrong',
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 19
+                'exercise_id' => 19
             ],
             [            
                 'id' => 26,
@@ -210,7 +210,7 @@ class QuestionSeeder extends Seeder
                 'answer' => 'races',
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 19
+                'exercise_id' => 19
             ],
             [            
                 'id' => 27,
@@ -218,7 +218,7 @@ class QuestionSeeder extends Seeder
                 'answer' => 'healed',
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 19
+                'exercise_id' => 19
             ],
             [            
                 'id' => 31,
@@ -226,7 +226,7 @@ class QuestionSeeder extends Seeder
                 'answer' => 'Something that is incorrect or not true.',
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 11
+                'exercise_id' => 11
             ],
             [            
                 'id' => 32,
@@ -234,7 +234,7 @@ class QuestionSeeder extends Seeder
                 'answer' => 'To become completely healthy again after an illness or injury.',
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 11
+                'exercise_id' => 11
             ],
             [            
                 'id' => 33,
@@ -242,7 +242,7 @@ class QuestionSeeder extends Seeder
                 'answer' => 'To make or become well again, especially after an injury.',
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 11
+                'exercise_id' => 11
             ],
             [            
                 'id' => 34,
@@ -250,7 +250,7 @@ class QuestionSeeder extends Seeder
                 'answer' => 'To appear to be.',
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 11
+                'exercise_id' => 11
             ],
             [            
                 'id' => 35,
@@ -258,7 +258,7 @@ class QuestionSeeder extends Seeder
                 'answer' => 'To become or cause someone to be extremely emotional.',
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 11
+                'exercise_id' => 11
             ],
             [            
                 'id' => 36,
@@ -266,7 +266,7 @@ class QuestionSeeder extends Seeder
                 'answer' => 'Something that continues to exist for a long time or forever.',
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 11
+                'exercise_id' => 11
             ],
             [            
                 'id' => 37,
@@ -274,7 +274,7 @@ class QuestionSeeder extends Seeder
                 'answer' => 'To move or go fast.',
                 'image_name' => null,
                 'audio_name' => null,
-                'excercise_id' => 11
+                'exercise_id' => 11
             ],
         ]);
     }

@@ -1,4 +1,4 @@
-@php $type = $excercise->excerciseType->underscore_name; @endphp
+@php $type = $exercise->exerciseType->underscore_name; @endphp
 <div class="modal fade" id="addQuestionModal" tabindex="-1" aria-labelledby="addQuestionModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form @if($type == "voice_recognition") enctype="multipart/form-data" @endif action="{{ route('questions.store', [$excercise->id, $excercise->section_id, $excercise->excercise_type_id]) }}" method="POST">
+                <form @if($type == "voice_recognition") enctype="multipart/form-data" @endif action="{{ route('questions.store', [$exercise->id, $exercise->section_id, $exercise->exercise_type_id]) }}" method="POST">
                     @csrf
                     @php
                     $statement_placeholder = "";
@@ -67,9 +67,9 @@
                         @endif
 
                         @if($type == 'fill_in_the_gaps')
-                            @if($excercise->subtype == 2)
+                            @if($exercise->subtype == 2)
                                 <p class="text-secondary"><small>Use a semicolon (;) at the end of each statement. Except the last one.</small></p>
-                            @elseif($excercise->subtype == 1)
+                            @elseif($exercise->subtype == 1)
                                 <p class="text-secondary"><small>Use a semicolon (;;) at the end of each statement. Except the last one.</small></p>
                             @endif
                         @endif

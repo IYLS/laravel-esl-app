@@ -76,10 +76,10 @@ class StudentController extends Controller
         return view('student.level_selection', compact(['user', 'units']));
     }
 
-    // private function getExcercises($unit_id, $section_name)
+    // private function getExercises($unit_id, $section_name)
     // {
     //     $section = Section::where('unit_id', $unit_id)->where('name', $section_name)->get()->first();
-    //     $excercises = $section->excercises()->get();
+    //     $exercises = $section->exercises()->get();
 
     //     $final_collection = array(
     //         'voice_recognition' => $voice_recognition,

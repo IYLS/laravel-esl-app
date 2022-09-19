@@ -23,5 +23,5 @@ class Question extends Model
 
     public function feedback() { return $this->hasOne(Feedback::class); }
     public function alternatives() { return $this->hasMany(Alternative::class, 'question_id'); }
-    public function excercise() { return $this->belongsTo(Excercise::class); }
+    public function exercise() { return $this->belongsTo(Exercise::class); }
 }

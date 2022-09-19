@@ -1,7 +1,7 @@
 <div class="card m-2 p-4">
     <h4>Feedback</h4>
-    @isset($excercise->feedback)
-        <p>Type: {{ $excercise->feedback->message }}</p>
+    @isset($exercise->feedback)
+        <p>Type: {{ $exercise->feedback->message }}</p>
     @else
         <p class="text-center p-2 text-secondary"><small>No feedback added yet.</small></p>
     @endisset
@@ -12,4 +12,4 @@
     </div>
 </div>
 
-@include('excercises.modals.feedback_modal')
+@include('exercises.modals.feedback_modal')

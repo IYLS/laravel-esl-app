@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Section;
 use App\Models\Question;
-use App\Models\ExcerciseType;
+use App\Models\ExerciseType;
 use App\Models\Feedback;
 
-class Excercise extends Model
+class Exercise extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'excercises';
+    protected $table = 'exercises';
 
     protected $fillable = [
         'title',
@@ -28,8 +28,8 @@ class Excercise extends Model
     public $timestamps = false;
     public $incrementing = true;
 
-    public function questions() { return $this->hasMany(Question::class, 'excercise_id'); }
+    public function questions() { return $this->hasMany(Question::class, 'exercise_id'); }
     public function section() { return $this->belongsTo(Section::class); }
-    public function excerciseType() { return $this->belongsTo(ExcerciseType::class); }
-    public function feedback() { return $this->hasOne(Feedback::class, 'excercise_id'); }
+    public function exerciseType() { return $this->belongsTo(ExerciseType::class); }
+    public function feedback() { return $this->hasOne(Feedback::class, 'exercise_id'); }
 }
