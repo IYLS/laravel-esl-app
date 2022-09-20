@@ -20,12 +20,18 @@ class QuestionController extends Controller
 
     public function store(Request $request, $exercise_id, $section_id, $exercise_type_id)
     {
+        $audio_file_name = $request->file('audio')->getClientOriginalName();
+        $audio_file_path = $request->file('audio')->storeAs('public/files', $audio_file_name);
+
+        $image_file_name = $request->file('image')->getClientOriginalName();
+        $image_file_path = $request->file('image')->storeAs('public/files', $image_file_name);
+
         $question = new Question;
         $question->statement = $request->statement;
         $question->answer = $request->answer;
         $question->exercise_id = $exercise_id;
-        $question->audio_name = $request->audio_name;
-        $question->image_name = $request->image_name;
+        $question->audio_name = $audio_file_name;
+        $question->image_name = $image_file_name;
         $question->save();
 
         return redirect()->route('exercises.show', [$exercise_id]);

@@ -52,12 +52,13 @@ Route::delete('/units/{unit}/keywords/{keyword}/destroy', [KeywordController::cl
 Route::post('/units/{unit}/keywords/{keyword}/update', [KeywordController::class, 'update'])->name('keywords.update');
 
 // Exercises Routes
+Route::get('/exercises/{exercise}', [ExerciseController::class, 'show'])->name('exercises.show');
 Route::get('/units/{unit}/exercises', [ExerciseController::class, 'index'])->name('exercises.index');
 Route::post('/units/{unit}/exercises/add', [ExerciseController::class, 'add'])->name('exercises.add');
-Route::get('/exercises/{exercise}', [ExerciseController::class, 'show'])->name('exercises.show');
 Route::post('/units/{unit}/exercises/store/{type}/section/{section}', [ExerciseController::class, 'store'])->name('exercises.store');
 Route::get('/units/{unit}/exercises/create/{type}/section/{section}', [ExerciseController::class, 'create'])->name('exercises.create');
 Route::delete('/units/{unit}/exercises/destroy/{type}/{exercise}', [ExerciseController::class, 'destroy'])->name('exercises.destroy');
+Route::post('/units/{unit}/exercises/update/{type}/{exercise}', [ExerciseController::class, 'update'])->name('exercises.update');
 
 // Questions Routes
 Route::get('/units/{unit}/exercises/create/{type}/{exercise}/question', [QuestionController::class, 'create'])->name('questions.create');
@@ -65,8 +66,7 @@ Route::get('/units/{unit}/exercises/{exercise}/questions/show/{type}/{question}'
 Route::post('/exercises/{exercise}/store/section/{section}/type/{type}/question', [QuestionController::class, 'store'])->name('questions.store');
 Route::delete('/exercises/{exercise}/questions/destroy/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
 
-
-
-
-Route::post('/feedback/{exercise}/store', [FeedbackController::class, 'store'])->name('feedback.store');
+// Feedback Routes
+Route::post('/feedback/{exercise}/store/{type}', [FeedbackController::class, 'store'])->name('feedback.store');
 Route::post('/feedback/{exercise}/create', [FeedbackController::class, 'create'])->name('feedback.create');
+Route::delete('/feedback/{feedback}/destroy', [FeedbackController::class, 'destroy'])->name('feedback.destroy');

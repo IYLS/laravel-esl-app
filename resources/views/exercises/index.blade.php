@@ -62,7 +62,7 @@
                 <button type="button" id="add_{{ $type->underscore_name }}_button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add_{{ $type->underscore_name}}_exercise_modal">
                     {{ $type->name }}
                 </button>
-                @include('exercises.modals.exercise_modal', ['section_id' => $exercise->section->id, 'type' => $type])
+                @include('exercises.modals.exercise_modal', ['section' => $exercise->section, 'type' => $type])
             </div>
             @empty
             @endforelse

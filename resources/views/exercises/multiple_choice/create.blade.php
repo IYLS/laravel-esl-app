@@ -39,12 +39,12 @@
                             </ol>
                         </div>
                         <div class="col-2 d-flex justify-content-center">
-                            <form action="{{ route('questions.destroy', [$question->exercise_id, $question->id]) }}" method="POST">
-                                @method('DELETE')
-                                @csrf
-                                <button class="btn btn-danger btn-sm m-1" type="submit">Delete</button>
-                                <a class="btn btn-warning btn-sm m-1">Edit</a>
-                            </form>
+                            <br>
+                            <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
+                                Delete
+                            </button> 
+                            <button class="btn btn-warning btn-sm m-1">Edit</button>
+                            @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
                         </div>
                     </div>
                 </div>
@@ -75,12 +75,12 @@
                             </div>
                         </div>
                         <div class="col-2 d-flex justify-content-center">
-                            <form action="{{ route('questions.destroy', [$question->exercise_id, $question->id]) }}" method="POST">
-                                @method('DELETE')
-                                @csrf
-                                <button class="btn btn-danger btn-sm m-1" type="submit">Delete</button>
-                                <a class="btn btn-warning btn-sm m-1">Edit</a>
-                            </form>
+                            <br>
+                            <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
+                                Delete
+                            </button> 
+                            <button class="btn btn-warning btn-sm m-1">Edit</button>
+                            @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
                         </div>
                     </div>
                 </div>
@@ -105,12 +105,12 @@
                             </ul>
                         </div>
                         <div class="col-2 d-flex justify-content-center">
-                            <form action="{{ route('questions.destroy', [$question->exercise_id, $question->id]) }}" method="POST">
-                                @method('DELETE')
-                                @csrf
-                                <button class="btn btn-danger btn-sm m-1" type="submit">Delete</button>
-                                <a class="btn btn-warning btn-sm m-1">Edit</a>
-                            </form>
+                            <br>
+                            <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
+                                Delete
+                            </button> 
+                            <button class="btn btn-warning btn-sm m-1">Edit</button>
+                            @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
                         </div>
                     </div>
                 </div>

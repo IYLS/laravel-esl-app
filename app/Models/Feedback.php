@@ -23,5 +23,5 @@ class Feedback extends Model
 
     public function exercise() { return $this->belongsTo(Exercise::class); }
     public function question() { return $this->belongsTo(Question::class); }
-    public function type() { return $this->belongsTo(FeedbackType::class); }
+    public function feedbackType() { return $this->belongsTo(FeedbackType::class); }
 }

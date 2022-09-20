@@ -7,9 +7,13 @@
     </div>
 
     <div class="card p-4 m-2">
-        <h4>Activity Details</h4>
+        <div class="row">
+            <h4 class="col-11">Activity Details</h4>
+            <button type="button" id="add_{{ $exercise->exerciseType->underscore_name }}_button" class="btn btn-sm btn-warning col-1" data-bs-toggle="modal" data-bs-target="#add_{{ $exercise->exerciseType->underscore_name}}_exercise_modal">Edit</button>
+        </div>
         <h5>Title: {{ $exercise->title }}</h5>
         <p>Description: {{ $exercise->description }}</p>
+        @include('exercises.modals.exercise_modal', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
     </div>
 
     <div class="card p-4 m-2">
@@ -30,12 +34,11 @@
                     </div>
                     <div class="col-2 d-flex justify-content-center">
                         <br>
-                        <form action="{{ route('questions.destroy', [$exercise->id, $question->id]) }}" method="POST">
-                            @method('DELETE')
-                            @csrf
-                            <button class="btn btn-danger btn-sm m-1" type="submit">Delete</a>
-                            <button class="btn btn-warning btn-sm m-1">Edit</button>
-                        </form>
+                        <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
+                            Delete
+                        </button> 
+                        <button class="btn btn-warning btn-sm m-1">Edit</button>
+                        @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
                     </div>
                 </div>
             </div>

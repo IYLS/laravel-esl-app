@@ -61,9 +61,21 @@ class ExerciseController extends Controller
         //
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $unit_id, $type_id, $section_id)
     {
-        //
+        $exercise = new Exercise;
+        $exercise->title = $request->title;
+        $exercise->description = $request->description;
+        $exercise->exercise_type_id = $type_id;
+        $exercise->section_id = $section_id;
+
+        if(isset($request->type)) {
+            $exercise->subtype = $request->type;
+        }
+
+        $exercise->save();
+
+        return redirect()->route('exercises.show', $exercise->id);
     }
 
     public function destroy($unit_id, $exercise_type_id, $exercise_id)
