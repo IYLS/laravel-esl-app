@@ -1,13 +1,11 @@
 {{-- WHAT DO YOU HEAR? --}}
 
-<ol type="1">
-                                                    
-    @foreach($e->questions as $question)
-    <div class="border rounded p-3 mt-3 mb-3 shadow">
+@foreach($e->questions as $question)
+    <div class="border rounded p-4 mt-3 mb-3 shadow">
         @php 
         $statement = str_replace(";;","_______", $question->statement)
         @endphp
-        <li>{{ $statement }}</li>
+        <p>{{ $loop->index + 1 . ". " . $statement }}</p>
         <br>
         <audio controls class="col-6">
             <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
@@ -26,7 +24,13 @@
         </div>
 
         <br>
+        @include('feedback.question')
     </div>
-    @endforeach
-    
-</ol>
+
+@endforeach
+
+@include('feedback.exercise')
+
+<button class="btn btn-sm btn-primary" onclick="showFeedback()">
+    Check
+</button>

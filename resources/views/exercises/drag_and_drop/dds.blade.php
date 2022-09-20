@@ -39,5 +39,10 @@
                 @endforeach
             </div>
         </div>
+        @include('feedback.exercise')
+
+        <button class="btn btn-sm btn-primary" onclick="showFeedback()">
+            Check
+        </button>
     </div>
 </div>

@@ -78,7 +78,7 @@
                             @endphp
                             <div class="d-flex">
                                 <p>{{ $loop->index + 1 }}. &nbsp;</p>
-                                <p>{{ $statements[0] }}</p>
+                                @if($statements[0] != "" and $statements[0] != null)<p>{{ $statements[0] }}</p>@endif
                                 <p class="text-primary">&nbsp;
                                     @if($alternatives[0]->correct_alt == true)
                                         <strong>{{ $alternatives[0]->title }}</strong>
@@ -91,7 +91,7 @@
                                     @endif
                                     &nbsp;
                                 </p>
-                                <p>{{ $statements[1] }}</p>
+                                @if($statements[1] != "" and $statements[1] != null)<p>{{ $statements[1] }}</p>@endif
                             </div>
                         </div>
                         <div class="col-2 d-flex justify-content-center">
@@ -116,12 +116,21 @@
                             </ul>
                             <p>Correct answer:</p>
                             <ul>
-                                <li>
-                                    <p class="text-primary"><strong>True</strong></p>
-                                </li>
-                                <li>
-                                    <p>False</p>
-                                </li>
+                                @if(strtolower(trim($question->correct_answer)) == 'true')
+                                    <li>
+                                        <p class="text-primary"><strong>True</strong></p>
+                                    </li>
+                                    <li>
+                                        <p class="text-primary">False</p>
+                                    </li>
+                                @elseif(strtolower(trim($question->correct_answer)) == 'false')
+                                    <li>
+                                        <p class="text-primary">True</p>
+                                    </li>
+                                    <li>
+                                        <p class="text-primary"><strong>False</strong></p>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
                         <div class="col-2 d-flex justify-content-center">

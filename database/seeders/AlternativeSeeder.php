@@ -44,13 +44,13 @@ class AlternativeSeeder extends Seeder
             [            
                 'id' => 23,
                 'title' => 'heel',
-                'correct_alt' => true,
+                'correct_alt' => false,
                 'question_id' => 51
             ],
             [            
                 'id' => 24,
                 'title' => 'see',
-                'correct_alt' => true,
+                'correct_alt' => false,
                 'question_id' => 52
             ],
             [            
@@ -62,7 +62,7 @@ class AlternativeSeeder extends Seeder
             [            
                 'id' => 26,
                 'title' => 'recorded',
-                'correct_alt' => true,
+                'correct_alt' => false,
                 'question_id' => 53
             ],
             [
@@ -80,13 +80,13 @@ class AlternativeSeeder extends Seeder
             [            
                 'id' => 29,
                 'title' => 'long',
-                'correct_alt' => true,
+                'correct_alt' => false,
                 'question_id' => 54
             ],
             [
                 'id' => 30,
                 'title' => 'laughing',
-                'correct_alt' => true,
+                'correct_alt' => false,
                 'question_id' => 55
             ],
             [
@@ -98,7 +98,7 @@ class AlternativeSeeder extends Seeder
             [
                 'id' => 32,
                 'title' => 'rice',
-                'correct_alt' => true,
+                'correct_alt' => false,
                 'question_id' => 56
             ],
             [
@@ -116,7 +116,7 @@ class AlternativeSeeder extends Seeder
             [
                 'id' => 35,
                 'title' => 'found out',
-                'correct_alt' => true,
+                'correct_alt' => false,
                 'question_id' => 57
             ],
             [

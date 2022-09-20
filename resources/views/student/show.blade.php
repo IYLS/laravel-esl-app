@@ -3,7 +3,9 @@
 
 <style>
     .strikable { text-decoration: line-through }
+    .not-strikable { text-decoration: none }
     .modal-backdrop { opacity: 0 !important }
+    .clickable { cursor: pointer !important }
 </style>
 
 <div class="p-4 row w-100 h-100">
@@ -56,7 +58,7 @@
                 <div class="d-flex align-items-start mt-2">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         @foreach($section->exercises as $e)
-                            <button class="nav-link" id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" type="button" role="tab" aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" aria-selected="false">{{ $e->title }}</button>
+                            <button class="nav-link" id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" type="button" role="tab" aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" aria-selected="false" onclick="hideFeedback()">{{ $e->title }}</button>
                         @endforeach
                     </div>
                     <div class="tab-content container" id="v-pills-tabContent">
@@ -64,13 +66,13 @@
                             @switch($e->exerciseType->underscore_name)
 
                             @case('drag_and_drop')
-                                @include('exercises.drag_and_drop.dds', ['e' => $e])
+                                @include('exercises.drag_and_drop.dds')
                                 @break
                             @case('open_ended')
-                                @include('exercises.open_ended.subtype', ['e' => $e])
+                                @include('exercises.open_ended.subtype')
                                 @break
                             @case('voice_recognition')
-                                @include('exercises.voice_recognition.asd', ['e' => $e])
+                                @include('exercises.voice_recognition.asd')
                                 @break
                             @case('multiple_choice')
                                 <div class="tab-pane fade" id="{{ $e->exerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->exerciseType->underscore_name . $e->id }}-tab">
@@ -80,19 +82,19 @@
 
                                         {{-- Subtype 1 = Predicting --}}
                                         @if($e->subtype == 1)
-                                            @include('exercises.multiple_choice.predicting', ['e' => $e])
+                                            @include('exercises.multiple_choice.predicting')
 
                                         {{-- Subtype 2 = What do you hear? --}}
                                         @elseif($e->subtype == 2)
-                                            @include('exercises.multiple_choice.what_do_you_hear', ['e' => $e])
+                                            @include('exercises.multiple_choice.what_do_you_hear')
 
                                         {{-- Subtype 3 = Evaluating statements --}}
                                         @elseif($e->subtype == 3)
-                                            @include('exercises.multiple_choice.evaluating_statements', ['e' => $e])
+                                            @include('exercises.multiple_choice.evaluating_statements')
 
                                         {{-- Subtype 4 = Multiple Choice --}}
                                         @elseif($e->subtype == 4)
-                                            @include('exercises.multiple_choice.multiple_choice', ['e' => $e])
+                                            @include('exercises.multiple_choice.multiple_choice')
                                         @endif
                                     </div>
                                 </div>
@@ -102,56 +104,14 @@
                                 <div class="container">
                                     <h4>{{ $e->title }}</h4>
                                     <p class="text-secondary">{{ $e->description }}</p>
-                                    
+
+                                    {{--  Dictation Cloze  --}}
                                     @if($e->subtype == 1) 
-                                        
-                                        @foreach($e->questions as $question)
-                                            <div class="border rounded p-3">
-                                                <p>{{ $loop->index + 1 }}. &nbsp;</p>
-                                                <div class="row mt-2 mb-2">
-                                                    <audio controls class="col-12">
-                                                        <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
-                                                    </audio> 
-                                                </div>
-                                                <div class="mt-4 mb-4">
-                                                    @php
-                                                    $gaps_count = substr_count($question->statement, ";;");
-                                                    $strips = explode(";;", $question->statement);
-                                                    @endphp
+                                        @include('exercises.fill_in_the_gaps.dictation_cloze')
 
-                                                    @foreach($strips as $strip)
-                                                    {{ $strip }} @if($loop->index < $gaps_count) <input class="mt-1 mb-1 me-1 ms-1" type="text"" style="height: 24px; border-radius: 4px; border: 0.5px solid #ccc; padding: 8px;"> @endif
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        @endforeach
-
+                                    {{-- Vocabulary Practice --}}
                                     @elseif($e->subtype == 2)
-                                        
-                                        <div class="p-4">
-                                            <h5>Available words</h5>
-                                            <div class="d-flex">
-                                                <ul class="list-group list-group-horizontal">
-                                                    @foreach($e->questions as $question)
-                                                        <li class="matching_word list-group-item">{{ $question->answer }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                            <div class="mt-4 mb-2">
-                                                <ol type="1">
-                                                    @foreach($e->questions as $question)
-                                                        @php
-                                                            $statement = $question->statement;
-                                                            $statement_split = explode(";;", $statement);
-                                                        @endphp
-                                                        <li>
-                                                            <p>{{ $statement_split[0] }} <input class="mt-1 mb-1 me-1 ms-1" type="text"" style="height: 24px; border-radius: 4px; border: 0.5px solid #ccc; padding: 8px;"> {{ $statement_split[1] }} </p>
-                                                        </li>
-                                                    @endforeach
-                                                </ol>
-                                            </div>
-                                        </div>
-
+                                        @include('exercises.fill_in_the_gaps.vocabulary_practice')
                                     @endif
                                 </div>
                             </div>
@@ -183,21 +143,27 @@
       ev.target.appendChild(document.getElementById(data));
     }
 
-    const boxes = document.querySelectorAll('.matching_word');
-    for (const box of boxes) {
-        box.addEventListener('click', function handleClick() {
-            if('strikable' in box.classList) {
-                box.classList.remove('strikable');
-            } else {
-                box.classList.add('strikable');
-            }
-        });
+    function strikeWord(item) {
+        if(!item.classList.contains('strikable')) {
+            item.classList.add('strikable');
+            item.classList.add('bg-warning');
+        } else {
+            item.classList.remove('strikable');
+            item.classList.remove('bg-warning');
+        }
     }
 
     function showFeedback() {
         const feedbackElements = document.getElementsByClassName('feedback');
         for (const element of feedbackElements){
             element.hidden = false;
+        };
+    }
+
+    function hideFeedback() {
+        const feedbackElements = document.getElementsByClassName('feedback');
+        for (const element of feedbackElements){
+            element.hidden = true;
         };
     }
 </script>
