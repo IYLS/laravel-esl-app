@@ -10,10 +10,21 @@
         <div class="row">
             <h4 class="col-11">Activity Details</h4>
             <button type="button" id="add_{{ $exercise->exerciseType->underscore_name }}_button" class="btn btn-sm btn-warning col-1" data-bs-toggle="modal" data-bs-target="#add_{{ $exercise->exerciseType->underscore_name}}_exercise_modal">Edit</button>
+            @include('alerts.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
         </div>
         <h5>Title: {{ $exercise->title }}</h5>
         <p>Description: {{ $exercise->description }}</p>
-        @include('exercises.modals.exercise_modal', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
+        <p>
+            Subtype:
+            @switch($exercise->subtype)
+            @case(1)
+                Dictation Cloze
+                @break;
+            @case(2)
+                Vocabulary Practice
+                @break;
+            @endswitch
+        </p>
     </div>
 
     <div class="card p-4 m-2">

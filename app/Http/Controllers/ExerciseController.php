@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Unit;
-use App\Models\ExerciseType;
+use App\Models\Section;
 use App\Models\Exercise;
 use App\Models\Question;
+use App\Models\ExerciseType;
 use App\Models\Feedback;
 use App\Models\FeedbackType;
-use App\Models\Section;
 
 class ExerciseController extends Controller
 {
@@ -51,9 +51,10 @@ class ExerciseController extends Controller
     {
         $exercise = Exercise::find($exercise_id);
         $feedback_types = FeedbackType::all();
+        $sections = Section::where('unit_id', $exercise->section->unit->id)->get();
         $type_name = $exercise->exerciseType->underscore_name;
 
-        return view("exercises.$type_name.create", compact('exercise', 'feedback_types'));
+        return view("exercises.$type_name.create", compact('exercise', 'feedback_types', 'sections'));
     }
 
     public function edit($id)
@@ -61,18 +62,12 @@ class ExerciseController extends Controller
         //
     }
 
-    public function update(Request $request, $unit_id, $type_id, $section_id)
+    public function update(Request $request, $unit_id, $type_id, $exercise_id)
     {
-        $exercise = new Exercise;
+        $exercise = Exercise::find($exercise_id);
         $exercise->title = $request->title;
         $exercise->description = $request->description;
-        $exercise->exercise_type_id = $type_id;
-        $exercise->section_id = $section_id;
-
-        if(isset($request->type)) {
-            $exercise->subtype = $request->type;
-        }
-
+        $exercise->section_id = $request->section;
         $exercise->save();
 
         return redirect()->route('exercises.show', $exercise->id);

@@ -7,10 +7,30 @@
     </div>
 
     <div class="card p-4 m-2">
-        <h4>Activity Details</h4>
-        <p>Title: {{ $exercise->title }}</p>
+        <div class="row">
+            <h4 class="col-11">Activity Details</h4>
+            <button type="button" id="add_{{ $exercise->exerciseType->underscore_name }}_button" class="btn btn-sm btn-warning col-1" data-bs-toggle="modal" data-bs-target="#add_{{ $exercise->exerciseType->underscore_name}}_exercise_modal">Edit</button>
+        </div>
+        <h5>Title: {{ $exercise->title }}</h5>
         <p>Description: {{ $exercise->description }}</p>
-        <p>Subtype: {{ $exercise->subtype }}</p>
+        @include('alerts.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
+        <p>
+            Subtype: 
+            @switch($exercise->subtype)
+            @case(1)
+                Predicting
+                @break;
+            @case(2)
+                What do you hear?
+                @break;
+            @case(3)
+                Evaluating Statements
+                @break;
+            @case(4)
+                Multiple choice
+                @break;
+            @endswitch
+        </p>
     </div>
 
     <div class="card p-4 m-2">

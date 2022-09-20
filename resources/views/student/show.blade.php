@@ -39,9 +39,9 @@
             @foreach($unit->sections as $section)
                 <li class="nav-item" role="presentation">
                     @if($loop->index == 0)
-                        <button class="nav-link active" id="{{ $section->underscore_name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="true">{{ $section->underscore_name }}</button>
+                        <button class="nav-link active" id="{{ $section->underscore_name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="true">{{ $section->name }}</button>
                     @else
-                        <button class="nav-link" id="{{ $section->underscore_name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="false">{{ $section->underscore_name }}</button>
+                        <button class="nav-link" id="{{ $section->underscore_name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="false">{{ $section->name }}</button>
                     @endif
                 </li>
             @endforeach

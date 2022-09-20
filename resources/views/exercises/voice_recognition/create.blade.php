@@ -13,7 +13,7 @@
         </div>
         <h5>Title: {{ $exercise->title }}</h5>
         <p>Description: {{ $exercise->description }}</p>
-        @include('exercises.modals.exercise_modal', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
+        @include('alerts.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
     </div>
 
     <div class="card p-4 m-2">
