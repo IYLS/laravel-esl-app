@@ -1,5 +1,4 @@
 {{-- WHAT DO YOU HEAR? --}}
-
 @foreach($e->questions as $question)
     <div class="border rounded p-4 mt-3 mb-3 shadow">
         @php 
@@ -15,7 +14,7 @@
                 @foreach($question->alternatives as $a)
                     <li>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="{{ $question->id }}" id="{{ $question->id . $a->id }}" value="{{ $a->title }}" >
+                            <input class="form-check-input " type="radio" name="{{ $question->id . $a->id }}" id="{{ $question->id . "_" . $a->id }}" value="{{ $a->title }}" >
                             <label class="form-check-label" for="{{ $question->id . $a->id }}">{{ $a->title }}</label>
                         </div>
                     </li>

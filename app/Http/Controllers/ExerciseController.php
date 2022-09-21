@@ -38,8 +38,8 @@ class ExerciseController extends Controller
         $exercise->exercise_type_id = $type_id;
         $exercise->section_id = $section_id;
 
-        if(isset($request->type)) {
-            $exercise->subtype = $request->type;
+        if(isset($request->subtype)) {
+            $exercise->subtype = $request->subtype;
         }
 
         $exercise->save();

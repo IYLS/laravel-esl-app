@@ -309,6 +309,88 @@ class QuestionSeeder extends Seeder
                 'correct_answer' => 'ASD',
                 'exercise_id' => 11
             ],
+            [            
+                'id' => 3997,
+                'statement' => 'Read the statements below and check the ones that apply to you.',
+                'answer' => 'To move or go fast.',
+                'image_name' => null,
+                'audio_name' => null,
+                'correct_answer' => '',
+                'exercise_id' => 9
+            ],
+            [            
+                'id' => 68,
+                'statement' => '1',
+                'answer' => 'Complete the pre-listening exercises.',
+                'image_name' => null,
+                'audio_name' => null,
+                'correct_answer' => '',
+                'exercise_id' => 10
+            ],
+            [            
+                'id' => 69,
+                'statement' => '2',
+                'answer' => 'Check the glossary.',
+                'image_name' => null,
+                'audio_name' => null,
+                'correct_answer' => '',
+                'exercise_id' => 10
+            ],
+            [            
+                'id' => 70,
+                'statement' => '3',
+                'answer' => 'Watch the video one time.',
+                'image_name' => null,
+                'audio_name' => null,
+                'correct_answer' => '',
+                'exercise_id' => 10
+            ],
+            [            
+                'id' => 71,
+                'statement' => '4',
+                'answer' => 'Complete the while-listening exercises.',
+                'image_name' => null,
+                'audio_name' => null,
+                'correct_answer' => '',
+                'exercise_id' => 10
+            ],
+            [            
+                'id' => 72,
+                'statement' => '5',
+                'answer' => 'Complete the post-listening exercises.',
+                'image_name' => null,
+                'audio_name' => null,
+                'correct_answer' => '',
+                'exercise_id' => 10
+            ],
+
+            [            
+                'id' => 73,
+                'statement' => '6',
+                'answer' => 'Check the transcript.',
+                'image_name' => null,
+                'audio_name' => null,
+                'correct_answer' => '',
+                'exercise_id' => 10
+            ],
+            [            
+                'id' => 74,
+                'statement' => '7',
+                'answer' => 'Watch the video two or more times.',
+                'image_name' => null,
+                'audio_name' => null,
+                'correct_answer' => '',
+                'exercise_id' => 10
+            ],
+            [            
+                'id' => 75,
+                'statement' => '8',
+                'answer' => 'Check the keywords.',
+                'image_name' => null,
+                'audio_name' => null,
+                'correct_answer' => '',
+                'exercise_id' => 10
+            ],
         ]);
     }
 }

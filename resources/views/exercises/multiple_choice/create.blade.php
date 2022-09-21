@@ -15,20 +15,23 @@
         <p>Description: {{ $exercise->description }}</p>
         @include('alerts.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
         <p>
-            Subtype: 
+            Subtype:
             @switch($exercise->subtype)
             @case(1)
                 Predicting
-                @break;
+                @break
             @case(2)
                 What do you hear?
-                @break;
+                @break
             @case(3)
                 Evaluating Statements
-                @break;
+                @break
             @case(4)
                 Multiple choice
-                @break;
+                @break
+            @case(99)
+                Metacognition
+                @break
             @endswitch
         </p>
     </div>

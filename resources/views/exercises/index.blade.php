@@ -3,7 +3,7 @@
 
 <div class="container">
     <div class="m-2">
-        <h2>{{ $unit->title . " Unit" }}</h2>
+        <h2>Unit {{ $unit->id . " - " . '"' . $unit->title . '"' }}</h2>
     </div>
     @foreach($unit->sections as $section)
     <div class="card p-4 m-4 shadow border-0">
@@ -24,7 +24,7 @@
             </thead>
             <tbody>
                 @forelse($section->exercises as $exercise)
-                    <tr>
+                    <tr @if($exercise->subtype == 99) style="background-color: #5fde72;" @endif>
                         <td class="col-2">
                             {{ $exercise->title }}
                         </td>
@@ -70,16 +70,28 @@
         <div class="mt-3 d-flex justify-content-center">
             <div class="mt-1 ms-1 me-1"><h6>Add Metacognition:</h6></div>
             <div class="ms-1 me-1">
-                <button type="button" id="addPreListeningDragAndDropButton" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addDragAndDropExerciseModal">Choosing</button>
+                <button type="button" id="add_multiple_choice_button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#add_meta_multiple_choice_exercise_modal">
+                    Multiple choice
+                </button>
+                @include('exercises.modals.metacognition', ['section' => $section, 'underscore_type' => 'multiple_choice', 'type' => 'Multiple Choice'])
             </div>
             <div class="ms-1 me-1">
-                <button type="button" id="addPreListeningOpenEndedButton" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addOpenEndedExerciseModal">Open Ended</button>
+                <button type="button" id="add_drag_and_drop_button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#add_meta_drag_and_drop_exercise_modal">
+                    Drag and Drop
+                </button>
+                @include('exercises.modals.metacognition', ['section' => $section, 'underscore_type' => 'drag_and_drop', 'type' => 'Drag and Drop'])
             </div>
             <div class="ms-1 me-1">
-                <button type="button" id="addPreListeningMultipleChoiceButton" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addMultipleChoiceExerciseModal">Form</button>
+                <button type="button" id="add_open_ended_button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#add_meta_open_ended_exercise_modal">
+                    Open-ended
+                </button>
+                @include('exercises.modals.metacognition', ['section' => $section, 'underscore_type' => 'open_ended', 'type' => 'Open Ended'])
             </div>
             <div class="ms-1 me-1">
-                <button type="button" id="addPreListeningVoiceRecognitionButton" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addVoiceRecognitionExerciseModal">Voice Recognition</button>
+                <button type="button" id="add_form_button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#add_meta_form_exercise_modal">
+                    Form
+                </button>
+                @include('exercises.modals.metacognition', ['section' => $section, 'underscore_type' => 'form', 'type' => 'Form'])
             </div>
         </div>
 

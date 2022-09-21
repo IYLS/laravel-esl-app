@@ -58,13 +58,33 @@
                 <div class="d-flex align-items-start mt-2">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         @foreach($section->exercises as $e)
-                            <button class="nav-link" id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" type="button" role="tab" aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" aria-selected="false" onclick="hideFeedback()">{{ $e->title }}</button>
+                            @if($e->subtype == 99)
+                                <style>
+                                    .meta {
+                                        color: green !important;
+                                        background-color: #f8f9fa !important;
+                                    }
+
+                                    .meta:active {
+                                        color: #f8f9fa !important;
+                                        background-color: #198754 !important;
+                                    }
+
+                                    .meta:focus {
+                                        color: #f8f9fa !important;
+                                        background-color: #198754 !important;
+                                    }
+                                </style>
+                                <button class="nav-link meta" id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" type="button" role="tab" aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" aria-selected="false" onclick="hideFeedback()">{{ $e->title }}</button>
+                            @elseif($e->subtype != 99)
+                                <button class="nav-link" id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" type="button" role="tab" aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" aria-selected="false" onclick="hideFeedback()">{{ $e->title }}</button>
+                            @endif
                         @endforeach
                     </div>
                     <div class="tab-content container" id="v-pills-tabContent">
                         @foreach($section->exercises as $e)
-                            @switch($e->exerciseType->underscore_name)
 
+                            @switch($e->exerciseType->underscore_name)
                             @case('drag_and_drop')
                                 @include('exercises.drag_and_drop.dds')
                                 @break
@@ -100,23 +120,34 @@
                                 </div>
                                 @break
                             @case('fill_in_the_gaps')
-                            <div class="tab-pane fade" id="{{ $e->exerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->exerciseType->underscore_name . $e->id }}-tab">
-                                <div class="container">
-                                    <h4>{{ $e->title }}</h4>
-                                    <p class="text-secondary">{{ $e->description }}</p>
+                                <div class="tab-pane fade" id="{{ $e->exerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->exerciseType->underscore_name . $e->id }}-tab">
+                                    <div class="container">
+                                        <h4>{{ $e->title }}</h4>
+                                        <p class="text-secondary">{{ $e->description }}</p>
 
-                                    {{--  Dictation Cloze  --}}
-                                    @if($e->subtype == 1) 
-                                        @include('exercises.fill_in_the_gaps.dictation_cloze')
+                                        {{--  Dictation Cloze  --}}
+                                        @if($e->subtype == 1) 
+                                            @include('exercises.fill_in_the_gaps.dictation_cloze')
 
-                                    {{-- Vocabulary Practice --}}
-                                    @elseif($e->subtype == 2)
-                                        @include('exercises.fill_in_the_gaps.vocabulary_practice')
-                                    @endif
+                                        {{-- Vocabulary Practice --}}
+                                        @elseif($e->subtype == 2)
+                                            @include('exercises.fill_in_the_gaps.vocabulary_practice')
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
                                 @break
-                            @default
+                            @case('form')
+                                <div class="tab-pane fade" id="{{ $e->exerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->exerciseType->underscore_name . $e->id }}-tab">
+                                    <div class="container">
+                                        <h4>{{ $e->title }}</h4>
+                                        <p class="text-secondary">{{ $e->description }}</p>
+                                        
+                                        @include('exercises.form.show')
+                                        
+                                    </div>
+                                </div>
+                                @break
+                                @default
                             @endswitch
                         @endforeach
                     </div>
@@ -157,12 +188,12 @@
         const feedbackElements = document.getElementsByClassName('feedback');
         for (const element of feedbackElements){
             element.hidden = false;
-        };
+        }; 
     }
 
-    function showFeedback(id) {
-        console.log(id);
-    }
+    // function showFeedback(id) {
+    //     console.log(id);
+    // }
 
     function hideFeedback() {
         const feedbackElements = document.getElementsByClassName('feedback');

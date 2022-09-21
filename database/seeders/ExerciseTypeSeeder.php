@@ -41,6 +41,12 @@ class ExerciseTypeSeeder extends Seeder
                 'underscore_name' => 'voice_recognition',
                 'description' => '',
             ],
+            [
+                'id' => 6,
+                'name' => 'Form',
+                'underscore_name' => 'form',
+                'description' => '',
+            ]
         ]);
     }
 }

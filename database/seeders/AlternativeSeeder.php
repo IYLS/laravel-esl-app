@@ -137,6 +137,24 @@ class AlternativeSeeder extends Seeder
                 'correct_alt' => true,
                 'question_id' => 15
             ],
+            [
+                'id' => 39,
+                'title' => "I am focused and ready to start this lesson.",
+                'correct_alt' => false,
+                'question_id' => 3997
+            ],
+            [
+                'id' => 40,
+                'title' => "I have all the materials and equipment I need for the lesson.",
+                'correct_alt' => false,
+                'question_id' => 3997
+            ],
+            [
+                'id' => 41,
+                'title' => "I am free of distractions.",
+                'correct_alt' => false,
+                'question_id' => 3997
+            ],
         ]);
     }
 }

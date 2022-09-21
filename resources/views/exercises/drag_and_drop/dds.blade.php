@@ -23,7 +23,7 @@
                 <div class="mt-1 mb-1">
                     @foreach($words as $word)
                     <div class="m-1" style="width: 200px; height: 35px;">  
-                        <div style="display: inline-block; border-style: dashed !important; mb-2" draggable="true" id="div2-{{ $word }}" ondragstart="drag(event)" class="border ps-2 pe-2 mt-2">{{ $loop->index + 1 . ". " .$word }}</div>
+                        <div style="display: inline-block; border-style: dashed !important; mb-2" draggable="true" id="div2-{{ $word }}" ondragstart="drag(event)" class="border ps-2 pe-2 mt-2">{{ $word }}</div>
                     </div>
                     @endforeach
                 </div>

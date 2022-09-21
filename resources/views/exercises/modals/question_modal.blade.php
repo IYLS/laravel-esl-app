@@ -52,6 +52,16 @@
                             </div>
                             <p class="text-secondary"><small>Use a semicolon (;) at the end of each statement. Except the last one.</small></p>
                             @break
+                        @case(99)
+                            <p><small>Question settings:</small></p>
+                            <input id="statement" name="statement" type="text" class="form-control" placeholder="Statement">
+                            <p><small>Alternatives settings:</small></p>
+                            <div class="mb-3">
+                                <input name="correct_alt" class="form-control" type="text" placeholder="Correct Alternative">
+                                <textarea name="alternatives" class="form-control" rows="3" placeholder="Type alternatives separated by semicolon (;) except for the last one"></textarea>
+                            </div>
+                            <p class="text-secondary"><small>Use a semicolon (;) at the end of each statement. Except the last one.</small></p>
+                            @break
                         @endswitch
                         @break
                     @case('voice_recognition')

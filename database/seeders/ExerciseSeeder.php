@@ -11,7 +11,29 @@ class ExerciseSeeder extends Seeder
     public function run()
     {
         DB::table('exercises')->insert([
-            [            
+            [
+                'id' => 9,
+                'title' => 'Form',
+                'description' => '',
+                'instructions' => null,
+                'subtype' => 99,
+                'image_name' => null,
+                'video_name' => null,
+                'section_id' => 1,
+                'exercise_type_id' => 6
+            ],
+            [
+                'id' => 10,
+                'title' => 'Drag and Drop',
+                'description' => 'Number the steps (1-8) that you will follow to complete this lesson.',
+                'instructions' => null,
+                'subtype' => 99,
+                'image_name' => null,
+                'video_name' => null,
+                'section_id' => 1,
+                'exercise_type_id' => 1
+            ],
+            [
                 'id' => 11,
                 'title' => 'Vocabulary activation',
                 'description' => 'Match the words with their correct definition. Check the previous exercise to understand the context of the words',
@@ -22,7 +44,7 @@ class ExerciseSeeder extends Seeder
                 'section_id' => 1,
                 'exercise_type_id' => 1
             ],
-            [            
+            [
                 'id' => 12,
                 'title' => 'Predicting',
                 'description' => null,
@@ -33,7 +55,7 @@ class ExerciseSeeder extends Seeder
                 'section_id' => 1,
                 'exercise_type_id' => 2
             ],
-            [            
+            [
                 'id' => 13,
                 'title' => 'What do you hear?',
                 'description' => 'Listen to the audio extract and select the word you hear.',
@@ -44,7 +66,18 @@ class ExerciseSeeder extends Seeder
                 'section_id' => 1,
                 'exercise_type_id' => 2
             ],
-            [            
+            [
+                'id' => 988,
+                'title' => 'Multiple Choice',
+                'description' => 'Now that you have watched the video. Think about your predictions from exercise',
+                'instructions' => 'How close were your predictions?',
+                'image_name' => null,
+                'video_name' => null,
+                'subtype' => 99,
+                'section_id' => 2,
+                'exercise_type_id' => 2
+            ],
+            [
                 'id' => 14,
                 'title' => 'Evaluating Statement',
                 'description' => 'Read each statement carefully. Decide whether the statements are TRUE/FALSE or mark I’M NOT SURE if you do not know the answer',
@@ -55,7 +88,7 @@ class ExerciseSeeder extends Seeder
                 'section_id' => 2,
                 'exercise_type_id' => 2
             ],
-            [            
+            [
                 'id' => 15,
                 'title' => 'Multiple choice',
                 'description' => 'Read the questions and answer',
@@ -66,7 +99,7 @@ class ExerciseSeeder extends Seeder
                 'section_id' => 3,
                 'exercise_type_id' => 2
             ],
-            [            
+            [
                 'id' => 16,
                 'title' => 'Meet the characters',
                 'description' => 'Listen the audio pieces to know the characters',
@@ -77,7 +110,7 @@ class ExerciseSeeder extends Seeder
                 'section_id' => 1,
                 'exercise_type_id' => 5
             ],
-            [            
+            [
                 'id' => 17,
                 'title' => 'Personal response',
                 'description' => 'Answer the question',
@@ -88,7 +121,18 @@ class ExerciseSeeder extends Seeder
                 'section_id' => 3,
                 'exercise_type_id' => 4
             ],
-            [            
+            [
+                'id' => 9988,
+                'title' => 'Multiple Choice',
+                'description' => 'How well did you understand the text after listening for the first time? Tick (✓) the option',
+                'instructions' => null,
+                'image_name' => null,
+                'video_name' => null,
+                'subtype' => 99,
+                'section_id' => 2,
+                'exercise_type_id' => 2
+            ],
+            [
                 'id' => 18,
                 'title' => 'Dictation cloze',
                 'description' => 'Listen to the audio extract and complete the missing words from the text (1 word per space).',
@@ -99,7 +143,7 @@ class ExerciseSeeder extends Seeder
                 'section_id' => 2,
                 'exercise_type_id' => 3
             ],
-            [            
+            [
                 'id' => 19,
                 'title' => 'Vocabulary practice',
                 'description' => 'Put the words in the correct sentences',
@@ -107,8 +151,19 @@ class ExerciseSeeder extends Seeder
                 'image_name' => null,
                 'video_name' => null,
                 'subtype' => 2,
-                'section_id' => 2,
+                'section_id' => 1,
                 'exercise_type_id' => 3
+            ],
+            [
+                'id' => 8194,
+                'title' => 'Vocabulary practice',
+                'description' => 'What problems did you experience understanding the texts you listened to in these tasks? Check (✓) all that apply.',
+                'instructions' => null,
+                'image_name' => null,
+                'video_name' => null,
+                'subtype' => 99,
+                'section_id' => 3,
+                'exercise_type_id' => 6
             ]
         ]);
     }
