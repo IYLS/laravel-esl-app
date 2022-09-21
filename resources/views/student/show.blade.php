@@ -160,6 +160,10 @@
         };
     }
 
+    function showFeedback(id) {
+        console.log(id);
+    }
+
     function hideFeedback() {
         const feedbackElements = document.getElementsByClassName('feedback');
         for (const element of feedbackElements){

@@ -9,16 +9,16 @@
         <br>
         <audio controls class="col-6">
             <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
-        </audio> 
+        </audio>
         <div class="mt-2">
             <ol type="a">
                 @foreach($question->alternatives as $a)
-                <li>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="{{ $question->id }}" id="{{ $question->id . $a->id }}" value="option1" >
-                        <label class="form-check-label" for="{{ $question->id . $a->id }}">{{ $a->title }}</label>
-                    </div>    
-                </li>
+                    <li>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="{{ $question->id }}" id="{{ $question->id . $a->id }}" value="{{ $a->title }}" >
+                            <label class="form-check-label" for="{{ $question->id . $a->id }}">{{ $a->title }}</label>
+                        </div>
+                    </li>
                 @endforeach
             </ol>
         </div>

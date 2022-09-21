@@ -55,7 +55,6 @@ class QuestionController extends Controller
                 $alternatives = str_replace(array("\r", "\n"), '', $request->alternatives);
                 $alts = explode(";", $alternatives);
 
-
                 foreach($alts as $a)
                 {
                     $alt = new Alternative;
@@ -65,8 +64,6 @@ class QuestionController extends Controller
 
                     if(strtolower(trim($a)) == strtolower(trim($request->correct_alt)))
                     {
-                        dd($a);
-
                         $alt->correct_alt = true;
                         $question->correct_answer = $a;
                         $question->save();

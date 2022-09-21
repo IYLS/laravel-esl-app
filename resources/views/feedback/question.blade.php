@@ -5,7 +5,6 @@
     @endphp
 
     @if($level == 'question')
-
         @if($text_based)
             <div class="m-1 p-1 feedback border border-success" hidden>
                 <p class="text-secondary"><small>Feedback &#128172;</small></p>
