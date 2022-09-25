@@ -16,7 +16,7 @@ class Feedback extends Model
 
     protected $fillable = [
         'message',
-        'audio_url'
+        'audio_name'
     ];
     public $timestamps = false;
     public $incrementing = true;

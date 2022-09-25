@@ -31,5 +31,5 @@ class Exercise extends Model
     public function questions() { return $this->hasMany(Question::class, 'exercise_id'); }
     public function section() { return $this->belongsTo(Section::class); }
     public function exerciseType() { return $this->belongsTo(ExerciseType::class); }
-    public function feedback() { return $this->hasOne(Feedback::class); }
+    public function feedbacks() { return $this->hasOne(Feedback::class, 'exercise_id'); }
 }

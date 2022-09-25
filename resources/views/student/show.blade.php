@@ -158,7 +158,7 @@
     </div>
 </div>
 
-{{-- Drag and drop --}}
+
 <script>
     function allowDrop(ev) {
       ev.preventDefault();
@@ -186,20 +186,47 @@
 
     function showFeedback() {
         const feedbackElements = document.getElementsByClassName('feedback');
-        for (const element of feedbackElements){
-            element.hidden = false;
-        }; 
+        for (const element of feedbackElements) element.hidden = false;
     }
-
-    // function showFeedback(id) {
-    //     console.log(id);
-    // }
 
     function hideFeedback() {
         const feedbackElements = document.getElementsByClassName('feedback');
         for (const element of feedbackElements){
             element.hidden = true;
         };
+    }
+</script>
+
+<script>
+    function getMultipleChoiceResults(questions, exercise_id) {
+        var correct_questions = 0;
+        var wrong_questions = 0;
+        var questions_number = questions.length;
+
+        questions.forEach(function (question) {
+            console.log(question);
+            const alternatives = document.getElementsByName(`question-${question.id}`);
+            alternatives.forEach((alternative) => {
+                if (alternative.checked && question.correct_answer == alternative.value) correct_questions += 1;
+            });
+        });
+
+        wrong_questions = questions_number - correct_questions;
+
+        correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise_id}`);
+        wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise_id}`);
+        
+        exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
+
+        correctAnswersItem.innerHTML = `<strong>Correct answers:</strong> ${correct_questions}  ✅`;
+        wrongAnswersItem.innerHTML = `<strong>Wrong answers:</strong> ${wrong_questions}  ❌`;
+
+        correctAnswersItem.hidden = false;
+        wrongAnswersItem.hidden = false;
+
+        exerciseDetailsContainer.hidden = false;
+
+        showFeedback();
     }
 </script>
 

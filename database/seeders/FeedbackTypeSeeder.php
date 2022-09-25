@@ -41,7 +41,7 @@ class FeedbackTypeSeeder extends Seeder
             ],
             [            
                 'id' => 5,
-                'name' => 'Explanatory',
+                'name' => 'Explainatory',
                 'level' => 'question',
                 'text_based' => true,
                 'description' => 'Mensaje de texto donde se explique la razón por la que está incorrecta la respuesta. Este feedback es a nivel de preguntas dentro de un ejercicio y se habilita luego de que el estudiante de click a “check”.',

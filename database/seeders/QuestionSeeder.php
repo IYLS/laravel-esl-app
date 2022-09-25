@@ -134,7 +134,7 @@ class QuestionSeeder extends Seeder
                 'answer' => null,
                 'image_name' => null,
                 'audio_name' => 'dictation_cloze.mp3',
-                'correct_answer' => 'ASD',
+                'correct_answer' => 'I, II & III',
                 'exercise_id' => 12
             ],
             [

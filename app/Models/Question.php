@@ -25,7 +25,7 @@ class Question extends Model
     public $timestamps = false;
     public $incrementing = true;
 
-    public function feedback() { return $this->hasOne(Feedback::class); }
+    public function feedbacks() { return $this->hasOne(Feedback::class, 'question_id'); }
     public function alternatives() { return $this->hasMany(Alternative::class, 'question_id'); }
     public function exercise() { return $this->belongsTo(Exercise::class); }
 }

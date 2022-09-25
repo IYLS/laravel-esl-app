@@ -14,8 +14,8 @@
                 @foreach($question->alternatives as $a)
                     <li>
                         <div class="form-check">
-                            <input class="form-check-input " type="radio" name="{{ $question->id . $a->id }}" id="{{ $question->id . "_" . $a->id }}" value="{{ $a->title }}" >
-                            <label class="form-check-label" for="{{ $question->id . $a->id }}">{{ $a->title }}</label>
+                            <input class="form-check-input" type="radio" name="question-{{ $question->id }}" id="{{ $a->id }}" value="{{ $a->title }}">
+                            <label class="form-check-label">{{ $a->title }}</label>
                         </div>
                     </li>
                 @endforeach
@@ -30,6 +30,6 @@
 
 @include('feedback.exercise')
 
-<button class="btn btn-sm btn-primary" onclick="showFeedback()">
-    Check
-</button>
+<div class="m-2 mt-4">
+    <button class="btn btn-primary btn-sm" onclick="getMultipleChoiceResults({{ json_encode($e->questions) }}, {{ $e->id }})">Check</button>
+</div>

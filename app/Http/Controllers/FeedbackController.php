@@ -10,11 +10,6 @@ use App\Models\FeedbackType;
 
 class FeedbackController extends Controller
 {
-    public function index()
-    {
-        //
-    }
-
     public function create(Request $request, $exercise_id)
     {   
         $feedback_type = FeedbackType::find($request->type);
@@ -94,25 +89,9 @@ class FeedbackController extends Controller
         return redirect()->route('exercises.show', $exercise_id);
     }
 
-    public function show($id)
-    {
-        
-    }
-
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
     public function destroy($id)
     {
         Feedback::find($id)->delete();
-
         return redirect()->back();
     }
 }
