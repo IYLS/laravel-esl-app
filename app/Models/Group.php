@@ -20,13 +20,6 @@ class Group extends Model
     public $timestamps = false;
     public $incrementing = true;
 
-    public function units() 
-    {
-        return $this->belongsToMany(Unit::class, 'unit_group');
-    }
-
-    public function users()
-    {
-        return $this->hasMany(User::class);
-    }
+    public function units() { return $this->belongsToMany(Unit::class, 'unit_group'); }
+    public function users() { return $this->hasMany(User::class); }
 }

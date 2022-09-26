@@ -30,8 +30,5 @@ class User extends Authenticable
     public $timestamps = false;
     public $incrementing = true;
 
-    public function group() 
-    {
-        return $this->belongsTo(Group::class);    
-    }
+    public function group() { return $this->belongsTo(Group::class); }
 }

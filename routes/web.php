@@ -11,6 +11,7 @@ use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\ForumController;
 
 // Home
 Route::get('/', [AuthController::class, 'index'])->name('auth.index');
@@ -70,3 +71,10 @@ Route::delete('/exercises/{exercise}/questions/destroy/{question}', [QuestionCon
 Route::post('/feedback/{exercise}/store/{type}', [FeedbackController::class, 'store'])->name('feedback.store');
 Route::post('/feedback/{exercise}/create', [FeedbackController::class, 'create'])->name('feedback.create');
 Route::delete('/feedback/{feedback}/destroy', [FeedbackController::class, 'destroy'])->name('feedback.destroy');
+
+
+// Forum Routes
+Route::get('/forum', [ForumController::class, 'index'])->name('forum.index');
+
+// Comment Routes
+Route::post('/forum/create', [ForumController::class, 'create'])->name('forum.create');

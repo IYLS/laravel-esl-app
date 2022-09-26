@@ -33,7 +33,7 @@
         </div>
     </div>
 </nav>
-@else
+@elseif(Auth::user()->role=='student')
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="#">ESL</a>
@@ -47,6 +47,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('student.level_selection') }}">Choose different unit</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('forum.index') }}">Forum</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('auth.logout') }}">Log out</a>

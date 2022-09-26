@@ -9,13 +9,12 @@
             <div class="modal-body">
                 <form action="{{ route('feedback.create', [$exercise->id]) }}" method="POST">
                     @csrf
-                    <select id="type" name="type" class="form-select">
-                        <option value="" selected disabled>Select a type of feedback</option>
-                        @forelse($feedback_types as $type)
-                            <option value="{{ $type->id }}">{{ $type->name }}</option>
-                        @empty
-                        @endforelse
-                    </select>
+                    @foreach($feedback_types as $type)
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="{{ $type->id }}" name="types[]" id="feedback-types">
+                        <label class="form-check-label" for="feedback-types">{{ $type->name }}</label>
+                    </div>
+                    @endforeach
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save</button>

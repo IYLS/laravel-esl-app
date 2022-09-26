@@ -6,6 +6,21 @@
     .not-strikable { text-decoration: none }
     .modal-backdrop { opacity: 0 !important }
     .clickable { cursor: pointer !important }
+
+    .meta {
+        color: green !important;
+        background-color: #f8f9fa !important;
+    }
+
+    .meta:active {
+        color: #f8f9fa !important;
+        background-color: #198754 !important;
+    }
+
+    .meta:focus {
+        color: #f8f9fa !important;
+        background-color: #198754 !important;
+    }
 </style>
 
 <div class="p-4 row w-100 h-100">
@@ -58,31 +73,28 @@
                 <div class="d-flex align-items-start mt-2">
                     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         @foreach($section->exercises as $e)
-                            @if($e->subtype == 99)
-                                <style>
-                                    .meta {
-                                        color: green !important;
-                                        background-color: #f8f9fa !important;
-                                    }
-
-                                    .meta:active {
-                                        color: #f8f9fa !important;
-                                        background-color: #198754 !important;
-                                    }
-
-                                    .meta:focus {
-                                        color: #f8f9fa !important;
-                                        background-color: #198754 !important;
-                                    }
-                                </style>
-                                <button class="nav-link meta" id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" type="button" role="tab" aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" aria-selected="false" onclick="hideFeedback()">{{ $e->title }}</button>
-                            @elseif($e->subtype != 99)
-                                <button class="nav-link" id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" type="button" role="tab" aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" aria-selected="false" onclick="hideFeedback()">{{ $e->title }}</button>
-                            @endif
+                            <button class="nav-link @if($e->subtype == 99) meta @endif" id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" type="button" role="tab" aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" aria-selected="false" onclick="hideFeedback()">{{ $e->title }}</button>
                         @endforeach
                     </div>
                     <div class="tab-content container" id="v-pills-tabContent">
                         @foreach($section->exercises as $e)
+                            @php
+                                $feedback_content = array(
+                                    'ids' => [],
+                                    'names' => [],
+                                    'text_based' => [],
+                                );
+
+                                if($e->feedbacks != null)
+                                {
+                                    foreach($e->feedbacks as $feedback)
+                                    {
+                                        array_push($feedback_content['ids'], $feedback->feedbackType->id);
+                                        array_push($feedback_content['names'], $feedback->feedbackType->name);
+                                        array_push($feedback_content['text_based'], $feedback->feedbackType->text_based);
+                                    }
+                                }
+                            @endphp
 
                             @switch($e->exerciseType->underscore_name)
                             @case('drag_and_drop')

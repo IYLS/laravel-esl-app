@@ -12,10 +12,23 @@ class FeedbackController extends Controller
 {
     public function create(Request $request, $exercise_id)
     {   
-        $feedback_type = FeedbackType::find($request->type);
+        $feedback_types = FeedbackType::findMany($request->types);
         $exercise = Exercise::find($exercise_id);
 
-        return view('feedback.create', compact('feedback_type', 'exercise'));
+        $feedback_content = array(
+            'ids' => [],
+            'names' => [],
+            'text_based' => [],
+        );
+        
+        foreach($feedback_types as $type)
+        {
+            array_push($feedback_content['names'], $type->name);
+            array_push($feedback_content['text_based'], $type->text_based);
+            array_push($feedback_content['ids'], $type->id);
+        }
+
+        return view('feedback.create', compact('feedback_types', 'exercise'));
     }
 
     public function store(Request $request, $exercise_id, $feedback_type_id)

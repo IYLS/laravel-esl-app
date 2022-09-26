@@ -10,22 +10,18 @@ use App\Models\Question;
 use App\Models\ExerciseType;
 use App\Models\Feedback;
 
-class Exercise extends Model
+class Comment extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'exercises';
+    protected $table = 'comments';
 
     protected $fillable = [
         'title',
-        'description',
-        'instructions',
-        'subtype',
-        'image_name',
-        'video_name'
+        'content',
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
     public $incrementing = true;
 
     public function questions() { return $this->hasMany(Question::class, 'exercise_id'); }
