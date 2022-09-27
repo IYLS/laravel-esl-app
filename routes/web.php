@@ -12,6 +12,7 @@ use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ForumController;
+use App\Http\Controllers\ReplyController;
 
 // Home
 Route::get('/', [AuthController::class, 'index'])->name('auth.index');
@@ -76,6 +77,7 @@ Route::delete('/feedback/{feedback}/destroy', [FeedbackController::class, 'destr
 // Forum Routes
 Route::get('/forum', [ForumController::class, 'index'])->name('forum.index');
 Route::post('/forum/comment/store', [ForumController::class, 'store'])->name('forum.store');
+Route::get('/forum/comment/{comment}/show', [ForumController::class, 'show'])->name('forum.show');
 
-// Comment Routes
-Route::post('/forum/create', [ForumController::class, 'create'])->name('forum.create');
+// Reply Routes
+Route::post('/forum/comment/{comment}/reply/store', [ReplyController::class, 'store'])->name('replies.store');
