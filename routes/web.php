@@ -75,6 +75,7 @@ Route::delete('/feedback/{feedback}/destroy', [FeedbackController::class, 'destr
 
 // Forum Routes
 Route::get('/forum', [ForumController::class, 'index'])->name('forum.index');
+Route::post('/forum/comment/store', [ForumController::class, 'store'])->name('forum.store');
 
 // Comment Routes
 Route::post('/forum/create', [ForumController::class, 'create'])->name('forum.create');

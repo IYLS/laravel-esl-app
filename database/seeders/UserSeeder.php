@@ -10,15 +10,11 @@ use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         DB::table('users')->insert([
-            [            
+            [
+                'id' => 4,
                 'user_id' => 'benjamin_caceres_24_student',
                 'name' => 'Benjamín Cáceres Ramírez',
                 'age' => 24,
@@ -31,6 +27,20 @@ class UserSeeder extends Seeder
                 'group_id' => 345,
             ],
             [
+                'id' => 6,
+                'user_id' => 'jamoncio',
+                'name' => 'Benjamín Cáceres Ramírez',
+                'age' => 24,
+                'email' => 'benjamin.caceres.ra@gmail.com',
+                'password' => Hash::make('isopropyl360'),
+                'gender' => 'male',
+                'language' => 'english',
+                'role' => 'student',
+                'activated' => true,
+                'group_id' => 345,
+            ],
+            [
+                'id' => 5,
                 'user_id' => 'admin',
                 'name' => 'Admin',
                 'age' => 24,
