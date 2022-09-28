@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('keywords', function (Blueprint $table) {
@@ -18,16 +13,12 @@ return new class extends Migration
             $table->text('keyword');
             $table->text('description');
             $table->integer('unit_id');
+            $table->softDeletes();
             
             $table->foreign('unit_id')->references('id')->on('units');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('keywords');

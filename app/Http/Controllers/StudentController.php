@@ -65,7 +65,8 @@ class StudentController extends Controller
 
     public function destroy($id)
     {
-        //
+        User::find($id)->delete();
+        return redirect()->route('users.index');
     }
 
     public function level_selection(Request $request) 

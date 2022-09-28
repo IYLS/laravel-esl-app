@@ -62,6 +62,8 @@ class ForumController extends Controller
 
     public function destroy($id)
     {
-        //
+        Comment::find($id)->delete();
+
+        return redirect()->route('forum.index');
     }
 }

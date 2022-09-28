@@ -6,11 +6,17 @@
 <style>
     #forum-content-container { height: 64vh; }
     #forum-comment-container { height: 13vh; }
-    .forum-self-comment { background-color: #c3cceb !important; }
+    .forum-self-comment { background-color: #f2f5fa !important; }
     #forum-reply-list { height: 50vh; }
 </style>
-
-<div class="container p-1 mt-4 rouded border">
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-12 d-flex justify-content-end">
+            <a href="{{ route('forum.index') }}">Volver</a>
+        </div>
+    </div>
+</div>
+<div class="container p-1 mt-3 rouded border">
     <h3 class="m-4">{{ $comment->title }}</h3>
     <p class="m-4">{{ $comment->content }}</p>
     <div class="row m-3">
@@ -41,10 +47,21 @@
 
             <p class="text-secondary"><small>{{ $posted_by . $posted_on }}</small></p>
         </div>
-        <div class="col-4 d-flex align-items-center justify-content-end">
+        <div class="col-6 d-flex align-items-center justify-content-end">
             <div class="d-flex me-1">
-                <i class="mdi mdi-18px mdi-comment-multiple-outline me-1"></i><p><small>{{ $replies_number }} replies</small></p>
+                <i class="mdi mdi-18px mdi-comment-multiple-outline me-1 text-primary"></i><p class="text-primary"><small>{{ $replies_number }} replies</small></p>
             </div>
+            @if ($comment->user_id == $current_user->id)
+                <div class="d-flex me-1">
+                    <form action="{{ route('forum.destroy', $comment->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn d-flex" type="submit">
+                            <i class="mdi mdi-delete text-danger"></i><p class="text-danger"><small>delete</small></p>
+                        </button>
+                    </form>
+                </div>
+            @endif
         </div>
     </div>
 

@@ -25,6 +25,7 @@ Route::get('/users/create', [UserController::class, 'create'])->name('users.crea
 Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
 Route::put('/users/update/{user}', [UserController::class, 'update'])->name('users.update');
 Route::get('/users/show/{user}', [UserController::class, 'show'])->name('users.show');
+Route::delete('/users/delete/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
 // Auth Router
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
@@ -35,6 +36,7 @@ Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.c
 Route::post('/groups/store', [GroupController::class, 'store'])->name('groups.store');
 Route::put('/groups/update/{group}', [GroupController::class, 'update'])->name('groups.update');
 Route::get('/groups/show/{group}', [GroupController::class, 'show'])->name('groups.show');
+Route::delete('/groups/delete/{group}', [GroupController::class, 'destroy'])->name('groups.destroy');
 
 // Units Routes
 Route::get('/units', [UnitController::class, 'index'])->name('units.index');
@@ -42,6 +44,8 @@ Route::get('/units/create', [UnitController::class, 'create'])->name('units.crea
 Route::post('/units/store', [UnitController::class, 'store'])->name('units.store');
 Route::put('/units/update/{unit}', [UnitController::class, 'update'])->name('units.update');
 Route::get('/units/show/{unit}', [UnitController::class, 'show'])->name('units.show');
+Route::delete('/units/delete/{unit}', [UnitController::class, 'destroy'])->name('units.destroy');
+
 
 // Strudent module Routes
 Route::get('/student/level_selection', [StudentController::class, 'level_selection'])->name('student.level_selection');
@@ -78,6 +82,7 @@ Route::delete('/feedback/{feedback}/destroy', [FeedbackController::class, 'destr
 Route::get('/forum', [ForumController::class, 'index'])->name('forum.index');
 Route::post('/forum/comment/store', [ForumController::class, 'store'])->name('forum.store');
 Route::get('/forum/comment/{comment}/show', [ForumController::class, 'show'])->name('forum.show');
+Route::delete('/forum/comment/{comment}/delete', [ForumController::class, 'destroy'])->name('forum.destroy');
 
 // Reply Routes
 Route::post('/forum/comment/{comment}/reply/store', [ReplyController::class, 'store'])->name('replies.store');

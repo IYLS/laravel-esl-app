@@ -8,10 +8,6 @@
 			<tr>
 				<th scope="col">ID</th>
 				<th scope="col">Name</th>
-				<th scope="col">Age</th>
-				<th scope="col">Gender</th>
-				<th scope="col">Language</th>
-				<th scope="col">Email</th>
 				<th scope="col">Role</th>
 				<th scope="col">Group</th>
 				<th scope="col">Activated</th>
@@ -19,14 +15,10 @@
             </tr>
 			</thead>
 			<tbody>
-			@foreach($users as $user)
+			@forelse($users as $user)
 				<tr>
 					<td>{{ $user->user_id }}</td>
 					<td>{{ $user->name }}</td>
-					<td>{{ $user->age }}</td>
-					<td>{{ $user->gender }}</td>
-					<td>{{ $user->language }}</td>
-					<td>{{ $user->email }}</td>
 					<td>{{ $user->role }}</td>
 					<td>
 						@foreach($groups as $group)
@@ -42,11 +34,24 @@
 							No
 						@endif
 					</td>
-					<td>
-						<a id="details" class="btn btn-primary" href="{{ route('users.show', $user->id) }}">Details</a>
+					<td class="d-flex">
+						<a id="details" class="btn btn-success" href="{{ route('users.show', $user->id) }}">Details</a>
+						<form action="{{ route('users.destroy', $user->id) }}" method="POST" class="ms-1">
+							@csrf
+							@method('DELETE')
+							<button class="btn btn-danger" type="submit">
+								<i class="mdi mdi-delete"></i>
+							</button>
+						</form>
 					</td>
 				</tr>
-			@endforeach
+			@empty
+				<tr>
+					<td>
+						<p class="text-secondary"><small>No users added</small></p>
+					</td>
+				</tr>	
+			@endforelse
             </tbody>
 		</table>
 		<div>

@@ -11,15 +11,28 @@
         </tr>
         </thead>
         <tbody>
-            @foreach($units as $unit)
+            @forelse($units as $unit)
                 <tr>
                     <td>{{ $unit->title }}</td>
                     <td>{{ $unit->author }}</td>
-                    <td>
-                        <a id="details" class="btn btn-primary" href="{{ route('units.show', $unit->id) }}">Details</a>
+                    <td class="d-flex">
+                        <a id="details" class="btn btn-success" href="{{ route('units.show', $unit->id) }}">Details</a>
+                        <form action="{{ route('units.destroy', $unit->id) }}" method="POST" class="ms-1">
+							@csrf
+							@method('DELETE')
+							<button class="btn btn-danger" type="submit">
+								<i class="mdi mdi-delete"></i>
+							</button>
+						</form>
                     </td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td>
+                        <p class="text-secondary"><small>No units added</small></p>
+                    </td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
     <div>

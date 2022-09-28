@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('underscore_name');
             $table->integer('unit_id');
+            $table->softDeletes();
             
             $table->foreign('unit_id')->references('id')->on('units');
         });

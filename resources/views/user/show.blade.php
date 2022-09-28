@@ -96,7 +96,6 @@
         </table>
         <div>
             <a class="btn btn-success" onClick="enableFields()">Edit</a>
-            <button class="btn btn-danger">Delete</button>
             <button class="btn btn-primary" type="submit">Save</button>
             <a class="btn btn-secondary" href="{{ route('users.index') }}">Cancel</a>
         </div>

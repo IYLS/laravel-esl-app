@@ -120,8 +120,9 @@ class UnitController extends Controller
         return redirect()->route('units.index');
     }
 
-    public function destroy(Unit $unit)
+    public function destroy($id)
     {
-        //
+        Unit::find($id)->delete();
+        return redirect()->route('units.index');    
     }
 }
