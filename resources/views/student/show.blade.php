@@ -31,7 +31,7 @@
             @foreach($keywords as $keyword)
             @php $modal_id = "keywordModal"; @endphp
             <button type="button" id="{{ $modal_id . "Button" }}" class="mt-1 btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#{{ $modal_id }}">{{ $keyword->keyword }}</button>
-            @include('modals.keyword', ['modal_id' => $modal_id, 'description' => $keyword->description, 'modal_title' => $keyword->keyword])
+            @include('modals.keywords.show', ['modal_id' => $modal_id, 'description' => $keyword->description, 'modal_title' => $keyword->keyword])
             @endforeach
         </div>
         <div class="col-12 col-lg-8">

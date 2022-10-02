@@ -49,12 +49,12 @@ Route::delete('/units/delete/{unit}', [UnitController::class, 'destroy'])->name(
 
 // Strudent module Routes
 Route::get('/student/level_selection', [StudentController::class, 'level_selection'])->name('student.level_selection');
-Route::get('/student/dashboard/{unit}', [StudentController::class, 'show'])->name('student.show');
+Route::post('/student/dashboard', [StudentController::class, 'show'])->name('student.show');
 
 // Keywords Routes
 Route::get('/units/{unit}/keywords', [KeywordController::class, 'index'])->name('keywords.index');
 Route::post('/units/{unit}/keywords/store', [KeywordController::class, 'store'])->name('keywords.store');
-Route::delete('/units/{unit}/keywords/{keyword}/destroy', [KeywordController::class, 'destroy'])->name('keywords.destroy');
+Route::delete('/keywords/{keyword}/destroy', [KeywordController::class, 'destroy'])->name('keywords.destroy');
 Route::post('/units/{unit}/keywords/{keyword}/update', [KeywordController::class, 'update'])->name('keywords.update');
 
 // Exercises Routes

@@ -51,9 +51,9 @@ class KeywordController extends Controller
         return redirect()->route('keywords.index', $unit_id);
     }
 
-    public function destroy($unit_id, $keyword_id)
+    public function destroy(Keyword $keyword)
     {
-        Keyword::destroy($keyword_id);
-        return redirect()->route('keywords.index', $unit_id);
+        $keyword->delete();
+        return redirect()->route('keywords.index', $keyword->unit_id);
     }
 }

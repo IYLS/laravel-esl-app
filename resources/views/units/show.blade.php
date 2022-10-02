@@ -2,7 +2,7 @@
 @section('main')
 
 <div class="container d-flex justify-content-end">
-    <a href="{{ route('units.index') }}" class="btn btn-link">Volver</a>
+    <a href="{{ route('units.index') }}" class="btn btn-link">Go back</a>
 </div>
 <div class="mt-2 mb-2 container">
     <div class="p-3 mt-2 border shadow rounded">
