@@ -4,10 +4,10 @@
 @php use Carbon\Carbon; @endphp
 
 <style>
-    #forum-content-container { height: 64vh; }
-    #forum-comment-container { height: 13vh; }
+    #forum-content-container { height: 60vh; }
+    #forum-comment-container { height: 20%; }
     .forum-self-comment { background-color: #f2f5fa !important; }
-    #forum-reply-list { height: 50vh; }
+    #forum-reply-list { height: 30vh; }
 </style>
 <div class="container mt-2">
     <div class="row">
@@ -16,7 +16,7 @@
         </div>
     </div>
 </div>
-<div class="container p-1 mt-3 rouded border">
+<div class="container mt-3 border">
     <h3 class="m-4">{{ $comment->title }}</h3>
     <p class="m-4">{{ $comment->content }}</p>
     <div class="row m-3">
@@ -66,7 +66,7 @@
     </div>
 
     <div class="overflow-auto border mt-4 mb-4" id="forum-reply-list">
-        <h4 class="m-2">Replies to this post</h4>
+        <h5 class="m-2">Replies to this post</h5>
         @forelse($replies as $reply)
             <div class="border rounded p-2 m-2 d-flex">
                 <p>{{ $reply->content }}</p>
@@ -81,23 +81,19 @@
             </div>
         @endforelse
     </div>
+</div>
 
-    <div id="forum-comment-container">
-        <h5 class="m-1">Reply to this post</h5>
-        <form action="{{ route('replies.store', $comment->id) }}" method="POST">
-            @csrf
-            <div class="row">
-                <div class="col-11">
-                    <textarea class="form-control m-1" name="content" type="text" placeholder="Type here your reply"></textarea>
-                </div>
-                <div class="col-1 d-grid gap-2 text-center">
-                    <button class="btn btn-primary" type="submit">
-                        <i class="mdi mdi-24px mdi-send"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
+<div class="container mt-3 pt-2 pb-2" id="forum-comment-container">
+    <h5>Reply to this post</h5>
+    <form action="{{ route('replies.store', $comment->id) }}" method="POST" class="row">
+        @csrf
+        <div class="col-11">
+            <textarea class="form-control" name="content" type="text" placeholder="Type here your reply"></textarea>
+        </div>
+        <button class="col-1 text-center btn btn-primary" type="submit">
+            <i class="mdi mdi-24px mdi-send"></i>
+        </button>
+    </form>
 </div>
 
 

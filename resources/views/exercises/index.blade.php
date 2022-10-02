@@ -18,8 +18,8 @@
         <table class="table">
             <thead>
                 <th>Activity title</th>
-                <th>Description</th>
-                <th>Type</th>
+                <th class="d-none d-md-table-cell">Description</th>
+                <th class="d-none d-md-table-cell">Type</th>
                 <th>Actions</th>
             </thead>
             <tbody>
@@ -28,10 +28,10 @@
                         <td class="col-2">
                             {{ $exercise->title }}
                         </td>
-                        <td class="col-6">
+                        <td class="col-6 d-none d-md-table-cell">
                             {{ $exercise->description }}
                         </td>
-                        <td class="col-2">
+                        <td class="col-2 d-none d-md-table-cell">
                             {{ $exercise->exerciseType->name }}
                         </td>
                         <td class="col-2">
@@ -55,44 +55,50 @@
                 @endforelse
             </tbody>
         </table>
-        <div class="mt-3 d-flex justify-content-center">
-            <div class="mt-1 ms-1 me-1"><h6>Add exercise:</h6></div>
-            @forelse($types as $type)
-            <div class="ms-1 me-1">
-                <button type="button" id="add_{{ $type->underscore_name }}_button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add_{{ $type->underscore_name}}_exercise_modal">
-                    {{ $type->name }}
-                </button>
-                @include('exercises.modals.exercise_modal', ['section' => $exercise->section, 'type' => $type])
+
+
+        <div class="row">
+            <button class="btn btn-primary btn-sm col-12 col-md-4 me-2 mt-2" data-bs-toggle="collapse" href="#collapsableAddExercise" role="button" aria-expanded="false" aria-controls="collapsableAddExercise">Add exercise <i class="mdi mdi-arrow-down"></i></button>
+            <div class="collapse" id="collapsableAddExercise">
+                @forelse($types as $type)
+                    <div class="">
+                        <button type="button" id="add_{{ $type->underscore_name }}_button" class="btn btn-sm btn-primary mt-1" data-bs-toggle="modal" data-bs-target="#add_{{ $type->underscore_name}}_exercise_modal">
+                            {{ $type->name }}
+                        </button>
+                        @include('exercises.modals.exercise_modal', ['section' => $exercise->section, 'type' => $type])
+                    </div>
+                @empty
+                @endforelse
             </div>
-            @empty
-            @endforelse
-        </div>
-        <div class="mt-3 d-flex justify-content-center">
-            <div class="mt-1 ms-1 me-1"><h6>Add Metacognition:</h6></div>
-            <div class="ms-1 me-1">
-                <button type="button" id="add_multiple_choice_button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#add_meta_multiple_choice_exercise_modal">
-                    Multiple choice
-                </button>
-                @include('exercises.modals.metacognition', ['section' => $section, 'underscore_type' => 'multiple_choice', 'type' => 'Multiple Choice'])
+
+            <button class="btn btn-success btn-sm col-12 col-md-4 me-2 mt-2" data-bs-toggle="collapse" href="#collapsableAddMetacognition" role="button" aria-expanded="false" aria-controls="collapsableAddMetacognition">Add metacognition  <i class="mdi mdi-arrow-down"></i></button>
+            <div class="collapse" id="collapsableAddMetacognition">
+                <div class="ms-1 me-1">
+                    <button type="button" id="add_multiple_choice_button" class="btn btn-sm btn-success mt-1" data-bs-toggle="modal" data-bs-target="#add_meta_multiple_choice_exercise_modal">
+                        Multiple choice
+                    </button>
+                    @include('exercises.modals.metacognition', ['section' => $section, 'underscore_type' => 'multiple_choice', 'type' => 'Multiple Choice'])
+                </div>
+                <div class="ms-1 me-1">
+                    <button type="button" id="add_drag_and_drop_button" class="btn btn-sm btn-success mt-1" data-bs-toggle="modal" data-bs-target="#add_meta_drag_and_drop_exercise_modal">
+                        Drag and Drop
+                    </button>
+                    @include('exercises.modals.metacognition', ['section' => $section, 'underscore_type' => 'drag_and_drop', 'type' => 'Drag and Drop'])
+                </div>
+                <div class="ms-1 me-1">
+                    <button type="button" id="add_open_ended_button" class="btn btn-sm btn-success mt-1" data-bs-toggle="modal" data-bs-target="#add_meta_open_ended_exercise_modal">
+                        Open-ended
+                    </button>
+                    @include('exercises.modals.metacognition', ['section' => $section, 'underscore_type' => 'open_ended', 'type' => 'Open Ended'])
+                </div>
+                <div class="ms-1 me-1">
+                    <button type="button" id="add_form_button" class="btn btn-sm btn-success mt-1" data-bs-toggle="modal" data-bs-target="#add_meta_form_exercise_modal">
+                        Form
+                    </button>
+                    @include('exercises.modals.metacognition', ['section' => $section, 'underscore_type' => 'form', 'type' => 'Form'])
+                </div>
             </div>
-            <div class="ms-1 me-1">
-                <button type="button" id="add_drag_and_drop_button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#add_meta_drag_and_drop_exercise_modal">
-                    Drag and Drop
-                </button>
-                @include('exercises.modals.metacognition', ['section' => $section, 'underscore_type' => 'drag_and_drop', 'type' => 'Drag and Drop'])
-            </div>
-            <div class="ms-1 me-1">
-                <button type="button" id="add_open_ended_button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#add_meta_open_ended_exercise_modal">
-                    Open-ended
-                </button>
-                @include('exercises.modals.metacognition', ['section' => $section, 'underscore_type' => 'open_ended', 'type' => 'Open Ended'])
-            </div>
-            <div class="ms-1 me-1">
-                <button type="button" id="add_form_button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#add_meta_form_exercise_modal">
-                    Form
-                </button>
-                @include('exercises.modals.metacognition', ['section' => $section, 'underscore_type' => 'form', 'type' => 'Form'])
-            </div>
+
         </div>
 
     </div>

@@ -23,18 +23,18 @@
     }
 </style>
 
-<div class="p-4 row w-100 h-100">
+<div class="p-4 row w-100 h-100 col-12">
     <h5 class="pl-2">{{ $unit->title }}</h5>
     <div class="row">
-        <div class="col-4">
+        <div class="col-12 col-lg-4">
             <small class="text-secondary">Keywords:</small>
             @foreach($keywords as $keyword)
             @php $modal_id = "keywordModal"; @endphp
-            <button type="button" id="{{ $modal_id . "Button" }}" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#{{ $modal_id }}">{{ $keyword->keyword }}</button>
+            <button type="button" id="{{ $modal_id . "Button" }}" class="mt-1 btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#{{ $modal_id }}">{{ $keyword->keyword }}</button>
             @include('modals.keyword', ['modal_id' => $modal_id, 'description' => $keyword->description, 'modal_title' => $keyword->keyword])
             @endforeach
         </div>
-        <div class="col-8">
+        <div class="col-12 col-lg-8">
             @include('exercises.help_options', ['unit' => $unit])
         </div>
     </div>
@@ -44,21 +44,21 @@
     </div>
 
     {{-- Video section --}}
-    <div class="col-4">
+    <div class="col-12 col-xl-5">
         <div class="ratio ratio-16x9 mt-3">
             <iframe src="{{ asset('/storage/files') . "/" . $unit->video_name }}" title="Video" allowfullscreen controls></iframe>
         </div>
     </div>
 
     {{-- Exercises and content section --}}
-    <div class="col-8 bg-light p-3 rounded shadow">
+    <div class="col-12 col-xl-7 bg-light mt-2 p-3 rounded shadow">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             @foreach($unit->sections as $section)
                 <li class="nav-item" role="presentation">
                     @if($loop->index == 0)
-                        <button class="nav-link active" id="{{ $section->underscore_name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="true">{{ $section->name }}</button>
+                        <button class="nav-link active" id="{{ $section->underscore_name }}-tab" onclick="hideFeedback()" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="true">{{ $section->name }}</button>
                     @else
-                        <button class="nav-link" id="{{ $section->underscore_name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="false">{{ $section->name }}</button>
+                        <button class="nav-link" id="{{ $section->underscore_name }}-tab" onclick="hideFeedback()" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="false">{{ $section->name }}</button>
                     @endif
                 </li>
             @endforeach
@@ -70,13 +70,13 @@
                 @else
                     <div class="tab-pane fade" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
                 @endif
-                <div class="d-flex align-items-start mt-2">
-                    <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <div class="d-flex align-items-start row mt-2">
+                    <div class="nav flex-column nav-pills col-12 col-xl-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         @foreach($section->exercises as $e)
                             <button class="nav-link @if($e->subtype == 99) meta @endif" id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" type="button" role="tab" aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" aria-selected="false" onclick="hideFeedback()">{{ $e->title }}</button>
                         @endforeach
                     </div>
-                    <div class="tab-content container" id="v-pills-tabContent">
+                    <div class="tab-content container-fluid col-12 col-xl-10" id="v-pills-tabContent">
                         @foreach($section->exercises as $e)
                             @php
                                 $feedback_content = array(

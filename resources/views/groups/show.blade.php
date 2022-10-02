@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('main')
 
-<div class="row d-flex justify-content-center mt-3 mb-3">
-    <div class="col-6 p-5 bg-light mt-2 border shadow rounded">
+<div class="container">
+    <div class="bg-light mt-3 p-2 mt-2 border shadow rounded">
         <h3>Group {{ $group->name }} details</h3>
         <form action="{{ route('groups.update', $group->id ) }}" method="POST">
         @csrf

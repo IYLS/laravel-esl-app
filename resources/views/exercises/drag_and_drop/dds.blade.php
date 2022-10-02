@@ -1,47 +1,77 @@
 <div class="tab-pane fade" id="{{ $e->exerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->exerciseType->underscore_name . $e->id }}-tab">
-    <div class="container">
+    <div class="">
         <h4>{{ $e->title }}</h4>
         <p class="text-secondary">{{ $e->description }}</p>
         @php
-        $words = array();
-        $definitions = array();
-        @endphp
-        @foreach($e->questions as $question)
-            @php 
-            array_push($words, $question->statement);
-            array_push($definitions, $question->answer);
-            @endphp
-        @endforeach
-        @php
+            $words = array();
+            $definitions = array();
+
+            foreach($e->questions as $question)
+            {
+                array_push($words, $question->statement);
+                array_push($definitions, $question->answer);
+            }
+
             shuffle($words);
             shuffle($definitions);
+
+            $components = array_combine($words, $definitions);
         @endphp
-        <div class="row mt-2 mb-2 border p-2">
-            <div class="col-3">
-                <h5>Words</h5>
-                <div class="mt-1 mb-1">
-                    @foreach($words as $word)
-                    <div class="m-1 mb-3" style="width: 200px; height: 35px;">  
-                        <div style="display: inline-block; border-style: dashed !important; mb-2" draggable="true" id="div2-{{ $word }}" ondragstart="drag(event)" class="border ps-2 pe-2 mt-2">{{ $word }}</div>
+        <div class="row pt-2 pb-2">
+            @foreach($e->questions as $question)
+                <div class="col-5 col-lg-2 mt-1">
+                    <div ondrop="drop(event)" style="height:30px; width: 140px;" id="word-origin-{{ $question->statement }}" ondragover="allowDrop(event)">
+                        <div class="border pe-2 ps-2 text-primary" id="word-{{ $question->statement }}" ondragstart="drag(event)" draggable="true" style="display: inline-block; border-style: dashed !important; height:30px;">
+                            {{ $question->statement }}
+                        </div>
                     </div>
-                    @endforeach
                 </div>
-            </div>
-            <div class="col-9">
-                <h5>Definitions</h5>
-                @foreach($definitions as $definition)
-                    <div class="row mt-1 mb-1 align-middle">
-                        <div class="border col-3 mt-1 mb-1 align-middle" id="div1-{{ $definition }}" style="width: 200; height: 35px;" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                        <div class="col-9 align-middle mt-2 mb-1" style="height: 35px;">{{ $definition }}</div>
-                    </div>
-                @endforeach
-            </div>
+                <div class="col-7 col-lg-10 row mt-1">
+                    <div class="col-12 col-lg-4 border" style="height:30px; width: 140px;" id="word-destination-{{ $components[$question->statement] }}" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                    <div class="col-12 col-lg-8" id="word-definition-{{ $components[$question->statement] }}">{{ $components[$question->statement] }}</div>
+                </div>
+            @endforeach
         </div>
+
         @include('feedback.exercise')
-        <div class="m-2 mt-4">
-            <button class="btn btn-primary btn-sm" onclick="getMultipleChoiceResults({{ json_encode($e->questions) }}, {{ $e->id }})">Check</button>
+        <div class="m-2 mt-4 row">
+            <button class="btn btn-primary btn-sm col-12 col-lg-4" onclick="getDragAndDropResults({{ json_encode($e->questions) }}, {{ $e->id }})">Check</button>
         </div>
     </div>
-
-
 </div>
+
+<script>
+    function getDragAndDropResults(questions, exercise_id) {
+        var correct_questions = 0;
+        var wrong_questions = 0;
+        var questions_number = questions.length;
+
+        questions.forEach(function (question) {
+            const definitionContainer = document.getElementById(`word-destination-${question.answer}`);
+            const wordContainer = document.getElementById(`word-${question.statement}`);
+
+            if (definitionContainer.contains(wordContainer)) {
+                correct_questions += 1;
+            } else {
+                wrong_questions +=1;
+            }
+        });
+
+        wrong_questions = questions_number - correct_questions;
+
+        correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise_id}`);
+        wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise_id}`);
+
+        exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
+
+        correctAnswersItem.innerHTML = `<strong>Correct answers:</strong> ${correct_questions}  ✅`;
+        wrongAnswersItem.innerHTML = `<strong>Wrong answers:</strong> ${wrong_questions}  ❌`;
+
+        correctAnswersItem.hidden = false;
+        wrongAnswersItem.hidden = false;
+
+        exerciseDetailsContainer.hidden = false;
+
+        showFeedback();
+    }
+</script>

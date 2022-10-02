@@ -248,7 +248,7 @@ class QuestionSeeder extends Seeder
             ],
             [            
                 'id' => 31,
-                'statement' => 'seem',
+                'statement' => 'wrong',
                 'answer' => 'Something that is incorrect or not true.',
                 'image_name' => null,
                 'audio_name' => null,
@@ -257,7 +257,7 @@ class QuestionSeeder extends Seeder
             ],
             [            
                 'id' => 32,
-                'statement' => 'wrong',
+                'statement' => 'recover',
                 'answer' => 'To become completely healthy again after an illness or injury.',
                 'image_name' => null,
                 'audio_name' => null,
@@ -266,47 +266,47 @@ class QuestionSeeder extends Seeder
             ],
             [            
                 'id' => 33,
-                'statement' => 'lasting',
+                'statement' => 'healed',
                 'answer' => 'To make or become well again, especially after an injury.',
                 'image_name' => null,
                 'audio_name' => null,
-                'correct_answer' => 'ASD',
+                'correct_answer' => 'healed',
                 'exercise_id' => 11
             ],
             [            
                 'id' => 34,
-                'statement' => 'races',
+                'statement' => 'seem',
                 'answer' => 'To appear to be.',
                 'image_name' => null,
                 'audio_name' => null,
-                'correct_answer' => 'ASD',
+                'correct_answer' => 'seem',
                 'exercise_id' => 11
             ],
             [            
                 'id' => 35,
-                'statement' => 'healed',
+                'statement' => 'freak out',
                 'answer' => 'To become or cause someone to be extremely emotional.',
                 'image_name' => null,
                 'audio_name' => null,
-                'correct_answer' => 'ASD',
+                'correct_answer' => 'freak out',
                 'exercise_id' => 11
             ],
             [            
                 'id' => 36,
-                'statement' => 'recover',
+                'statement' => 'lasting',
                 'answer' => 'Something that continues to exist for a long time or forever.',
                 'image_name' => null,
                 'audio_name' => null,
-                'correct_answer' => 'ASD',
+                'correct_answer' => 'lasting',
                 'exercise_id' => 11
             ],
             [            
                 'id' => 37,
-                'statement' => 'freak out',
+                'statement' => 'races',
                 'answer' => 'To move or go fast.',
                 'image_name' => null,
                 'audio_name' => null,
-                'correct_answer' => 'ASD',
+                'correct_answer' => 'races',
                 'exercise_id' => 11
             ],
             [            

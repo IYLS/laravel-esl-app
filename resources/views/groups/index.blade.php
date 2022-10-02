@@ -4,7 +4,7 @@
 <div class="container mt-5">
     <div class="row">
         @foreach ($groups as $group)
-        <div class="col-sm-6 mt-2">
+        <div class="col-12 col-md-6 mt-2">
             <div class="card">
 				<div class="card-body">
 					<h5 class="card-title">{{ $group->name }}</h5>

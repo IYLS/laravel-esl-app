@@ -33,12 +33,12 @@
             <div class="row mb-2">
                 <div class="d-flex align-items-center">
                     <h4>Help options</h4>
-                    <a class="btn btn-primary btn-sm ms-3" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    <a class="btn btn-primary btn-sm ms-3" data-bs-toggle="collapse" href="#collapsableHelpOptions" role="button" aria-expanded="false" aria-controls="collapsableHelpOptions">
                         <i class="mdi mdi-chevron-down"></i>
                     </a>
                 </div>
             </div>
-            <div class="collapse mt-2 mb-2" id="collapseExample">
+            <div class="collapse mt-2 mb-2" id="collapsableHelpOptions">
                 <div class="card card-body mt-1">
                     <div class="row mb-2">
                         <div class="col-6">
@@ -142,11 +142,11 @@
                 <div>
                     <a class="btn btn-success" onClick="enableFields()">Edit</a>
                     <button class="btn btn-primary" type="submit">Save</button>
-                    <a class="btn btn-secondary" href="{{ route('units.index') }}">Cancel</a>
+                    <a class="btn btn-secondary mt-1" href="{{ route('units.index') }}">Cancel</a>
                 </div>
                 <div>
-                    <a class="btn btn-info" href="{{ route('keywords.index', $unit->id) }}">Keywords</a>
-                    <a class="btn btn-info" href="{{ route('exercises.index', $unit->id) }}">Exercises</a>
+                    <a class="btn btn-info mt-1" href="{{ route('keywords.index', $unit->id) }}">Keywords</a>
+                    <a class="btn btn-info mt-1" href="{{ route('exercises.index', $unit->id) }}">Exercises</a>
                 </div>
             </div>
         </form>

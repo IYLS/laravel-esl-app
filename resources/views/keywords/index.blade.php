@@ -20,13 +20,9 @@
                     <p>{{ $keyword->description }}</p>
                 </td>
                 <td>
-                    {{-- <form action="{{ route('keywords.destroy', [$exercise->section->unit_id, $keyword->id]) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger">Delete</button>
-                        <button type="button" id="addKeywordButton" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editKeywordModal">Edit</button>
-                    </form> --}}
-                    <button class="btn btn-danger btn-sm">Delete</button>
+                    <button class="btn btn-danger btn-sm">
+                        <i class="mdi mdi-delete"></i>
+                    </button>
                     <br>
                     <button class="btn btn-warning btn-sm">Edit</button>
                 </td>

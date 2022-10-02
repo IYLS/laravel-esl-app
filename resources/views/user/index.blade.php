@@ -6,20 +6,20 @@
 		<table class="table">
 		<thead>
 			<tr>
-				<th scope="col">ID</th>
+				<th scope="col" class="d-none d-md-table-cell">ID</th>
 				<th scope="col">Name</th>
-				<th scope="col">Role</th>
+				<th scope="col" class="d-none d-md-table-cell">Role</th>
 				<th scope="col">Group</th>
-				<th scope="col">Activated</th>
+				<th scope="col" class="d-none d-md-table-cell">Activated</th>
 				<th scope="col">Actions</th>
             </tr>
 			</thead>
 			<tbody>
 			@forelse($users as $user)
 				<tr>
-					<td>{{ $user->user_id }}</td>
+					<td class="d-none d-md-table-cell">{{ $user->user_id }}</td>
 					<td>{{ $user->name }}</td>
-					<td>{{ $user->role }}</td>
+					<td class="d-none d-md-table-cell">{{ $user->role }}</td>
 					<td>
 						@foreach($groups as $group)
 							@if($user->group_id == $group->id)
@@ -27,7 +27,7 @@
 							@endif
 						@endforeach
 					</td>
-					<td>
+					<td class="d-none d-md-table-cell">
 						@if ($user->activated == true) 
 							Yes
 						@else

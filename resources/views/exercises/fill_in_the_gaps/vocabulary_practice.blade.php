@@ -1,7 +1,7 @@
 <div class="border rounded p-4">
     <h5>Available words</h5>
-    <div class="d-flex">
-        <ul class="list-group list-group-horizontal">
+    <div class="">
+        <ul class="list-group row list-group-horizontal">
             @php 
                 $words = array();
                 $questions = $e->questions;
@@ -13,19 +13,25 @@
                 shuffle($words);
             @endphp
             @foreach($words as $word)
-                <li class="list-group-item clickable" onclick="strikeWord(this)">{{ $word }}</li>
+                <li class="border col-12 col-lg-2 list-group-item clickable" onclick="strikeWord(this)">{{ $word }}</li>
             @endforeach
         </ul>
     </div>
-    <div class="mt-4 mb-2">
+    <div class="mt-4 pt-2 pb-2 mb-2">
+        <h5 class="text-center">Statements</h5>
         <ol type="1">
             @foreach($e->questions as $question)
                 @php
                     $statement = $question->statement;
                     $statement_split = explode(";;", $statement);
                 @endphp
-                <li>
-                    <p>{{ $statement_split[0] }} <input class="mt-1 mb-1 me-1 ms-1" type="text"" style="height: 24px; border-radius: 4px; border: 0.5px solid #ccc; padding: 8px;"> {{ $statement_split[1] }} </p>
+                <li class="row">
+                    <p class="col-1 col-lg-1">{{ $loop->index + 1 . ". " }}&nbsp;</p>
+                    <p class="col-10 col-lg-4">{{ $statement_split[0] }}</p>
+                    &nbsp;
+                    <input class="col-10 col-lg-2 border rounded" style="height: 24px;" type="text">
+                    &nbsp;
+                    <p class="col-12 col-lg-4">{{ $statement_split[1] }}</p>
                     @include('feedback.question')
                 </li>
             @endforeach

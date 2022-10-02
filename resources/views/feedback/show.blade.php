@@ -10,7 +10,7 @@
     <div class="ms-1 me-1">
         @isset($exercise->feedback)
             <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_feedback_modal">
-                Delete feedback settings
+                <i class="mdi mdi-delete"></i>
             </button> 
         @else
             <button type="button" id="add_feedback_button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add_feedback_modal">

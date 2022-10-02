@@ -1,6 +1,6 @@
 {{--  PREDICTING --}}
 <div class="row m-3">
-    <img src="{{ asset('storage/files/'.$e->image_name) }}" class="img-fluid col-8" alt="img">
+    <img src="{{ asset('storage/files/'.$e->image_name) }}" class="img-fluid col-12 col-lg-8" alt="img">
 </div>
 <br>
 <h5>{{ $e->instructions }}</h5>
