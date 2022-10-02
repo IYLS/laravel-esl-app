@@ -10,6 +10,10 @@ use App\Models\FeedbackType;
 
 class FeedbackController extends Controller
 {
+    public function __construct(){
+        $this->middleware('teacher');
+    }
+    
     public function create(Request $request, $exercise_id)
     {   
         $feedback_types = FeedbackType::findMany($request->types);

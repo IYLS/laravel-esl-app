@@ -10,16 +10,10 @@ use App\Models\Alternative;
 
 class QuestionController extends Controller
 {
-    public function index()
-    {
-        //
+    public function __construct(){
+        $this->middleware('teacher');
     }
-
-    public function create()
-    {
-        //
-    }
-
+    
     public function store(Request $request, $exercise_id, $section_id, $exercise_type_id)
     {
         $excercise_type = ExerciseType::find($exercise_type_id);
@@ -86,21 +80,6 @@ class QuestionController extends Controller
 
 
         return redirect()->route('exercises.show', [$exercise_id]);
-    }
-
-    public function show(Question $question)
-    {
-        //
-    }
-
-    public function edit(Question $question)
-    {
-        //
-    }
-
-    public function update(Request $request, Question $question)
-    {
-        //
     }
 
     public function destroy($exercise_id, $question_id)

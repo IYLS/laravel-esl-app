@@ -12,6 +12,10 @@ use App\Models\Reply;
 
 class ForumController extends Controller
 {
+    public function __construct(){
+        $this->middleware('student');
+    }
+
     public function index()
     {
         $current_user = Auth::user();
@@ -19,11 +23,6 @@ class ForumController extends Controller
         $comments = Comment::where('group_id', $group->id)->orderBy('created_at', 'desc')->get();
 
         return view('student.forum.index', compact('group', 'current_user', 'comments'));
-    }
-
-    public function create()
-    {
-        //
     }
 
     public function store(Request $request)
@@ -48,16 +47,6 @@ class ForumController extends Controller
         $replies_number = $replies->count();
 
         return view('student.forum.show', compact('comment', 'replies', 'replies_number', 'current_user'));
-    }
-
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     public function destroy($id)

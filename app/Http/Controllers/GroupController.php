@@ -10,6 +10,10 @@ use App\Models\User;
 
 class GroupController extends Controller
 {
+    public function __construct(){
+        $this->middleware('teacher');
+    }
+
     public function index()
     {
         $groups = Group::all();

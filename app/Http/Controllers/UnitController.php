@@ -9,6 +9,11 @@ use App\Models\Section;
 
 class UnitController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('teacher');
+    }
+    
     public function index()
     {
         $units = Unit::all();

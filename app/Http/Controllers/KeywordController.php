@@ -7,15 +7,14 @@ use Illuminate\Http\Request;
 
 class KeywordController extends Controller
 {
+    public function __construct(){
+        $this->middleware('teacher');
+    }
+    
     public function index($unit_id)
     {
         $keywords = Keyword::where('unit_id', $unit_id)->get();
         return view('keywords.index', compact('keywords', 'unit_id'));
-    }   
-
-    public function create()
-    {
-        //
     }
 
     public function store(Request $request, $unit_id)
@@ -28,16 +27,6 @@ class KeywordController extends Controller
         $keyword->save();
 
         return redirect()->route('keywords.index', $unit_id);
-    }
-
-    public function show(Keyword $keyword)
-    {
-        //
-    }
-
-    public function edit(Keyword $keyword)
-    {
-        //
     }
 
     public function update(Request $request, $unit_id, $keyword_id)

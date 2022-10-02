@@ -9,14 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class ReplyController extends Controller
 {
-    public function index()
+    public function __construct()
     {
-        //
-    }
-
-    public function create()
-    {
-        //
+        $this->middleware('student');
     }
 
     public function store(Request $request, $comment_id)
@@ -29,25 +24,5 @@ class ReplyController extends Controller
         $reply->save();
 
         return redirect()->route('forum.show', $comment_id);
-    }
-
-    public function show($id)
-    {
-        //
-    }
-
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
     }
 }

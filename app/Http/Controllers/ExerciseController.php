@@ -13,6 +13,10 @@ use App\Models\FeedbackType;
 
 class ExerciseController extends Controller
 {
+    public function __construct(){
+        $this->middleware('teacher');
+    }
+    
     public function index($unit_id)
     {   
         $types = ExerciseType::all();
@@ -55,11 +59,6 @@ class ExerciseController extends Controller
         $type_name = $exercise->exerciseType->underscore_name;
 
         return view("exercises.$type_name.create", compact('exercise', 'feedback_types', 'sections'));
-    }
-
-    public function edit($id)
-    {
-        //
     }
 
     public function update(Request $request, $unit_id, $type_id, $exercise_id)
