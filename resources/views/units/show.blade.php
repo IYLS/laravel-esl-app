@@ -41,7 +41,7 @@
             <div class="collapse mt-2 mb-2" id="collapsableHelpOptions">
                 <div class="card card-body mt-1">
                     <div class="row mb-2">
-                        <div class="col-6">
+                        <div class="col-12 col-md-6 mt-1 mt-md-0">
                             <div class="d-flex justify-content-between">
                                 <h6>Listening Tips:</h6>
                                 <div class="form-check">
@@ -53,7 +53,7 @@
                             </div>
                             <textarea id="listening_tips" name="listening_tips" type="text" class="form-control" rows="3" disabled>{{ $unit->listening_tips }}</textarea>
                         </div>
-                        <div class="col-6">
+                        <div class="col-12 col-md-6 mt-1 mt-md-0">
                             <div class="d-flex justify-content-between">
                                 <h6>Cultural Notes:</h6>
                                 <div class="form-check">
@@ -68,7 +68,7 @@
                     </div>
 
                     <div class="row mb-2">
-                        <div class="col-6">
+                        <div class="col-12 col-md-6 mt-1 mt-md-0">
                             <div class="d-flex justify-content-between">
                                 <h6>Transcript:</h6>
                                 <div class="form-check">
@@ -80,7 +80,7 @@
                             </div>
                             <textarea id="transcript" name="transcript" type="text" class="form-control" rows="3" disabled>{{ $unit->transcript }}</textarea>
                         </div>
-                        <div class="col-6">
+                        <div class="col-12 col-md-6 mt-1 mt-md-0">
                             <div class="d-flex justify-content-between">
                                 <h6>Glossary:</h6>
                                 <div class="form-check">
@@ -95,7 +95,7 @@
                     </div>
 
                     <div class="row mb-2">
-                        <div class="col-6">
+                        <div class="col-12 col-md-6 mt-1 mt-md-0">
                             <div class="d-flex justify-content-between">
                                 <h6>Translation:</h6>
                                 <div class="form-check">
@@ -107,7 +107,7 @@
                             </div>
                             <textarea id="translation" name="translation" type="text" class="form-control" rows="3" disabled>{{ $unit->translation }}</textarea>
                         </div>
-                        <div class="col-6">
+                        <div class="col-12 col-md-6 mt-1 mt-md-0">
                             <div class="d-flex justify-content-between">
                                 <h6>Dictionary:</h6>
                                 <div class="form-check">
