@@ -35,17 +35,30 @@
                     @if($exercise->subtype == 1)
                         <div class="col-12 col-md-12">
                             <p>{{ $loop->index + 1 }}. &nbsp;</p>
-                            {{ $question }}
                             @php
-                            $words = ["hola", "como", "estas", "bien", "tu"];
-                            $semicolons = array();
-                            
-                            foreach($words as $word) { array_push($semicolons, ";;"); }
 
-                            $value = str_replace([";;", ";;", ";;", ";;", ";;"], $words, $question->statement);
+                            $sentence = $question->statement;
+                            $sentence_words = explode(' ', $question->statement);
+                            $words = explode(',', $question->answer);
+
+                            $count = 0;
+                            
+                            foreach($sentence_words as $key=>$word) 
+                            {
+                                if($word == ";;")
+                                {
+                                    $sentence_words[$key] = "<p class='text-primary border-bottom border-primary ms-2 me-2'>&nbsp;&nbsp;".$words[$count]."&nbsp;&nbsp;</p>";
+                                    $count += 1;
+                                }
+                            }
+
+                            $result = implode(' ', $sentence_words);
+
                             @endphp
 
-                            <p>{{ $value }}</p>
+                            <div class="d-flex">
+                                <p>{!! $result !!}</p>
+                            </div>
                         </div>
                         <div class="col-12 col-md-12">
                             <audio controls>
@@ -57,7 +70,6 @@
                             <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
                                 <i class="mdi mdi-delete"></i>
                             </button> 
-                            <button class="btn btn-warning btn-sm ms-1">Edit</button>
                             @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
                         </div>
                     @elseif($exercise->subtype == 2)
@@ -77,7 +89,6 @@
                             <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
                                 <i class="mdi mdi-delete"></i>
                             </button> 
-                            <button class="btn btn-warning btn-sm ms-1">Edit</button>
                             @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
                         </div>
                     @endif

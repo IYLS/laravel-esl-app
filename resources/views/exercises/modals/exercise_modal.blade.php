@@ -14,7 +14,7 @@
                     <input id="description" name="description" type="text" class="form-control" placeholder="Description">
                     @if($type->underscore_name == "multiple_choice")
                         <br>
-                        <select id="type" name="type" class="form-select">
+                        <select id="subtype" name="subtype" class="form-select">
                             <option value="" selected disabled>Select a subtype</option>
                             <option value="1">Predicting</option>
                             <option value="2">What do you hear?</option>
@@ -23,7 +23,7 @@
                         </select>
                     @elseif($type->underscore_name == "fill_in_the_gaps")
                         <br>
-                        <select id="type" name="type" class="form-select">
+                        <select id="subtype" name="subtype" class="form-select">
                             <option value="" selected disabled>Select a subtype</option>
                             <option value="1">Dictation cloze</option>
                             <option value="2">Vocabulary practice</option>

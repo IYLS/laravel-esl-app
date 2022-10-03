@@ -42,12 +42,10 @@ class ExerciseController extends Controller
         $exercise->exercise_type_id = $type_id;
         $exercise->section_id = $section_id;
 
-        if(isset($request->subtype)) {
-            $exercise->subtype = $request->subtype;
-        }
+        if(isset($request->subtype)) $exercise->subtype = $request->subtype;
 
         $exercise->save();
-
+        
         return redirect()->route('exercises.show', $exercise->id);
     }
 
@@ -58,7 +56,7 @@ class ExerciseController extends Controller
         $sections = Section::where('unit_id', $exercise->section->unit->id)->get();
         $type_name = $exercise->exerciseType->underscore_name;
 
-        return view("exercises.$type_name.create", compact('exercise', 'feedback_types', 'sections'));
+        return view("exercises.$type_name.show", compact('exercise', 'feedback_types', 'sections'));
     }
 
     public function update(Request $request, $unit_id, $type_id, $exercise_id)

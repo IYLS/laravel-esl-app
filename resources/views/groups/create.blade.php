@@ -7,40 +7,40 @@
         <form action="{{ route('groups.store') }}" method="POST">
         @csrf
         <table class="table table-striped">
-                <tbody>
-                    <tr>
-                        <td>Name</td>
-                        <td>
-                            <input id="name" name="name" class="form-control" type="text" placeholder="Type an Name for the new level">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Students</td>
-                        <td>
-                            <div class="card card-body">
-                                @foreach($users as $user)
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" onclick="ifUserChecked(this);" value="{{ $user->id }}" id="user_checkbox">
-                                    <label class="form-check-label" for="user_checkbox">{{ $user->name }}</label>
-                                </div>
-                                @endforeach
+            <tbody>
+                <tr>
+                    <td>Name</td>
+                    <td>
+                        <input id="name" name="name" class="form-control" type="text" placeholder="Type an Name for the new level">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Students</td>
+                    <td>
+                        <div class="card card-body">
+                            @foreach($users as $user)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" onclick="ifUserChecked(this);" value="{{ $user->id }}" id="user_checkbox">
+                                <label class="form-check-label" for="user_checkbox">{{ $user->name }}</label>
                             </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Units</td>
-                        <td>
-                            <div class="card card-body">
-                                @foreach($units as $unit)
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" onclick="ifUnitChecked(this);" value="{{ $unit->id }}" id="user_checkbox">
-                                    <label class="form-check-label" for="user_checkbox">{{ $unit->title }}</label>
-                                </div>
-                                @endforeach
+                            @endforeach
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Units</td>
+                    <td>
+                        <div class="card card-body">
+                            @foreach($units as $unit)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" onclick="ifUnitChecked(this);" value="{{ $unit->id }}" id="user_checkbox">
+                                <label class="form-check-label" for="user_checkbox">{{ $unit->title }}</label>
                             </div>
-                        </td>
-                    </tr>
-                </tbody>
+                            @endforeach
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
         </table>
         <div>
             <button class="btn btn-success" type="submit" onclick="nameStudentFields()">Save</button>

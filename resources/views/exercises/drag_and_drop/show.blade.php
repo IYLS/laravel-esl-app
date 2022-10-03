@@ -3,7 +3,7 @@
 
 <div class="container">
     <div class="mt-2 p-2">
-        <h2>Open Ended questions activity</h2>
+        <h2>Add Drag and drop exercise</h2>
     </div>
 
     <div class="card p-4 m-2">
@@ -13,38 +13,37 @@
         </div>
         <h5>Title: {{ $exercise->title }}</h5>
         <p>Description: {{ $exercise->description }}</p>
+        @if($exercise->subtype == '99')
+            <p>Subtype: Metacognition</p>
+        @endif
         @include('alerts.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
+
     </div>
 
     <div class="card p-4 m-2">
-        <h4>Activity questions</h4>        
+        <h4>Activity items</h4>
         @forelse($exercise->questions as $question)
             <div class="card mt-1 mb-1 p-4">
                 <div class="row">
-                    <div class="col-10">
-                        <p>Question:</p>
-                        <ul>
-                            <li>
-                                <p>{{ $question->statement }}</p>
-                            </li>
-                        </ul>
+                    <div class="col-10 d-flex">
+                        <p>{{ $loop->index + 1 }}. &nbsp;</p>
+                        <p class="text-primary"><strong>{{ ucfirst($question->statement) }}</strong></p>:
+                        <p>&nbsp;{{ $question->answer }}</p>
                     </div>
                     <div class="col-2 d-flex justify-content-center">
                         <br>
                         <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
                             <i class="mdi mdi-delete"></i>
                         </button> 
-                        <button class="btn btn-warning btn-sm m-1">Edit</button>
                         @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
                     </div>
                 </div>
             </div>
         @empty
             <div class="text-center p-3">
-                <p class="text-center text-secondary">No questions added.</p>
+                <p class="text-center text-secondary">No items added.</p>
             </div>
         @endforelse
-
         <div>
             <button type="button" id="addQuestionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addQuestionModal">Add question</button>
         </div>
