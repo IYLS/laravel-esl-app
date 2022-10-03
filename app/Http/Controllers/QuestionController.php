@@ -116,13 +116,13 @@ class QuestionController extends Controller
         foreach($request->alternatives as $alt)
         {
             $alternative = new Alternative;
-
             $alternative->title = trim($alt);
             $alternative->question_id = $question->id;
-
             $alternative->correct_alt = false;
-
             $alternative->save();
+
+            $question->correct_answer = $request->title;
+            $question->save();
 
         }
     }

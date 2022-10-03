@@ -2,8 +2,15 @@
 @section('main')
 
 <div class="container">
-    <div class="m-2">
-        <h2>Unit {{ $unit->id . " - " . '"' . $unit->title . '"' }}</h2>
+    <div class="row d-flex align-items-center">
+        <div class="mt-3 mb-1 col-10">
+            <h3>Unit {{ $unit->id . " - " . '"' . $unit->title . '"' }}</h3>
+        </div>
+        <div class="col-2">
+            <a href="{{ route('units.show', $unit->id) }}">
+                Go back
+            </a>
+        </div>
     </div>
     @foreach($unit->sections as $section)
     <div class="card p-4 m-4 shadow border-0">

@@ -20,10 +20,10 @@
     </div>
 
     <div class="card p-4 m-2">
-        <h4>Activity items</h4>        
+        <h4>Activity items</h4>
         @forelse($exercise->questions as $question)
         <div class="card mt-2 p-3 mb-1">
-            <h6>{{ "Item " . $loop->index + 1 }}</h6>
+            <h6>{{ "Item " . $loop->index + 1 }} - {{ $question->correct_answer }}</h6>
             <table class="table table-bordered">
                 <thead>
                     <th>
