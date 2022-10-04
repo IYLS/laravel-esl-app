@@ -310,7 +310,7 @@ class QuestionSeeder extends Seeder
                 'exercise_id' => 11
             ],
             [            
-                'id' => 3997,
+                'id' => 93,
                 'statement' => 'Read the statements below and check the ones that apply to you.',
                 'answer' => 'To move or go fast.',
                 'image_name' => null,

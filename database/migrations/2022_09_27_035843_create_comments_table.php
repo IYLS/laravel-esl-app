@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->id('id');
+            $table->id('id')->startingValue(4000);
             $table->text('title');
             $table->text('content');
             $table->softDeletes();

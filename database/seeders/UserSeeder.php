@@ -50,7 +50,7 @@ class UserSeeder extends Seeder
                 'language' => 'english',
                 'role' => 'teacher',
                 'activated' => true,
-                'group_id' => 3564,
+                'group_id' => 783,
             ]
         ]);
     }

@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('feedback_types', function (Blueprint $table) {
-            $table->id('id');
+            $table->id('id')->startingValue(4000);
             $table->string('name');
             $table->text('description');
             $table->string('level');

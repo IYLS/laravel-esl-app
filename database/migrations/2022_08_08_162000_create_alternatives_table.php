@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('alternatives', function (Blueprint $table) {
-            $table->id('id');
+            $table->id('id')->startingValue(4000);
             $table->string('title');
             $table->boolean('correct_alt')->nullable(true);
             $table->integer('question_id');

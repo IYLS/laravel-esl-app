@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('replies', function (Blueprint $table) {
-            $table->id('id');
+            $table->id('id')->startingValue(4000);
             $table->text('content');
             $table->softDeletes();
             $table->timestamps();

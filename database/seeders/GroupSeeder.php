@@ -20,11 +20,11 @@ class GroupSeeder extends Seeder
                 'name' => '4°A'
             ],
             [
-                'id' => 9964,
+                'id' => 723,
                 'name' => '4°C'
             ],
             [
-                'id' => 3564,
+                'id' => 783,
                 'name' => '5°A'
             ]
         ]);

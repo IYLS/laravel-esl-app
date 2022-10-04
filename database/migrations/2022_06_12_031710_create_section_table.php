@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('sections', function (Blueprint $table) {
-            $table->id('id');
+            $table->id('id')->startingValue(4000);
             $table->string('name');
             $table->string('underscore_name');
             $table->integer('unit_id');

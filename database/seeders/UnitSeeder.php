@@ -32,7 +32,7 @@ class UnitSeeder extends Seeder
                 'video_name' => 'Steven_raw.mp4'
             ],
             [   
-                'id' => 9078,
+                'id' => 1034,
                 'title' => "Talk 2 - Soft Electronics",
                 'author' => 'Roozbeh Ghaffari',
                 'description' => 'This unit is about soft electronics',
@@ -52,7 +52,7 @@ class UnitSeeder extends Seeder
                 'video_name' => 'n1t3.mp4'
             ],
             [   
-                'id' => 7645,
+                'id' => 1033,
                 'title' => 'Unidad 3',
                 'author' => 'Benjamin Caceres',
                 'description' => 'This unit is about soft electronics',

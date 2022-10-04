@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('feedback', function (Blueprint $table) {
-            $table->id('id');
+            $table->id('id')->startingValue(4000);
             $table->string('message')->nullable(true);
             $table->string('audio_name')->nullable(true);
             $table->softDeletes();
