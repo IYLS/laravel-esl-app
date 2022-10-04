@@ -11,11 +11,12 @@ return new class extends Migration
         Schema::create('exercises', function (Blueprint $table) {
             $table->id('id');
             $table->string('title');
-            $table->string('description')->nullable(true);
-            $table->string('instructions')->nullable(true);
+            $table->text('description')->nullable(true);
+            $table->text('instructions')->nullable(true);
             $table->integer('subtype')->nullable(true);
             $table->string('image_name')->nullable(true);
             $table->string('video_name')->nullable(true);
+            $table->text('extra_info')->nullable(true);
             $table->softDeletes();
 
             $table->integer('section_id');

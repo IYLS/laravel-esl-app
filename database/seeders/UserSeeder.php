@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'id' => 4,
-                'user_id' => 'benjamin_caceres_24_student',
+                'user_id' => 'ben_caceres',
                 'name' => 'Benjamín Cáceres Ramírez',
                 'age' => 24,
                 'email' => 'benjamin.caceres.ra@gmail.com',
@@ -28,8 +28,8 @@ class UserSeeder extends Seeder
             ],
             [
                 'id' => 6,
-                'user_id' => 'jamoncio',
-                'name' => 'Benjamín Cáceres Ramírez',
+                'user_id' => 'mati_caceres',
+                'name' => 'Matias Caceres Ramirez',
                 'age' => 24,
                 'email' => 'benjamin.caceres.ra@gmail.com',
                 'password' => Hash::make('isopropyl360'),
@@ -44,7 +44,7 @@ class UserSeeder extends Seeder
                 'user_id' => 'admin',
                 'name' => 'Admin',
                 'age' => 24,
-                'email' => 'admin@admin.com',
+                'email' => 'admin@iyls.com',
                 'password' => Hash::make('isopropyl360'),
                 'gender' => 'male',
                 'language' => 'english',

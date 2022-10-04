@@ -14,12 +14,18 @@
                 @endforeach
             </ol>
         </div>
-        @include('feedback.question')
+        @if($e->subtype != '99' && $e->subtype != '991')
+            @include('feedback.question')
+        @endif
     </div>
 @endforeach
 
-@include('feedback.exercise')
+@if($e->subtype != '99' && $e->subtype != '991')
+    @include('feedback.exercise')
+@endif
 
-<div class="m-2 mt-4">
-    <button class="btn btn-primary btn-sm" onclick="getMultipleChoiceResults({{ json_encode($e->questions) }}, {{ $e->id }})">Check</button>
-</div>
+@if($e->subtype != '99' && $e->subtype != '991')
+    <div class="m-2 mt-4">
+        <button class="btn btn-primary btn-sm" onclick="getMultipleChoiceResults({{ json_encode($e->questions) }}, {{ $e->id }})">Check</button>
+    </div>
+@endif

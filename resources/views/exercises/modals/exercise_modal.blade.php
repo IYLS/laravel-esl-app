@@ -29,6 +29,8 @@
                             <option value="2">Vocabulary practice</option>
                         </select>
                     @endif
+                    <input type="text" class="form-control mt-1" placeholder="Additional information" name="extra_info">
+                    <p class="text-info"><small>(Optional) Enter here any relevant information about the exercise. e.g. An example of how to complete the exercise.</small></p>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save</button>

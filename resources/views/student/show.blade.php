@@ -98,10 +98,14 @@
 
                             @switch($e->exerciseType->underscore_name)
                             @case('drag_and_drop')
-                                @include('exercises.drag_and_drop.dds')
+                                @include('exercises.drag_and_drop.drag_and_drop')
                                 @break
                             @case('open_ended')
-                                @include('exercises.open_ended.subtype')
+                                @if($e->subtype == 1 or $e->subtype == 99)
+                                    @include('exercises.open_ended.single_text')
+                                @elseif($e->subtype == 991)
+                                    @include('exercises.open_ended.double_text')
+                                @endif
                                 @break
                             @case('voice_recognition')
                                 @include('exercises.voice_recognition.asd')
@@ -111,6 +115,7 @@
                                     <div class="container">
                                         <h4>{{ $e->title }}</h4>
                                         <p class="text-secondary">{{ $e->description }}</p>
+                                        @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
 
                                         {{-- Subtype 1 = Predicting --}}
                                         @if($e->subtype == 1)
@@ -136,6 +141,7 @@
                                     <div class="container">
                                         <h4>{{ $e->title }}</h4>
                                         <p class="text-secondary">{{ $e->description }}</p>
+                                        @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
 
                                         {{--  Dictation Cloze  --}}
                                         @if($e->subtype == 1) 
@@ -152,7 +158,8 @@
                                 <div class="tab-pane fade" id="{{ $e->exerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->exerciseType->underscore_name . $e->id }}-tab">
                                     <div class="container">
                                         <h4>{{ $e->title }}</h4>
-                                        <p class="text-secondary">{{ $e->title }}</p>
+                                        <p class="text-secondary">{{ $e->description }}</p>
+                                        @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
 
                                         {{-- Form --}}
                                         @include('exercises.form.dashboard')

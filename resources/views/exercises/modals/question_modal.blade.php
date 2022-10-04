@@ -105,8 +105,28 @@
                         @endswitch
                         @break
                     @case('open_ended')
-                        <textarea id="statement" name="statement" type="text" cols="40" class="form-control" placeholder="Question statement"></textarea>
-                        <br>
+                        @switch($subtype)
+                            @case ('1')
+                            @case ('99')
+                            @case (null)
+                            @case ('')
+                                <textarea id="statement" name="statement" type="text" cols="40" class="form-control" placeholder="Question statement"></textarea>
+                                <br>
+                                @break
+                            @case ('991')
+                                <div>
+                                    <label class="form-label mb-1">Question statement:</label>
+                                    <input class="form-control mb-2" name="title" type="text" placeholder="Question statement">
+                                    <label class="form-label mb-1">Title for column 1:</label>
+                                    <input class="form-control mb-2" name="statement" type="text" placeholder="Column 1 title">
+                                    <label class="form-label mb-1">Title for column 2:</label>
+                                    <input class="form-control mb-2" name="answer" type="text" placeholder="Column 2 title">
+                                    <label class="form-label mb-1">Number of text input spaces for student:</label>
+                                    <input class="form-control" type="number" name="boxes_number" min="1" max="20" value="1">
+                                </div>
+                                <br>
+                                @break
+                        @endswitch
                         @break
                     @case('form')
                         <div class="row p-2 d-flex justify-content-center" id="col-selection-form">

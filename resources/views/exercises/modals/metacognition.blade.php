@@ -17,17 +17,9 @@
                     {
                         $type_id = 1;
                     }
-                    else if($underscore_type == 'fill_in_the_gaps') 
-                    {
-                        $type_id = 3;
-                    }
                     else if($underscore_type == 'open_ended') 
                     {
                         $type_id = 4;
-                    }
-                    else if($underscore_type == 'voice_recognition') 
-                    {
-                        $type_id = 5;
                     }
                     else if($underscore_type == 'form') 
                     {
@@ -39,7 +31,16 @@
                     <input id="title" name="title" type="text" class="form-control" placeholder="Title">
                     <br>
                     <input id="description" name="description" type="text" class="form-control" placeholder="Description">
-                    <input name="subtype" type="text" hidden value="99">
+                    @if($type_id == 4)
+                        <br>
+                        <select id="subtype" name="subtype" class="form-select">
+                            <option value="" selected disabled>Select a subtype</option>
+                            <option value="99">Simple</option>
+                            <option value="991">Table style</option>
+                        </select>
+                    @endif
+                    <input type="text" class="form-control mt-1" placeholder="Additional information" name="extra_info">
+                    <p class="text-info"><small>(Optional) Enter here any relevant information about the exercise. e.g. An example of how to complete the exercise.</small></p>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save</button>

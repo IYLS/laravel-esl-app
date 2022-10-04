@@ -16,10 +16,10 @@ class QuestionController extends Controller
     
     public function store(Request $request, $exercise_id, $section_id, $exercise_type_id)
     {
+        $exercise = Exercise::find($exercise_id);
         $exercise_type = ExerciseType::find($exercise_type_id);
 
         $question = new Question;
-
         $question->audio_name = $this->getAudioFrom($request);
         $question->image_name = $this->getImageFrom($request);
 
@@ -36,6 +36,10 @@ class QuestionController extends Controller
         else if($exercise_type->underscore_name == "form")
         {
             $this->handleForm($question, $request);
+        }
+        else if($exercise_type->underscore_name == "open_ended" && $exercise->subtype == "991")
+        {
+            $this->handleOpenEndedTable($question, $request);
         }
         else
         {
@@ -123,7 +127,13 @@ class QuestionController extends Controller
 
             $question->correct_answer = $request->title;
             $question->save();
-
         }
+    }
+
+    private function handleOpenEndedTable($question, $request)
+    {
+        $question->correct_answer = $request->title;
+        $question->image_name = $request->boxes_number;
+        $question->save();
     }
 }

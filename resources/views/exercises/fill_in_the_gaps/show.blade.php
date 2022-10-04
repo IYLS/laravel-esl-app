@@ -25,6 +25,7 @@
                 @break;
             @endswitch
         </p>
+        @isset($exercise->extra_info)<p class="text-info">Additional information: {{ $exercise->extra_info }}</p>@endisset
     </div>
 
     <div class="card p-4 m-2">

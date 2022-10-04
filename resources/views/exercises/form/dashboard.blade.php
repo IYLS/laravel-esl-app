@@ -1,6 +1,7 @@
 @foreach($e->questions as $question)
 <div class="border rounded p-4">
     <h6>{{ $loop->index + 1 . ". " }} - {{ $question->correct_answer }}</h6>
+    @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
     <table class="table table-bordered">
         <thead>
             <th>
@@ -39,12 +40,5 @@
             @endforeach
         </tbody>
     </table>
-    @include('feedback.question')
 </div>
 @endforeach
-
-@include('feedback.exercise')
-
-<button class="btn btn-sm mt-1 btn-primary" onclick="showFeedback()">
-    Check
-</button>

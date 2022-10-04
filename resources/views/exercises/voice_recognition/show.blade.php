@@ -13,6 +13,7 @@
         </div>
         <h5>Title: {{ $exercise->title }}</h5>
         <p>Description: {{ $exercise->description }}</p>
+        @isset($exercise->extra_info)<p class="text-info">Additional information: {{ $exercise->extra_info }}</p>@endisset
         @include('alerts.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
     </div>
 
@@ -36,7 +37,6 @@
                         <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
                             <i class="mdi mdi-delete"></i>
                         </button> 
-                        <button class="btn btn-warning ms-1 btn-sm">Edit</button>
                         @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
                     </div>
                 </div>

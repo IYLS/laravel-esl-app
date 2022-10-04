@@ -34,6 +34,7 @@
                 @break
             @endswitch
         </p>
+        @isset($exercise->extra_info)<p class="text-info">Additional information: {{ $exercise->extra_info }}</p>@endisset
     </div>
 
     <div class="card p-4 m-2">
@@ -66,7 +67,6 @@
                             <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
                                 <i class="mdi mdi-delete"></i>
                             </button> 
-                            <button class="btn btn-warning btn-sm m-1">Edit</button>
                             @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
                         </div>
                     </div>
@@ -102,7 +102,6 @@
                             <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
                                 <i class="mdi mdi-delete"></i>
                             </button> 
-                            <button class="btn btn-warning btn-sm m-1">Edit</button>
                             @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
                         </div>
                     </div>
@@ -141,7 +140,6 @@
                             <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
                                 <i class="mdi mdi-delete"></i>
                             </button> 
-                            <button class="btn btn-warning btn-sm m-1">Edit</button>
                             @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
                         </div>
                     </div>
@@ -158,7 +156,9 @@
         </div>
     </div>
 
-    @include('feedback.show')
+    @if($exercise->subtype != '99' and $exercise->subtype != '991')
+        @include('feedback.show')
+    @endif
 
     <div class="d-flex justify-content-center">
         <a class="btn btn-secondary m-1" href="{{ route('exercises.index', [$exercise->section->unit_id]) }}">Save</a>

@@ -41,6 +41,7 @@ class ExerciseController extends Controller
         $exercise->description = $request->description;
         $exercise->exercise_type_id = $type_id;
         $exercise->section_id = $section_id;
+        $exercise->extra_info = $request->extra_info;
 
         if(isset($request->subtype)) $exercise->subtype = $request->subtype;
 
@@ -65,6 +66,7 @@ class ExerciseController extends Controller
         $exercise->title = $request->title;
         $exercise->description = $request->description;
         $exercise->section_id = $request->section;
+        $exercise->extra_info = $request->extra_info;
         $exercise->save();
 
         return redirect()->route('exercises.show', $exercise->id);
@@ -83,27 +85,5 @@ class ExerciseController extends Controller
         $section = Section::where('unit_id', $unit_id)->where('name', $section_name)->get()->first();
         $exercises = $section->exercises()->get();
         return $exercises;
-    }
-
-    private function subtype($id)
-    {
-        $name = "";
-
-        switch($id){
-            case 1: 
-                $name = "predicting";
-                break;
-            case 2: 
-                $name = "what_do_you_hear";
-                break;
-            case 3:
-                $name = "evaluating_statements";
-                break;
-            case 4:
-                $name = "multiple_choice";
-                break;
-        }
-
-        return $name;
     }
 }

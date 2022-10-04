@@ -12,13 +12,15 @@
                     @method('PUT')
                     <input id="title" name="title" type="text" class="form-control" placeholder="Title" required value="{{ $exercise->title }}">
                     <br>
-                    <input id="description" name="description" type="text" class="form-control" placeholder="Description" required value="{{ $exercise->description }}">
+                    <input id="description" name="description" type="text" class="form-control" placeholder="Description" value="{{ $exercise->description }}">
                     <br>
                     <select id="section" name="section" class="form-select">
                         @foreach($sections as $section)
                             <option value="{{ $section->id }}" @if($section->id == $exercise->section->id) selected @endif>{{ $section->name }}</option>
                         @endforeach
                     </select>
+                    <input type="text" class="form-control mt-1" placeholder="Additional information" name="extra_info" placeholder="{{ $exercise->extra_info }}">
+                    <p class="text-info"><small>(Optional) Enter here any relevant information about the exercise. e.g. An example of how to complete the exercise.</small></p>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save</button>

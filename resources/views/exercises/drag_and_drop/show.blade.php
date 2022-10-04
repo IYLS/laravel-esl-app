@@ -16,6 +16,7 @@
         @if($exercise->subtype == '99')
             <p>Subtype: Metacognition</p>
         @endif
+        @isset($exercise->extra_info)<p class="text-info">Additional information: {{ $exercise->extra_info }}</p>@endisset
         @include('alerts.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
 
     </div>
@@ -49,7 +50,9 @@
         </div>
     </div>
 
-    @include('feedback.show')
+    @if($exercise->subtype != '99' and $exercise->subtype != '991')
+        @include('feedback.show')
+    @endif
 
     <div class="d-flex justify-content-center">
         <a class="btn btn-secondary m-1" href="{{ route('exercises.index', [$exercise->section->unit_id]) }}">Save</a>

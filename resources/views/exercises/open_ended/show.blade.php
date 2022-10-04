@@ -15,7 +15,10 @@
         <p>Description: {{ $exercise->description }}</p>
         @if($exercise->subtype == '99')
             <p>Subtype: Metacognition</p>
+        @elseif($exercise->subtype == '991')
+            <p>Subtype: Metacognition (Table styled drag and drop)</p>
         @endif
+        @isset($exercise->extra_info)<p class="text-info">Additional information: {{ $exercise->extra_info }}</p>@endisset
         @include('alerts.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
     </div>
 
@@ -23,25 +26,56 @@
         <h4>Activity questions</h4>        
         @forelse($exercise->questions as $question)
             <div class="card mt-1 mb-1 p-4">
-                <div class="row">
-                    <div class="col-10">
-                        <p>Question:</p>
-                        <ul>
-                            <li>
-                                <p>{{ $question->statement }}</p>
-                            </li>
-                        </ul>
+            @if ($exercise->subtype == '99')
+                    <div class="row">
+                        <div class="col-10">
+                            <p>Question:</p>
+                            <ul>
+                                <li>
+                                    <p>{{ $question->statement }}</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-2 d-flex justify-content-center">
+                            <br>
+                            <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
+                                <i class="mdi mdi-delete"></i>
+                            </button> 
+                            @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
+                        </div>
                     </div>
-                    <div class="col-2 d-flex justify-content-center">
-                        <br>
-                        <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
-                            <i class="mdi mdi-delete"></i>
-                        </button> 
-                        <button class="btn btn-warning btn-sm m-1">Edit</button>
-                        @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
-                    </div>
-                </div>
+            @elseif ($exercise->subtype == '991')
+                <h6>{{ $loop->index + 1 . ". " }}</h6>
+                <h4>{{ $question->correct_answer }}</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <th>{{ $question->statement }}</th>
+                        <th>{{ $question->answer }}</th>
+                    </thead>
+                    <tbody>
+                        @for ($x = 0; $x <= $question->image_name; $x++)
+                        <tr>
+                            <td>
+                                <p></p>
+                            </td>
+                            <td>
+                                <p></p>
+                            </td>
+                        </tr>
+                        @endfor
+                    </tbody>
+                </table>
+            @endif
+            <div class="d-flex justify-content-end">
+                <form action="{{ route('questions.destroy', [$exercise->id, $question->id] ) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger mt-1">
+                        <i class="mdi mdi-delete"></i>
+                    </button>
+                </form>
             </div>
+        </div>
         @empty
             <div class="text-center p-3">
                 <p class="text-center text-secondary">No questions added.</p>
@@ -53,7 +87,9 @@
         </div>
     </div>
 
-    @include('feedback.show')
+    @if($exercise->subtype != '99' and $exercise->subtype != '991')
+        @include('feedback.show')
+    @endif
 
     <div class="d-flex justify-content-center">
         <a class="btn btn-secondary m-1" href="{{ route('exercises.index', [$exercise->section->unit_id]) }}">Save</a>

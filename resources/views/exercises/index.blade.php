@@ -31,7 +31,7 @@
             </thead>
             <tbody>
                 @forelse($section->exercises as $exercise)
-                    <tr @if($exercise->subtype == 99) style="background-color: #5fde72;" @endif>
+                    <tr @if($exercise->subtype == 99 or $exercise->subtype == 991) style="background-color: #5fde72;" @endif>
                         <td class="col-2">
                             {{ $exercise->title }}
                         </td>

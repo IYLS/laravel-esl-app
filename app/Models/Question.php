@@ -19,7 +19,7 @@ class Question extends Model
         'answer',
         'image_name',
         'audio_name',
-        'correct_answer'
+        'correct_answer',
     ];
 
     public $timestamps = false;

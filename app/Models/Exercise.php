@@ -22,7 +22,8 @@ class Exercise extends Model
         'instructions',
         'subtype',
         'image_name',
-        'video_name'
+        'video_name',
+        'extra_info'
     ];
 
     public $timestamps = false;

@@ -2,6 +2,7 @@
     <div class="">
         <h4>{{ $e->title }}</h4>
         <p class="text-secondary">{{ $e->description }}</p>
+        @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
         @php
             $words = array();
             $definitions = array();
@@ -30,13 +31,18 @@
                     <div class="col-12 col-lg-4 border" style="height:30px; width: 140px;" id="word-destination-{{ $components[$question->statement] }}" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
                     <div class="col-12 col-lg-8" id="word-definition-{{ $components[$question->statement] }}">{{ $components[$question->statement] }}</div>
                 </div>
+                @if($e->subtype != '99' && $e->subtype != '991')
+                    @include('feedback.question')
+                @endif
             @endforeach
         </div>
 
-        @include('feedback.exercise')
-        <div class="m-2 mt-4 row">
-            <button class="btn btn-primary btn-sm col-12 col-lg-4" onclick="getDragAndDropResults({{ json_encode($e->questions) }}, {{ $e->id }})">Check</button>
-        </div>
+        @if($e->subtype != '99' && $e->subtype != '991')
+            @include('feedback.exercise')
+            <div class="m-2 mt-4 row">
+                <button class="btn btn-primary btn-sm col-12 col-lg-4" onclick="getDragAndDropResults({{ json_encode($e->questions) }}, {{ $e->id }})">Check</button>
+            </div>
+        @endif
     </div>
 </div>
 

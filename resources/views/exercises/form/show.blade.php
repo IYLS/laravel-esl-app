@@ -16,6 +16,7 @@
         @if($exercise->subtype == '99')
             <p>Subtype: Metacognition</p>
         @endif
+        @isset($exercise->extra_info)<p class="text-info">Additional information: {{ $exercise->extra_info }}</p>@endisset
         @include('alerts.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
     </div>
 
@@ -74,8 +75,6 @@
             <button type="button" id="addQuestionButton" class="btn btn-primary open-modal" data-bs-toggle="modal" data-bs-target="#addQuestionModal">Add question</button>
         </div>
     </div>
-
-    @include('feedback.show')
 
     <div class="d-flex justify-content-center">
         <a class="btn btn-secondary m-1" href="{{ route('exercises.index', [$exercise->section->unit_id]) }}">Save</a>
