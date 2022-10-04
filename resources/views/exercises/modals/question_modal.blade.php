@@ -33,8 +33,18 @@
                             <p class="text-secondary"><small>Use double semicolon (;;) to indicate where the gap to fill will be placed.</small></p>
                             <p><small>Alternatives settings:</small></p>
                             <div class="mb-3">
-                                <input name="correct_alt" class="form-control" type="text" placeholder="Correct Alternative (only if applicable)">
+                                <input name="correct_alt" class="form-control mb-1" type="text" placeholder="Correct words">
+                                <p class="text-secondary"><small>Use semicolon (;) to separate each correct response</small></p>
                                 <textarea name="alternatives" class="form-control" rows="3" placeholder="Type alternatives separated by semicolon (;) except for the last one"></textarea>
+                                <div class="row">
+                                    <p class="text-secondary col-12"><small>e.g:  Enter the following: <strong>afraid/affordable;reliable/relieved</strong></small></p>
+                                    <p class="text-secondary"><small>To get this result:</small></p>
+                                    <p class="text-secondary"><small><i>"I’ve just always been so <strong>afraid / affordable</strong> that you would say I wasn’t your real mum, and now you’ve actually said it, I’m almost <strong>reliable / relieved."</strong></i></small></p>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="audio" class="form-label">Select audio file</label>
+                                <input class="form-control" type="file" name="audio" id="audio" accept="audio/*">
                             </div>
                             @break
                         @case('3')

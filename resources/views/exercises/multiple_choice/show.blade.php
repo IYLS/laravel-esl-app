@@ -75,30 +75,48 @@
             @elseif($exercise->subtype == 2)
                 <div class="card mt-1 mb-1 p-4">
                     <div class="row">
-                        <div class="col-12 col-md-10">
-                            @php 
-                                $statements = explode(";;", $question->statement);
-                                $alternatives = $question->alternatives
+                        <div class="col-12 col-md-12">
+                            @php
+                                $alts = array();
+                                foreach($question->alternatives as $alt)
+                                {
+                                    array_push($alts, $alt->title);
+                                }
+
+                                $statement_array = explode(" ", $question->statement);
+
+                                $found_words = 0;
+                                $final_word = "";
+
+                                $words_to_add = array();
+                                foreach($statement_array as $word)
+                                {
+                                    if($word == ";;" or $word == ";;." or $word == ";;,")
+                                    {   
+                                        $new_word = $alts[$found_words];
+                                        $final_word = $final_word . " " . "<strong class='text-primary'>$new_word</strong>";
+                                        $found_words += 1;
+                                    }
+
+                                    $final_word = $final_word . " " . $word;
+                                }
+
+                                $final_word = str_replace([";;", "\n"], '', $final_word);
                             @endphp
-                            <div class="d-flex">
-                                <p>{{ $loop->index + 1 }}. &nbsp;</p>
-                                @if($statements[0] != "" and $statements[0] != null)<p>{{ $statements[0] }}</p>@endif
-                                <p class="text-primary">&nbsp;
-                                    @if($alternatives[0]->correct_alt == true)
-                                        <strong>{{ $alternatives[0]->title }}</strong>
-                                        /
-                                        {{ $alternatives[1]->title }}
-                                    @elseif($alternatives[1]->correct_alt == true)
-                                        {{ $alternatives[0]->title }}
-                                        /
-                                        <strong>{{ $alternatives[1]->title }}</strong>
-                                    @endif
-                                    &nbsp;
-                                </p>
-                                @if($statements[1] != "" and $statements[1] != null)<p>{{ $statements[1] }}</p>@endif
+                            
+                            <p>{{ $loop->index + 1 . ". " }} {!! $final_word !!}</p>
+                            
+                            <br>
+                            <div class="col-12 mt-2 mb-1">
+                                <p>Correct answer(s):</p>
+                                <ul>
+                                    @foreach(explode(";", $question->correct_answer) as $answer)
+                                        <li>{{ $answer }}</li>
+                                    @endforeach
+                                </ul>
                             </div>
                         </div>
-                        <div class="col-12 col-md-2 d-flex justify-content-center">
+                        <div class="col-12 col-md-2 d-flex justify-content-start mt-1">
                             <br>
                             <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
                                 <i class="mdi mdi-delete"></i>

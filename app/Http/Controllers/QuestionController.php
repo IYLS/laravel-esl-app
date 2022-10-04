@@ -88,7 +88,10 @@ class QuestionController extends Controller
     {
         if(isset($request->alternatives))
         {
-            $alternatives = str_replace(array("\r", "\n"), '', $request->alternatives);
+            $question->correct_answer = $request->correct_alt;
+            $question->save();
+
+            $alternatives = str_replace(array("\r", "\n", '\''), '', $request->alternatives);
             $alts = explode(";", $alternatives);
 
             foreach($alts as $a)
