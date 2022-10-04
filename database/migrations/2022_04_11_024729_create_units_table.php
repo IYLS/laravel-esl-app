@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id('id')->startingValue(4000);
             $table->text('title');
             $table->text('author');
-            $table->text('description');
+            $table->text('description')->nullable(true);
 
             $table->text('listening_tips')->nullable(true);
             $table->text('cultural_notes')->nullable(true);
@@ -29,7 +29,6 @@ return new class extends Migration
             $table->boolean('dictionary_enabled');
             $table->softDeletes();
 
-            $table->string('video_url');
             $table->string('video_name');
         });
     }

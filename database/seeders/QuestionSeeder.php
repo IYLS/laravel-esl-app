@@ -160,7 +160,7 @@ class QuestionSeeder extends Seeder
                 'statement' => "Doctor",
                 'answer' => null,
                 'image_name' => 'Doctor.jpg',
-                'audio_name' => 'voice_recognition.mp3',
+                'audio_name' => 'Doctor.mp3',
                 'correct_answer' => 'ASD',
                 'exercise_id' => 16
             ],
@@ -176,10 +176,9 @@ class QuestionSeeder extends Seeder
             [            
                 'id' => 20,
                 'statement' => "Not wrong... it's that adverse childhood experiences or childhood ;; can have a lasting impact on how your body ;; to stress. This can affect your social, emotional, and physical development. When humans are in crisis, the brain releases the ;; cortisol, your heart races, your muscles tense... I wonder if your body is reacting to a gem equivalent of ;;. Steven, do you remember anything bad in your ;;  that particularly stuck with you?",
-                'audio_name' => 'Steven_dictation.mp3',
                 'answer' => null,
                 'image_name' => null,
-                'audio_name' => null,
+                'audio_name' => 'Steven_dictation.mp3',
                 'correct_answer' => 'ASD',
                 'exercise_id' => 18
             ],
@@ -311,11 +310,11 @@ class QuestionSeeder extends Seeder
             ],
             [            
                 'id' => 93,
-                'statement' => 'Read the statements below and check the ones that apply to you.',
-                'answer' => 'To move or go fast.',
+                'statement' => 'Response',
+                'answer' => '',
                 'image_name' => null,
                 'audio_name' => null,
-                'correct_answer' => '',
+                'correct_answer' => 'Read the statements below and check the ones that apply to you.',
                 'exercise_id' => 9
             ],
             [            
@@ -390,6 +389,60 @@ class QuestionSeeder extends Seeder
                 'audio_name' => null,
                 'correct_answer' => '',
                 'exercise_id' => 10
+            ],
+            [            
+                'id' => 101,
+                'statement' => 'Response',
+                'answer' => null,
+                'image_name' => null,
+                'audio_name' => null,
+                'correct_answer' => 'How close were your predictions?',
+                'exercise_id' => 988
+            ],
+            [            
+                'id' => 102,
+                'statement' => 'Response',
+                'answer' => null,
+                'image_name' => null,
+                'audio_name' => null,
+                'correct_answer' => 'How well did you understand the text after listening for the first time? Tick the option.',
+                'exercise_id' => 20
+            ],
+            [            
+                'id' => 103,
+                'statement' => 'Response',
+                'answer' => null,
+                'image_name' => null,
+                'audio_name' => null,
+                'correct_answer' => 'Tick the option that best describes how well you did in your comprehension questions after listening to the text several times.',
+                'exercise_id' => 20
+            ],
+            [            
+                'id' => 104,
+                'statement' => 'Task: Evaluating statement',
+                'answer' => 'Task: Dictation cloze',
+                'image_name' => null,
+                'audio_name' => null,
+                'correct_answer' => 'What problems did you experience understanding the texts you listened to in these tasks? Check (✓) all that apply.',
+                'exercise_id' => 21
+            ],
+            [            
+                'id' => 105,
+                'statement' => 'In this lesson I used the following help options',
+                'answer' => null,
+                'image_name' => null,
+                'audio_name' => null,
+                'correct_answer' => 'Think of the help options you used in this lesson and tick (✓) the options that apply to you.',
+                'exercise_id' => 22
+            ],
+            [            
+                'id' => 106,
+                'statement' => 'In this lesson I used the following strategies…',
+                'answer' => null,
+                'image_name' => null,
+                'audio_name' => null,
+                'correct_answer' => 'Think of the strategies you used in this lesson and tick (✓) the options that apply to you.',
+                'exercise_id' => 22
             ],
         ]);
     }

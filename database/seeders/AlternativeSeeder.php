@@ -155,6 +155,130 @@ class AlternativeSeeder extends Seeder
                 'correct_alt' => false,
                 'question_id' => 93
             ],
+            [
+                'id' => 42,
+                'title' => "My predictions were completely right.",
+                'correct_alt' => false,
+                'question_id' => 101
+            ],
+            [
+                'id' => 43,
+                'title' => "My predictions were partially right.",
+                'correct_alt' => false,
+                'question_id' => 101
+            ],
+            [
+                'id' => 44,
+                'title' => "My predictions were incorrect.",
+                'correct_alt' => false,
+                'question_id' => 101
+            ],
+            [
+                'id' => 45,
+                'title' => "I understood most of the video.",
+                'correct_alt' => false,
+                'question_id' => 102
+            ],
+            [
+                'id' => 46,
+                'title' => "I understood some segments of the video.",
+                'correct_alt' => false,
+                'question_id' => 102
+            ],
+            [
+                'id' => 47,
+                'title' => "I did not understand the video at all.",
+                'correct_alt' => false,
+                'question_id' => 102
+            ],
+            [
+                'id' => 48,
+                'title' => "I did well and I can explain what the text is about to other people.",
+                'correct_alt' => false,
+                'question_id' => 103
+            ],
+            [
+                'id' => 49,
+                'title' => "I did ok, but I would need to listen again more carefully.",
+                'correct_alt' => false,
+                'question_id' => 103
+            ],
+            [
+                'id' => 50,
+                'title' => " I did poorly,  but I think I would do better with more practice.",
+                'correct_alt' => false,
+                'question_id' => 103
+            ],
+
+
+
+
+
+            [
+                'id' => 51,
+                'title' => "The text was too fast.",
+                'correct_alt' => false,
+                'question_id' => 104
+            ],
+            [
+                'id' => 52,
+                'title' => " I did not know most of the vocabulary.",
+                'correct_alt' => false,
+                'question_id' => 104
+            ],
+            [
+                'id' => 53,
+                'title' => "Accent was difficult to understand.",
+                'correct_alt' => false,
+                'question_id' => 104
+            ],            [
+                'id' => 54,
+                'title' => "I watched the video.",
+                'correct_alt' => false,
+                'question_id' => 105
+            ],
+            [
+                'id' => 55,
+                'title' => "I turned on the captions.",
+                'correct_alt' => false,
+                'question_id' => 105
+            ],
+            [
+                'id' => 56,
+                'title' => "I read the transcript.",
+                'correct_alt' => false,
+                'question_id' => 105
+            ],
+            [
+                'id' => 57,
+                'title' => "I used the subtitles.",
+                'correct_alt' => false,
+                'question_id' => 105
+            ],
+            [
+                'id' => 58,
+                'title' => "I read the transcript before listening to the text.",
+                'correct_alt' => false,
+                'question_id' => 106
+            ],
+            [
+                'id' => 59,
+                'title' => " I read the transcript and listen to the video simultaneously.",
+                'correct_alt' => false,
+                'question_id' => 106
+            ],
+            [
+                'id' => 60,
+                'title' => " I read the captions as I watched the video.",
+                'correct_alt' => false,
+                'question_id' => 106
+            ],
+            [
+                'id' => 61,
+                'title' => "I read the subtitles to confirm ",
+                'correct_alt' => false,
+                'question_id' => 106
+            ],
         ]);
     }
 }

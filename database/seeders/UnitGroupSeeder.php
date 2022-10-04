@@ -28,10 +28,6 @@ class UnitGroupSeeder extends Seeder
                 'unit_id' => 764,
                 'group_id' => 783
             ],
-            [
-                'unit_id' => 1034,
-                'group_id' => 783
-            ]
         ]);
     }
 }

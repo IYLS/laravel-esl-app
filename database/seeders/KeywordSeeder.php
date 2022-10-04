@@ -16,12 +16,12 @@ class KeywordSeeder extends Seeder
             [
                 'keyword' => Str::random(10),
                 'description' => Str::random(40),
-                'unit_id' => 1034,
+                'unit_id' => 764,
             ],
             [
                 'keyword' => Str::random(10),
                 'description' => Str::random(40),
-                'unit_id' => 1034,
+                'unit_id' => 764,
             ]
         ]);
     }

@@ -30,7 +30,6 @@ class Unit extends Model
         'glossary_enabled',
         'translation_enabled',
         'dictionary_enabled',
-        'video_url',
         'video_name'
     ];
 

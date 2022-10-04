@@ -13,7 +13,7 @@ class ExerciseSeeder extends Seeder
         DB::table('exercises')->insert([
             [
                 'id' => 9,
-                'title' => 'Form',
+                'title' => 'Checking in',
                 'description' => '',
                 'instructions' => null,
                 'subtype' => 99,
@@ -24,7 +24,7 @@ class ExerciseSeeder extends Seeder
             ],
             [
                 'id' => 10,
-                'title' => 'Drag and Drop',
+                'title' => 'Checking in',
                 'description' => 'Number the steps (1-8) that you will follow to complete this lesson.',
                 'instructions' => null,
                 'subtype' => 99,
@@ -34,15 +34,15 @@ class ExerciseSeeder extends Seeder
                 'exercise_type_id' => 1
             ],
             [
-                'id' => 11,
-                'title' => 'Vocabulary activation',
-                'description' => 'Match the words with their correct definition. Check the previous exercise to understand the context of the words',
+                'id' => 16,
+                'title' => 'Meet the characters',
+                'description' => 'Listen the audio pieces to know the characters',
                 'instructions' => null,
-                'subtype' => null,
                 'image_name' => null,
                 'video_name' => null,
+                'subtype' => null,
                 'section_id' => 1,
-                'exercise_type_id' => 1
+                'exercise_type_id' => 5
             ],
             [
                 'id' => 12,
@@ -67,81 +67,15 @@ class ExerciseSeeder extends Seeder
                 'exercise_type_id' => 2
             ],
             [
-                'id' => 988,
-                'title' => 'Multiple Choice',
-                'description' => 'Now that you have watched the video. Think about your predictions from exercise',
-                'instructions' => 'How close were your predictions?',
-                'image_name' => null,
-                'video_name' => null,
-                'subtype' => 99,
-                'section_id' => 2,
-                'exercise_type_id' => 2
-            ],
-            [
-                'id' => 14,
-                'title' => 'Evaluating Statement',
-                'description' => 'Read each statement carefully. Decide whether the statements are TRUE/FALSE or mark I’M NOT SURE if you do not know the answer',
+                'id' => 11,
+                'title' => 'Vocabulary activation',
+                'description' => 'Match the words with their correct definition. Check the previous exercise to understand the context of the words',
                 'instructions' => null,
-                'image_name' => null,
-                'video_name' => null,
-                'subtype' => 3,
-                'section_id' => 2,
-                'exercise_type_id' => 2
-            ],
-            [
-                'id' => 15,
-                'title' => 'Multiple choice',
-                'description' => 'Read the questions and answer',
-                'instructions' => null,
-                'image_name' => null,
-                'video_name' => null,
-                'subtype' => 4,
-                'section_id' => 3,
-                'exercise_type_id' => 2
-            ],
-            [
-                'id' => 16,
-                'title' => 'Meet the characters',
-                'description' => 'Listen the audio pieces to know the characters',
-                'instructions' => null,
-                'image_name' => null,
-                'video_name' => null,
                 'subtype' => null,
+                'image_name' => null,
+                'video_name' => null,
                 'section_id' => 1,
-                'exercise_type_id' => 5
-            ],
-            [
-                'id' => 17,
-                'title' => 'Personal response',
-                'description' => 'Answer the question',
-                'instructions' => null,
-                'image_name' => null,
-                'video_name' => null,
-                'subtype' => null,
-                'section_id' => 3,
-                'exercise_type_id' => 4
-            ],
-            [
-                'id' => 9988,
-                'title' => 'Multiple Choice',
-                'description' => 'How well did you understand the text after listening for the first time? Tick (✓) the option',
-                'instructions' => null,
-                'image_name' => null,
-                'video_name' => null,
-                'subtype' => 99,
-                'section_id' => 2,
-                'exercise_type_id' => 2
-            ],
-            [
-                'id' => 18,
-                'title' => 'Dictation cloze',
-                'description' => 'Listen to the audio extract and complete the missing words from the text (1 word per space).',
-                'instructions' => null,
-                'image_name' => null,
-                'video_name' => null,
-                'subtype' => 1,
-                'section_id' => 2,
-                'exercise_type_id' => 3
+                'exercise_type_id' => 1
             ],
             [
                 'id' => 19,
@@ -155,16 +89,93 @@ class ExerciseSeeder extends Seeder
                 'exercise_type_id' => 3
             ],
             [
-                'id' => 8194,
-                'title' => 'Vocabulary practice',
-                'description' => 'What problems did you experience understanding the texts you listened to in these tasks? Check (✓) all that apply.',
+                'id' => 988,
+                'title' => 'Checking in',
+                'description' => 'Now that you have watched the video. Think about your predictions from exercise',
+                'instructions' => '',
+                'image_name' => null,
+                'video_name' => null,
+                'subtype' => 99,
+                'section_id' => 2,
+                'exercise_type_id' => 6
+            ],
+            [
+                'id' => 14,
+                'title' => 'Evaluating Statement',
+                'description' => 'Read each statement carefully. Decide whether the statements are TRUE/FALSE or mark I’M NOT SURE if you do not know the answer',
+                'instructions' => null,
+                'image_name' => null,
+                'video_name' => null,
+                'subtype' => 3,
+                'section_id' => 2,
+                'exercise_type_id' => 2
+            ],
+            [
+                'id' => 20,
+                'title' => 'Multiple Choice',
+                'description' => '',
+                'instructions' => null,
+                'image_name' => null,
+                'video_name' => null,
+                'subtype' => 99,
+                'section_id' => 2,
+                'exercise_type_id' => 6
+            ],
+            [
+                'id' => 18,
+                'title' => 'Dictation cloze',
+                'description' => 'Listen to the audio extract and complete the missing words from the text (1 word per space).',
+                'instructions' => null,
+                'image_name' => null,
+                'video_name' => null,
+                'subtype' => 1,
+                'section_id' => 2,
+                'exercise_type_id' => 3
+            ],
+            [
+                'id' => 15,
+                'title' => 'Multiple choice',
+                'description' => 'Read the questions and answer',
+                'instructions' => null,
+                'image_name' => null,
+                'video_name' => null,
+                'subtype' => 4,
+                'section_id' => 3,
+                'exercise_type_id' => 2
+            ],
+            [
+                'id' => 17,
+                'title' => 'Personal response',
+                'description' => 'Answer the question',
+                'instructions' => null,
+                'image_name' => null,
+                'video_name' => null,
+                'subtype' => 1,
+                'section_id' => 3,
+                'exercise_type_id' => 4
+            ],
+            [
+                'id' => 21,
+                'title' => 'Checking in',
+                'description' => null,
                 'instructions' => null,
                 'image_name' => null,
                 'video_name' => null,
                 'subtype' => 99,
                 'section_id' => 3,
                 'exercise_type_id' => 6
-            ]
+            ],
+            [
+                'id' => 22,
+                'title' => 'Checking in',
+                'description' => null,
+                'instructions' => null,
+                'image_name' => null,
+                'video_name' => null,
+                'subtype' => 99,
+                'section_id' => 3,
+                'exercise_type_id' => 6
+            ],
         ]);
     }
 }

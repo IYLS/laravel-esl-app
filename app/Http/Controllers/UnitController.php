@@ -55,7 +55,6 @@ class UnitController extends Controller
         $video_file_url = $request->file('video')->storeAs('public/files', $video_file_name);
 
         $new_unit->video_name = $video_file_name;
-        $new_unit->video_url = $video_file_url;
 
         $new_unit->save();
 
@@ -118,7 +117,6 @@ class UnitController extends Controller
         $video_file_url = $request->file('video')->storeAs('public/files', $video_file_name);
 
         $new_unit->video_name = $video_file_name;
-        $new_unit->video_url = $video_file_url;
 
         $unit->save();
 

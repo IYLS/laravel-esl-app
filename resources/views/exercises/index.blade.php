@@ -18,6 +18,7 @@
             <div class="card-body d-flex justify-content-between">
                 <div>
                     <h4>{{ $section->name }} section</h4>
+                    <p>{{ $section->instructions }}</p>
                 </div>
             </div>
         </div>

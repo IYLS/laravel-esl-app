@@ -26,7 +26,7 @@
         <h4>Activity questions</h4>        
         @forelse($exercise->questions as $question)
             <div class="card mt-1 mb-1 p-4">
-            @if ($exercise->subtype == '99')
+            @if ($exercise->subtype == '99' or $exercise->subtype == null or $exercise->subtype == 1 or $exercose->subtype == '')
                     <div class="row">
                         <div class="col-10">
                             <p>Question:</p>

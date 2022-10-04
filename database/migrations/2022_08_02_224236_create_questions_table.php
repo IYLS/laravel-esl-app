@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id('id')->startingValue(4000);
-            $table->text('statement');
+            $table->text('statement')->nullable(true);
             $table->text('answer')->nullable(true);
             $table->string('image_name')->nullable(true);
             $table->string('audio_name')->nullable(true);

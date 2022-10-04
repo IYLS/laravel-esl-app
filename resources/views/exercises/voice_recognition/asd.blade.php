@@ -5,8 +5,8 @@
         <p class="text-secondary">{{ $e->description }}</p>
         <div class="row">
         @foreach($e->questions as $question)
-            <div class="col-5 mt-1 text-center">
-                <p>{{ $question->title }}</p>
+            <div class="col-12 col-md-6 mt-1 mb-1 text-center">
+                <p>{{ $question->statement }}</p>
                 <img src="{{ asset('storage/files/'.$question->image_name) }}" class="img-fluid col-6" alt="img">
                 <audio controls class="col-6">
                     <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
@@ -15,7 +15,7 @@
             </div>
         @endforeach
         </div>
-                
+
         @include('feedback.exercise')
 
         <button class="btn btn-sm btn-primary" onclick="showFeedback()">

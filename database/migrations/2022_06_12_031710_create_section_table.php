@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id('id')->startingValue(4000);
             $table->string('name');
             $table->string('underscore_name');
+            $table->text('instructions')->nullable(true);
             $table->integer('unit_id');
             $table->softDeletes();
             
