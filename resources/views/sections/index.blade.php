@@ -1,7 +1,11 @@
 @extends('layouts.app')
 @section('main')
 
+
 <div class="container">
+    <div class="mt-3 mb-2 p-2">
+        <h3>Unit {{ $unit->id . " - " . '"' . $unit->title . '"' }}</h3>
+    </div>
     <table class="table" id="sections_table">
     <thead>
         <tr>
@@ -11,7 +15,7 @@
         </tr>
         </thead>
         <tbody>
-            @foreach($sections as $section)
+            @forelse($sections as $section)
             <tr>
                 <td>
                     <p>{{ $section->name }}</p>
@@ -33,7 +37,13 @@
                     @include('modals.sections.edit', [$section, $unit_id])
                 </td>
             </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="3">
+                        <p class="text-secondary text-center"><small>No sections added yet.</small></p>
+                    </td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
     <div>

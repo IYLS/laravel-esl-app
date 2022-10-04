@@ -12,7 +12,7 @@
             </a>
         </div>
     </div>
-    @foreach($unit->sections as $section)
+    @forelse($unit->sections as $section)
     <div class="card p-4 m-4 shadow border-0">
         <div class="row">
             <div class="card-body d-flex justify-content-between">
@@ -117,8 +117,13 @@
             </div>
         </div>
     </div>
+    @empty
+    
+    <div class="d-flex justify-content-center align-items-center card p-5">
+        <p class="text-secondary text-center"><small>Looks like you haven't configured any section yet. Try adding at least one <a href="{{ route('sections.index', $unit) }}">here</a>.</small></p>
+    </div>
 
-    @endforeach
+    @endforelse
 </div>
 
 @endsection

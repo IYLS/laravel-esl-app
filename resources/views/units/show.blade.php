@@ -7,7 +7,7 @@
 <div class="mt-2 mb-2 container">
     <div class="p-3 mt-2 border shadow rounded">
         <h3>Unit details</h3>
-        <form enctype="multipart/form-data" action="{{ route('units.update', $unit->id) }}" method="POST">
+        <form enctype="multipart/form-data" action="{{ route('units.update', $unit) }}" method="POST">
             @csrf
             @method('PUT')
             <table class="table" id="create_unit_table">

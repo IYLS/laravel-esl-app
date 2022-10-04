@@ -2,8 +2,9 @@
 @section('main')
 
 <div class="container">
-    <div class="mt-2 p-2">
-        <h2>Fill-in the gaps activity</h2>
+    <div class="d-flex justify-content-between mt-2 p-2">
+        <h2>Fill in the gaps activity</h2>
+        <a href="{{ route('exercises.index', $exercise->section->unit_id) }}" class="btn btn-link">Go back</a>
     </div>
 
     <div class="card p-4 m-2">
@@ -25,7 +26,7 @@
                 @break;
             @endswitch
         </p>
-        @isset($exercise->extra_info)<p class="text-info">Additional information: {{ $exercise->extra_info }}</p>@endisset
+        @isset($exercise->extra_info)<p class="text-info">Additional Information: {{ $exercise->extra_info }}</p>@endisset
     </div>
 
     <div class="card p-4 m-2">

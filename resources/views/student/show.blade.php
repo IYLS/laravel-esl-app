@@ -71,7 +71,7 @@
                     <div class="tab-pane fade" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
                 @endif
                 <div class="d-flex align-items-start row mt-2">
-                    {{-- Additional information --}}
+                    {{-- (Optional) Additional Information --}}
                     @if(isset($section->instructions) and $section->instructions != '')
                     <div class="card pt-1 mb-2 pb-1 d-flex justify-content-center">
                         <p class="text-primary"><i class="mdi mdi-information-outline text-primary"></i>&nbsp;{{ $section->instructions }}</p>

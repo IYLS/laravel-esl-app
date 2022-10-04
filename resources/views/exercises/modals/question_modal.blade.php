@@ -23,7 +23,7 @@
                             <p class="text-secondary"><small>Use a semicolon (;) at the end of each statement. Except the last one.</small></p>
                             <p><small>Alternatives settings:</small></p>
                             <div class="mb-3">
-                                <input name="correct_alt" class="form-control" type="text" placeholder="Correct Alternative">
+                                <input name="correct_alt" class="form-control" type="text" placeholder="Correct Alternative (only if applicable)">
                                 <textarea name="alternatives" class="form-control" rows="3" placeholder="Type alternatives separated by semicolon (;) except for the last one"></textarea>
                             </div>
                             @break
@@ -33,7 +33,7 @@
                             <p class="text-secondary"><small>Use double semicolon (;;) to indicate where the gap to fill will be placed.</small></p>
                             <p><small>Alternatives settings:</small></p>
                             <div class="mb-3">
-                                <input name="correct_alt" class="form-control" type="text" placeholder="Correct Alternative">
+                                <input name="correct_alt" class="form-control" type="text" placeholder="Correct Alternative (only if applicable)">
                                 <textarea name="alternatives" class="form-control" rows="3" placeholder="Type alternatives separated by semicolon (;) except for the last one"></textarea>
                             </div>
                             @break
@@ -47,7 +47,7 @@
                             <input id="statement" name="statement" type="text" class="form-control" placeholder="Statement">
                             <p><small>Alternatives settings:</small></p>
                             <div class="mb-3">
-                                <input name="correct_alt" class="form-control" type="text" placeholder="Correct Alternative">
+                                <input name="correct_alt" class="form-control" type="text" placeholder="Correct Alternative (only if applicable)">
                                 <textarea name="alternatives" class="form-control" rows="3" placeholder="Type alternatives separated by semicolon (;) except for the last one"></textarea>
                             </div>
                             <p class="text-secondary"><small>Use a semicolon (;) at the end of each statement. Except the last one.</small></p>
@@ -57,7 +57,7 @@
                             <input id="statement" name="statement" type="text" class="form-control" placeholder="Statement">
                             <p><small>Alternatives settings:</small></p>
                             <div class="mb-3">
-                                <input name="correct_alt" class="form-control" type="text" placeholder="Correct Alternative">
+                                <input name="correct_alt" class="form-control" type="text" placeholder="Correct Alternative (only if applicable)">
                                 <textarea name="alternatives" class="form-control" rows="3" placeholder="Type alternatives separated by semicolon (;) except for the last one"></textarea>
                             </div>
                             <p class="text-secondary"><small>Use a semicolon (;) at the end of each statement. Except the last one.</small></p>

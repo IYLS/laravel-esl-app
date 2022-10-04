@@ -2,8 +2,9 @@
 @section('main')
 
 <div class="container">
-    <div class="mt-2 p-2">
-        <h2>Open Ended questions activity</h2>
+    <div class="d-flex justify-content-between mt-2 p-2">
+        <h2>Open Ended activity</h2>
+        <a href="{{ route('exercises.index', $exercise->section->unit_id) }}" class="btn btn-link">Go back</a>
     </div>
 
     <div class="card p-4 m-2">
@@ -18,14 +19,14 @@
         @elseif($exercise->subtype == '991')
             <p>Subtype: Metacognition (Table styled drag and drop)</p>
         @endif
-        @isset($exercise->extra_info)<p class="text-info">Additional information: {{ $exercise->extra_info }}</p>@endisset
+        @isset($exercise->extra_info)<p class="text-info">Additional Information: {{ $exercise->extra_info }}</p>@endisset
         @include('alerts.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
     </div>
 
     <div class="card p-4 m-2">
         <h4>Activity questions</h4>        
         @forelse($exercise->questions as $question)
-            <div class="card mt-1 mb-1 p-4">
+            <div class="card mt-1 mb-1 ps-4 pe-4 pt-3 pb-2">
             @if ($exercise->subtype == '99' or $exercise->subtype == null or $exercise->subtype == 1 or $exercose->subtype == '')
                     <div class="row">
                         <div class="col-10">
@@ -35,13 +36,6 @@
                                     <p>{{ $question->statement }}</p>
                                 </li>
                             </ul>
-                        </div>
-                        <div class="col-2 d-flex justify-content-center">
-                            <br>
-                            <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
-                                <i class="mdi mdi-delete"></i>
-                            </button> 
-                            @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
                         </div>
                     </div>
             @elseif ($exercise->subtype == '991')
@@ -70,9 +64,10 @@
                 <form action="{{ route('questions.destroy', [$exercise->id, $question->id] ) }}" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button class="btn btn-danger mt-1">
+                    <button class="btn btn-danger">
                         <i class="mdi mdi-delete"></i>
                     </button>
+                    @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
                 </form>
             </div>
         </div>

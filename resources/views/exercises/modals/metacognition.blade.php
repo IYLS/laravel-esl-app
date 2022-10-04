@@ -30,7 +30,7 @@
                     @csrf
                     <input id="title" name="title" type="text" class="form-control" placeholder="Title">
                     <br>
-                    <input id="description" name="description" type="text" class="form-control" placeholder="Description">
+                    <input id="description" name="description" type="text" class="form-control" placeholder="(Optional) Description">
                     @if($type_id == 4)
                         <br>
                         <select id="subtype" name="subtype" class="form-select">
@@ -39,7 +39,7 @@
                             <option value="991">Table style</option>
                         </select>
                     @endif
-                    <input type="text" class="form-control mt-1" placeholder="Additional information" name="extra_info">
+                    <input type="text" class="form-control mt-1" placeholder="(Optional) Additional Information" name="extra_info">
                     <p class="text-info"><small>(Optional) Enter here any relevant information about the exercise. e.g. An example of how to complete the exercise.</small></p>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

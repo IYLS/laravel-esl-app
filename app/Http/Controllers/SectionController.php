@@ -10,9 +10,10 @@ use App\Models\Unit;
 class SectionController extends Controller
 {
     public function index($unit_id) {
-        $sections = Unit::find($unit_id)->sections;
+        $unit = Unit::find($unit_id);
+        $sections = $unit->sections;
 
-        return view('sections.index', compact('sections', 'unit_id'));
+        return view('sections.index', compact('sections', 'unit_id', 'unit'));
     }
 
     public function store(Request $request, $unit_id) {
@@ -27,8 +28,14 @@ class SectionController extends Controller
         return redirect()->route('sections.index', $unit_id);
     }
 
-    public function update(Section $section) {
+    public function update(Request $request, $unit_id, Section $section) {
+        $section->name = $request->name;
+        $section->instructions = $request->instructions;
+        $section->unit_id = $unit_id;
 
+        $section->save();
+
+        return redirect()->route('sections.index', $unit_id);
     }
 
     public function destroy(Section $section) {

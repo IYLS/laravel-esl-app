@@ -2,37 +2,35 @@
 @section('main')
 
 <div class="row d-flex justify-content-center mt-3 mb-3">
-    <div class="col-6 p-5 bg-light mt-2 border shadow rounded">
+    <div class="col-12 col-md-6 p-5 bg-light mt-2 border shadow rounded">
         <h3>New unit</h3>
         <form enctype="multipart/form-data" action="{{ route('units.store') }}" method="POST">
         @csrf
         <table class="table" id="create_unit_table">
                 <tbody>
+                    <tr><td colspan="3"><h5>Details</h5></td></tr>
                     <tr>
                         <td>Title</td>
-                        <td>
+                        <td colspan="2">
                             <input id="title" name="title" class="form-control" type="text" placeholder="Type an Title for the new unit">
                         </td>
                     </tr>
                     <tr>
                         <td>Author</td>
-                        <td>
+                        <td colspan="2">
                             <input id="author" name="author" class="form-control" type="text" placeholder="Type the author's name for ththise new unit">
                         </td>
                     </tr>
                     <tr>
                         <td>Description</td>
-                        <td>
+                        <td colspan="2">
                             <textarea id="description" name="description" class="form-control" type="text" placeholder="Write a description for this new unit"></textarea>
                         </td>
                     </tr>
-                    <tr><td><h5>Help options</h5></td></tr>
+                    <tr><td colspan="3"><h5>Help options</h5></td></tr>
                     <tr>
-                        <td>Listening Tips</td>
                         <td>
-                            <textarea id="listening_tips" name="listening_tips" type="text" class="form-control" placeholder="Write the listening tips for this new unit"></textarea>
-                        </td>
-                        <td>
+                            <p>Listening tips</p>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="listening_tips_enabled" value="false" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
@@ -40,41 +38,42 @@
                                 </label>
                               </div>
                         </td>
+                        <td colspan="2">
+                            <textarea id="listening_tips" name="listening_tips" type="text" class="form-control" placeholder="Write the listening tips for this new unit"></textarea>
+                        </td>
+
                     </tr>
                     <tr>
-                        <td>Cultural Notes</td>
                         <td>
-                            <textarea id="cultural_notes" name="cultural_notes" type="text" class="form-control" placeholder="Write the cultural notes for this new unit"></textarea>
-                        </td>
-                        <td>
+                            <p>Cultural Notes</p>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="cultural_notes_enabled" value="false" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
                                   Enabled
                                 </label>
-                              </div>
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <textarea id="cultural_notes" name="cultural_notes" type="text" class="form-control" placeholder="Write the cultural notes for this new unit"></textarea>
                         </td>
                     </tr>
                     <tr>
-                        <td>Transcript</td>
                         <td>
-                            <textarea id="transcript" name="transcript" type="text" class="form-control" placeholder="Write the transcript for this new unit"></textarea>
-                        </td>
-                        <td>
+                            <p>Transcript</p>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="transcript_enabled" value="false" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
-                                  Enabled
+                                Enabled
                                 </label>
                             </div>
                         </td>
+                        <td>
+                            <textarea id="transcript" name="transcript" type="text" class="form-control" placeholder="Write the transcript for this new unit"></textarea>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Glossary</td>
                         <td>
-                            <textarea id="glossary" name="glossary" type="text" class="form-control" placeholder="Write the glossary for this new unit"></textarea>
-                        </td>
-                        <td>
+                            <p>Glossary</p>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="glossary_enabled" value="false" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
@@ -82,13 +81,13 @@
                                 </label>
                               </div>
                         </td>
+                        <td colspan="2">
+                            <textarea id="glossary" name="glossary" type="text" class="form-control" placeholder="Write the glossary for this new unit"></textarea>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Translation</td>
                         <td>
-                            <textarea id="translation" name="translation" type="text" class="form-control" placeholder="Write the translation for this new unit"></textarea>
-                        </td>
-                        <td>
+                            <p>Translation</p>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="translation_enabled" value="false" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
@@ -96,13 +95,13 @@
                                 </label>
                               </div>
                         </td>
+                        <td colspan="2">
+                            <textarea id="translation" name="translation" type="text" class="form-control" placeholder="Write the translation for this new unit"></textarea>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Dictionary</td>
                         <td>
-                            <textarea id="dictionary" name="dictionary" type="text" class="form-control" placeholder="Write the dictionary for this new unit"></textarea>
-                        </td>
-                        <td>
+                            <p>Dictionary</p>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="dictionary_enabled" value="false" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
@@ -110,22 +109,17 @@
                                 </label>
                               </div>
                         </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Video
+                        <td colspan="2">
+                            <textarea id="dictionary" name="dictionary" type="text" class="form-control" placeholder="Write the dictionary for this new unit"></textarea>
                         </td>
-                        <td>
+                    </tr>
+                    <tr><td colspan="3"><h5>Unit video</h5></td></tr>
+                    <tr>
+                        <td colspan="2">
                             <div class="mb-3">
                                 <label for="video" class="form-label">Select unit video</label>
                                 <input class="form-control" type="file" name="video" id="video" accept="video/*">
                             </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Keywords</td>
-                        <td>
-                            <a class="btn btn-primary" onclick="addKeyword()">Add keyword</a>
                         </td>
                     </tr>
                 </tbody>
@@ -155,7 +149,7 @@
         cell2.innerHTML = `<div class="input-group">
                                 <input name='keyword_description_${keyword_id}' type='text' class='form-control' placeholder='Enter keyword description'>
                                 <span class="input-group-btn">
-                                    <a class="btn btn-danger" onclick="removeKeyword(this)"><i class="fa fa-trash"></i></a>
+                                    <a class="btn btn-danger" onclick="removeKeyword(this)"><i class="mdi mdi-delete"></i></a>
                                 </span>
                             </div>
         `

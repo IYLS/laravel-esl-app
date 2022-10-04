@@ -58,21 +58,6 @@ class UnitController extends Controller
 
         $new_unit->save();
 
-        $pre = new Section;
-        $pre->name = 'pre_listening';
-        $pre->unit_id = $new_unit->id;
-        $pre->save();
-        
-        $while = new Section;
-        $while->name = 'while_listening';
-        $while->unit_id = $new_unit->id;
-        $while->save();
-        
-        $post = new Section;
-        $post->name = 'post_listening';
-        $post->unit_id = $new_unit->id;
-        $post->save();
-
         return redirect()->route('units.index')->with('success', 'Unit created successfully!');
     }
 
@@ -87,10 +72,8 @@ class UnitController extends Controller
         //
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $unit)
     {
-        $unit = Unit::find($id);
-
         $unit->title = $request->title;
         $unit->author = $request->author;
         $unit->description = $request->description;

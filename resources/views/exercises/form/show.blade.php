@@ -2,8 +2,9 @@
 @section('main')
 
 <div class="container">
-    <div class="mt-2 p-2">
+    <div class="d-flex justify-content-between mt-2 p-2">
         <h2>Form activity</h2>
+        <a href="{{ route('exercises.index', $exercise->section->unit_id) }}" class="btn btn-link">Go back</a>
     </div>
 
     <div class="card p-4 m-2">
@@ -16,7 +17,7 @@
         @if($exercise->subtype == '99')
             <p>Subtype: Metacognition</p>
         @endif
-        @isset($exercise->extra_info)<p class="text-info">Additional information: {{ $exercise->extra_info }}</p>@endisset
+        @isset($exercise->extra_info)<p class="text-info">Additional Information: {{ $exercise->extra_info }}</p>@endisset
         @include('alerts.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
     </div>
 

@@ -24,7 +24,7 @@
                         <a class="nav-link" href="{{ route('groups.index') }}">Groups</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Tracking Systems</a>
+                        <a class="nav-link" href="#">Tracking System</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('auth.logout') }}">Log out</a>
