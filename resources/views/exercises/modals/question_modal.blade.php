@@ -12,7 +12,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form @if($type == "voice_recognition" or $type == "fill_in_the_gaps") enctype="multipart/form-data" @endif action="{{ route('questions.store', [$exercise->id, $exercise->section_id, $exercise->exercise_type_id]) }}" method="POST">
+                <form enctype="multipart/form-data" action="{{ route('questions.store', [$exercise->id, $exercise->section_id, $exercise->exercise_type_id]) }}" method="POST">
                     @csrf
                     @switch($type)
                     @case('multiple_choice')

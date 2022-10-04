@@ -311,7 +311,7 @@ class QuestionSeeder extends Seeder
             [            
                 'id' => 93,
                 'statement' => 'Response',
-                'answer' => '',
+                'answer' => null,
                 'image_name' => null,
                 'audio_name' => null,
                 'correct_answer' => 'Read the statements below and check the ones that apply to you.',

@@ -67,7 +67,7 @@ class QuestionController extends Controller
             
             return $audio_file_name;
         } else {
-            return null;
+            return "none";
         }
     }
 

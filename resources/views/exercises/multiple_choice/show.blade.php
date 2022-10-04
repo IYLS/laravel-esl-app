@@ -91,7 +91,7 @@
                                 $words_to_add = array();
                                 foreach($statement_array as $word)
                                 {
-                                    if($word == ";;" or $word == ";;." or $word == ";;,")
+                                    if($word == ";;" or $word == ";;." or $word == ";;," or $word == ";;!" or $word == ";;?")
                                     {   
                                         $new_word = $alts[$found_words];
                                         $final_word = $final_word . " " . "<strong class='text-primary'>$new_word</strong>";
@@ -101,12 +101,10 @@
                                     $final_word = $final_word . " " . $word;
                                 }
 
-                                $final_word = str_replace([";;", "\n"], '', $final_word);
+                                $final_word = str_replace([";;", ";;.", ";;,", ";;!", ";;?", "\n"], '', $final_word);
                             @endphp
                             
                             <p>{{ $loop->index + 1 . ". " }} {!! $final_word !!}</p>
-                            
-                            <br>
                             <div class="col-12 mt-2 mb-1">
                                 <p>Correct answer(s):</p>
                                 <ul>
@@ -115,6 +113,12 @@
                                     @endforeach
                                 </ul>
                             </div>
+                        </div>
+                        {{ $question->audio_name }}
+                        <div class="row">
+                            <audio controls style="width: 350px;">
+                                <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
+                            </audio> 
                         </div>
                         <div class="col-12 col-md-2 d-flex justify-content-start mt-1">
                             <br>
