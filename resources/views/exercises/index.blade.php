@@ -56,8 +56,8 @@
                     </tr>
                 @empty
                     <tr>
-                        <td>
-                            <p class="text-secondary">Nothing yet</p>  
+                        <td colspan="4 mt-3 mb-3">
+                            <p class="text-secondary text-center"><small>Nothing yet</small></p>  
                         </td>
                     </tr>
                 @endforelse
@@ -76,17 +76,17 @@
             <div class="col-6 d-flex justify-content-center">
                 <div class="collapse" id="collapsableAddExercise{{ $section->id }}">
                     @forelse($types as $type)
-                        <div class="">
+                        <div>
                             <button type="button" id="add_{{ $type->underscore_name }}_button" class="btn btn-sm btn-primary mt-1" data-bs-toggle="modal" data-bs-target="#add_{{ $type->underscore_name}}_exercise_modal">
                                 {{ $type->name }}
                             </button>
-                            @include('exercises.modals.exercise_modal', ['section' => $exercise->section, 'type' => $type])
+                            @include('exercises.modals.exercise_modal', ['section_id' => $section->id, 'type' => $type])
                         </div>
                     @empty
                     @endforelse
                 </div>
             </div>
-
+            
             <div class="col-6 d-flex justify-content-center">
                 <div class="collapse" id="collapsableAddMetacognition{{ $section->id }}">
                     <div class="ms-1 me-1">

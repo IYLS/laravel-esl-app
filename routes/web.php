@@ -13,6 +13,7 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ReplyController;
+use App\Http\Controllers\SectionController;
 
 // Home
 Route::get('/', [AuthController::class, 'index'])->name('auth.index');
@@ -86,3 +87,9 @@ Route::delete('/forum/comment/{comment}/delete', [ForumController::class, 'destr
 
 // Reply Routes
 Route::post('/forum/comment/{comment}/reply/store', [ReplyController::class, 'store'])->name('replies.store');
+
+// Sections Routes
+Route::get('/units/{unit}/sections', [SectionController::class, 'index'])->name('sections.index');
+Route::post('/units/{unit}/sections/store', [SectionController::class, 'store'])->name('sections.store');
+Route::delete('/sections/{section}/destroy', [SectionController::class, 'destroy'])->name('sections.destroy');
+Route::post('/units/{unit}/sections/{keyword}/update', [SectionController::class, 'update'])->name('sections.update');
