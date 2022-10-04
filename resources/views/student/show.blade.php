@@ -130,7 +130,7 @@
                                             @include('exercises.multiple_choice.evaluating_statements')
 
                                         {{-- Subtype 4 = Multiple Choice --}}
-                                        @elseif($e->subtype == 4)
+                                        @elseif($e->subtype == 4 or $e->subtype == 99)
                                             @include('exercises.multiple_choice.multiple_choice')
                                         @endif
                                     </div>
