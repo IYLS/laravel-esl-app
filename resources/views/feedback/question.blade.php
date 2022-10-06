@@ -38,7 +38,7 @@
 {{--         
         <div class="row">
             <audio controls class="col-12">
-                <source src="{{ asset('storage/files/'.$feedback->audio_name) }}" type="audio/mpeg">
+                <source src="{{ asset('esl/public/storage/files/'.$feedback->audio_name) }}" type="audio/mpeg">
             </audio>
         </div> --}}
     </div>

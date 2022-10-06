@@ -46,7 +46,7 @@
     {{-- Video section --}}
     <div class="col-12 col-xl-5">
         <div class="ratio ratio-16x9 mt-3">
-            <iframe src="{{ asset('/storage/files') . "/" . $unit->video_name }}" title="Video" allowfullscreen controls></iframe>
+            <iframe src="{{ asset('/esl/public/storage/files') . "/" . $unit->video_name }}" title="Video" allowfullscreen controls></iframe>
         </div>
     </div>
 
