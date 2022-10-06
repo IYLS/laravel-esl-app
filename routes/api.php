@@ -19,7 +19,26 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/test', function () {
-    return response('{ "Test API": "hola" }', 200)
-                  ->header('Content-Type', 'application/json');
+Route::get('/migrate_fresh_seed', function () {
+    return Artisan::call('migrate:fresh --seed');
+});
+
+Route::get('/config_cache', function () {
+    Artisan::call('cache:clear');
+	Artisan::call('route:cache');
+ 	Artisan::call('config:cache');
+    Artisan::call('view:clear');
+    return 'Cache clear and configured.';
+});
+
+Route::get('/link_storage', function () {
+    return Artisan::call('storage:link');
+});
+
+Route::get('/migrate', function () {
+    return Artisan::call('migrate:fresh');
+});
+
+Route::get('/seed', function () {
+    return Artisan::call('db:seed');
 });
