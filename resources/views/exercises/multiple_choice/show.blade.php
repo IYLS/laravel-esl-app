@@ -117,7 +117,7 @@
                         {{ $question->audio_name }}
                         <div class="row">
                             <audio controls style="width: 350px;">
-                                <source src="{{ asset('esl/public/storage/files/'.$question->audio_name) }}" type="audio/mpeg">
+                                <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
                             </audio> 
                         </div>
                         <div class="col-12 col-md-2 d-flex justify-content-start mt-1">

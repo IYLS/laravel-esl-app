@@ -7,9 +7,9 @@
         @foreach($e->questions as $question)
             <div class="col-12 col-md-6 mt-1 mb-1 text-center">
                 <p>{{ $question->statement }}</p>
-                <img src="{{ asset('esl/public/storage/files/'.$question->image_name) }}" class="img-fluid col-6" alt="img">
+                <img src="{{ asset('storage/files/'.$question->image_name) }}" class="img-fluid col-6" alt="img">
                 <audio controls class="col-6">
-                    <source src="{{ asset('esl/public/storage/files/'.$question->audio_name) }}" type="audio/mpeg">
+                    <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
                 </audio> 
                 @include('feedback.question')
             </div>

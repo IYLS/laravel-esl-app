@@ -3,7 +3,7 @@
     <p>{{ $loop->index + 1 }}. &nbsp;</p>
     <div class="row mt-2 mb-2">
         <audio controls class="col-12">
-            <source src="{{ asset('esl/public/storage/files/'.$question->audio_name) }}" type="audio/mpeg">
+            <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
         </audio> 
     </div>
     <div class="mt-4 mb-4">

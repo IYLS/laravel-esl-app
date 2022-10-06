@@ -25,11 +25,11 @@
                     <div class="col-12 col-md-10">
                         <p>{{ $loop->index + 1 }}. &nbsp; {{ $question->statement }}</p>
                         <div class="row">
-                            <img src="{{ asset('esl/public/storage/files/'.$question->image_name) }}" style="height: 300px; width: 300px;" alt="img">
+                            <img src="{{ asset('storage/files/'.$question->image_name) }}" style="height: 300px; width: 300px;" alt="img">
                         </div>
                         <div class="row">
                             <audio controls style="width: 350px;">
-                                <source src="{{ asset('esl/public/storage/files/'.$question->audio_name) }}" type="audio/mpeg">
+                                <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
                             </audio> 
                         </div>
                     </div>

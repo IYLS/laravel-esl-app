@@ -64,7 +64,7 @@
                         </div>
                         <div class="col-12 col-md-12">
                             <audio controls>
-                                <source src="{{ asset('esl/public/storage/files/'.$question->audio_name) }}" type="audio/mpeg">
+                                <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
                             </audio> 
                         </div>
                         <div class="col-12 col-md-2 mt-2 mt-md-0 justify-content-end">

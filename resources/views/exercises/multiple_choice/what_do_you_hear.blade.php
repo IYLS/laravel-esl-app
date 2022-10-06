@@ -7,7 +7,7 @@
         <p>{{ $loop->index + 1 . ". " . $statement }}</p>
         <br>
         <audio controls class="col-6">
-            <source src="{{ asset('esl/public/storage/files/'.$question->audio_name) }}" type="audio/mpeg">
+            <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
         </audio>
         <div class="mt-2">
             <ol type="a">
