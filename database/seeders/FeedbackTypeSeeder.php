@@ -16,7 +16,8 @@ class FeedbackTypeSeeder extends Seeder
                 'name' => 'Short Message A',
                 'level' => 'exercise',
                 'text_based' => true,
-                'description' => 'Un mensaje breve para los ejercicios que no tienen respuestas correctas o incorrectas. Aparece al final luego de que el estudiante le de click a “submit”.'
+                'description' => 'Un mensaje breve para los ejercicios que no tienen respuestas correctas o incorrectas. Aparece al final luego de que el estudiante le de click a “submit”.',
+                'short_description' => ''
             ],
             [            
                 'id' => 2,
@@ -24,6 +25,7 @@ class FeedbackTypeSeeder extends Seeder
                 'level' => 'exercise',
                 'text_based' => true,
                 'description' => 'únicamente para respuestas correctas. Mensajes como: Well done!, Excellent!, Very good!, Good job! Aparece al final cuando todo el ejercicio esté correcto luego de dar click a “Check”.',
+                'short_description' => ''
             ],
             [            
                 'id' => 3,
@@ -31,6 +33,7 @@ class FeedbackTypeSeeder extends Seeder
                 'level' => 'question',
                 'text_based' => false,
                 'description' => 'Aparece un extracto de audio en donde se encuentra la respuesta correcta. Este feedback es a nivel de preguntas dentro de un ejercicio y está disponible para preguntas correctas e incorrectas. Se habilita luego de que el estudiante de click a “check”.',
+                'short_description' => ''
             ],
             [            
                 'id' => 4,
@@ -38,6 +41,7 @@ class FeedbackTypeSeeder extends Seeder
                 'level' => 'exercise',
                 'text_based' => true,
                 'description' => 'únicamente para cuando un ejercicio tiene respuestas incorrectas. Mensajes como “Try again”, Don’t give up”, “oops” mas un mensaje personalizado de lo que podría hacer el estudiante para hallar la respuesta correcta dependiendo del ejercicio. Aparece al final cuando el estudiante le de click a “check”.',
+                'short_description' => ''
             ],
             [            
                 'id' => 5,
@@ -45,6 +49,7 @@ class FeedbackTypeSeeder extends Seeder
                 'level' => 'question',
                 'text_based' => true,
                 'description' => 'Mensaje de texto donde se explique la razón por la que está incorrecta la respuesta. Este feedback es a nivel de preguntas dentro de un ejercicio y se habilita luego de que el estudiante de click a “check”.',
+                'short_description' => ''
             ],
             [            
                 'id' => 6,
@@ -52,6 +57,7 @@ class FeedbackTypeSeeder extends Seeder
                 'level' => 'question',
                 'text_based' => true,
                 'description' => 'Mensaje de texto donde se sugiera qué estrategias u opciones de ayuda podría usar el estudiante. Este feedback es a nivel de preguntas dentro de un ejercicio y se habilita luego de que el estudiante de click a “check”.',
+                'short_description' => ''
             ],
             [            
                 'id' => 7,
@@ -59,6 +65,7 @@ class FeedbackTypeSeeder extends Seeder
                 'level' => 'question',
                 'text_based' => true,
                 'description' => 'Mensaje de texto en donde se dice cuál es la respuesta correcta y por qué. Este feedback es a nivel de preguntas dentro de un ejercicio y se habilita luego de que el estudiante de click a “check”.',
+                'short_description' => ''
             ],
         ]);
     }

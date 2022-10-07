@@ -21,7 +21,7 @@
                                 <input id="password" name="password" type="password" class="form-control" placeholder="Type a password for the new user">
                                 <span class="input-group-btn">
                                   <a class="btn btn-primary" onclick="revealPassword()">
-                                      <i class="fa fa-eye"></i>
+                                      <i class="mdi mdi-eye"></i>
                                   </a>
                                 </span>
                             </div>
@@ -65,8 +65,9 @@
                         <td>Group</td>
                         <td>
                             <select id="group" name="group" class="form-select">
+                                <option value="">None. I'm a teacher.</option>
                                 @foreach($groups as $group)
-                                <option value="{{ $group->id }}">{{ $group->name }}</option>
+                                    <option value="{{ $group->id }}">{{ $group->name }}</option>
                                 @endforeach
                             </select>
                         </td>

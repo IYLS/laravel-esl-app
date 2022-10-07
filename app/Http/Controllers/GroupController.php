@@ -17,13 +17,13 @@ class GroupController extends Controller
     public function index()
     {
         $groups = Group::all();
-        $students_count = array();
-
         $units = Unit::all();
+
+        $students_count = array();
         $units_count = array();
 
         foreach($groups as $group) {
-            $count = $group->users()->count();
+            $count = $group->users()->where('role', 'student')->count();
             $students_count["$group->id"] = $count;
 
             $count2 = $group->units()->count();

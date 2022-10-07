@@ -21,4 +21,5 @@ class Alternative extends Model
     public $incrementing = true;
     
     public function question() { return $this->belongsTo(Question::class); }
+    public function feedback() { return $this->hasOne(Feedback::class); }
 }

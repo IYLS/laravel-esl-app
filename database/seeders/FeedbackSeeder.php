@@ -17,6 +17,7 @@ class FeedbackSeeder extends Seeder
                 'message' => 'You can check if your prediction is right in the While-listening section!',
                 'exercise_id' => 12,
                 'question_id' => null,
+                'alternative_id' => null,
                 'feedback_type_id' => 1
             ],
             [
@@ -25,6 +26,7 @@ class FeedbackSeeder extends Seeder
                 'message' => 'Well done!',
                 'exercise_id' => 15,
                 'question_id' => null,
+                'alternative_id' => null,
                 'feedback_type_id' => 2
             ],
             [
@@ -33,6 +35,7 @@ class FeedbackSeeder extends Seeder
                 'message' => 'Well done!',
                 'exercise_id' => 11,
                 'question_id' => null,
+                'alternative_id' => null,
                 'feedback_type_id' => 2
             ],
             [
@@ -41,6 +44,7 @@ class FeedbackSeeder extends Seeder
                 'message' => 'Try again. You can check the What do you hear? exercise to see the context of the words.',
                 'exercise_id' => 11,
                 'question_id' => null,
+                'alternative_id' => null,
                 'feedback_type_id' => 4
             ],
             [
@@ -49,6 +53,7 @@ class FeedbackSeeder extends Seeder
                 'message' => 'Thanks for sharing your experience.',
                 'exercise_id' => 15,
                 'question_id' => null,
+                'alternative_id' => null,
                 'feedback_type_id' => 1
             ]
         ]);

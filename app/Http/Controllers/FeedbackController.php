@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Exercise;
 use App\Models\Feedback;
 use App\Models\FeedbackType;
+use App\Models\Question;
 
 class FeedbackController extends Controller
 {
@@ -19,96 +20,82 @@ class FeedbackController extends Controller
         $feedback_types = FeedbackType::findMany($request->types);
         $exercise = Exercise::find($exercise_id);
 
-        $feedback_content = array(
-            'ids' => [],
-            'names' => [],
-            'text_based' => [],
-        );
-        
-        foreach($feedback_types as $type)
-        {
-            array_push($feedback_content['names'], $type->name);
-            array_push($feedback_content['text_based'], $type->text_based);
-            array_push($feedback_content['ids'], $type->id);
-        }
-
         return view('feedback.create', compact('feedback_types', 'exercise'));
     }
 
-    public function store(Request $request, $exercise_id, $feedback_type_id)
-    {
-        $feedback_type = FeedbackType::find($feedback_type_id);
-        $text_based = $feedback_type->text_based;
-        $level = $feedback_type->level;
+    public function store(Request $request, $exercise_id)
+    {   
+        $exercise = Exercise::find($exercise_id);
+        $data = $request->data;
 
-        switch ($level)
+        if(array_key_exists("question", $data))
         {
-            case 'exercise':
-                if($text_based)
-                {
-                    foreach($request->messages as $question_id=>$message)
-                    {
-                        $feedback = new Feedback;
-                        $feedback->message = $message["message"];
-                        $feedback->feedback_type_id = $feedback_type_id;
-                        $feedback->exercise_id = $exercise_id;
-                        $feedback->question_id = $question_id;
-                        $feedback->save();
-                    }
-                } else {
-                    foreach($request->audios as $question_id=>$audio)
-                    {
-                        $audio_file_name = $audio["audio"]->getClientOriginalName();
-                        $audio["audio"]->storeAs('public/files', $audio_file_name);
-        
-                        $feedback = new Feedback;
-                        $feedback->audio_name = $audio_file_name;
-                        $feedback->feedback_type_id = $feedback_type_id;
-                        $feedback->exercise_id = $exercise_id;
-                        $feedback->question_id = $question_id;
-                        $feedback->save();
-                    }
-                }
-                break;
-            case 'question':
-                if($text_based)
-                {
-                    foreach($request->messages as $question_id=>$message)
-                    {
-                        $feedback = new Feedback;
-                        $feedback->message = $message["message"];
-                        $feedback->feedback_type_id = $feedback_type_id;
-                        $feedback->question_id = $question_id;
-                        $feedback->save();
-                    }
-                } else {
-                    foreach($request->audios as $question_id=>$audio)
-                    {
-                        $audio_file_name = $audio["audio"]->getClientOriginalName();
-                        $audio["audio"]->storeAs('public/files', $audio_file_name);
-        
-                        $feedback = new Feedback;
-                        $feedback->audio_name = $audio_file_name;
-                        $feedback->feedback_type_id = $feedback_type_id;
-                        $feedback->question_id = $question_id;
-                        $feedback->save();
+            foreach($data["question"] as $feedback_type_id=>$question_data)
+            {   
+                foreach($question_data as $key=>$q) {
+                    $question = Question::find($key);
+                    
+                    foreach($q as $key=>$item)
+                    {   
+                        switch($key)
+                        {
+                            case'message':
+                                $feedback = new Feedback;
+                                $feedback->feedback_type_id = $feedback_type_id;
+                                $feedback->message = $item;
+                                $feedback->question_id = $question->id;
+                                $feedback->exercise_id = $exercise->id;
+                                $feedback->save();
+                                break;
+                            case('audio'):
+                                $feedback = new Feedback;
+                                $feedback->feedback_type_id = $feedback_type_id;
+                                $feedback->audio_name = $item;
+                                $feedback->question_id = $question->id;
+                                $feedback->exercise_id = $exercise->id;
+                                $feedback->save();
+                                break;
+                            default:
+                                $feedback = new Feedback;
+                                $feedback->feedback_type_id = $feedback_type_id;
+                                $feedback->message = $item["message"];
+                                $feedback->question_id = $question->id;
+                                $feedback->exercise_id = $exercise->id;        
+                                $feedback->save();
+                                break;
+                        }
                     }
                 }
-
-                $feedback = new Feedback;
-                $feedback->feedback_type_id = $feedback_type_id;
-                $feedback->exercise_id = $exercise_id;
-                $feedback->save();                
-
-                break;
+            }
         }
 
-        return redirect()->route('exercises.show', $exercise_id);
+        if(array_key_exists("exercise", $data))
+        {
+            foreach($data["exercise"] as $feedback_type_id=>$exercise_data)
+            {
+                foreach($exercise_data as $key=>$e)
+                {
+                    if($key == 'message')
+                    {
+                        $feedback = new Feedback;
+                        $feedback->feedback_type_id = $feedback_type_id;
+                        $feedback->message = $e;
+                        $feedback->exercise_id = $exercise->id;        
+                        $feedback->save();
+                        break;
+                    }
+                }
+            }
+        }
+
+        return redirect()->route('exercises.show', $exercise_id)->with("success", "Feedback saved successfully.");
     }
 
-    public function destroy($id)
+    public function destroy($exercise_id)
     {
-        Feedback::find($id)->delete();
-        return redirect()->back();
+        $exercise = Exercise::find($exercise_id);
+        foreach($exercise->feedbacks as $fb) $fb->delete();
+
+        return redirect()->route('exercises.show', $exercise_id)->with("success", "Feedback settings deleted successfully.");
     }
 }

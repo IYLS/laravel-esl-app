@@ -12,12 +12,12 @@ return new class extends Migration
             $table->id('id')->startingValue(4000);
             $table->string('user_id');
             $table->string('name');
-            $table->integer('age');
+            $table->integer('age')->nullable(true);
             $table->string('gender');
             $table->string('language');
             $table->string('email');
             $table->string('role');
-            $table->boolean('activated');
+            $table->boolean('activated')->nullable(true);
             $table->text('password');
             $table->integer('group_id')->nullable(true);
             $table->softDeletes();

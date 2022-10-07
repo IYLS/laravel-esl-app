@@ -26,7 +26,6 @@
                     <div class="mb-3">
                         <button class="btn btn-primary" type="submit">Login</button>
                     </div>
-                    <a class="text-link form-link" href="#">Forgot my password</a>
                 </form>
             </div>
 

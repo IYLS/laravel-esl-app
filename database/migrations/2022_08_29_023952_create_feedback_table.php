@@ -17,10 +17,13 @@ return new class extends Migration
             $table->integer('feedback_type_id')->nullable(true);
             $table->integer('exercise_id')->nullable(true);
             $table->integer('question_id')->nullable(true);
+            $table->integer('alternative_id')->nullable(true);
+
 
             $table->foreign('feedback_type_id')->references('id')->on('feedback_types');
             $table->foreign('exercise_id')->references('id')->on('exercises');
             $table->foreign('question_id')->references('id')->on('questions');
+            $table->foreign('alternative_id')->references('id')->on('alternatives');
         });
     }
 

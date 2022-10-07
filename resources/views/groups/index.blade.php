@@ -12,7 +12,7 @@
 						@if($students_count["$group->id"] == 1)
 						1 student belongs to this group
 						@elseif($students_count["$group->id"] == 0)
-						there is no student belonging to this group
+						any student belongs to this group
 						@else
 						{{ $students_count["$group->id"] }} students belong to this group
 						@endif

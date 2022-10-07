@@ -15,6 +15,7 @@ class FeedbackType extends Model
     protected $fillable = [
         'name',
         'description',
+        'short_description',
         'level',
         'text_based'
     ];

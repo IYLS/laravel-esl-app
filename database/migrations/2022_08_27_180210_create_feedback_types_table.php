@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id('id')->startingValue(4000);
             $table->string('name');
             $table->text('description');
+            $table->text('short_description');
             $table->string('level');
             $table->boolean('text_based');
             $table->softDeletes();

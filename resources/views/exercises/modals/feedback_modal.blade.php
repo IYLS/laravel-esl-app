@@ -10,10 +10,17 @@
                 <form action="{{ route('feedback.create', [$exercise->id]) }}" method="POST">
                     @csrf
                     @foreach($feedback_types as $type)
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="{{ $type->id }}" name="types[]" id="feedback-types">
-                        <label class="form-check-label" for="feedback-types">{{ $type->name }}</label>
-                    </div>
+                        <div class="d-flex justify-content-between">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="{{ $type->id }}" name="types[]" id="feedback-types">
+                                <label class="form-check-label" for="feedback-types">{{ $type->name }}</label>
+                            </div>
+                            <div class="mt-2">
+                                <button class="btn btn-link btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#feedback_description_{{ $type->id }}_modal">
+                                    <i class="mdi mdi-information-outline" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $type->description }}"></i>
+                                </button>
+                            </div>
+                        </div>
                     @endforeach
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

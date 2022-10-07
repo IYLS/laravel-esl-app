@@ -40,10 +40,10 @@ class UserController extends Controller
         $newUser->role = $request->role;
         $newUser->activated = $request->activated;
         $newUser->password = Hash::make($request->password);
-        $newUser->group_id = $request->group;
+        $newUser->group_id = $request->group == '' ? null : $request->group;
         $newUser->save();
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with("success", "User added successfully.");
     }
 
     public function show($id)

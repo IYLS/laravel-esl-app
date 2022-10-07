@@ -22,6 +22,7 @@ class Feedback extends Model
     public $timestamps = false;
     public $incrementing = true;
 
+    public function alternative() { return $this->belongsTo(Alternative::class); }
     public function exercise() { return $this->belongsTo(Exercise::class); }
     public function question() { return $this->belongsTo(Question::class); }
     public function feedbackType() { return $this->belongsTo(FeedbackType::class); }

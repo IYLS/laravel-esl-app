@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('image_name')->nullable(true);
             $table->string('audio_name')->nullable(true);
             $table->string('correct_answer')->nullable(true);
+            $table->string('user_response')->nullable(true);
             $table->softDeletes();
 
             $table->integer('exercise_id');

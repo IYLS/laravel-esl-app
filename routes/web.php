@@ -74,9 +74,9 @@ Route::post('/exercises/{exercise}/store/section/{section}/type/{type}/question'
 Route::delete('/exercises/{exercise}/questions/destroy/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
 
 // Feedback Routes
-Route::post('/feedback/{exercise}/store/{type}', [FeedbackController::class, 'store'])->name('feedback.store');
+Route::post('/feedback/{exercise}/store/', [FeedbackController::class, 'store'])->name('feedback.store');
 Route::post('/feedback/{exercise}/create', [FeedbackController::class, 'create'])->name('feedback.create');
-Route::delete('/feedback/{feedback}/destroy', [FeedbackController::class, 'destroy'])->name('feedback.destroy');
+Route::delete('/feedback/{exercise}/destroy', [FeedbackController::class, 'destroy'])->name('feedback.destroy');
 
 
 // Forum Routes
