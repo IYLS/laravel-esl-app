@@ -20,8 +20,13 @@ class QuestionController extends Controller
         $exercise_type = ExerciseType::find($exercise_type_id);
 
         $question = new Question;
-        $question->audio_name = $this->getAudioFrom($request);
-        $question->image_name = $this->getImageFrom($request);
+        
+        try {
+            $question->audio_name = $this->getAudioFrom($request);
+            $question->image_name = $this->getImageFrom($request);
+        } catch(Exception $e) {
+            return redirect()->route('exercises.show', [$exercise_id])->with('error', 'Image or Audio files are not valid or corrupted.');
+        }
 
         $question->statement = $request->statement;
         $question->answer = $request->answer;
@@ -60,20 +65,20 @@ class QuestionController extends Controller
 
     private function getAudioFrom(Request $request)
     {
-        if($request->hasFile('audio')) 
+        if($request->hasFile('audio') and $request->file('audio')->isValid()) 
         {
             $audio_file_name = $request->file('audio')->getClientOriginalName();
             $audio_file_path = $request->file('audio')->storeAs('public/files', $audio_file_name);
             
             return $audio_file_name;
         } else {
-            return "none";
+            return null;
         }
     }
 
     private function getImageFrom(Request $request)
     {
-        if($request->hasFile('image')) 
+        if($request->hasFile('image') and $request->file('image')->isValid()) 
         {
             $image_file_name = $request->file('image')->getClientOriginalName();
             $image_file_path = $request->file('image')->storeAs('public/files', $image_file_name);

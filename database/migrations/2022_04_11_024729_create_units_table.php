@@ -21,12 +21,12 @@ return new class extends Migration
             $table->text('translation')->nullable(true);
             $table->text('dictionary')->nullable(true);
             
-            $table->boolean('listening_tips_enabled');
-            $table->boolean('cultural_notes_enabled');
-            $table->boolean('transcript_enabled');
-            $table->boolean('glossary_enabled');
-            $table->boolean('translation_enabled');
-            $table->boolean('dictionary_enabled');
+            $table->boolean('listening_tips_enabled')->nullable(true);
+            $table->boolean('cultural_notes_enabled')->nullable(true);
+            $table->boolean('transcript_enabled')->nullable(true);
+            $table->boolean('glossary_enabled')->nullable(true);
+            $table->boolean('translation_enabled')->nullable(true);
+            $table->boolean('dictionary_enabled')->nullable(true);
             $table->softDeletes();
 
             $table->string('video_name');

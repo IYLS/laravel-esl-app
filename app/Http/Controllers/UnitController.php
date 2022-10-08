@@ -6,6 +6,7 @@ use App\Models\Unit;
 use Illuminate\Http\Request;
 use App\Models\Keyword;
 use App\Models\Section;
+use App\Http\Requests\StoreUnitRequest;
 
 class UnitController extends Controller
 {
@@ -25,8 +26,11 @@ class UnitController extends Controller
         return view('units.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreUnitRequest $request)
     {
+
+        dump($request);
+
         $new_unit = new Unit;
 
         $new_unit->title = $request->title;
@@ -51,14 +55,15 @@ class UnitController extends Controller
         $new_unit->dictionary = $request->dictionary;
         $new_unit->dictionary_enabled = $request->dictionary_enabled == 'true' ? true : false;
 
-        $video_file_name = $request->file('video')->getClientOriginalName();
-        $video_file_url = $request->file('video')->storeAs('public/files', $video_file_name);
-
-        $new_unit->video_name = $video_file_name;
+        try {
+            $new_unit->video_name = $this->getVideoFrom($request);
+        } catch(Exception $e) {
+            return redirect()->route('exercises.show', [$exercise_id])->with('error', 'Image or Audio files are not valid or corrupted.');
+        }
 
         $new_unit->save();
 
-        return redirect()->route('units.index')->with('success', 'Unit created successfully!');
+        // return redirect()->route('units.index')->with('success', 'Unit created successfully!');
     }
 
     public function show($id)
@@ -110,5 +115,18 @@ class UnitController extends Controller
     {
         Unit::find($id)->delete();
         return redirect()->route('units.index');    
+    }
+
+    private function getVideoFrom(Request $request)
+    {
+        if($request->hasFile('video') and $request->file('video')->isValid()) 
+        {
+            $video_file_name = $request->file('video')->getClientOriginalName();
+            $video_file_path = $request->file('video')->storeAs('public/files', $video_file_name);
+
+            return $video_file_name;
+        } else {
+            return null;
+        }
     }
 }

@@ -12,13 +12,13 @@
                     <tr>
                         <td>Title</td>
                         <td colspan="2">
-                            <input id="title" name="title" class="form-control" type="text" placeholder="Type an Title for the new unit">
+                            <input id="title" name="title" class="form-control" type="text" placeholder="Type an Title for the new unit" required>
                         </td>
                     </tr>
                     <tr>
                         <td>Author</td>
                         <td colspan="2">
-                            <input id="author" name="author" class="form-control" type="text" placeholder="Type the author's name for ththise new unit">
+                            <input id="author" name="author" class="form-control" type="text" placeholder="Type the author's name for ththise new unit" required>
                         </td>
                     </tr>
                     <tr>
@@ -32,7 +32,7 @@
                         <td>
                             <p>Listening tips</p>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="listening_tips_enabled" value="false" id="flexCheckDefault">
+                                <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="listening_tips_enabled" value="true" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
                                   Enabled
                                 </label>
@@ -47,7 +47,7 @@
                         <td>
                             <p>Cultural Notes</p>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="cultural_notes_enabled" value="false" id="flexCheckDefault">
+                                <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="cultural_notes_enabled" value="true" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
                                   Enabled
                                 </label>
@@ -61,7 +61,7 @@
                         <td>
                             <p>Transcript</p>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="transcript_enabled" value="false" id="flexCheckDefault">
+                                <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="transcript_enabled" value="true" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
                                 Enabled
                                 </label>
@@ -75,7 +75,7 @@
                         <td>
                             <p>Glossary</p>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="glossary_enabled" value="false" id="flexCheckDefault">
+                                <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="glossary_enabled" value="true" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
                                   Enabled
                                 </label>
@@ -89,7 +89,7 @@
                         <td>
                             <p>Translation</p>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="translation_enabled" value="false" id="flexCheckDefault">
+                                <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="translation_enabled" value="true" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
                                   Enabled
                                 </label>
@@ -103,7 +103,7 @@
                         <td>
                             <p>Dictionary</p>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="dictionary_enabled" value="false" id="flexCheckDefault">
+                                <input class="form-check-input" type="checkbox" onclick="switchIsEnabled(this)" name="dictionary_enabled" value="true" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     Enabled
                                 </label>
