@@ -20,7 +20,7 @@
                         <td>Password</td>
                         <td>
                             <div class="input-group">
-                                <input id="password" name="password" type="password" class="form-control" disabled value="" placeholder="*********">
+                                <input id="password" name="password" type="password" class="form-control" disabled placeholder="*********">
                                 <span class="input-group-btn">
                                   <a class="btn btn-primary" onclick="revealPassword()">
                                       <i class="mdi mdi-eye"></i>
@@ -85,6 +85,7 @@
                         <td>Group</td>
                         <td>
                             <select id="group" name="group" class="form-select" disabled>
+                                <option value="0">None. I'm a teacher.</option>
                                 @foreach($groups as $group)
                                     <option value="{{ $group->id }}" @if($user->group_id == $group->id) selected @endif>{{ $group->name }}</option>
                                 @endforeach

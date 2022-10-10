@@ -14,6 +14,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\TrackingController;
 
 // Home
 Route::get('/', [AuthController::class, 'index'])->name('auth.index');
@@ -93,3 +94,12 @@ Route::get('/units/{unit}/sections', [SectionController::class, 'index'])->name(
 Route::post('/units/{unit}/sections/store', [SectionController::class, 'store'])->name('sections.store');
 Route::delete('/sections/{section}/destroy', [SectionController::class, 'destroy'])->name('sections.destroy');
 Route::post('/units/{unit}/sections/{keyword}/update', [SectionController::class, 'update'])->name('sections.update');
+
+Route::get('tracking/index', [TrackingController::class, 'index'])->name('tracking.index');
+Route::post('tracking/', [TrackingController::class, 'storeMultipleChoice'])->name('tracking.storeMultipleChoice');
+Route::post('tracking/', [TrackingController::class, 'storeDragAndDrop'])->name('tracking.storeDragAndDrop');
+Route::post('tracking/', [TrackingController::class, 'storeOpenEnded'])->name('tracking.storeOpenEnded');
+Route::post('tracking/', [TrackingController::class, 'storeFillInTheGaps'])->name('tracking.storeFillInTheGaps');
+Route::post('tracking/', [TrackingController::class, 'storeVoiceRecognition'])->name('tracking.storeVoiceRecognition');
+
+

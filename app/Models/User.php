@@ -33,4 +33,5 @@ class User extends Authenticable
 
     public function group() { return $this->belongsTo(Group::class); }
     public function comments() { return $this->hasMany(Comment::class); }
+    public function tracking() { return $this->hasOne(Tracking::class); }
 }

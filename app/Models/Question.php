@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Feedback;
 use App\Models\Alternative;
 use App\Models\Exercise;
+use App\Models\UserResponse;
 
 class Question extends Model
 {
@@ -28,4 +29,5 @@ class Question extends Model
     public function feedbacks() { return $this->hasMany(Feedback::class, 'question_id'); }
     public function alternatives() { return $this->hasMany(Alternative::class, 'question_id'); }
     public function exercise() { return $this->belongsTo(Exercise::class); }
+    public function response() { return $this->hasOne(UserResponse::class); }
 }

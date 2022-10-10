@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Group;
+use Session;
 
 class UserController extends Controller
 {
@@ -14,7 +15,7 @@ class UserController extends Controller
         $this->middleware('teacher');
     }
 
-    public function index()
+    public function index($message = null)
     {
         $users = User::all();
         $groups = Group::all();
@@ -40,10 +41,10 @@ class UserController extends Controller
         $newUser->role = $request->role;
         $newUser->activated = $request->activated;
         $newUser->password = Hash::make($request->password);
-        $newUser->group_id = $request->group == '' ? null : $request->group;
+        $newUser->group_id = $request->group == 0 ? null : $request->group;
         $newUser->save();
 
-        return redirect()->route('users.index')->with("success", "User added successfully.");
+        return redirect()->route('users.index')->with('success', "User $newUser->name created successfully.");;
     }
 
     public function show($id)
@@ -54,11 +55,6 @@ class UserController extends Controller
         $groups = Group::all();
 
         return view('user.show', compact(['user', 'groups']));
-    }
-
-    public function edit($id)
-    {
-        //
     }
 
     public function update(Request $request, $id)
@@ -73,17 +69,17 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->role = $request->role;
         $user->activated = $request->activated;
-        $user->group_id = $request->group;
+        if($request->has('password')) $user->password = $request->password;
+        $user->group_id = $request->group == 0 ? null : $request->group;
 
         $user->save();
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
 
     public function destroy($id)
     {
         User::find($id)->delete();
-
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }
 }

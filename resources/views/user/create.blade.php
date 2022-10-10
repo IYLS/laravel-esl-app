@@ -65,7 +65,7 @@
                         <td>Group</td>
                         <td>
                             <select id="group" name="group" class="form-select">
-                                <option value="">None. I'm a teacher.</option>
+                                <option value="0">None. I'm a teacher.</option>
                                 @foreach($groups as $group)
                                     <option value="{{ $group->id }}">{{ $group->name }}</option>
                                 @endforeach
