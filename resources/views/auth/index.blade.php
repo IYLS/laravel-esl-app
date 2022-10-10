@@ -23,6 +23,7 @@
                     <div class="card-body">
                       <h5 class="card-title">Groups</h5>
                       <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                      <br>
                       <a href="{{ route('groups.index') }}" class="btn btn-primary">Go to Groups</a>
                     </div>
                   </div>
@@ -35,6 +36,7 @@
                     <div class="card-body">
                       <h5 class="card-title">Researcher module</h5>
                       <p class="card-text">Check users right and wrong answers, dates, time spent, etc.</p>
+                      <br>
                       <a href="{{ route('tracking.index') }}" class="btn btn-primary">Go to Researcher module</a>
                     </div>
                   </div>
@@ -44,6 +46,7 @@
                     <div class="card-body">
                       <h5 class="card-title">Units</h5>
                       <p class="card-text">Manage units contents, activities, questions, metacognition and more in this module.</p>
+                      <br>
                       <a href="{{ route('units.index') }}" class="btn btn-primary">Go to Units</a>
                     </div>
                   </div>
@@ -52,7 +55,5 @@
         </div>
     @endif
 </div>
-
-@include('partials.prompt')
 
 @endsection

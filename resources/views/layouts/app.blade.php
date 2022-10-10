@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
     <head>
         @yield('style')
         <meta charset="UTF-8">
@@ -27,7 +27,7 @@
         <script src="{{ asset('jquery/jquery-3.3.1.min.js') }}"></script>
         <script src="{{ asset('jquery/jquery-ui.min.js') }}" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
 
-        <title>ESL-IYLS</title>
+        <title>Ideas for Listening</title>
     </head>
     <body class="d-flex flex-column min-vh-100">
         @include('partials.navbar')
