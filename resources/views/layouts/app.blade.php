@@ -41,7 +41,7 @@
             <script>
                 setTimeout(function(){
                     $('#alert-modal').modal('hide')
-                }, 2500);
+                }, 1500);
     
                 $(function() {
                     $("#alert-modal").modal("show");
@@ -52,7 +52,7 @@
             <script>
                 setTimeout(function(){
                     $('#alert-modal').modal('hide')
-                }, 2500);
+                }, 1500);
 
                 $(function() {
                     $("#alert-modal").modal("show");

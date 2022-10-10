@@ -69,7 +69,7 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->role = $request->role;
         $user->activated = $request->activated;
-        if($request->has('password')) $user->password = $request->password;
+        $user->password = $request->has('password') and $request->password != null ? $request->password : $user->password;
         $user->group_id = $request->group == 0 ? null : $request->group;
 
         $user->save();
