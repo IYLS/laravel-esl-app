@@ -1,5 +1,7 @@
+@include('partials.tracking_complete')
 <div class="border rounded p-4">
-    <form action="">
+    <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="fill_in_the_gaps_form_{{ $e->id }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ $e->id }}, 'fill_in_the_gaps')">
+        @csrf
         <h5>Available words</h5>
         <div class="">
             <ul class="list-group row list-group-horizontal">
@@ -19,33 +21,30 @@
             </ul>
         </div>
         <div class="mt-4 pt-2 pb-2 mb-2">
-            <h5 class="text-center">Statements</h5>
             <ol type="1">
                 @foreach($e->questions as $question)
                     @php
                         $statement = $question->statement;
                         $statement_split = explode(";;", $statement);
                     @endphp
-                    <li class="row">
-                        <p class="col-1 col-lg-1">{{ $loop->index + 1 . ". " }}&nbsp;</p>
-                        <p class="col-10 col-lg-4">{{ $statement_split[0] }}</p>
-                        &nbsp;
-                        <input class="col-10 col-lg-2 border rounded" style="height: 24px;" type="text">
-                        &nbsp;
-                        <p class="col-12 col-lg-4">{{ $statement_split[1] }}</p>
+                    <li class="mt-2 mb-2">
+                        @if(count($statement_split) == 2)
+                            <p class="d-inline">{{ $statement_split[0] }}</p>
+                            &nbsp;
+                            <input class="d-inline border rounded" style="height: 24px;" type="text" name="answer-{{ $question->id }}">
+                            &nbsp;
+                            <p class="d-inline">{{ $statement_split[1] }}</p>
+                        @elseif(count($statement_split) == 1)
+                            <p class="d-inline">{{ $statement_split[0] }}</p>
+                            &nbsp;
+                            <input class="d-inline border rounded" style="height: 24px;" type="text" name="answer-{{ $question->id }}>
+                        @endif
+
                         @include('feedback.question', ['feedbacks' => $question->feedbacks])
                     </li>
                 @endforeach
             </ol>
         </div>
-        @include('feedback.exercise')
+        @include('partials.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
     </form>
-
-    <button class="btn btn-sm btn-primary" onclick="showFeedback()">
-        Check
-    </button>
-
-    <button class="btn btn-sm btn-primary" type="submit">
-        Submit
-    </button>
 </div>

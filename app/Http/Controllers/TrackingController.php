@@ -4,47 +4,53 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tracking;
+use App\Models\UserResponse;
+use App\Http\Requests\StoreMultipleChoiceRequest;
+use App\Http\Requests\StoreDragAndDropRequest;
+use App\Http\Requests\StoreOpenEndedRequest;
+use App\Http\Requests\StoreFillInTheGapsRequest;
+use App\Http\Requests\StoreVoiceRecognitionRequest;
 
 class TrackingController extends Controller
 {
     public function index()
     {
         $tracking = Tracking::all();
-
-        return view('tracking.index', compact('tracking'));
-    }
-
-    public function store(Request $request, $exercise_type_id, $subtype)
-    {
-         switch($exercise_type_id)
-        {
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-            case 6:
-                break;
-            case 7:
-                break;
-            case 8:
-                break;
-            default:
+        if ($tracking != null)  {
+            return view('tracking.index', compact('tracking'));
+        } else if($tracking == null) {
+            $tracking = array();
+            return view('tracking.index', compact('tracking'));
         }
     }
 
-    public function storeMultipleChoice(StoreMultipleChoiceRequest $request, Integer $subtype) {}
+    public function store(Request $request, $exercise_id, $user_id) 
+    {
+        $tracking = new Tracking;
+        $tracking->intent_number = $request->intent_number;
+        $tracking->time_spent_in_minutes = $request->time;
+        $tracking->correct_answers = $request->correct;
+        $tracking->wrong_answers = $request->wrong;
+        $tracking->exercise_id = $exercise_id;
+        $tracking->user_id = $user_id;
+        $tracking->save();
 
-    public function storeDragAndDrop(StoreDragAndDropRequest $request, Integer $subtype) {}
+        foreach($request->responses as $id=>$response)
+        {
+            $user_response = new UserResponse;
+            $user_response->response = $response;
+            $user_response->question_id = $id;
+            $user_response->tracking_id = $tracking->id;
+            $user_response->save();
+        }
 
-    public function storeOpenEnded(StoreOpenEndedRequest $request, Integer $subtype) {}
+        return redirect()->back()->with('success', 'Your answers have been saved.');
+    }
 
-    public function storeFillInTheGaps(StoreFillInTheGapsRequest $request, Integer $subtype) {}
+    public function show($id) 
+    {
+        $tracking = Tracking::find($id);
 
-    public function storeVoiceRecognition(StoreVoiceRecognitionRequest $request, Integer $subtype) {}
+        return view('tracking.show', compact('tracking'));
+    }
 }

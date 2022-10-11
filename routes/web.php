@@ -48,10 +48,10 @@ Route::put('/units/update/{unit}', [UnitController::class, 'update'])->name('uni
 Route::get('/units/show/{unit}', [UnitController::class, 'show'])->name('units.show');
 Route::delete('/units/delete/{unit}', [UnitController::class, 'destroy'])->name('units.destroy');
 
-
-// Strudent module Routes
+// Student module Routes
 Route::get('/student/level_selection', [StudentController::class, 'level_selection'])->name('student.level_selection');
-Route::post('/student/dashboard', [StudentController::class, 'show'])->name('student.show');
+Route::post('/student/select/unit', [StudentController::class, 'select'])->name('student.select');
+Route::get('/student/dashboard/{unit}', [StudentController::class, 'show'])->name('student.show');
 
 // Keywords Routes
 Route::get('/units/{unit}/keywords', [KeywordController::class, 'index'])->name('keywords.index');
@@ -79,7 +79,6 @@ Route::post('/feedback/{exercise}/store/', [FeedbackController::class, 'store'])
 Route::post('/feedback/{exercise}/create', [FeedbackController::class, 'create'])->name('feedback.create');
 Route::delete('/feedback/{exercise}/destroy', [FeedbackController::class, 'destroy'])->name('feedback.destroy');
 
-
 // Forum Routes
 Route::get('/forum', [ForumController::class, 'index'])->name('forum.index');
 Route::post('/forum/comment/store', [ForumController::class, 'store'])->name('forum.store');
@@ -95,11 +94,13 @@ Route::post('/units/{unit}/sections/store', [SectionController::class, 'store'])
 Route::delete('/sections/{section}/destroy', [SectionController::class, 'destroy'])->name('sections.destroy');
 Route::post('/units/{unit}/sections/{keyword}/update', [SectionController::class, 'update'])->name('sections.update');
 
+// Tracking Routes
 Route::get('tracking/index', [TrackingController::class, 'index'])->name('tracking.index');
-Route::post('tracking/', [TrackingController::class, 'storeMultipleChoice'])->name('tracking.storeMultipleChoice');
-Route::post('tracking/', [TrackingController::class, 'storeDragAndDrop'])->name('tracking.storeDragAndDrop');
-Route::post('tracking/', [TrackingController::class, 'storeOpenEnded'])->name('tracking.storeOpenEnded');
-Route::post('tracking/', [TrackingController::class, 'storeFillInTheGaps'])->name('tracking.storeFillInTheGaps');
-Route::post('tracking/', [TrackingController::class, 'storeVoiceRecognition'])->name('tracking.storeVoiceRecognition');
+Route::post('tracking/store/{exercise}/{user}', [TrackingController::class, 'store'])->name('tracking.store');
+Route::get('/tracking/show/{tracking}', [TrackingController::class, 'show'])->name('tracking.show');
+
+
+
+
 
 

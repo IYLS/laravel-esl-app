@@ -28,9 +28,6 @@ class UnitController extends Controller
 
     public function store(StoreUnitRequest $request)
     {
-
-        dump($request);
-
         $new_unit = new Unit;
 
         $new_unit->title = $request->title;
@@ -55,15 +52,11 @@ class UnitController extends Controller
         $new_unit->dictionary = $request->dictionary;
         $new_unit->dictionary_enabled = $request->dictionary_enabled == 'true' ? true : false;
 
-        try {
-            $new_unit->video_name = $this->getVideoFrom($request);
-        } catch(Exception $e) {
-            return redirect()->route('exercises.show', [$exercise_id])->with('error', 'Image or Audio files are not valid or corrupted.');
-        }
+        $new_unit->video_name = $this->getVideoFrom($request);
 
         $new_unit->save();
 
-        // return redirect()->route('units.index')->with('success', 'Unit created successfully!');
+        return redirect()->route('units.index')->with('success', 'Unit created successfully!');
     }
 
     public function show($id)
@@ -79,6 +72,8 @@ class UnitController extends Controller
 
     public function update(Request $request, $unit)
     {
+        $unit = Unit::find($unit);
+
         $unit->title = $request->title;
         $unit->author = $request->author;
         $unit->description = $request->description;
@@ -101,10 +96,13 @@ class UnitController extends Controller
         $unit->dictionary = $request->dictionary;
         $unit->dictionary_enabled = $request->dictionary_enabled == 'true' ? true : false;
 
-        $video_file_name = $request->file('video')->getClientOriginalName();
-        $video_file_url = $request->file('video')->storeAs('public/files', $video_file_name);
+        if($request->has('video')) {
+            $video_file_name = $request->file('video')->getClientOriginalName();
+            $video_file_url = $request->file('video')->storeAs('public/files', $video_file_name);
+    
+            $unit->video_name = $video_file_name;
+        }
 
-        $new_unit->video_name = $video_file_name;
 
         $unit->save();
 
@@ -126,7 +124,7 @@ class UnitController extends Controller
 
             return $video_file_name;
         } else {
-            return null;
+            return "";
         }
     }
 }

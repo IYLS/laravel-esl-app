@@ -45,7 +45,7 @@
                             <div class="d-flex justify-content-between">
                                 <h6>Listening Tips:</h6>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" @if($unit->listening_tips_enabled) checked @endif onclick="switchIsEnabled(this)" name="listening_tips_enabled" value="false" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" @if($unit->listening_tips_enabled) checked @endif  name="listening_tips_enabled" value="true" id="flexCheckDefault" disabled>
                                     <label class="form-check-label" for="flexCheckDefault">
                                       Enabled
                                     </label>
@@ -57,7 +57,7 @@
                             <div class="d-flex justify-content-between">
                                 <h6>Cultural Notes:</h6>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" @if($unit->cultural_notes_enabled) checked @endif onclick="switchIsEnabled(this)" name="cultural_notes_enabled" value="false" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" @if($unit->cultural_notes_enabled) checked @endif  name="cultural_notes_enabled" value="true" id="flexCheckDefault" disabled>
                                     <label class="form-check-label" for="flexCheckDefault">
                                       Enabled
                                     </label>
@@ -72,7 +72,7 @@
                             <div class="d-flex justify-content-between">
                                 <h6>Transcript:</h6>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" @if($unit->transcript_enabled) checked @endif onclick="switchIsEnabled(this)" name="transcript_enabled" value="false" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" @if($unit->transcript_enabled) checked @endif  name="transcript_enabled" value="true" id="flexCheckDefault" disabled>
                                     <label class="form-check-label" for="flexCheckDefault">
                                       Enabled
                                     </label>
@@ -84,7 +84,7 @@
                             <div class="d-flex justify-content-between">
                                 <h6>Glossary:</h6>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" @if($unit->glossary_enabled) checked @endif onclick="switchIsEnabled(this)" name="glossary_enabled" value="false" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" @if($unit->glossary_enabled) checked @endif  name="glossary_enabled" value="true" id="flexCheckDefault" disabled>
                                     <label class="form-check-label" for="flexCheckDefault">
                                       Enabled
                                     </label>
@@ -99,7 +99,7 @@
                             <div class="d-flex justify-content-between">
                                 <h6>Translation:</h6>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" @if($unit->translation_enabled) checked @endif onclick="switchIsEnabled(this)" name="translation_enabled" value="false" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" @if($unit->translation_enabled) checked @endif  name="translation_enabled" value="true" id="flexCheckDefault" disabled>
                                     <label class="form-check-label" for="flexCheckDefault">
                                       Enabled
                                     </label>
@@ -111,7 +111,7 @@
                             <div class="d-flex justify-content-between">
                                 <h6>Dictionary:</h6>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" @if($unit->dictionary_enabled) checked @endif onclick="switchIsEnabled(this)" name="dictionary_enabled" value="false" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" @if($unit->dictionary_enabled) checked @endif  name="dictionary_enabled" value="true" id="flexCheckDefault" disabled>
                                     <label class="form-check-label" for="flexCheckDefault">
                                       Enabled
                                     </label>
@@ -130,7 +130,7 @@
                         <p>Current video file:  <strong>@if($unit->video_name != "") {{ $unit->video_name }} @else no video file found for this unit. @endif</strong></p>
                     </div>
                     <div class="col-2">
-                        <a class="btn btn-primary btn-sm" onclick="document.getElementById('video-picker-container').hidden = false;">Replace</a>
+                        <button class="btn btn-primary btn-sm" type="button" onclick="document.getElementById('video-picker-container').hidden = false;" id="replace_video_button" disabled>Replace</button>
                     </div>
                 </div>
                 <div class="mb-3" id="video-picker-container" hidden>
@@ -159,6 +159,7 @@
         var input_elements = document.getElementsByTagName('input');
         var select_elements = document.getElementsByTagName('select');
         var textarea_elements = document.getElementsByTagName('textarea');
+        var replaceButton = document.getElementById('replace_video_button');
 
         for (i = 0; i < input_elements.length; i++) {
             input_elements[i].disabled = false;
@@ -171,19 +172,21 @@
         for (i = 0; i < textarea_elements.length; i++) {
             textarea_elements[i].disabled = false;
         }
+        
+        replaceButton.disabled = false;
     }
 
-    function switchIsEnabled(item) {
-        if (item.value == "false") {
-            console.log(`${item.name} is ${item.value}`);
-            item.value = "true";
-        } else {
-            if (item.value == "true") {
-                console.log(`${item.name} is ${item.value}`);
-                item.value = "false";
-            }
-        }
-    }
+    // function switchIsEnabled(item) {
+    //     if (item.value == "false") {
+    //         console.log(`${item.name} is ${item.value}`);
+    //         item.value = "true";
+    //     } else {
+    //         if (item.value == "true") {
+    //             console.log(`${item.name} is ${item.value}`);
+    //             item.value = "false";
+    //         }
+    //     }
+    // }
 </script>
 
 @endsection

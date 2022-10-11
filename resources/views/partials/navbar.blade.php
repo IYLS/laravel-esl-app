@@ -24,6 +24,9 @@
                         <a class="nav-link" onclick="this.classList.add('active');" href="{{ route('tracking.index') }}">Tracking System</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" onclick="this.classList.add('active');" href="{{ route('forum.index') }}">Forum</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" onclick="this.classList.add('active');" href="{{ route('auth.logout') }}">Log out</a>
                     </li>
                 </ul>

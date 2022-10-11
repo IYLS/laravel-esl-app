@@ -38,29 +38,31 @@
                         <div class="col-12 col-md-12">
                             <p>{{ $loop->index + 1 }}. &nbsp;</p>
                             @php
-
                             $sentence = $question->statement;
-                            $sentence_words = explode(' ', $question->statement);
+                            $sentence_words = explode(' ', $sentence);
                             $words = explode(',', $question->answer);
-
                             $count = 0;
                             
-                            foreach($sentence_words as $key=>$word) 
+                            if (count($words) > 0 and $sentence_words > 0)
                             {
-                                if($word == ";;")
+                                foreach($sentence_words as $key=>$word) 
                                 {
-                                    $sentence_words[$key] = "<p class='text-primary border-bottom border-primary ms-2 me-2'>&nbsp;&nbsp;".$words[$count]."&nbsp;&nbsp;</p>";
-                                    $count += 1;
+                                    if($word == ";;")
+                                    {
+                                        $sentence_words[$key] = "<strong class='text-primary border-primary ms-2 me-2 d-inline'>&nbsp;".$words[$count]."&nbsp;</strong>";
+                                        $count += 1;
+                                    }
                                 }
+                                $result = implode(' ', $sentence_words);
                             }
-
-                            $result = implode(' ', $sentence_words);
+                            else
+                            {
+                                $result = "";
+                            }
 
                             @endphp
 
-                            <div class="d-flex">
-                                <p>{!! $result !!}</p>
-                            </div>
+                            <p>{!! $result !!}</p>
                         </div>
                         <div class="col-12 col-md-12">
                             <audio controls>

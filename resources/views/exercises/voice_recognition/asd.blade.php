@@ -4,28 +4,15 @@
         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
         <p class="text-secondary">{{ $e->description }}</p>
         <div class="row">
-            <form action="">
-                @foreach($e->questions as $question)
-                    <div class="col-12 col-md-6 mt-1 mb-1 text-center">
-                        <p>{{ $question->statement }}</p>
-                        <img src="{{ asset('esl/public/storage/files/'.$question->image_name) }}" class="img-fluid col-6" alt="img">
-                        <audio controls class="col-6">
-                            <source src="{{ asset('esl/public/storage/files/'.$question->audio_name) }}" type="audio/mpeg">
-                        </audio> 
-                        @include('feedback.question', ['feedbacks' => $question->feedbacks])
-                    </div>
-                @endforeach
-            </form>
+            @foreach($e->questions as $question)
+                <div class="col-12 col-md-6 mt-1 mb-1 text-center">
+                    <p>{{ $question->statement }}</p>
+                    <img src="{{ asset('esl/public/storage/files/'.$question->image_name) }}" class="img-fluid col-6" alt="img">
+                    <audio controls class="col-6">
+                        <source src="{{ asset('esl/public/storage/files/'.$question->audio_name) }}" type="audio/mpeg">
+                    </audio> 
+                </div>
+            @endforeach
         </div>
-
-        @include('feedback.exercise')
-
-        <button class="btn btn-sm btn-primary" onclick="showFeedback()">
-            Check
-        </button>
-
-        <button class="btn btn-primary btn-sm">
-            Submit
-        </button>
     </div>
 </div>

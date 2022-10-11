@@ -19,8 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/migrate_fresh_seed', function () {
-    return Artisan::call('migrate:fresh --seed');
+Route::get('/migrate', function () {
+    return Artisan::call('migrate');
 });
 
 Route::get('/config_cache', function () {

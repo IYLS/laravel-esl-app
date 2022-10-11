@@ -58,7 +58,7 @@
                     @if($loop->index == 0)
                         <button class="nav-link active" id="{{ $section->underscore_name }}-tab" onclick="hideFeedback()" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="true">{{ $section->name }}</button>
                     @else
-                        <button class="nav-link" id="{{ $section->underscore_name }}-tab" onclick="hideFeedback()" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="false">{{ $section->name }}</button>
+                        <button class="nav-link" id="{{ $section->underscore_name }}-tab" onclick="hideFeedback();" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="false">{{ $section->name }}</button>
                     @endif
                 </li>
             @endforeach
@@ -79,7 +79,7 @@
                     @endif
                     <div class="nav flex-column mt-2 nav-pills col-12 col-xl-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         @foreach($section->exercises as $e)
-                            <button class="nav-link @if($e->subtype == 99) meta @endif" id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" type="button" role="tab" aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" aria-selected="false" onclick="hideFeedback()">{{ $e->title }}</button>
+                            <button class="nav-link @if($e->subtype == 99) meta @endif" id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" type="button" role="tab" aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" aria-selected="false" onclick="hideFeedback();startTimer();resetIntentCount();">{{ $e->title }}</button>
                         @endforeach
                     </div>
                     <div class="tab-content container-fluid col-12 col-xl-10" id="v-pills-tabContent">
@@ -122,23 +122,30 @@
                                         <h4>{{ $e->title }}</h4>
                                         <p class="text-secondary">{{ $e->description }}</p>
                                         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
+                                        @include('partials.tracking_complete')
 
-                                        {{-- Subtype 1 = Predicting --}}
-                                        @if($e->subtype == 1)
-                                            @include('exercises.multiple_choice.predicting')
+                                        <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ $e->id }}, 'multiple_choice');" method="POST" id="multiple_choice_form_{{ $e->id }}">
+                                            @csrf
+                                            {{-- Subtype 1 = Predicting --}}
+                                            @if($e->subtype == 1)
+                                                @include('exercises.multiple_choice.predicting')
 
-                                        {{-- Subtype 2 = What do you hear? --}}
-                                        @elseif($e->subtype == 2)
-                                            @include('exercises.multiple_choice.what_do_you_hear')
+                                            {{-- Subtype 2 = What do you hear? --}}
+                                            @elseif($e->subtype == 2)
+                                                @include('exercises.multiple_choice.what_do_you_hear')
 
-                                        {{-- Subtype 3 = Evaluating statements --}}
-                                        @elseif($e->subtype == 3)
-                                            @include('exercises.multiple_choice.evaluating_statements')
+                                            {{-- Subtype 3 = Evaluating statements --}}
+                                            @elseif($e->subtype == 3)
+                                                @include('exercises.multiple_choice.evaluating_statements')
 
-                                        {{-- Subtype 4 = Multiple Choice --}}
-                                        @elseif($e->subtype == 4 or $e->subtype == 99)
-                                            @include('exercises.multiple_choice.multiple_choice')
-                                        @endif
+                                            {{-- Subtype 4 = Multiple Choice --}}
+                                            @elseif($e->subtype == 4 or $e->subtype == 99)
+                                                @include('exercises.multiple_choice.multiple_choice')
+                                            @endif
+                                            
+                                            <br>
+                                            @include('partials.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
+                                        </form>
                                     </div>
                                 </div>
                                 @break
@@ -186,6 +193,36 @@
 
 
 <script>
+    var startTime;
+
+    function startTimer() {
+        window.startTime = new Date().getTime();
+        console.log(window.startTime);
+    }
+</script>
+
+<script>
+    function millisToMinutesAndSeconds(millis) {
+        var minutes = Math.floor(millis / 60000);
+        var seconds = ((millis % 60000) / 1000).toFixed(0);
+        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+    }
+</script>
+
+<script>
+    var intentCount = 0;
+
+    function resetIntentCount() {
+        window.intentCount = 0;
+    }
+
+    function stepIntentCount() {
+        window.intentCount += 1;
+    }
+</script>
+
+{{-- Drag and Drop --}}
+<script>
     function allowDrop(ev) {
       ev.preventDefault();
     }
@@ -199,7 +236,10 @@
       var data = ev.dataTransfer.getData("text");
       ev.target.appendChild(document.getElementById(data));
     }
+</script>
 
+{{-- Fill In the gaps --}}
+<script>
     function strikeWord(item) {
         if(!item.classList.contains('strikable')) {
             item.classList.add('strikable');
@@ -209,7 +249,10 @@
             item.classList.remove('bg-warning');
         }
     }
+</script>
 
+{{-- Feedback  --}}
+<script>
     function showFeedback() {
         const feedbackElements = document.getElementsByClassName('feedback');
         for (const element of feedbackElements) element.hidden = false;
@@ -223,18 +266,143 @@
     }
 </script>
 
+{{-- Get Response Data --}}
+<script>
+    function getResponseData(questions, exercise_id, type) {
+        var answers;
+
+        switch(type) {
+            case 'drag_and_drop':
+                answers = getDragAndDropResults(questions, exercise_id);
+                break;
+            case 'multiple_choice':
+                answers = getMultipleChoiceResults(questions, exercise_id);
+                break;
+            case 'fill_in_the_gaps':
+                answers = getFillInTheGapsResults(questions, exercise_id);
+                break;
+            case 'open_ended':
+                answers = getOpenEndedResults(questions, exercise_id);
+                break;
+            default: answers = getDragAndDropResults(questions, exercise_id);
+        }
+
+        var currentTime = new Date().getTime();
+        var timeSpent = millisToMinutesAndSeconds(currentTime - window.startTime);
+        var form = document.getElementById(`${type}_form_${exercise_id}`);
+
+        var time = document.createElement('input');
+        time.setAttribute('value', `${timeSpent}`);
+        time.setAttribute('name', `time`);
+        time.hidden = true;
+        form.appendChild(time);
+        
+        if(type == 'open_ended') answers.wrong = 0;
+        var wrong = document.createElement('input');
+        wrong.setAttribute('value', `${answers.wrong}`);
+        wrong.setAttribute('name', `wrong`);
+        wrong.hidden = true;
+        form.appendChild(wrong);
+
+        if(type == 'open_ended') answers.correct = 0;
+        var correct = document.createElement('input');
+        correct.setAttribute('value', `${answers.correct}`);
+        correct.setAttribute('name', `correct`);
+        correct.hidden = true;
+        form.appendChild(correct);
+
+        var intentCount = document.createElement('input');
+        intentCount.setAttribute('value', `${window.intentCount}`);
+        intentCount.setAttribute('name', `intent_number`);
+        intentCount.hidden = true;
+        form.appendChild(intentCount);
+
+
+        answers.responses.forEach(function (item){
+            var responseItem = document.createElement('input');
+            responseItem.setAttribute('value', `${item.response}`);
+            responseItem.setAttribute('name', `responses[${item.id}]`);
+            responseItem.hidden = true;
+
+            form.appendChild(responseItem);
+        });
+    }
+</script>
+
+{{--  Multiple choice questions --}}
 <script>
     function getMultipleChoiceResults(questions, exercise_id) {
         var correct_questions = 0;
         var wrong_questions = 0;
         var questions_number = questions.length;
 
+        var responses = [];
+
         questions.forEach(function (question) {
-            console.log(question);
             const alternatives = document.getElementsByName(`question-${question.id}`);
+            var showOnIncorrect = document.getElementsByClassName(`show-on-incorrect-${question.id}`);
+            var showOnCorrect = document.getElementsByClassName(`show-on-correct-${question.id}`);
+
+            var questionFeedbackContainer = document.getElementById(`question-feedback-container-${question.id}`);
+
             alternatives.forEach((alternative) => {
-                if (alternative.checked && question.correct_answer == alternative.value) correct_questions += 1;
+                if (alternative.checked && question.correct_answer == alternative.value) {
+                    responses.push({'id': `${question.id}`, 'response': `${question.correct_answer}`});
+                    questionFeedbackContainer.setAttribute('name', 'correct');
+                    document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
+                    document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
+                    correct_questions += 1;
+                } else if(alternative.checked) {
+                    document.getElementById(`question-${question.id}-feedback-wrong`).hidden = false;
+                    document.getElementById(`question-${question.id}-feedback-correct`).hidden = true;
+                    questionFeedbackContainer.setAttribute('name', 'incorrect');
+                    responses.push({'id': `${question.id}`, 'response': `${alternative.parentNode.children[1].innerHTML.trim()}`});
+                }
             });
+        });
+
+        wrong_questions = questions_number - correct_questions;
+
+        correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise_id}`);
+        wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise_id}`);
+        
+        exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
+
+        correctAnswersItem.innerHTML = `<strong>Correct answers:</strong> ${correct_questions}  ✅`;
+        wrongAnswersItem.innerHTML = `<strong>Wrong answers:</strong> ${wrong_questions}  ❌`;
+
+        correctAnswersItem.hidden = false;
+        wrongAnswersItem.hidden = false;
+        exerciseDetailsContainer.hidden = false;
+
+        showFeedback();
+
+        return { 'correct': correct_questions, 'wrong': wrong_questions, 'responses': responses };
+    }
+</script>
+
+{{--  Fill In The Gaps questions --}}
+<script>
+    function getFillInTheGapsResults(questions, exercise_id) {
+        var correct_questions = 0;
+        var wrong_questions = 0;
+        var questions_number = questions.length;
+
+        var responses = [];
+        questions.forEach(function (question) {
+            var correct_words = question.answer;
+            var answers = document.getElementsByName(`answer-${question.id}`);
+            var question_responses = [];
+
+            answers.forEach(function callback(answerItem, index) {
+                if (answerItem.value != "") question_responses.push(answerItem.value);
+                if (answerItem.value == "") question_responses.push("");
+            });
+
+            const final_responses = question_responses.join(',');
+            responses.push({'id': `${question.id}`, 'response': `${final_responses}` });
+
+            if(final_responses == correct_words) correct_questions += 1;
         });
 
         wrong_questions = questions_number - correct_questions;
@@ -253,6 +421,78 @@
         exerciseDetailsContainer.hidden = false;
 
         showFeedback();
+
+        return { 'correct': correct_questions, 'wrong': wrong_questions, 'responses': responses };
+    }
+</script>
+
+{{--  Open Ended questions --}}
+<script>
+    function getOpenEndedResults(questions, exercise_id) {
+        var responses = [];
+        questions.forEach(function (question) {
+            var answers = document.getElementsByName(`answer-${question.id}`);
+            answers.forEach(function (answer) {
+                responses.push({'id': `${question.id}`, 'response': `${answer.value}` });
+            });
+        });
+        
+        var exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
+        exerciseDetailsContainer.hidden = false;
+
+        showFeedback();
+
+        return { 'responses': responses };
+    }
+</script>
+
+{{-- Drag And Drop --}}
+<script>
+    function getDragAndDropResults(questions, exercise_id) {
+        var correct_questions = 0;
+        var wrong_questions = 0;
+        var empty_questions = 0;
+        var questions_number = questions.length;
+
+        var responses = [];
+
+        questions.forEach(function (question) {
+            const definitionContainer = document.getElementById(`word-destination-${question.answer}`);
+            const wordContainer = document.getElementById(`word-${question.statement}`);
+
+            if(definitionContainer.firstChild != null) {
+                const actualResponse = definitionContainer.firstChild.innerHTML.trim();
+                responses.push({'id': `${question.id}`, 'response': `${actualResponse}`})
+            } else {
+                const actualResponse = "";
+                return 'missing_responses';
+            }
+
+            if (definitionContainer.contains(wordContainer)) {
+                correct_questions += 1;
+            } else {
+                wrong_questions +=1;
+            }
+        });
+
+        wrong_questions = questions_number - correct_questions;
+
+        correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise_id}`);
+        wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise_id}`);
+
+        exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
+
+        correctAnswersItem.innerHTML = `<strong>Correct answers:</strong> ${correct_questions}  ✅`;
+        wrongAnswersItem.innerHTML = `<strong>Wrong answers:</strong> ${wrong_questions}  ❌`;
+
+        correctAnswersItem.hidden = false;
+        wrongAnswersItem.hidden = false;
+
+        exerciseDetailsContainer.hidden = false;
+
+        showFeedback();
+
+        return { 'correct': correct_questions, 'wrong': wrong_questions, 'responses': responses }
     }
 </script>
 

@@ -8,11 +8,6 @@ use Illuminate\Support\Facades\DB;
 
 class UnitGroupSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         DB::table('unit_group')->insert([

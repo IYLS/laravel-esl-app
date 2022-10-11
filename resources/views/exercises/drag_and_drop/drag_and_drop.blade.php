@@ -19,7 +19,12 @@
             $components = array_combine($words, $definitions);
         @endphp
         <div class="row pt-2 pb-2">
-            <form action="">
+            @include('partials.tracking_complete')
+            @php 
+                $subtype = $e->subtype != null ? $e->subtype : 1;
+            @endphp
+            <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="drag_and_drop_form_{{ $e->id }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ $e->id }}, 'drag_and_drop')">
+                @csrf
                 @foreach($e->questions as $question)
                     <div class="col-5 col-lg-2 mt-1">
                         <div ondrop="drop(event)" style="height:30px; width: 140px;" id="word-origin-{{ $question->statement }}" ondragover="allowDrop(event)">
@@ -36,50 +41,9 @@
                         @include('feedback.question', ['feedbacks' => isset($question->feedbacks) ? $question->feedbacks : null])
                     @endif
                 @endforeach
+
+                @include('partials.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
             </form>
         </div>
-
-        @if($e->subtype != '99' && $e->subtype != '991')
-            @include('feedback.exercise')
-            <div class="m-2 mt-4 row">
-                <button class="btn btn-primary btn-sm col-12 col-lg-4" onclick="getDragAndDropResults({{ json_encode($e->questions) }}, {{ $e->id }})">Check</button>
-            </div>
-        @endif
     </div>
 </div>
-
-<script>
-    function getDragAndDropResults(questions, exercise_id) {
-        var correct_questions = 0;
-        var wrong_questions = 0;
-        var questions_number = questions.length;
-
-        questions.forEach(function (question) {
-            const definitionContainer = document.getElementById(`word-destination-${question.answer}`);
-            const wordContainer = document.getElementById(`word-${question.statement}`);
-
-            if (definitionContainer.contains(wordContainer)) {
-                correct_questions += 1;
-            } else {
-                wrong_questions +=1;
-            }
-        });
-
-        wrong_questions = questions_number - correct_questions;
-
-        correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise_id}`);
-        wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise_id}`);
-
-        exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
-
-        correctAnswersItem.innerHTML = `<strong>Correct answers:</strong> ${correct_questions}  ✅`;
-        wrongAnswersItem.innerHTML = `<strong>Wrong answers:</strong> ${wrong_questions}  ❌`;
-
-        correctAnswersItem.hidden = false;
-        wrongAnswersItem.hidden = false;
-
-        exerciseDetailsContainer.hidden = false;
-
-        showFeedback();
-    }
-</script>

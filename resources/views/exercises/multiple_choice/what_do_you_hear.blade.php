@@ -132,13 +132,3 @@
     </div>
 
 @endforeach
-
-@include('feedback.exercise')
-
-<div class="m-2 mt-4">
-    <button class="btn btn-primary btn-sm" onclick="getMultipleChoiceResults({{ json_encode($e->questions) }}, {{ $e->id }})">Check</button>
-</div>
-
-<div class="m-2 mt-1">
-    <button class="btn btn-primary btn-sm">Submit</button>
-</div>

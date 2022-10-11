@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('intent_number');
             $table->string('time_spent_in_minutes');
             $table->string('correct_answers');
-            $table->string('wrong_ansers');
+            $table->string('wrong_answers');
             $table->timestamps();
             $table->softDeletes();
 

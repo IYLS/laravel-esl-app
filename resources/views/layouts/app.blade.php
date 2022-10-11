@@ -13,6 +13,9 @@
         
         <!-- CSS -->
         <link rel="stylesheet" type="text/css" href="{{ asset('/css/app.css') }}">
+
+        {{-- TEXT EDITOR QUILL --}}
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
         
         <!-- Google Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,6 +34,13 @@
     </head>
     <body class="d-flex flex-column min-vh-100">
         @include('partials.navbar')
+
+        <!-- Create the editor container -->
+<div id="editor">
+    <p>Hello World!</p>
+    <p>Some initial <strong>bold</strong> text</p>
+    <p><br></p>
+  </div>
 
         @yield('main')
         
@@ -66,6 +76,15 @@
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+    <!-- Initialize Quill editor -->
+    <script>
+      var quill = new Quill('#editor', {
+        theme: 'snow'
+      });
+    </script>
+    
     @yield('scripts')
     </body>
 </html>

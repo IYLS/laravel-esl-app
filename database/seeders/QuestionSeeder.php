@@ -176,7 +176,7 @@ class QuestionSeeder extends Seeder
             [            
                 'id' => 20,
                 'statement' => "Not wrong... it's that adverse childhood experiences or childhood ;; can have a lasting impact on how your body ;; to stress. This can affect your social, emotional, and physical development. When humans are in crisis, the brain releases the ;; cortisol, your heart races, your muscles tense... I wonder if your body is reacting to a gem equivalent of ;;. Steven, do you remember anything bad in your ;;  that particularly stuck with you?",
-                'answer' => null,
+                'answer' => "trauma,responds,releases,cortisol,childhood",
                 'image_name' => null,
                 'audio_name' => 'Steven_dictation.mp3',
                 'correct_answer' => 'ASD',

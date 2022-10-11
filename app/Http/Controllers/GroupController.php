@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Models\Unit;
 use App\Models\User;
-
+use App\Models\UnitGroup;
 
 class GroupController extends Controller
 {
@@ -23,7 +23,7 @@ class GroupController extends Controller
         $units_count = array();
 
         foreach($groups as $group) {
-            $count = $group->users()->where('role', 'student')->count();
+            $count = $group->users()->where('role','student')->count();
             $students_count["$group->id"] = $count;
 
             $count2 = $group->units()->count();
@@ -88,23 +88,56 @@ class GroupController extends Controller
 
     public function update(Request $request, $id)
     {
-        $current_group = Group::find($id);
-        $current_group->name = $request->name;
 
-        $user_ids = $request->input('users');
-        foreach($user_ids as $user_id) {
-            $current_user = User::find($user_id);
-            $current_user->group()->associate($current_group)->save();
+        dump(Group::find($id)->units());
+
+        foreach($request->units as $unit_id) {
+            $units = Group::find($id)->units();
+
+            if (!in_array($unit_id, $units)) {
+                
+            }
         }
 
-        $unit_ids = $request->input('units');
-        if ($unit_ids != null) {
-            $current_group->units()->sync($unit_ids);
-        }
+        // dump($request);
+        // $group = Group::find($id);
+        // $group->name = $request->name;
+        // $group->save();
 
-        $current_group->save();
+        // if($request->has('units') and $request->units != null)
+        // {
+        //     $units = Unit::all();
+        //     foreach($units as $unit)
+        //     {
+        //         if(!in_array("$unit->id", $request->units))
+        //         {
+        //             UnitGroup::where('unit_id', $unit->id)->delete();
+        //         }
+        //     }
+        // } else {
+        //     UnitGroup::where('group_id', $group->id)->delete();
+        // }
 
-        return redirect()->route('groups.index');
+        // if($request->has('users') and $request->users != null)
+        // {
+        //     $users = User::all();
+        //     foreach($users as $user)
+        //     {
+        //         if(!in_array("$user->id", $request->users))
+        //         {
+        //             $user->group_id = null;
+        //             $user->save();
+        //         }
+        //     }
+        // } else {
+        //     $users = User::where('group_id', $group->id)->get();
+        //     foreach($users as $user) {
+        //         $user->group_id = null;
+        //         $user->save();
+        //     }
+        // }
+
+        // return redirect()->route('groups.index');
     }
 
     public function destroy($id)

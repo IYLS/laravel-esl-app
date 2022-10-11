@@ -12,17 +12,18 @@ use App\Models\Reply;
 
 class ForumController extends Controller
 {
-    public function __construct(){
-        $this->middleware('student');
-    }
-
     public function index()
     {
         $current_user = Auth::user();
         $group = Auth::user()->group;
-        $comments = Comment::where('group_id', $group->id)->orderBy('created_at', 'desc')->get();
 
-        return view('student.forum.index', compact('group', 'current_user', 'comments'));
+        if($group != null or Auth::user()->role == "student") {
+            $comments = Comment::where('group_id', $group->id)->orderBy('created_at', 'desc')->get();
+            return view('student.forum.index', compact('group', 'current_user', 'comments'));
+        }
+
+        $comments = Comment::all();
+        return view('student.forum.index', compact('current_user', 'comments'));
     }
 
     public function store(Request $request)

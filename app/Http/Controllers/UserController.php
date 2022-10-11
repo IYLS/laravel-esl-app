@@ -49,9 +49,7 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $users = User::where('id', $id)->get();
-        $user = $users[0];
-
+        $user = User::find($id);
         $groups = Group::all();
 
         return view('user.show', compact(['user', 'groups']));
