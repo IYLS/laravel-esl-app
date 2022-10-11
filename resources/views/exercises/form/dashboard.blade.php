@@ -1,5 +1,5 @@
 @include('partials.tracking_complete')
-<form enctype="multipart/form-data" action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'form');" method="POST" id="form_form_{{ $e->id }}">
+<form enctype="multipart/form-data" action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="form_form_{{ $e->id }}">
     @csrf
     @foreach($e->questions as $question)
         <div class="border rounded p-4">
@@ -23,19 +23,19 @@
                     @foreach($question->alternatives as $alt)
                     <tr>
                         <td>
-                            <p class="text-center">
-                                {{ $loop->index + 1 . ". " .  $alt->title }}
-                            </p>
+                            <div class="text-center">
+                                {!! "<p class='d-inline text-center'>" .$loop->index + 1 . "</p>. <p class='d-inline text-center' name='alt-{{ $question->id }}' id='{{ $alt->id }}'>" . $alt->title . "</p>"  !!}
+                            </div>
                         </td>
                         <td>
                             <div class="form-check d-flex justify-content-center align-items-center">
-                                <input class="form-check-input answer-{{ $question->id}}" type="checkbox" value="true" name="first-col-check-{{ $question->id }}">
+                                <input class="form-check-input answer-{{ $question->id}}" type="checkbox" name="answers[{{ $question->id}}][0][{{ $alt->id }}]" value="true" id="answer-{{ $question->id}}">
                             </div>
                         </td>
                         @isset($question->answer)
                         <td>
                             <div class="form-check d-flex justify-content-center align-items-center">
-                                <input class="form-check-input answer-{{ $question->id}}" type="checkbox" value="true" name="second-col-check-{{ $question->id }}">
+                                <input class="form-check-input answer-{{ $question->id}}" type="checkbox" name="answers[{{ $question->id}}][1][]" value="true" id="answer-{{ $question->id}}">
                             </div>
                         </td>
                         @endisset

@@ -292,65 +292,40 @@
     
         var form = document.getElementById(`${type}_form_${exercise.id}`);
 
-        if(type != 'open_ended' && type != 'form' && exercise.subtype != 99 && exercise.subtype != 991) {
-            var time = document.createElement('input');
-            time.setAttribute('value', `${timeSpent}`);
-            time.setAttribute('name', `time`);
-            time.hidden = true;
-            form.appendChild(time);
-            
+        if(type != 'open_ended' && type != 'form' && exercise.subtype != 99 && exercise.subtype != 991) {            
             var wrong = document.createElement('input');
             wrong.setAttribute('value', `${answers.wrong}`);
             wrong.setAttribute('name', `wrong`);
             wrong.hidden = true;
             form.appendChild(wrong);
-
         
             var correct = document.createElement('input');
             correct.setAttribute('value', `${answers.correct}`);
             correct.setAttribute('name', `correct`);
             correct.hidden = true;
             form.appendChild(correct);
-
-            var intentCount = document.createElement('input');
-            intentCount.setAttribute('value', `${window.intentCount}`);
-            intentCount.setAttribute('name', `intent_number`);
-            intentCount.hidden = true;
-            form.appendChild(intentCount);
-
-            console.log(answers);
-
-            answers.responses.forEach(function (item){
-                var responseItem = document.createElement('input');
-                responseItem.setAttribute('value', `${item.response}`);
-                responseItem.setAttribute('name', `responses[${item.id}]`);
-                responseItem.hidden = true;
-
-                form.appendChild(responseItem);
-            });
-        } else {
-            var time = document.createElement('input');
-            time.setAttribute('value', `${timeSpent}`);
-            time.setAttribute('name', `time`);
-            time.hidden = true;
-            form.appendChild(time);
-
-            var intentCount = document.createElement('input');
-            intentCount.setAttribute('value', `${window.intentCount}`);
-            intentCount.setAttribute('name', `intent_number`);
-            intentCount.hidden = true;
-            form.appendChild(intentCount);
-
-            
-
-            answers.responses.forEach(function (item){
-                var responseItem = document.createElement('input');
-                responseItem.setAttribute('value', `${item.response}`);
-                responseItem.setAttribute('name', `responses[${item.id}]`);
-                responseItem.hidden = true;
-                form.appendChild(responseItem);
-            });
         }
+
+        var time = document.createElement('input');
+        time.setAttribute('value', `${timeSpent}`);
+        time.setAttribute('name', `time`);
+        time.hidden = true;
+        form.appendChild(time);
+
+        var intentCount = document.createElement('input');
+        intentCount.setAttribute('value', `${window.intentCount}`);
+        intentCount.setAttribute('name', `intent_number`);
+        intentCount.hidden = true;
+        form.appendChild(intentCount);
+
+        answers.responses.forEach(function (item){
+            var responseItem = document.createElement('input');
+            responseItem.setAttribute('value', `${item.response}`);
+            responseItem.setAttribute('name', `responses[${item.id}]`);
+            responseItem.hidden = true;
+
+            form.appendChild(responseItem);
+        });
     }
 </script>
 
@@ -402,34 +377,6 @@
         return { 'correct': correct_questions, 'wrong': wrong_questions, 'responses': responses };
     }
 </script>
-
-<script>
-    function getFormResults(questions, exercise) {
-        var correct_questions = 0;
-        var wrong_questions = 0;
-        var questions_number = questions.length;
-
-        var responses = [];
-        questions.forEach(function (question) {
-            var correct_words = question.answer;
-            var firstAnswers = document.getElementsByName(`first-col-check-${question.id}`);
-            var secondAnswers = document.getElementsByName(`second-col-check-${question.id}`);
-
-            firstAnswers.forEach((answer) => {
-                responses.push({'id': `${question.id}`, 'response': `${answer.checked}` });
-            });
-
-            secondAnswers.forEach((answer) => {
-                responses.push({'id': `${question.id}`, 'response': `${answer.checked}` });
-            });
-        });
-
-        showFeedback();
-
-        return { 'responses': responses };
-    }
-</script>
-
 
 {{--  Fill In The Gaps questions --}}
 <script>
