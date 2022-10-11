@@ -1,4 +1,6 @@
-<form action="">
+@include('partials.tracking_complete')
+<form enctype="multipart/form-data" action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'form');" method="POST" id="form_form_{{ $e->id }}">
+    @csrf
     @foreach($e->questions as $question)
         <div class="border rounded p-4">
             <h6>{{ $loop->index + 1 . ". " }} - {{ $question->correct_answer }}</h6>
@@ -6,7 +8,7 @@
             <table class="table table-bordered">
                 <thead>
                     <th>
-                        <p class="text-center">Statemenets</p>
+                        <p class="text-center">Statements</p>
                     </th>
                     <th>
                         <p class="text-center">{{ $question->statement }}</p>
@@ -27,13 +29,13 @@
                         </td>
                         <td>
                             <div class="form-check d-flex justify-content-center align-items-center">
-                                <input class="form-check-input" type="checkbox" value="" name="first-col-check-{{ $question->id }}">
+                                <input class="form-check-input answer-{{ $question->id}}" type="checkbox" value="true" name="first-col-check-{{ $question->id }}">
                             </div>
                         </td>
                         @isset($question->answer)
                         <td>
                             <div class="form-check d-flex justify-content-center align-items-center">
-                                <input class="form-check-input" type="checkbox" value="" name="second-col-check-{{ $question->id }}">
+                                <input class="form-check-input answer-{{ $question->id}}" type="checkbox" value="true" name="second-col-check-{{ $question->id }}">
                             </div>
                         </td>
                         @endisset
@@ -43,10 +45,6 @@
             </table>
         </div>
     @endforeach
+        <br>
+    @include('partials.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
 </form>
-
-<br>
-
-<button class="btn btn-sm btn-primary" type="submit">
-    Submit
-</button>

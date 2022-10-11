@@ -23,7 +23,7 @@
             @php 
                 $subtype = $e->subtype != null ? $e->subtype : 1;
             @endphp
-            <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="drag_and_drop_form_{{ $e->id }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ $e->id }}, 'drag_and_drop')">
+            <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="drag_and_drop_form_{{ $e->id }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'drag_and_drop')">
                 @csrf
                 @foreach($e->questions as $question)
                     <div class="col-5 col-lg-2 mt-1">

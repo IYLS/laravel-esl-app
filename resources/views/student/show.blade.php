@@ -124,7 +124,7 @@
                                         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
                                         @include('partials.tracking_complete')
 
-                                        <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ $e->id }}, 'multiple_choice');" method="POST" id="multiple_choice_form_{{ $e->id }}">
+                                        <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'multiple_choice');" method="POST" id="multiple_choice_form_{{ $e->id }}">
                                             @csrf
                                             {{-- Subtype 1 = Predicting --}}
                                             @if($e->subtype == 1)
@@ -268,70 +268,95 @@
 
 {{-- Get Response Data --}}
 <script>
-    function getResponseData(questions, exercise_id, type) {
+    function getResponseData(questions, exercise, type) {
         var answers;
-
         switch(type) {
             case 'drag_and_drop':
-                answers = getDragAndDropResults(questions, exercise_id);
+                answers = getDragAndDropResults(questions, exercise);
                 break;
             case 'multiple_choice':
-                answers = getMultipleChoiceResults(questions, exercise_id);
+                answers = getMultipleChoiceResults(questions, exercise);
                 break;
             case 'fill_in_the_gaps':
-                answers = getFillInTheGapsResults(questions, exercise_id);
+                answers = getFillInTheGapsResults(questions, exercise);
                 break;
             case 'open_ended':
-                answers = getOpenEndedResults(questions, exercise_id);
+                answers = getOpenEndedResults(questions, exercise);
                 break;
-            default: answers = getDragAndDropResults(questions, exercise_id);
+            case 'form':
+                answers = getFormResults(questions, exercise);
         }
 
         var currentTime = new Date().getTime();
         var timeSpent = millisToMinutesAndSeconds(currentTime - window.startTime);
-        var form = document.getElementById(`${type}_form_${exercise_id}`);
+    
+        var form = document.getElementById(`${type}_form_${exercise.id}`);
 
-        var time = document.createElement('input');
-        time.setAttribute('value', `${timeSpent}`);
-        time.setAttribute('name', `time`);
-        time.hidden = true;
-        form.appendChild(time);
+        if(type != 'open_ended' && type != 'form' && exercise.subtype != 99 && exercise.subtype != 991) {
+            var time = document.createElement('input');
+            time.setAttribute('value', `${timeSpent}`);
+            time.setAttribute('name', `time`);
+            time.hidden = true;
+            form.appendChild(time);
+            
+            var wrong = document.createElement('input');
+            wrong.setAttribute('value', `${answers.wrong}`);
+            wrong.setAttribute('name', `wrong`);
+            wrong.hidden = true;
+            form.appendChild(wrong);
+
         
-        if(type == 'open_ended') answers.wrong = 0;
-        var wrong = document.createElement('input');
-        wrong.setAttribute('value', `${answers.wrong}`);
-        wrong.setAttribute('name', `wrong`);
-        wrong.hidden = true;
-        form.appendChild(wrong);
+            var correct = document.createElement('input');
+            correct.setAttribute('value', `${answers.correct}`);
+            correct.setAttribute('name', `correct`);
+            correct.hidden = true;
+            form.appendChild(correct);
 
-        if(type == 'open_ended') answers.correct = 0;
-        var correct = document.createElement('input');
-        correct.setAttribute('value', `${answers.correct}`);
-        correct.setAttribute('name', `correct`);
-        correct.hidden = true;
-        form.appendChild(correct);
+            var intentCount = document.createElement('input');
+            intentCount.setAttribute('value', `${window.intentCount}`);
+            intentCount.setAttribute('name', `intent_number`);
+            intentCount.hidden = true;
+            form.appendChild(intentCount);
 
-        var intentCount = document.createElement('input');
-        intentCount.setAttribute('value', `${window.intentCount}`);
-        intentCount.setAttribute('name', `intent_number`);
-        intentCount.hidden = true;
-        form.appendChild(intentCount);
+            console.log(answers);
 
+            answers.responses.forEach(function (item){
+                var responseItem = document.createElement('input');
+                responseItem.setAttribute('value', `${item.response}`);
+                responseItem.setAttribute('name', `responses[${item.id}]`);
+                responseItem.hidden = true;
 
-        answers.responses.forEach(function (item){
-            var responseItem = document.createElement('input');
-            responseItem.setAttribute('value', `${item.response}`);
-            responseItem.setAttribute('name', `responses[${item.id}]`);
-            responseItem.hidden = true;
+                form.appendChild(responseItem);
+            });
+        } else {
+            var time = document.createElement('input');
+            time.setAttribute('value', `${timeSpent}`);
+            time.setAttribute('name', `time`);
+            time.hidden = true;
+            form.appendChild(time);
 
-            form.appendChild(responseItem);
-        });
+            var intentCount = document.createElement('input');
+            intentCount.setAttribute('value', `${window.intentCount}`);
+            intentCount.setAttribute('name', `intent_number`);
+            intentCount.hidden = true;
+            form.appendChild(intentCount);
+
+            
+
+            answers.responses.forEach(function (item){
+                var responseItem = document.createElement('input');
+                responseItem.setAttribute('value', `${item.response}`);
+                responseItem.setAttribute('name', `responses[${item.id}]`);
+                responseItem.hidden = true;
+                form.appendChild(responseItem);
+            });
+        }
     }
 </script>
 
 {{--  Multiple choice questions --}}
 <script>
-    function getMultipleChoiceResults(questions, exercise_id) {
+    function getMultipleChoiceResults(questions, exercise) {
         var correct_questions = 0;
         var wrong_questions = 0;
         var questions_number = questions.length;
@@ -339,23 +364,20 @@
         var responses = [];
 
         questions.forEach(function (question) {
-            const alternatives = document.getElementsByName(`question-${question.id}`);
-            var showOnIncorrect = document.getElementsByClassName(`show-on-incorrect-${question.id}`);
-            var showOnCorrect = document.getElementsByClassName(`show-on-correct-${question.id}`);
-
-            var questionFeedbackContainer = document.getElementById(`question-feedback-container-${question.id}`);
+            const alternatives = document.getElementsByName(`question-${question.id}`);            
 
             alternatives.forEach((alternative) => {
                 if (alternative.checked && question.correct_answer == alternative.value) {
                     responses.push({'id': `${question.id}`, 'response': `${question.correct_answer}`});
-                    questionFeedbackContainer.setAttribute('name', 'correct');
+                    
                     document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
                     document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
+
                     correct_questions += 1;
                 } else if(alternative.checked) {
                     document.getElementById(`question-${question.id}-feedback-wrong`).hidden = false;
                     document.getElementById(`question-${question.id}-feedback-correct`).hidden = true;
-                    questionFeedbackContainer.setAttribute('name', 'incorrect');
+
                     responses.push({'id': `${question.id}`, 'response': `${alternative.parentNode.children[1].innerHTML.trim()}`});
                 }
             });
@@ -363,10 +385,10 @@
 
         wrong_questions = questions_number - correct_questions;
 
-        correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise_id}`);
-        wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise_id}`);
+        correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
+        wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
         
-        exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
+        exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise.id}`);
 
         correctAnswersItem.innerHTML = `<strong>Correct answers:</strong> ${correct_questions}  ✅`;
         wrongAnswersItem.innerHTML = `<strong>Wrong answers:</strong> ${wrong_questions}  ❌`;
@@ -381,9 +403,37 @@
     }
 </script>
 
+<script>
+    function getFormResults(questions, exercise) {
+        var correct_questions = 0;
+        var wrong_questions = 0;
+        var questions_number = questions.length;
+
+        var responses = [];
+        questions.forEach(function (question) {
+            var correct_words = question.answer;
+            var firstAnswers = document.getElementsByName(`first-col-check-${question.id}`);
+            var secondAnswers = document.getElementsByName(`second-col-check-${question.id}`);
+
+            firstAnswers.forEach((answer) => {
+                responses.push({'id': `${question.id}`, 'response': `${answer.checked}` });
+            });
+
+            secondAnswers.forEach((answer) => {
+                responses.push({'id': `${question.id}`, 'response': `${answer.checked}` });
+            });
+        });
+
+        showFeedback();
+
+        return { 'responses': responses };
+    }
+</script>
+
+
 {{--  Fill In The Gaps questions --}}
 <script>
-    function getFillInTheGapsResults(questions, exercise_id) {
+    function getFillInTheGapsResults(questions, exercise) {
         var correct_questions = 0;
         var wrong_questions = 0;
         var questions_number = questions.length;
@@ -395,8 +445,7 @@
             var question_responses = [];
 
             answers.forEach(function callback(answerItem, index) {
-                if (answerItem.value != "") question_responses.push(answerItem.value);
-                if (answerItem.value == "") question_responses.push("");
+                question_responses.push(answerItem.value);
             });
 
             const final_responses = question_responses.join(',');
@@ -407,10 +456,10 @@
 
         wrong_questions = questions_number - correct_questions;
 
-        correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise_id}`);
-        wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise_id}`);
+        correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
+        wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
         
-        exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
+        exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise.id}`);
 
         correctAnswersItem.innerHTML = `<strong>Correct answers:</strong> ${correct_questions}  ✅`;
         wrongAnswersItem.innerHTML = `<strong>Wrong answers:</strong> ${wrong_questions}  ❌`;
@@ -428,7 +477,7 @@
 
 {{--  Open Ended questions --}}
 <script>
-    function getOpenEndedResults(questions, exercise_id) {
+    function getOpenEndedResults(questions, exercise) {
         var responses = [];
         questions.forEach(function (question) {
             var answers = document.getElementsByName(`answer-${question.id}`);
@@ -437,7 +486,7 @@
             });
         });
         
-        var exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
+        var exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise.id}`);
         exerciseDetailsContainer.hidden = false;
 
         showFeedback();
@@ -448,7 +497,7 @@
 
 {{-- Drag And Drop --}}
 <script>
-    function getDragAndDropResults(questions, exercise_id) {
+    function getDragAndDropResults(questions, exercise) {
         var correct_questions = 0;
         var wrong_questions = 0;
         var empty_questions = 0;
@@ -477,10 +526,10 @@
 
         wrong_questions = questions_number - correct_questions;
 
-        correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise_id}`);
-        wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise_id}`);
+        correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
+        wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
 
-        exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
+        exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise.id}`);
 
         correctAnswersItem.innerHTML = `<strong>Correct answers:</strong> ${correct_questions}  ✅`;
         wrongAnswersItem.innerHTML = `<strong>Wrong answers:</strong> ${wrong_questions}  ❌`;

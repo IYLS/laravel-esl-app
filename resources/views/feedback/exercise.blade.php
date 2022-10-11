@@ -1,4 +1,4 @@
-@if(isset($e->feedbacks) and count($e->feedbacks) > 0)
+{{-- @if(isset($e->feedbacks) and count($e->feedbacks) > 0) --}}
     <div class="m-1 p-4 border feedback" id="feedback-exercise-details-container-{{ $e->id }}" hidden>
         <h5 class="text-center">💡 Activity Feedback</h5>
 
@@ -13,4 +13,4 @@
         <p class="text-success text-center feedback" id="feedback-exercise-correct-{{ $e->id }}" hidden></p>
         <p class="text-danger text-center feedback" id="feedback-exercise-wrong-{{ $e->id }}" hidden></p>
     </div>
-@endif
+{{-- @endif --}}

@@ -18,7 +18,7 @@
                     <tr>
                         <td>Author</td>
                         <td colspan="2">
-                            <input id="author" name="author" class="form-control" type="text" placeholder="Type the author's name for ththise new unit" required>
+                            <input id="author" name="author" class="form-control" type="text" placeholder="Type the author's name for this new unit" required>
                         </td>
                     </tr>
                     <tr>

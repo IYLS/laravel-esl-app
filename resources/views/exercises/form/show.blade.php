@@ -29,7 +29,7 @@
             <table class="table table-bordered">
                 <thead>
                     <th>
-                        <p class="text-center">Statemenets</p>
+                        <p class="text-center">Statements</p>
                     </th>
                     <th>
                         <p class="text-center">{{ $question->statement }}</p>

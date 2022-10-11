@@ -2,7 +2,7 @@
 @section('main')
 
 <div class="container">
-    @if (Auth::user() != null and Auth::user()) 
+    @if (Auth::user() != null and Auth::user()->role == 'teacher') 
         <div class="p-3 mt-3">
             <h3>Welcome, {{ $user->name }}</h3>
         </div>
@@ -52,6 +52,13 @@
                   </div>
                 </div>
               </div>
+        </div>
+    @elseif(Auth::user() != null and Auth::user()->role == 'student')
+        <div class="p-5">
+          <h3>Welcome, {{ Auth::user()->name }}!</h3>
+          <br>
+          <h5>We are glad to have you here 🥳</h5>
+          <h5>Start <a href="{{ route('student.level_selection') }}">here</a> selecting a unit to work on.</h5>
         </div>
     @endif
 </div>
