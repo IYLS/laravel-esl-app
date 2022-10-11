@@ -18,32 +18,34 @@
 
             $components = array_combine($words, $definitions);
         @endphp
-        <div class="row pt-2 pb-2">
-            @include('partials.tracking_complete')
-            @php 
-                $subtype = $e->subtype != null ? $e->subtype : 1;
-            @endphp
-            <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="drag_and_drop_form_{{ $e->id }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'drag_and_drop')">
-                @csrf
-                @foreach($e->questions as $question)
-                    <div class="col-5 col-lg-2 mt-1">
-                        <div ondrop="drop(event)" style="height:30px; width: 140px;" id="word-origin-{{ $question->statement }}" ondragover="allowDrop(event)">
-                            <div class="border pe-2 ps-2 text-primary" id="word-{{ $question->statement }}" ondragstart="drag(event)" draggable="true" style="display: inline-block; border-style: dashed !important; height:30px;">
-                                {{ $question->statement }}
+        <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="drag_and_drop_form_{{ $e->id }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'drag_and_drop')">
+            @csrf
+            <div class="row d-flex justify-content-between pt-2 pb-2">
+                @include('partials.tracking_complete')
+                @php 
+                    $subtype = $e->subtype != null ? $e->subtype : 1;
+                @endphp
+                
+                    @foreach($e->questions as $question)
+                        <div class="col-6 col-lg-3 mt-1 d-flex justify-content-center">
+                            <div ondrop="drop(event)" style="height:30px; width: 140px;" id="word-origin-{{ $question->statement }}" ondragover="allowDrop(event)">
+                                <div class="border pe-2 ps-2 text-primary" id="word-{{ $question->statement }}" ondragstart="drag(event)" draggable="true" style="display: inline-block; border-style: dashed !important; height:30px;">
+                                    {{ $question->statement }}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-7 col-lg-10 row mt-1">
-                        <div class="col-12 col-lg-4 border" style="height:30px; width: 140px;" id="word-destination-{{ $components[$question->statement] }}" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                        <div class="col-12 col-lg-8" id="word-definition-{{ $components[$question->statement] }}">{{ $components[$question->statement] }}</div>
-                    </div>
-                    @if($e->subtype != '99' && $e->subtype != '991')
-                        @include('feedback.question', ['feedbacks' => isset($question->feedbacks) ? $question->feedbacks : null])
-                    @endif
-                @endforeach
+                        <div class="mt-1 col-6 col-lg-9 row">
+                            <div class="d-inline col-5 border" style="height:30px; width: 140px;" id="word-destination-{{ $components[$question->statement] }}" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                            <div class="d-inline col-7" id="word-definition-{{ $components[$question->statement] }}">{{ $components[$question->statement] }}</div>
+                        </div>
+                        @if($e->subtype != '99' && $e->subtype != '991')
+                            @include('feedback.question', ['feedbacks' => isset($question->feedbacks) ? $question->feedbacks : null])
+                        @endif
+                    @endforeach
 
-                @include('partials.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
-            </form>
-        </div>
+                    @include('partials.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
+                </div>
+        </form>
+
     </div>
 </div>

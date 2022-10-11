@@ -1,5 +1,5 @@
 @if(isset($feedbacks))
-    <div class="m-1 p-1 border border-success feedback question-feedback" id="question-feedback-container-{{ $question->id }}" hidden>
+    <div class="m-1 p-1 border rounded feedback question-feedback" id="question-feedback-container-{{ $question->id }}" hidden>
         <p class="p-3 text-success" id="question-{{ $question->id }}-feedback-correct" hidden>✅ Correct</p>
         <p class="p-3 text-danger" id="question-{{ $question->id }}-feedback-wrong" hidden>❌ Wrong</p>
 
