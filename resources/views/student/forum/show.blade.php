@@ -21,10 +21,11 @@
     <p class="m-4">{{ $comment->content }}</p>
     <div class="row m-3">
         <div class="col-6 d-flex align-items-center justify-content-start">
-            @if($comment->user_id == $current_user->id)
+            @php $posted_by = "posted by @unknown"; @endphp
+            @if(isset($comment->user->name) and $comment->user->name == $current_user->name)
                 @php $posted_by = "posted by @me"; @endphp
-            @else
-                @php $posted_by = "posted by @" . $comment->user->user_id; @endphp
+            @elseif(isset($comment->user->name) and $comment->user->name != $current_user->name)
+                @php $posted_by = "posted by @" . $comment->user->name; @endphp
             @endif
 
             @if ($comment->created_at->diffInSeconds(Carbon::now()) <= 59)
