@@ -1,5 +1,5 @@
 <!-- Multiple choice modal -->
-<div class="modal fade" id="add_meta_{{ $underscore_type }}_exercise_modal" tabindex="-1" aria-labelledby="add_meta_{{ $underscore_type }}_exercise_modal" aria-hidden="true">
+<div class="modal fade" id="add_meta_{{ $underscore_type }}_exercise_modal_{{ $section->id }}" tabindex="-1" aria-labelledby="add_meta_{{ $underscore_type }}_exercise_modal_{{ $section->id }}" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -28,12 +28,12 @@
                 @endphp
                 <form action="{{ route('exercises.store', [$section->unit->id, $type_id, $section->id]) }}" method="POST">
                     @csrf
-                    <input id="title" name="title" type="text" class="form-control" placeholder="Title">
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title" required>
                     <br>
                     <input id="description" name="description" type="text" class="form-control" placeholder="(Optional) Description">
                     @if($type_id == 4)
                         <br>
-                        <select id="subtype" name="subtype" class="form-select">
+                        <select id="subtype" name="subtype" class="form-select" required>
                             <option value="" selected disabled>Select a subtype</option>
                             <option value="99">Simple</option>
                             <option value="991">Table style</option>

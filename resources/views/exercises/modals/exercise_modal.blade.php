@@ -1,5 +1,5 @@
 <!-- Multiple choice modal -->
-<div class="modal fade" id="add_{{ $type->underscore_name }}_exercise_modal" tabindex="-1" aria-labelledby="add_{{ $type->underscore_name }}_exercise_modal" aria-hidden="true">
+<div class="modal fade" id="add_{{ $type->underscore_name }}_exercise_modal_{{ $section_id }}" tabindex="-1" aria-labelledby="add_{{ $type->underscore_name }}_exercise_modal_{{ $section_id }}" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,12 +9,12 @@
             <div class="modal-body">
                 <form action="{{ route('exercises.store', [$section->unit->id, $type, $section_id]) }}" method="POST">
                     @csrf
-                    <input id="title" name="title" type="text" class="form-control" placeholder="Title">
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title" required>
                     <br>
                     <input id="description" name="description" type="text" class="form-control" placeholder="(Optional) Description">
                     @if($type->underscore_name == "multiple_choice")
                         <br>
-                        <select id="subtype" name="subtype" class="form-select">
+                        <select id="subtype" name="subtype" class="form-select" required>
                             <option value="" selected disabled>Select a subtype</option>
                             <option value="1">Predicting</option>
                             <option value="2">What do you hear?</option>
@@ -23,7 +23,7 @@
                         </select>
                     @elseif($type->underscore_name == "fill_in_the_gaps")
                         <br>
-                        <select id="subtype" name="subtype" class="form-select">
+                        <select id="subtype" name="subtype" class="form-select" required>
                             <option value="" selected disabled>Select a subtype</option>
                             <option value="1">Dictation cloze</option>
                             <option value="2">Vocabulary practice</option>
