@@ -32,6 +32,7 @@ class SectionController extends Controller
         $section->name = $request->name;
         $section->instructions = $request->instructions;
         $section->unit_id = $unit_id;
+        $section->underscore_name = $this->toSnakeCase($request->name);
 
         $section->save();
 

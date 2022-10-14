@@ -43,7 +43,13 @@ class ExerciseController extends Controller
         $exercise->section_id = $section_id;
         $exercise->extra_info = $request->extra_info;
 
-        if(isset($request->subtype)) $exercise->subtype = $request->subtype;
+        $exercise->video_name = $this->getVideoFrom($request);
+
+        if(isset($request->subtype)) {
+            $exercise->subtype = $request->subtype;
+        } else {
+            $exercise->subtype = '99';
+        }
 
         $exercise->save();
         
@@ -85,5 +91,18 @@ class ExerciseController extends Controller
         $section = Section::where('unit_id', $unit_id)->where('name', $section_name)->get()->first();
         $exercises = $section->exercises()->get();
         return $exercises;
+    }
+
+    private function getVideoFrom(Request $request)
+    {
+        if($request->hasFile('video') and $request->file('video')->isValid()) 
+        {
+            $video_file_name = $request->file('video')->getClientOriginalName();
+            $video_file_path = $request->file('video')->storeAs('public/files', $video_file_name);
+
+            return $video_file_name;
+        } else {
+            return null;
+        }
     }
 }

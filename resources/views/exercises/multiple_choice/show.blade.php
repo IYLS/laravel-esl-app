@@ -41,8 +41,13 @@
     <div class="card p-4 m-2">
         <h4>Activity questions</h4>
         @forelse($exercise->questions as $question)
-            @if($exercise->subtype == 1 || $exercise->subtype == 4)
+            @if($exercise->subtype == 1 or $exercise->subtype == 4 or $exercise->subtype == 99)
                 <div class="card mt-1 mb-1 p-4">
+                    @if(isset($e->video_name) and $e->video_name != null)
+                        <div class="ratio ratio-16x9 mt-3">
+                            <iframe src="{{ asset('esl/public/storage/files') . "/" . $e->video_name }}" title="Video" allowfullscreen controls></iframe>
+                        </div>
+                    @endif
                     <div class="row">
                         <div class="col-12 col-md-10">
                             <p>Statements</p>

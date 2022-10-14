@@ -123,6 +123,11 @@
                                         <p class="text-secondary">{{ $e->description }}</p>
                                         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
                                         @include('partials.tracking_complete')
+                                        @if(isset($e->video_name) and $e->video_name != null)
+                                            <div class="ratio ratio-16x9 mt-3">
+                                                <iframe src="{{ asset('esl/public/storage/files') . "/" . $e->video_name }}" title="Video" allowfullscreen controls></iframe>
+                                            </div>
+                                        @endif
 
                                         <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'multiple_choice');" method="POST" id="multiple_choice_form_{{ $e->id }}">
                                             @csrf
