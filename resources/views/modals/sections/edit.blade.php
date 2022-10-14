@@ -9,9 +9,9 @@
             <div class="modal-body">
                 <form action="{{ route('sections.update', [$unit_id, $section]) }}" method="POST">
                     @csrf
-                    <input id="word" name="title" type="text" class="form-control" placeholder="Enter keyword" value="{{ $section->title }}" required>
+                    <input id="name" name="name" type="text" class="form-control" placeholder="Enter section title" value="{{ $section->name }}" required>
                     <br>
-                    <input id="description" name="instructions" type="text" class="form-control" placeholder="Enter section info. e.g. context, instructions, etc." value="{{ $section->instructions }}">
+                    <input id="instructions" name="instructions" type="text" class="form-control" placeholder="Enter section info. e.g. context, instructions, etc." value="{{ $section->instructions }}">
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Save</button>
                     </div>
