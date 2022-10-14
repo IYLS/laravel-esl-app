@@ -175,18 +175,6 @@
         
         replaceButton.disabled = false;
     }
-
-    // function switchIsEnabled(item) {
-    //     if (item.value == "false") {
-    //         console.log(`${item.name} is ${item.value}`);
-    //         item.value = "true";
-    //     } else {
-    //         if (item.value == "true") {
-    //             console.log(`${item.name} is ${item.value}`);
-    //             item.value = "false";
-    //         }
-    //     }
-    // }
 </script>
 
 @endsection

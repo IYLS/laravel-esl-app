@@ -35,22 +35,47 @@ class UnitController extends Controller
         $new_unit->description = $request-> description;
 
         $new_unit->listening_tips = $request->listening_tips;
-        $new_unit->listening_tips_enabled = $request->listening_tips_enabled == 'true' ? true : false;
+        if($request->listening_tips_enabled == 'true')
+        {
+            $new_unit->$listening_tips_enabled = true;
+        } else {
+            $new_unit->listening_tips_enabled = false;
+        }
 
         $new_unit->cultural_notes = $request->cultural_notes;
-        $new_unit->cultural_notes_enabled = $request->cultural_notes_enabled == 'true' ? true : false;
+        if ($request->cultural_notes_enabled == 'true') {
+            $new_unit->cultural_notes_enabled = true;
+        } else {
+            $new_unit->cultural_notes_enabled = false;
+        }
 
         $new_unit->transcript = $request->transcript;
-        $new_unit->transcript_enabled = $request->transcript_enabled == 'true' ? true : false;
+        if ($request->transcript_enabled == 'true') {
+            $new_unit->transcript_enabled = true;
+        } else {
+            $new_unit->transcript_enabled = false;
+        }
 
         $new_unit->glossary = $request->glossary;
-        $new_unit->glossary_enabled = $request->glossary_enabled == 'true' ? true : false;
+        if ($request->glossary_enabled == 'true') {
+            $new_unit->glossary_enabled = true;
+        } else {
+            $new_unit->glossary_enabled = false;
+        }
         
         $new_unit->translation = $request->translation;
-        $new_unit->translation_enabled = $request->translation_enabled == 'true' ? true : false;
+        if ($request->translation_enabled == 'true') {
+            $new_unit->translation_enabled = true;
+        } else {
+            $new_unit->translation_enabled = false;
+        }
 
         $new_unit->dictionary = $request->dictionary;
-        $new_unit->dictionary_enabled = $request->dictionary_enabled == 'true' ? true : false;
+        if ($request->dictionary_enabled == 'true') {
+            $new_unit->dictionary_enabled = true;
+        } else {
+            $new_unit->dictionary_enabled = false;
+        }
 
         $new_unit->video_name = $this->getVideoFrom($request);
 
@@ -79,22 +104,47 @@ class UnitController extends Controller
         $unit->description = $request->description;
 
         $unit->listening_tips = $request->listening_tips;
-        $unit->listening_tips_enabled = $request->listening_tips_enabled == 'true' ? true : false;
+        if($request->listening_tips_enabled == 'true')
+        {
+            $unit->$listening_tips_enabled = true;
+        } else {
+            $unit->listening_tips_enabled = false;
+        }
 
         $unit->cultural_notes = $request->cultural_notes;
-        $unit->cultural_notes_enabled = $request->cultural_notes_enabled == 'true' ? true : false;
+        if ($request->cultural_notes_enabled == 'true') {
+            $unit->cultural_notes_enabled = true;
+        } else {
+            $unit->cultural_notes_enabled = false;
+        }
 
         $unit->transcript = $request->transcript;
-        $unit->transcript_enabled = $request->transcript_enabled == 'true' ? true : false;
+        if ($request->transcript_enabled == 'true') {
+            $unit->transcript_enabled = true;
+        } else {
+            $unit->transcript_enabled = false;
+        }
 
         $unit->glossary = $request->glossary;
-        $unit->glossary_enabled = $request->glossary_enabled == 'true' ? true : false;
+        if ($request->glossary_enabled == 'true') {
+            $unit->glossary_enabled = true;
+        } else {
+            $unit->glossary_enabled = false;
+        }
         
         $unit->translation = $request->translation;
-        $unit->translation_enabled = $request->translation_enabled == 'true' ? true : false;
+        if ($request->translation_enabled == 'true') {
+            $unit->translation_enabled = true;
+        } else {
+            $unit->translation_enabled = false;
+        }
 
         $unit->dictionary = $request->dictionary;
-        $unit->dictionary_enabled = $request->dictionary_enabled == 'true' ? true : false;
+        if ($request->dictionary_enabled == 'true') {
+            $unit->dictionary_enabled = true;
+        } else {
+            $unit->dictionary_enabled = false;
+        }
 
         if($request->has('video')) {
             $video_file_name = $request->file('video')->getClientOriginalName();
@@ -103,10 +153,9 @@ class UnitController extends Controller
             $unit->video_name = $video_file_name;
         }
 
-
         $unit->save();
 
-        return redirect()->route('units.index');
+        return redirect()->route('units.index')->with('success', "$unit->title Unit updated successfully");
     }
 
     public function destroy($id)

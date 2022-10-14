@@ -27,14 +27,34 @@ class TrackingController extends Controller
 
     public function store(Request $request, $exercise_id, $user_id) 
     {
-
         $exercise = Exercise::find($exercise_id);
 
         $tracking = new Tracking;
-        $tracking->intent_number = $request->intent_number == null ? "0" : $request->intent_number;
-        $tracking->time_spent_in_minutes = $request->time == null ? "00:00" : $request->time;
-        $tracking->correct_answers = $request->correct == null ? "0" : $request->correct;
-        $tracking->wrong_answers = $request->wrong == null ? "0" : $request->wrong;
+
+        if($request->intent_number == null) {
+            $tracking->intent_number = "0";
+        } else {
+            $tracking->intent_number = $request->intent_number;
+        }
+
+        if($request->time == null) { 
+            $tracking->time_spent_in_minutes = "00:00";
+        } else {
+            $tracking->time_spent_in_minutes = $request->time;
+        }
+
+        if($request->correct == null) {
+            $tracking->correct_answers = "0";
+        } else {
+            $tracking->correct_answers = $request->correct;
+        }
+
+        if($request->wrong == null) {
+            $tracking->wrong_answers = "0";
+        } else {
+            $tracking->wrong_answers = $request->wrong;
+        }
+
         $tracking->exercise_id = $exercise_id;
         $tracking->user_id = $user_id;
         $tracking->save();

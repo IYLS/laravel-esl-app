@@ -41,7 +41,13 @@ class UserController extends Controller
         $newUser->role = $request->role;
         $newUser->activated = $request->activated;
         $newUser->password = Hash::make($request->password);
-        $newUser->group_id = $request->group == 0 ? null : $request->group;
+
+        if($request->group == 0) {
+            $newUser->group_id = null;
+        } else {
+            $user->group_id = $request->group;;
+        }
+        
         $newUser->save();
 
         return redirect()->route('users.index')->with('success', "User $newUser->name created successfully.");;
@@ -67,8 +73,16 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->role = $request->role;
         $user->activated = $request->activated;
-        $user->password = $request->has('password') and $request->password != null ? $request->password : $user->password;
-        $user->group_id = $request->group == 0 ? null : $request->group;
+        
+        if($request->has('password') and $request->password != null) {
+            $user->password = Hash::make($request->password);
+        }
+        
+        if($request->group == 0) {
+            $user->group_id = null;
+        } else {
+            $user->group_id = $request->group;;
+        }
 
         $user->save();
 

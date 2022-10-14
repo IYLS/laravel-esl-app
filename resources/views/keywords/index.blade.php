@@ -40,7 +40,7 @@
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addKeywordModal">
             Add keyword
         </button>
-        <a type="button" class="btn btn-secondary" href="{{ url()->previous() }}">
+        <a type="button" class="btn btn-secondary" href="{{ route('units.show', $unit_id) }}">
             Go back
         </a>
     </div>

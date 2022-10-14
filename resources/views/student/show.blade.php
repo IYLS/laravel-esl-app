@@ -342,16 +342,22 @@
             const alternatives = document.getElementsByName(`question-${question.id}`);            
 
             alternatives.forEach((alternative) => {
+                // Alternativa correcta
                 if (alternative.checked && question.correct_answer == alternative.value) {
                     responses.push({'id': `${question.id}`, 'response': `${question.correct_answer}`});
                     
                     document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
                     document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
 
+
+
                     correct_questions += 1;
+                // Alternativa incorrecta
                 } else if(alternative.checked) {
                     document.getElementById(`question-${question.id}-feedback-wrong`).hidden = false;
                     document.getElementById(`question-${question.id}-feedback-correct`).hidden = true;
+
+
 
                     responses.push({'id': `${question.id}`, 'response': `${alternative.parentNode.children[1].innerHTML.trim()}`});
                 }
