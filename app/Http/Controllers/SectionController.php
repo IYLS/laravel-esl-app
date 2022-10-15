@@ -25,10 +25,11 @@ class SectionController extends Controller
 
         $section->save();
 
-        return redirect()->route('sections.index', $unit_id);
+        return redirect()->route('sections.index', $unit_id)->with('success', 'Section created successfully!');;
     }
 
-    public function update(Request $request, $unit_id, Section $section) {
+    public function update(Request $request, $unit_id, $section_id) {
+        $section = Section::find($section_id);
         $section->name = $request->name;
         $section->instructions = $request->instructions;
         $section->unit_id = $unit_id;
@@ -36,14 +37,14 @@ class SectionController extends Controller
 
         $section->save();
 
-        return redirect()->route('sections.index', $unit_id);
+        return redirect()->route('sections.index', $unit_id)->with('success', 'Section updated successfully!');
     }
 
     public function destroy(Section $section) {
         $unit_id = $section->unit_id;
         $section->delete();
 
-        return redirect()->route('sections.index', $unit_id);
+        return redirect()->route('sections.index', $unit_id)->with('success', 'Section deleted successfully!');;
     }
 
     private function toSnakeCase($text) 

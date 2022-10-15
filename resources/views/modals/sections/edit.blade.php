@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('sections.update', [$unit_id, $section]) }}" method="POST">
+                <form action="{{ route('sections.update', [$unit_id, $section->id]) }}" method="POST">
                     @csrf
                     <input id="name" name="name" type="text" class="form-control" placeholder="Enter section title" value="{{ $section->name }}" required>
                     <br>

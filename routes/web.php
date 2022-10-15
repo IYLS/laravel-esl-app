@@ -92,15 +92,9 @@ Route::post('/forum/comment/{comment}/reply/store', [ReplyController::class, 'st
 Route::get('/units/{unit}/sections', [SectionController::class, 'index'])->name('sections.index');
 Route::post('/units/{unit}/sections/store', [SectionController::class, 'store'])->name('sections.store');
 Route::delete('/sections/{section}/destroy', [SectionController::class, 'destroy'])->name('sections.destroy');
-Route::post('/units/{unit}/sections/{keyword}/update', [SectionController::class, 'update'])->name('sections.update');
+Route::post('/units/{unit}/sections/{section}/update', [SectionController::class, 'update'])->name('sections.update');
 
 // Tracking Routes
 Route::get('tracking/index', [TrackingController::class, 'index'])->name('tracking.index');
 Route::post('tracking/store/{exercise}/{user}', [TrackingController::class, 'store'])->name('tracking.store');
 Route::get('/tracking/show/{tracking}', [TrackingController::class, 'show'])->name('tracking.show');
-
-
-
-
-
-

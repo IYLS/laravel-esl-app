@@ -34,7 +34,7 @@
                     <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editSectionModal-{{ $section->id }}">
                         Edit
                     </button>
-                    @include('modals.sections.edit', [$section, $unit_id])
+                    @include('modals.sections.edit', ["section" => $section, "unit_id" => $unit_id])
                 </td>
             </tr>
             @empty
