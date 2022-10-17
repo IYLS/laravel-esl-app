@@ -48,11 +48,90 @@ class QuestionController extends Controller
         }
         else
         {
-            $question->correct_answer = $request->correct_alt;
+            $question->correct_answer = $request->correct_answer;
             $question->save();
         }
 
         return redirect()->route('exercises.show', [$exercise_id]);
+    }
+
+    public function update(Request $request, $question_id)
+    {
+        $question = Question::find($question_id);
+        $exercise = Exercise::find($question->exercise_id);
+        $exercise_type = $exercise->exerciseType;
+
+        if($this->getAudioFrom($request) != null) {
+            $question->audio_name = $this->getAudioFrom($request);
+        }
+
+        if($this->getImageFrom($request) != null) {
+            $question->image_name = $this->getImageFrom($request);
+        }
+        
+        if($request->has('statement') and $request->statement != '' and $request->statement != null and $request->statement != $question->statement) {
+            $question->statement = $request->statement;
+        }
+        
+        if($request->has('answer') and $request->answer != '' and $request->answer != null and $request->answer != $question->answer) {
+            $question->answer = $request->answer;
+        }
+
+        $existing_alts_array = array();
+        foreach($question->alternatives as $e_a) {
+            array_push($existing_alts_array, $e_a->title);
+        }
+        $existing_alts_string = implode(';', $existing_alts_array);
+
+        if($request->has('alternatives') and $request->alternatives != null and $request->alternatives != '' and $existing_alts_string != $request->alternatives and $exercise_type->underscore_name == "multiple_choice")
+        {
+            Alternative::where('question_id', $question->id)->delete();
+            $alternatives = str_replace(array("\r", "\n", '\''), '', $request->alternatives);
+            $alts = explode(";", $alternatives);
+
+            foreach($alts as $a)
+            {
+                $alt = new Alternative;
+                $alt->title = trim($a);
+                $alt->question_id = $question->id;
+                if(strtolower(trim($a)) == strtolower(trim($request->correct_answer))) $alt->correct_alt = true;
+                $alt->save();
+            }
+
+            $question->correct_answer = $request->correct_answer;
+            $question->save();
+        }
+        else if($request->has('alternatives') and $request->alternatives != null and $request->alternatives != '' and $existing_alts_string != $request->alternatives and $exercise_type->underscore_name == "form")
+        {
+            foreach($request->alternatives as $alt)
+            {
+                $alternative = new Alternative;
+                $alternative->title = trim($alt);
+                $alternative->question_id = $question->id;
+                $alternative->correct_alt = false;
+                $alternative->save();
+    
+                $question->correct_answer = $request->title;
+            }
+        }
+        else if($request->has('boxes_number') and $request->boxes_number != '' and $request->boxes_number != null and $exercise_type->underscore_name == "open_ended" && $exercise->subtype == "991")
+        {
+            $question->image_name = $request->boxes_number;
+        }
+        else if($request->has('title') and $request->title != '' and $request->title != null and $exercise_type->underscore_name == "open_ended" && $exercise->subtype == "991") {
+            $question->correct_answer = $request->title;
+        }
+        else 
+        {
+            $question->correct_answer = $request->correct_answer;
+        }
+
+        if ($question->isDirty()) {
+            $question->save();
+            return redirect()->route('exercises.show', $question->exercise_id)->with('success', 'Pregunta actualizada correctamente');
+        }
+        
+        return redirect()->route('exercises.show', $question->exercise_id)->with('success', 'No changes made');
     }
 
     public function destroy($exercise_id, $question_id)
@@ -93,7 +172,7 @@ class QuestionController extends Controller
     {
         if(isset($request->alternatives))
         {
-            $question->correct_answer = $request->correct_alt;
+            $question->correct_answer = $request->correct_answer;
             $question->save();
 
             $alternatives = str_replace(array("\r", "\n", '\''), '', $request->alternatives);
@@ -106,7 +185,7 @@ class QuestionController extends Controller
                 $alt->title = trim($a);
                 $alt->question_id = $question->id;
 
-                if(strtolower(trim($a)) == strtolower(trim($request->correct_alt)))
+                if(strtolower(trim($a)) == strtolower(trim($request->correct_answer)))
                 {
                     $alt->correct_alt = true;
                     $question->correct_answer = $a;

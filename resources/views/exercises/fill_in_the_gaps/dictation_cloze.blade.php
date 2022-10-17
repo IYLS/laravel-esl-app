@@ -1,4 +1,4 @@
-@include('partials.tracking_complete')
+@include('layouts.tracking_complete')
 <form enctype="multipart/form-data" action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'fill_in_the_gaps');" method="POST" id="fill_in_the_gaps_form_{{ $e->id }}">
     @csrf
     @foreach($e->questions as $question)
@@ -28,5 +28,5 @@
 
     @endforeach
     <br>
-    @include('partials.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
+    @include('layouts.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
 </form>

@@ -1,4 +1,4 @@
-@include('partials.tracking_complete')
+@include('layouts.tracking_complete')
 <div class="border rounded p-4">
     <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="fill_in_the_gaps_form_{{ $e->id }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'fill_in_the_gaps')">
         @csrf
@@ -45,6 +45,6 @@
                 @endforeach
             </ol>
         </div>
-        @include('partials.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
+        @include('layouts.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
     </form>
 </div>

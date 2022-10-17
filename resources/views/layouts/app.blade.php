@@ -30,14 +30,14 @@
         <title>Ideas for Listening</title>
     </head>
     <body class="d-flex flex-column min-vh-100">
-        @include('partials.navbar')
+        @include('layouts.navbar')
 
         @yield('main')
         
-        @include('partials.footer')
+        @include('layouts.footer')
 
         @if(Session::get('success'))
-            @include('exercises.modals.message', ['message' => Session::get('success'), 'type' => 'success'])
+            @include('modals.exercises.message', ['message' => Session::get('success'), 'type' => 'success'])
             <script>
                 setTimeout(function(){
                     $('#alert-modal').modal('hide')
@@ -48,7 +48,7 @@
                 });
             </script>
         @elseif(Session::get('error'))
-            @include('exercises.modals.message', ['message' => Session::get('error'), 'type' => 'error'])
+            @include('modals.exercises.message', ['message' => Session::get('error'), 'type' => 'error'])
             <script>
                 setTimeout(function(){
                     $('#alert-modal').modal('hide')

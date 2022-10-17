@@ -1,4 +1,3 @@
-<!-- Multiple choice modal -->
 <div class="modal fade" id="add_{{ $type->underscore_name }}_exercise_modal" tabindex="-1" aria-labelledby="add_{{ $type->underscore_name }}_exercise_modal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

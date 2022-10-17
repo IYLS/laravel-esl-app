@@ -20,57 +20,54 @@
             <p>Subtype: Metacognition (Table styled drag and drop)</p>
         @endif
         @isset($exercise->extra_info)<p class="text-info">Additional Information: {{ $exercise->extra_info }}</p>@endisset
-        @include('alerts.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
+        @include('modals.exercises.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
     </div>
 
     <div class="card p-4 m-2">
-        <h4>Activity questions</h4>        
+        <h4>Activity questions</h4>
         @forelse($exercise->questions as $question)
+            @php $question_number = $loop->index + 1; @endphp
             <div class="card mt-1 mb-1 ps-4 pe-4 pt-3 pb-2">
-            @if ($exercise->subtype == '99' or $exercise->subtype == null or $exercise->subtype == 1 or $exercose->subtype == '')
-                    <div class="row">
-                        <div class="col-10">
-                            <p>Question:</p>
-                            <ul>
-                                <li>
-                                    <p>{{ $question->statement }}</p>
-                                </li>
-                            </ul>
+                @if ($exercise->subtype == '99' or $exercise->subtype == null or $exercise->subtype == 1 or $exercose->subtype == '')
+                        <div class="row">
+                            <div class="col-12">
+                                <p>{{ $question_number }}. {{ $question->statement }}</p>
+                            </div>
                         </div>
-                    </div>
-            @elseif ($exercise->subtype == '991')
-                <h6>{{ $loop->index + 1 . ". " }}</h6>
-                <h4>{{ $question->correct_answer }}</h4>
-                <table class="table table-bordered">
-                    <thead>
-                        <th>{{ $question->statement }}</th>
-                        <th>{{ $question->answer }}</th>
-                    </thead>
-                    <tbody>
-                        @for ($x = 0; $x <= $question->image_name; $x++)
-                        <tr>
-                            <td>
-                                <p></p>
-                            </td>
-                            <td>
-                                <p></p>
-                            </td>
-                        </tr>
-                        @endfor
-                    </tbody>
-                </table>
-            @endif
-            <div class="d-flex justify-content-end">
-                <form action="{{ route('questions.destroy', [$exercise->id, $question->id] ) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-danger">
+                @elseif ($exercise->subtype == '991')
+                    <p>{{ $question_number }}. &nbsp;</p>
+                    <h4>{{ $question->correct_answer }}</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <th>{{ $question->statement }}</th>
+                            <th>{{ $question->answer }}</th>
+                        </thead>
+                        <tbody>
+                            @for ($x = 0; $x <= $question->image_name; $x++)
+                            <tr>
+                                <td>
+                                    <p></p>
+                                </td>
+                                <td>
+                                    <p></p>
+                                </td>
+                            </tr>
+                            @endfor
+                        </tbody>
+                    </table>
+                @endif
+                <div class="d-flex justify-content-end">
+                    <br>
+                    <button type="button" id="delete_question_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_question_{{ $question->id }}">
                         <i class="mdi mdi-delete"></i>
                     </button>
-                    @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
-                </form>
+                    @include('modals.questions.delete_confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete question number $question_number.", 'button_target_id' => "delete_question_$question->id", 'route' => route('questions.destroy', [$exercise->id, $question->id])])
+                    <button type="button" id="edit_question_button" class="btn btn-sm btn-warning ms-1" data-bs-toggle="modal" data-bs-target="#edit_question_{{ $question->id }}">
+                        <i class="mdi mdi-pencil"></i>
+                    </button>
+                    @include('modals.questions.edit', ['button_target_id' => "edit_question_$question->id", 'alternatives' => $question->alternatives])
+                </div>
             </div>
-        </div>
         @empty
             <div class="text-center p-3">
                 <p class="text-center text-secondary">No questions added.</p>
@@ -87,11 +84,10 @@
     @endif
 
     <div class="d-flex justify-content-center">
-        <a class="btn btn-secondary m-1" href="{{ route('exercises.index', [$exercise->section->unit_id]) }}">Save</a>
-        <a class="btn btn-secondary m-1" href="{{ route('exercises.index', [$exercise->section->unit_id]) }}">Cancel</a>
+        <a class="btn btn-primary m-1" href="{{ route('exercises.index', [$exercise->section->unit_id]) }}">Done</a>
     </div>
 </div>
 
-@include('exercises.modals.question_modal')
+@include('modals.questions.add')
 
 @endsection

@@ -23,7 +23,7 @@
                             <p class="text-secondary"><small>Use a semicolon (;) at the end of each statement. Except the last one.</small></p>
                             <p><small>Alternatives settings:</small></p>
                             <div class="mb-3">
-                                <input name="correct_alt" class="form-control" type="text" placeholder="Correct Alternative (only if applicable)">
+                                <input name="correct_answer" class="form-control" type="text" placeholder="Correct Alternative (only if applicable)">
                                 <textarea name="alternatives" class="form-control" rows="3" placeholder="Type alternatives separated by semicolon (;) except for the last one"></textarea>
                             </div>
                             @break
@@ -33,7 +33,7 @@
                             <p class="text-secondary"><small>Use double semicolon (;;) to indicate where the gap to fill will be placed.</small></p>
                             <p><small>Alternatives settings:</small></p>
                             <div class="mb-3">
-                                <input name="correct_alt" class="form-control mb-1" type="text" placeholder="Correct words">
+                                <input name="correct_answer" class="form-control mb-1" type="text" placeholder="Correct words">
                                 <p class="text-secondary"><small>Use semicolon (;) to separate each correct response</small></p>
                                 <textarea name="alternatives" class="form-control" rows="3" placeholder="Type alternatives separated by semicolon (;) except for the last one"></textarea>
                                 <div class="row">
@@ -50,14 +50,14 @@
                         @case('3')
                             <p><small>Question settings:</small></p>
                             <input id="statement" name="statement" type="text" class="form-control" placeholder="Statement">
-                            <input id="answer" name="answer" type="text" class="form-control" placeholder="Correct Answer">
+                            <input id="correct_answer" name="correct_answer" type="text" class="form-control" placeholder="Correct Answer">
                             @break
                         @case('4')
                             <p><small>Question settings:</small></p>
                             <input id="statement" name="statement" type="text" class="form-control" placeholder="Statement">
                             <p><small>Alternatives settings:</small></p>
                             <div class="mb-3">
-                                <input name="correct_alt" class="form-control" type="text" placeholder="Correct Alternative (only if applicable)">
+                                <input name="correct_answer" class="form-control" type="text" placeholder="Correct Alternative (only if applicable)">
                                 <textarea name="alternatives" class="form-control" rows="3" placeholder="Type alternatives separated by semicolon (;) except for the last one"></textarea>
                             </div>
                             <p class="text-secondary"><small>Use a semicolon (;) at the end of each statement. Except the last one.</small></p>
@@ -67,7 +67,7 @@
                             <input id="statement" name="statement" type="text" class="form-control" placeholder="Statement">
                             <p><small>Alternatives settings:</small></p>
                             <div class="mb-3">
-                                <input name="correct_alt" class="form-control" type="text" placeholder="Correct Alternative (only if applicable)">
+                                <input name="correct_answer" class="form-control" type="text" placeholder="Correct Alternative (only if applicable)">
                                 <textarea name="alternatives" class="form-control" rows="3" placeholder="Type alternatives separated by semicolon (;) except for the last one"></textarea>
                             </div>
                             <p class="text-secondary"><small>Use a semicolon (;) at the end of each statement. Except the last one.</small></p>

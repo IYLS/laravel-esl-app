@@ -30,7 +30,7 @@
                                 <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#feedback_description_{{ $type->id }}_modal">
                                     <i class="mdi mdi-information-outline" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $type->description }}"></i>
                                 </button>
-                                @include('exercises.modals.feedback_description', ['type' => "$type->name", 'description' => "$type->description", 'id' => "$type->id"])
+                                @include('modals.exercises.feedback_description', ['type' => "$type->name", 'description' => "$type->description", 'id' => "$type->id"])
                             </div>
                         @endif
                     </div>
@@ -75,7 +75,7 @@
                                         <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#feedback_description_{{ $type->id }}_modal">
                                             <i class="mdi mdi-information-outline" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $type->description }}"></i>
                                         </button>
-                                        @include('exercises.modals.feedback_description', ['type' => "$type->name", 'description' => "$type->description", 'id' => "$type->id"])
+                                        @include('modals.exercises.feedback_description', ['type' => "$type->name", 'description' => "$type->description", 'id' => "$type->id"])
                                     </div>
                                 @endforeach
                             </div>
@@ -88,7 +88,7 @@
                                     <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#feedback_description_{{ $type->id }}_modal">
                                         <i class="mdi mdi-information-outline" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $type->description }}"></i>
                                     </button>
-                                    @include('exercises.modals.feedback_description', ['type' => "$type->name", 'description' => "$type->description", 'id' => "$type->id"])
+                                    @include('modals.exercises.feedback_description', ['type' => "$type->name", 'description' => "$type->description", 'id' => "$type->id"])
                                 </div>
                             </div>
                         @elseif(!$type->text_based)
@@ -102,7 +102,7 @@
                                     <button class="btn btn-primary ms-1" type="button" data-bs-toggle="modal" data-bs-target="#feedback_description_{{ $type->id }}_modal">
                                         <i class="mdi mdi-information-outline" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $type->description }}"></i>
                                     </button>
-                                    @include('exercises.modals.feedback_description', ['type' => "$type->name", 'description' => "$type->description", 'id' => "$type->id"])
+                                    @include('modals.exercises.feedback_description', ['type' => "$type->name", 'description' => "$type->description", 'id' => "$type->id"])
                                 </div>
                             </div>
                         @endif

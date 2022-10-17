@@ -11,7 +11,7 @@
         <div class="row">
             <h4 class="col-10 col-md-11">Activity Details</h4>
             <button type="button" id="add_{{ $exercise->exerciseType->underscore_name }}_button" class="btn btn-sm btn-warning col-2 col-md-1" data-bs-toggle="modal" data-bs-target="#add_{{ $exercise->exerciseType->underscore_name}}_exercise_modal">Edit</button>
-            @include('alerts.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
+            @include('modals.exercises.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
         </div>
         <h5>Title: {{ $exercise->title }}</h5>
         <p>Description: {{ $exercise->description }}</p>
@@ -32,11 +32,12 @@
     <div class="card p-4 m-2">
         <h4>Activity questions</h4>
         @forelse($exercise->questions as $question)
+            @php $question_number = $loop->index + 1; @endphp
             <div class="card mt-1 mb-1 p-3">
                 <div class="row">
                     @if($exercise->subtype == 1)
                         <div class="col-12 col-md-12">
-                            <p>{{ $loop->index + 1 }}. &nbsp;</p>
+                            <p>{{ $question_number }}. &nbsp;</p>
                             @php
                             $sentence = $question->statement;
                             $sentence_words = explode(' ', $sentence);
@@ -70,30 +71,34 @@
                             </audio> 
                         </div>
                         <div class="col-12 col-md-2 mt-2 mt-md-0 justify-content-end">
-                            <br>
-                            <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
+                            <button type="button" id="delete_question_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_question_{{ $question->id }}">
                                 <i class="mdi mdi-delete"></i>
-                            </button> 
-                            @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
+                            </button>
+                            @include('modals.questions.delete_confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete question number $question_number.", 'button_target_id' => "delete_question_$question->id", 'route' => route('questions.destroy', [$exercise->id, $question->id])])
+                            <button type="button" id="edit_question_button" class="btn btn-sm btn-warning ms-1" data-bs-toggle="modal" data-bs-target="#edit_question_{{ $question->id }}">
+                                <i class="mdi mdi-pencil"></i>
+                            </button>
+                            @include('modals.questions.edit', ['button_target_id' => "edit_question_$question->id", 'alternatives' => $question->alternatives])
                         </div>
                     @elseif($exercise->subtype == 2)
                         @php $statements = explode(";;", $question->statement) @endphp
                         <div class="col-12 col-md-10 d-flex">
-                            <p>{{ $loop->index + 1 }}. &nbsp;</p>
+                            <p>{{ $question_number }}. &nbsp;</p>
                             <p style="height: 20px;"> {{ $statements[0] }} </p>
                             
                             <input style="height: 20px; width: 100px; text-align: center; border-bottom: solid 0.7px lightgrey; border-top: none; border-left: none; border-right: none;" class="ms-2 me-2 text-primary fw-bold" type="text" value="{{ $question->answer }}" disabled>
 
-                            <p>{{ $question->answer }}</p>
-
                             <p style="height: 20px;">{{ $statements[1] }}</p>
                         </div>
                         <div class="col-12 col-md-2 mt-5 mt-md-0 d-flex justify-content-end">
-                            <br>
-                            <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
+                            <button type="button" id="delete_question_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_question_{{ $question->id }}">
                                 <i class="mdi mdi-delete"></i>
-                            </button> 
-                            @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
+                            </button>
+                            @include('modals.questions.delete_confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete question number $question_number.", 'button_target_id' => "delete_question_$question->id", 'route' => route('questions.destroy', [$exercise->id, $question->id])])
+                            <button type="button" id="edit_question_button" class="btn btn-sm btn-warning ms-1" data-bs-toggle="modal" data-bs-target="#edit_question_{{ $question->id }}">
+                                <i class="mdi mdi-pencil"></i>
+                            </button>
+                            @include('modals.questions.edit', ['button_target_id' => "edit_question_$question->id", 'alternatives' => $question->alternatives])
                         </div>
                     @endif
 
@@ -113,11 +118,10 @@
     @include('feedback.show')
 
     <div class="d-flex justify-content-center">
-        <a class="btn btn-secondary m-1" href="{{ route('exercises.index', [$exercise->section->unit_id]) }}">Save</a>
-        <a class="btn btn-secondary m-1" href="{{ route('exercises.index', [$exercise->section->unit_id]) }}">Cancel</a>
+        <a class="btn btn-primary m-1" href="{{ route('exercises.index', [$exercise->section->unit_id]) }}">Done</a>
     </div>
 </div>
 
-@include('exercises.modals.question_modal')
+@include('modals.questions.add')
 
 @endsection

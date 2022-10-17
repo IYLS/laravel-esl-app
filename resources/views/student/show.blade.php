@@ -27,7 +27,6 @@
     <h5 class="pl-2">{{ $unit->title }}</h5>
     <div class="row">
         <div class="col-12 col-xl-4">
-            <small class="text-secondary">Keywords:</small>
             @forelse($keywords as $keyword)
                 @php $modal_id = "keyword_modal-$keyword->id"; @endphp
                 <button type="button" id="{{ $modal_id . "_button" }}" class="mt-1 btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#{{ $modal_id }}">{{ $keyword->keyword }}</button>
@@ -130,7 +129,7 @@
                                         <h4>{{ $e->title }}</h4>
                                         <p class="text-secondary">{{ $e->description }}</p>
                                         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
-                                        @include('partials.tracking_complete')
+                                        @include('layouts.tracking_complete')
 
                                         @if(isset($e->video_name) and $e->video_name != null and $e->video_name != '')
                                             <div class="ratio ratio-16x9 mt-3">
@@ -164,7 +163,7 @@
                                             @endif
                                             
                                             <br>
-                                            @include('partials.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
+                                            @include('layouts.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
                                         </form>
                                     </div>
                                 </div>

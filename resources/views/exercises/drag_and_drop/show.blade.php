@@ -18,7 +18,7 @@
             <p>Subtype: Metacognition</p>
         @endif
         @isset($exercise->extra_info)<p class="text-info">Additional Information: {{ $exercise->extra_info }}</p>@endisset
-        @include('alerts.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
+        @include('modals.exercises.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
 
     </div>
 
@@ -27,17 +27,23 @@
         @forelse($exercise->questions as $question)
             <div class="card mt-1 mb-1 p-4">
                 <div class="row">
+                    @php $question_number = $loop->index + 1; @endphp
                     <div class="col-10 d-flex">
-                        <p>{{ $loop->index + 1 }}. &nbsp;</p>
+                        <p>{{ $question_number }}. &nbsp;</p>
                         <p class="text-primary"><strong>{{ ucfirst($question->statement) }}</strong></p>:
                         <p>&nbsp;{{ $question->answer }}</p>
                     </div>
                     <div class="col-2 d-flex justify-content-center">
                         <br>
-                        <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
+                        <button type="button" id="delete_question_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_question_{{ $question->id }}">
                             <i class="mdi mdi-delete"></i>
-                        </button> 
-                        @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
+                        </button>
+                        @include('modals.questions.delete_confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete question number $question_number.", 'button_target_id' => "delete_question_$question->id", 'route' => route('questions.destroy', [$exercise->id, $question->id])])
+                        <button type="button" id="edit_question_button" class="btn btn-sm btn-warning ms-1" data-bs-toggle="modal" data-bs-target="#edit_question_{{ $question->id }}">
+                            <i class="mdi mdi-pencil"></i>
+                        </button>
+                        @include('modals.questions.edit', ['button_target_id' => "edit_question_$question->id", 'alternatives' => $question->alternatives])
+
                     </div>
                 </div>
             </div>
@@ -56,11 +62,10 @@
     @endif
 
     <div class="d-flex justify-content-center">
-        <a class="btn btn-secondary m-1" href="{{ route('exercises.index', [$exercise->section->unit_id]) }}">Save</a>
-        <a class="btn btn-secondary m-1" href="{{ route('exercises.index', [$exercise->section->unit_id]) }}">Cancel</a>
+        <a class="btn btn-primary m-1" href="{{ route('exercises.index', [$exercise->section->unit_id]) }}">Done</a>
     </div>
 </div>
 
-@include('exercises.modals.question_modal')
+@include('modals.questions.add')
 
 @endsection

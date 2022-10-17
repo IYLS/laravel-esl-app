@@ -73,6 +73,7 @@ Route::get('/units/{unit}/exercises/create/{type}/{exercise}/question', [Questio
 Route::get('/units/{unit}/exercises/{exercise}/questions/show/{type}/{question}', [QuestionController::class, 'show'])->name('questions.show');
 Route::post('/exercises/{exercise}/store/section/{section}/type/{type}/question', [QuestionController::class, 'store'])->name('questions.store');
 Route::delete('/exercises/{exercise}/questions/destroy/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
+Route::put('/questions/update/{question}', [QuestionController::class, 'update'])->name('questions.update');
 
 // Feedback Routes
 Route::post('/feedback/{exercise}/store/', [FeedbackController::class, 'store'])->name('feedback.store');

@@ -29,8 +29,6 @@
                 </form>
             </div>
 
-            @include('partials.prompt')
-
         </div>
     </div>
 </div>

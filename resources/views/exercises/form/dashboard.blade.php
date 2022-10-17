@@ -1,4 +1,4 @@
-@include('partials.tracking_complete')
+@include('layouts.tracking_complete')
 <form enctype="multipart/form-data" action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="form_form_{{ $e->id }}">
     @csrf
     @foreach($e->questions as $question)
@@ -46,5 +46,5 @@
         </div>
     @endforeach
         <br>
-    @include('partials.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
+    @include('layouts.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
 </form>

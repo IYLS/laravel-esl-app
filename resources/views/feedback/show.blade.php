@@ -10,7 +10,7 @@
                 <p class="text-secondary text-center"><small>Nothing to show</small></p>
             @endforelse
         </div>
-        @include('alerts.confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete feedback settings for exercise with id $exercise->id.", 'button_target_id' => 'delete_feedback_modal', 'route' => route("feedback.destroy", $exercise->id)])
+        @include('modals.questions.delete_confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete feedback settings for exercise with id $exercise->id.", 'button_target_id' => 'delete_feedback_modal', 'route' => route("feedback.destroy", $exercise->id)])
         <div class="ms-1 me-1">
             <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_feedback_modal">
                 Delete feedback settings <i class="mdi mdi-delete"></i>
@@ -27,4 +27,4 @@
     @endisset
 </div>
 
-@include('exercises.modals.feedback_modal')
+@include('modals.exercises.feedback_modal')

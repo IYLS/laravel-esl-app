@@ -3,7 +3,7 @@
         <h4>{{ $e->title }}</h4>
         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
         <p class="text-secondary">{{ $e->description }}</p>
-        @include('partials.tracking_complete')
+        @include('layouts.tracking_complete')
         <form enctype="multipart/form-data" action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'open_ended');" method="POST" id="open_ended_form_{{ $e->id }}">
             @csrf
             @forelse($e->questions as $question)
@@ -33,7 +33,7 @@
                 </div>
             @endforelse
             <br>
-            @include('partials.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
+            @include('layouts.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
         </form>
     </div>
 </div>

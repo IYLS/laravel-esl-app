@@ -80,7 +80,7 @@
                                 <button type="button" id="add_{{ $type->underscore_name }}_button" class="btn btn-sm btn-primary mt-1" data-bs-toggle="modal" data-bs-target="#add_{{ $type->underscore_name}}_exercise_modal_{{ $section->id }}">
                                     {{ $type->name }}
                                 </button>
-                                @include('exercises.modals.exercise_modal', ['section_id' => $section->id, 'type' => $type])
+                                @include('modals.exercises.add', ['section_id' => $section->id, 'type' => $type])
                             </div>
                         @empty
                         @endforelse
@@ -93,25 +93,25 @@
                             <button type="button" id="add_multiple_choice_button" class="btn btn-sm btn-success mt-1" data-bs-toggle="modal" data-bs-target="#add_meta_multiple_choice_exercise_modal_{{ $section->id }}">
                                 Multiple choice
                             </button>
-                            @include('exercises.modals.metacognition', ['section' => $section, 'underscore_type' => 'multiple_choice', 'type' => 'Multiple Choice'])
+                            @include('modals.exercises.metacognition', ['section' => $section, 'underscore_type' => 'multiple_choice', 'type' => 'Multiple Choice'])
                         </div>
                         <div class="ms-1 me-1">
                             <button type="button" id="add_drag_and_drop_button" class="btn btn-sm btn-success mt-1" data-bs-toggle="modal" data-bs-target="#add_meta_drag_and_drop_exercise_modal_{{ $section->id }}">
                                 Drag and Drop
                             </button>
-                            @include('exercises.modals.metacognition', ['section' => $section, 'underscore_type' => 'drag_and_drop', 'type' => 'Drag and Drop'])
+                            @include('modals.exercises.metacognition', ['section' => $section, 'underscore_type' => 'drag_and_drop', 'type' => 'Drag and Drop'])
                         </div>
                         <div class="ms-1 me-1">
                             <button type="button" id="add_open_ended_button" class="btn btn-sm btn-success mt-1" data-bs-toggle="modal" data-bs-target="#add_meta_open_ended_exercise_modal_{{ $section->id }}">
                                 Open-ended
                             </button>
-                            @include('exercises.modals.metacognition', ['section' => $section, 'underscore_type' => 'open_ended', 'type' => 'Open Ended'])
+                            @include('modals.exercises.metacognition', ['section' => $section, 'underscore_type' => 'open_ended', 'type' => 'Open Ended'])
                         </div>
                         <div class="ms-1 me-1">
                             <button type="button" id="add_form_button" class="btn btn-sm btn-success mt-1" data-bs-toggle="modal" data-bs-target="#add_meta_form_exercise_modal_{{ $section->id }}">
                                 Form
                             </button>
-                            @include('exercises.modals.metacognition', ['section' => $section, 'underscore_type' => 'form', 'type' => 'Form'])
+                            @include('modals.exercises.metacognition', ['section' => $section, 'underscore_type' => 'form', 'type' => 'Form'])
                         </div>
                     </div>
                 </div>
