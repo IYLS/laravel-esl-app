@@ -99,47 +99,47 @@ class UnitController extends Controller
     {
         $unit = Unit::find($unit);
 
-        $unit->title = $request->title;
-        $unit->author = $request->author;
-        $unit->description = $request->description;
+        if($request->has('title' and $request->title != '')) $unit->title = $request->title;
+        if($request->has('author' and $request->author != '')) $unit->author = $request->author;
+        if($request->has('description' and $request->description != '')) $unit->description = $request->description;
 
-        $unit->listening_tips = $request->listening_tips;
+        if($request->has('listening_tips') and $request->listening_tips != '') $unit->listening_tips = $request->listening_tips;
         if($request->listening_tips_enabled == 'true')
         {
-            $unit->$listening_tips_enabled = true;
+            $unit->listening_tips_enabled = true;
         } else {
             $unit->listening_tips_enabled = false;
         }
 
-        $unit->cultural_notes = $request->cultural_notes;
+        if($request->has('cultural_notes') and $request->cultural_notes != '') $unit->cultural_notes = $request->cultural_notes;
         if ($request->cultural_notes_enabled == 'true') {
             $unit->cultural_notes_enabled = true;
         } else {
             $unit->cultural_notes_enabled = false;
         }
 
-        $unit->transcript = $request->transcript;
+        if($request->has('transcript') and $request->transcript != '') $unit->transcript = $request->transcript;
         if ($request->transcript_enabled == 'true') {
             $unit->transcript_enabled = true;
         } else {
             $unit->transcript_enabled = false;
         }
 
-        $unit->glossary = $request->glossary;
+        if($request->has('glossary') and $request->glossary != '') $unit->glossary = $request->glossary;
         if ($request->glossary_enabled == 'true') {
             $unit->glossary_enabled = true;
         } else {
             $unit->glossary_enabled = false;
         }
         
-        $unit->translation = $request->translation;
+        if($request->has('translation') and $request->translation != '') $unit->translation = $request->translation;
         if ($request->translation_enabled == 'true') {
             $unit->translation_enabled = true;
         } else {
             $unit->translation_enabled = false;
         }
 
-        $unit->dictionary = $request->dictionary;
+        if($request->has('dictionary') and $request->dictionary != '') $unit->dictionary = $request->dictionary;
         if ($request->dictionary_enabled == 'true') {
             $unit->dictionary_enabled = true;
         } else {
@@ -153,9 +153,11 @@ class UnitController extends Controller
             $unit->video_name = $video_file_name;
         }
 
-        $unit->save();
+        if($unit->isDirty()) {
+            $unit->save();
+        }
 
-        return redirect()->route('units.index')->with('success', "$unit->title Unit updated successfully");
+        return redirect()->route('units.show', $unit->id)->with('success', "$unit->title Unit updated successfully");
     }
 
     public function destroy($id)

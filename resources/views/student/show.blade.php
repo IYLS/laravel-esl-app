@@ -25,7 +25,7 @@
 
 <div class="p-4 row w-100 h-100 col-12">
     <h5 class="pl-2">{{ $unit->title }}</h5>
-    <div class="row">
+    <div class="row sticky-top p-1" style="background-color: white;">
         <div class="col-12 col-xl-4">
             @forelse($keywords as $keyword)
                 @php $modal_id = "keyword_modal-$keyword->id"; @endphp
@@ -38,10 +38,6 @@
         <div class="col-12 col-xl-8">
             @include('exercises.help_options', ['unit' => $unit])
         </div>
-    </div>
-    <div class="row" id="keywords_content">
-        <div class="col-4" id="keywords_detail"></div>
-        <div class="col-8" id="help_option_detail"></div>
     </div>
 
     {{-- Video section --}}
