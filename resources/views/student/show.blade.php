@@ -81,9 +81,11 @@
                     </div>
                     @endif
                     <div class="nav flex-column mt-2 nav-pills col-12 col-xl-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        @foreach($section->exercises as $e)
+                        @forelse($section->exercises->sortBy('position') as $e)
                             <button class="nav-link @if($e->subtype == 99) meta @endif" id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" type="button" role="tab" aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" aria-selected="false" onclick="hideFeedback();startTimer();resetIntentCount();">{{ $e->title }}</button>
-                        @endforeach
+                        @empty
+                            <p class="text-center text-secondary"><small>No exercises added yet.</small></p>    
+                        @endforelse
                     </div>
                     <div class="tab-content container-fluid col-12 col-xl-10" id="v-pills-tabContent">
                         @foreach($section->exercises as $e)

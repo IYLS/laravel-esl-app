@@ -20,6 +20,7 @@ class ExerciseSeeder extends Seeder
                 'image_name' => null,
                 'video_name' => null,
                 'section_id' => 1,
+                'position' => 1,
                 'exercise_type_id' => 6
             ],
             [
@@ -31,6 +32,7 @@ class ExerciseSeeder extends Seeder
                 'image_name' => null,
                 'video_name' => null,
                 'section_id' => 1,
+                'position' => 2,
                 'exercise_type_id' => 1
             ],
             [
@@ -42,6 +44,7 @@ class ExerciseSeeder extends Seeder
                 'video_name' => null,
                 'subtype' => null,
                 'section_id' => 1,
+                'position' => 3,
                 'exercise_type_id' => 5
             ],
             [
@@ -53,6 +56,7 @@ class ExerciseSeeder extends Seeder
                 'video_name' => 'n1t2.mp4',
                 'subtype' => 1,
                 'section_id' => 1,
+                'position' => 5,
                 'exercise_type_id' => 2
             ],
             [
@@ -64,6 +68,7 @@ class ExerciseSeeder extends Seeder
                 'video_name' => 'n1t2.mp4',
                 'subtype' => 2,
                 'section_id' => 1,
+                'position' => 4,
                 'exercise_type_id' => 2
             ],
             [
@@ -75,6 +80,7 @@ class ExerciseSeeder extends Seeder
                 'image_name' => null,
                 'video_name' => null,
                 'section_id' => 1,
+                'position' => 6,
                 'exercise_type_id' => 1
             ],
             [
@@ -86,6 +92,7 @@ class ExerciseSeeder extends Seeder
                 'video_name' => null,
                 'subtype' => 2,
                 'section_id' => 1,
+                'position' => 7,
                 'exercise_type_id' => 3
             ],
             [
@@ -97,6 +104,7 @@ class ExerciseSeeder extends Seeder
                 'video_name' => null,
                 'subtype' => 99,
                 'section_id' => 2,
+                'position' => 1,
                 'exercise_type_id' => 6
             ],
             [
@@ -108,6 +116,7 @@ class ExerciseSeeder extends Seeder
                 'video_name' => null,
                 'subtype' => 3,
                 'section_id' => 2,
+                'position' => 2,
                 'exercise_type_id' => 2
             ],
             [
@@ -119,6 +128,7 @@ class ExerciseSeeder extends Seeder
                 'video_name' => null,
                 'subtype' => 99,
                 'section_id' => 2,
+                'position' => 3,
                 'exercise_type_id' => 6
             ],
             [
@@ -130,6 +140,7 @@ class ExerciseSeeder extends Seeder
                 'video_name' => null,
                 'subtype' => 1,
                 'section_id' => 2,
+                'position' => 4,
                 'exercise_type_id' => 3
             ],
             [
@@ -141,6 +152,7 @@ class ExerciseSeeder extends Seeder
                 'video_name' => null,
                 'subtype' => 4,
                 'section_id' => 3,
+                'position' => 1,
                 'exercise_type_id' => 2
             ],
             [
@@ -152,6 +164,7 @@ class ExerciseSeeder extends Seeder
                 'video_name' => null,
                 'subtype' => 1,
                 'section_id' => 3,
+                'position' => 2,
                 'exercise_type_id' => 4
             ],
             [
@@ -163,6 +176,7 @@ class ExerciseSeeder extends Seeder
                 'video_name' => null,
                 'subtype' => 99,
                 'section_id' => 3,
+                'position' => 3,
                 'exercise_type_id' => 6
             ],
             [
@@ -174,6 +188,7 @@ class ExerciseSeeder extends Seeder
                 'video_name' => null,
                 'subtype' => 99,
                 'section_id' => 3,
+                'position' => 4,
                 'exercise_type_id' => 6
             ],
         ]);

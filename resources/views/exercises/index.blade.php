@@ -25,23 +25,41 @@
 
             <table class="table">
                 <thead>
+                    <th class="d-none d-md-table-cell">#</th>
                     <th>Activity title</th>
                     <th class="d-none d-md-table-cell">Description</th>
                     <th class="d-none d-md-table-cell">Type</th>
+                    <th class="d-none d-md-table-cell">Position</th>
                     <th>Actions</th>
                 </thead>
                 <tbody>
-                    @forelse($section->exercises as $exercise)
+                    @forelse($section->exercises->sortBy('position') as $exercise)
                         <tr @if($exercise->subtype == 99 or $exercise->subtype == 991) style="background-color: #5fde72;" @endif>
-                            <td class="col-2">
+                            <td class="col-1">
+                                {{ $loop->index+1 }}.
+                            </td>
+                            <td class="col-1">
                                 {{ $exercise->title }}
                             </td>
-                            <td class="col-6 d-none d-md-table-cell">
+                            <td class="col-7 d-none d-md-table-cell">
                                 {{ $exercise->description }}
                             </td>
                             <td class="col-2 d-none d-md-table-cell">
                                 {{ $exercise->exerciseType->name }}
                             </td>
+                                @csrf
+                                <td class="col-1 d-none d-md-table-cell">
+                                    <form action="{{ route('exercises.position', ["$unit->id", "$exercise->id"]) }}" method="POST">
+                                        @csrf
+                                        <select class="form-select" name="position" id="position" onchange="this.form.submit()">
+                                            @forelse($section->exercises as $e)
+                                                <option value="{{ $loop->index + 1 }}" @if($exercise->position == $loop->index+1) selected @endif>{{ $loop->index + 1 }}</option>
+                                            @empty
+                                                <p class="text-secondary text-center"><small>No exercises to sort.</small></p>
+                                            @endforelse
+                                        </select>
+                                    </form>
+                                </td>
                             <td class="col-1">
                                 <div class="d-flex">
                                     <form action="{{ route("exercises.destroy", [$exercise->section->unit_id, $exercise->exercise_type_id, $exercise->id]) }}" method="POST">

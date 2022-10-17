@@ -20,7 +20,8 @@ class ExerciseController extends Controller
     public function index($unit_id)
     {   
         $types = ExerciseType::all();
-        $unit = Unit::where("id", $unit_id)->first();
+        $unit = Unit::find($unit_id);
+
         return view('exercises.index', compact('unit', 'types'));
      }
 
@@ -106,11 +107,44 @@ class ExerciseController extends Controller
         return redirect()->route('exercises.index', [$exercise->section->unit_id]);
     }
 
-    private function getExercises($unit_id, $section_name)
+    public function update_position(Request $request, $unit_id, $exercise_id) 
     {
-        $section = Section::where('unit_id', $unit_id)->where('name', $section_name)->get()->first();
-        $exercises = $section->exercises()->get();
-        return $exercises;
+        
+        $exercise = Exercise::find($exercise_id);
+        $section_exercises = Exercise::where('section_id', $exercise->section_id)->get();
+
+        $wanted_position = $request->position;
+        $original_position = $exercise->position;
+
+        if($wanted_position == $original_position)
+        {
+            // NO HACER NADA PORQUE SON IGUALES
+            return redirect()->route('exercises.index', $unit_id)->with('success', 'No changes');
+
+        } else if($wanted_position > $original_position) {
+            foreach($section_exercises as $e)
+            {
+                if($e->position <= $wanted_position and $e->position > $original_position)
+                {
+                    $e->position -= 1;
+                    $e->save();
+                }
+            }
+        } else if($wanted_position < $original_position) {
+            foreach($section_exercises as $e)
+            {
+                if($e->position >= $wanted_position and $e->position < $original_position)
+                {
+                    $e->position += 1;
+                    $e->save();
+                }
+            }
+        }
+
+        $exercise->position = $wanted_position;
+        $exercise->save();
+
+        return redirect()->route('exercises.index', $unit_id)->with('success', 'Exercise position updated successfully');
     }
 
     private function getVideoFrom(Request $request)
