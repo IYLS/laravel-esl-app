@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row d-flex align-items-center">
         <div class="mt-3 mb-1 col-10">
-            <h3>Unit {{ $unit->id . " - " . '"' . $unit->title . '"' }}</h3>
+            <h3>{{ $unit->title }}</h3>
         </div>
         <div class="col-2">
             <a href="{{ route('units.show', $unit->id) }}">

@@ -26,15 +26,17 @@
 <div class="p-4 row w-100 h-100 col-12">
     <h5 class="pl-2">{{ $unit->title }}</h5>
     <div class="row">
-        <div class="col-12 col-lg-4">
+        <div class="col-12 col-xl-4">
             <small class="text-secondary">Keywords:</small>
-            @foreach($keywords as $keyword)
-            @php $modal_id = "keywordModal"; @endphp
-            <button type="button" id="{{ $modal_id . "Button" }}" class="mt-1 btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#{{ $modal_id }}">{{ $keyword->keyword }}</button>
-            @include('modals.keywords.show', ['modal_id' => $modal_id, 'description' => $keyword->description, 'modal_title' => $keyword->keyword])
-            @endforeach
+            @forelse($keywords as $keyword)
+                @php $modal_id = "keyword_modal-$keyword->id"; @endphp
+                <button type="button" id="{{ $modal_id . "_button" }}" class="mt-1 btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#{{ $modal_id }}">{{ $keyword->keyword }}</button>
+                @include('modals.keywords.show', ['modal_id' => $modal_id, 'description' => $keyword->description, 'modal_title' => $keyword->keyword])
+            @empty
+                <p class="text-center text-secondary"><small>No keywords added for this unit.</small></p>
+            @endforelse
         </div>
-        <div class="col-12 col-lg-8">
+        <div class="col-12 col-xl-8">
             @include('exercises.help_options', ['unit' => $unit])
         </div>
     </div>
@@ -44,14 +46,20 @@
     </div>
 
     {{-- Video section --}}
-    <div class="col-12 col-xl-5">
-        <div class="ratio ratio-16x9 mt-3">
-            <iframe src="{{ asset('esl/public/storage/files') . "/" . $unit->video_name }}" title="Video" allowfullscreen controls></iframe>
-        </div>
+    <div class="col-12 col-xl-4">
+        @if(isset($unit->video_name) and $unit->video_name != null and $unit->video_name != '')
+            <div class="ratio ratio-16x9 mt-3">
+                <iframe src="{{ asset('esl/public/storage/files') . "/" . $unit->video_name }}" title="Video" allowfullscreen controls></iframe>
+            </div>
+        @else
+            <div class="text-center">
+                <p class="text-secondary"><small>No video set for this unit.</small></p>
+            </div>
+        @endif
     </div>
 
     {{-- Exercises and content section --}}
-    <div class="col-12 col-xl-7 bg-light mt-2 p-3 rounded shadow">
+    <div class="col-12 col-xl-8 bg-light mt-2 p-3 rounded shadow">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             @foreach($unit->sections as $section)
                 <li class="nav-item" role="presentation">
@@ -123,9 +131,16 @@
                                         <p class="text-secondary">{{ $e->description }}</p>
                                         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
                                         @include('partials.tracking_complete')
-                                        @if(isset($e->video_name) and $e->video_name != null)
+
+                                        @if(isset($e->video_name) and $e->video_name != null and $e->video_name != '')
                                             <div class="ratio ratio-16x9 mt-3">
                                                 <iframe src="{{ asset('esl/public/storage/files') . "/" . $e->video_name }}" title="Video" allowfullscreen controls></iframe>
+                                            </div>
+                                        @endif
+
+                                        @if(isset($e->image_name) and $e->image_name != null and $e->image_name != '')
+                                            <div class="row m-3">
+                                                <img src="{{ asset('esl/public/storage/files'. "/" . $e->image_name) }}" class="img-fluid col-12 col-lg-8" alt="img">
                                             </div>
                                         @endif
 

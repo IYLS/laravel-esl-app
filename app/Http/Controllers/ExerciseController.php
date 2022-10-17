@@ -42,7 +42,8 @@ class ExerciseController extends Controller
         $exercise->exercise_type_id = $type_id;
         $exercise->section_id = $section_id;
         $exercise->extra_info = $request->extra_info;
-
+        
+        $exercise->image_name = $this->getImageFrom($request);
         $exercise->video_name = $this->getVideoFrom($request);
 
         if(isset($request->subtype)) {
@@ -73,6 +74,25 @@ class ExerciseController extends Controller
         $exercise->description = $request->description;
         $exercise->section_id = $request->section;
         $exercise->extra_info = $request->extra_info;
+
+        if($this->getVideoFrom($request) == null)
+        {
+            $exercise->image_name = $exercise->image_name;
+        }
+        else
+        {
+            $exercise->image_name = $this->getVideoFrom($request);
+        }
+
+        if($this->getImageFrom($request) == null)
+        {
+            $exercise->image_name = $exercise->image_name;
+        }
+        else
+        {
+            $exercise->image_name = $this->getImageFrom($request);
+        }
+
         $exercise->save();
 
         return redirect()->route('exercises.show', $exercise->id);
@@ -101,6 +121,19 @@ class ExerciseController extends Controller
             $video_file_path = $request->file('video')->storeAs('public/files', $video_file_name);
 
             return $video_file_name;
+        } else {
+            return null;
+        }
+    }
+
+    private function getImageFrom(Request $request)
+    {
+        if($request->hasFile('image') and $request->file('image')->isValid()) 
+        {
+            $image_name = $request->file('image')->getClientOriginalName();
+            $image_path = $request->file('image')->storeAs('public/files', $image_name);
+
+            return $image_name;
         } else {
             return null;
         }

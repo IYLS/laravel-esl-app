@@ -21,6 +21,11 @@
                             <option value="3">Evaluating Statements</option>
                             <option value="4">Multiple choice</option>
                         </select>
+                        <br>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">(Optional) Select image file</label>
+                            <input class="form-control" type="file" name="image" id="image" accept="image/*">
+                        </div>
                     @elseif($type->underscore_name == "fill_in_the_gaps")
                         <br>
                         <select id="subtype" name="subtype" class="form-select" required>

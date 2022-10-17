@@ -4,7 +4,7 @@
 
 <div class="container">
     <div class="mt-3 mb-2 p-2">
-        <h3>Unit {{ $unit->id . " - " . '"' . $unit->title . '"' }}</h3>
+        <h3>{{ $unit->title }}</h3>
     </div>
     <table class="table" id="sections_table">
     <thead>
