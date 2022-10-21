@@ -14,6 +14,7 @@
                     <div class="card-body">
                       <h5 class="card-title">Users</h5>
                       <p class="card-text">Manage users, assign each user a group, password or permission to access the platform.</p>
+                      <br>
                       <a href="{{ route('users.index') }}" class="btn btn-primary">Go to Users</a>
                     </div>
                   </div>
@@ -52,6 +53,10 @@
                   </div>
                 </div>
               </div>
+        </div>
+        <br>
+        <div class="p-2">
+            <h3>Recent Activity</h3>
         </div>
     @elseif(Auth::user() != null and Auth::user()->role == 'student')
         <div class="p-5">

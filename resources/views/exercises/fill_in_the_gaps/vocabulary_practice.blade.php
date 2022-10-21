@@ -3,22 +3,21 @@
     <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="fill_in_the_gaps_form_{{ $e->id }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'fill_in_the_gaps')">
         @csrf
         <h5>Available words</h5>
-        <div class="">
-            <ul class="list-group row list-group-horizontal">
-                @php 
-                    $words = array();
-                    $questions = $e->questions;
-                    foreach($questions as $q)
-                    {
-                        array_push($words, $q->answer);
-                    }
-    
-                    shuffle($words);
-                @endphp
+        @php 
+            $words = array();
+            $questions = $e->questions;
+            foreach($questions as $q) array_push($words, $q->answer);
+
+            shuffle($words);
+        @endphp
+        <div class="container">
+            <div class="row">
                 @foreach($words as $word)
-                    <li class="border col-12 col-lg-2 list-group-item clickable" onclick="strikeWord(this)">{{ $word }}</li>
+                    <div class="col pt-2 pb-2 border clickable" onclick="strikeWord(this)">
+                        {{ $word }}
+                    </div>
                 @endforeach
-            </ul>
+            </div>
         </div>
         <div class="mt-4 pt-2 pb-2 mb-2">
             <ol type="1">
@@ -37,7 +36,7 @@
                         @elseif(count($statement_split) == 1)
                             <p class="d-inline">{{ $statement_split[0] }}</p>
                             &nbsp;
-                            <input class="d-inline border rounded" style="height: 24px;" type="text" name="answer-{{ $question->id }}>
+                            <input class="d-inline border rounded" style="height: 24px;" type="text" name="answer-{{ $question->id }}"">
                         @endif
 
                         @include('feedback.question', ['feedbacks' => $question->feedbacks])

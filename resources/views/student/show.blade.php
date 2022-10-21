@@ -5,7 +5,10 @@
     .strikable { text-decoration: line-through }
     .not-strikable { text-decoration: none }
     .modal-backdrop { opacity: 0 !important }
-    .clickable { cursor: pointer !important }
+    .clickable {
+        cursor: pointer !important;
+        background-color: white;
+    }
 
     .meta {
         color: green !important;
@@ -209,6 +212,7 @@
 </div>
 
 
+{{-- Time spent on exercise --}}
 <script>
     var startTime;
 
@@ -218,6 +222,7 @@
     }
 </script>
 
+{{-- Helper function to transform milliseconds to minutes and seconds format --}}
 <script>
     function millisToMinutesAndSeconds(millis) {
         var minutes = Math.floor(millis / 60000);
@@ -226,6 +231,7 @@
     }
 </script>
 
+{{-- Intent number count --}}
 <script>
     var intentCount = 0;
 
@@ -356,9 +362,16 @@
         var responses = [];
 
         questions.forEach(function (question) {
-            const alternatives = document.getElementsByName(`question-${question.id}`);            
+            const alternatives = document.getElementsByName(`question-${question.id}`);
 
             alternatives.forEach((alternative) => {
+                if (document.getElementById(`${alternative.value}-explainatory`) != null) {
+                    document.getElementById(`${alternative.value}-explainatory`).hidden = true;
+                }
+            });
+
+            alternatives.forEach((alternative) => {
+
                 // Alternativa correcta
                 if (alternative.checked && question.correct_answer == alternative.value) {
                     responses.push({'id': `${question.id}`, 'response': `${question.correct_answer}`});
@@ -366,15 +379,15 @@
                     document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
                     document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
 
-
-
                     correct_questions += 1;
                 // Alternativa incorrecta
                 } else if(alternative.checked) {
                     document.getElementById(`question-${question.id}-feedback-wrong`).hidden = false;
                     document.getElementById(`question-${question.id}-feedback-correct`).hidden = true;
-
-
+ 
+                    if (document.getElementById(`${alternative.value}-explainatory`) != null) {
+                        document.getElementById(`${alternative.value}-explainatory`).hidden = false;
+                    }
 
                     responses.push({'id': `${question.id}`, 'response': `${alternative.parentNode.children[1].innerHTML.trim()}`});
                 }

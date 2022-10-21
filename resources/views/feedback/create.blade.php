@@ -20,7 +20,7 @@
 
             <div class="card p-2 mt-2 mb-2">
                 <h4>Exercise based feedback</h4>
-                @foreach($feedback_types->where('level', 'exercise') as $type)
+                @forelse($feedback_types->where('level', 'exercise') as $type)
                     <br>
                     <div class="mb-2 p-2">
                         <h5>{{ $type->name }}</h5>
@@ -34,13 +34,16 @@
                             </div>
                         @endif
                     </div>
-
-                @endforeach
+                @empty
+                    <div>
+                        <p class="text-secondary text-center"><small>Empty</small></p>
+                    </div>
+                @endforelse
             </div>
             
             <div class="card p-2 mt-2 mb-2">
                 <h4>Question based feedback</h4>
-                @foreach($feedback_types->where('level', 'question') as $type)
+                @forelse($feedback_types->where('level', 'question') as $type)
                     @foreach($exercise->questions as $question)
                         @if($type->text_based and $type->id == 5)
 
@@ -69,14 +72,22 @@
                             @endif
                             <div class="mb-2 col-12 col-lg-6">
                                 @foreach($question->alternatives as $alternative)
-                                    <div class="col-12 col-md-8 d-flex justify-content-center mb-1 align-items-center">
-                                        <p class="me-1">{{ $loop->index + 1 . ". " }}</p>
-                                        <input type="text" class="form-control me-1" name="data[question][{{ $type->id }}][{{ $question->id }}][{{ $alternative->id }}][message]" required placeholder="{{ $type->name }} alternative 1">
-                                        <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#feedback_description_{{ $type->id }}_modal">
-                                            <i class="mdi mdi-information-outline" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $type->description }}"></i>
-                                        </button>
-                                        @include('modals.exercises.feedback_description', ['type' => "$type->name", 'description' => "$type->description", 'id' => "$type->id"])
-                                    </div>
+                                    {{ $alternative->title }}
+                                    @if(!$alternative->correct_alt)
+                                        <div class="col-12 col-md-8 d-flex justify-content-center mb-1 align-items-center">
+                                            <p class="me-1">{{ $loop->index + 1 . ". " }}</p>
+                                            <input type="text" class="form-control me-1" name="data[question][{{ $type->id }}][{{ $question->id }}][{{ $alternative->id }}][message]" required placeholder="{{ $type->name }} alternative {{ $loop->index + 1 }}">
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#feedback_description_{{ $type->id }}_modal">
+                                                <i class="mdi mdi-information-outline" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $type->description }}"></i>
+                                            </button>
+                                            @include('modals.exercises.feedback_description', ['type' => "$type->name", 'description' => "$type->description", 'id' => "$type->id"])
+                                        </div>
+                                    @elseif($alternative->correct_alt)
+                                        <div class="col-12 col-md-8 d-flex justify-content-center mb-1 align-items-center">
+                                            <p class="me-1">{{ $loop->index + 1 . ". " }}</p>
+                                            <input type="text" class="form-control me-1" value="Alternative {{ $loop->index + 1 }} is the correct one" disabled>
+                                        </div>
+                                    @endif
                                 @endforeach
                             </div>
                         </div>
@@ -107,7 +118,11 @@
                             </div>
                         @endif
                     @endforeach
-                @endforeach
+                @empty
+                    <div>
+                        <p class="text-secondary text-center"><small>Empty</small></p>
+                    </div>
+                @endforelse
             </div>
 
             <button class="btn btn-primary" type="submit">

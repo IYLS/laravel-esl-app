@@ -14,7 +14,7 @@ class AlternativeSeeder extends Seeder
             [            
                 'id' => 14,
                 'title' => 'Only I',
-                'correct_alt' => true,
+                'correct_alt' => false,
                 'question_id' => 14
             ],
             [
@@ -26,7 +26,7 @@ class AlternativeSeeder extends Seeder
             [
                 'id' => 17,
                 'title' => 'I, II & III',
-                'correct_alt' => false,
+                'correct_alt' => true,
                 'question_id' => 14
             ],
             [            

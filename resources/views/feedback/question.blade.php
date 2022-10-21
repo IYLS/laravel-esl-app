@@ -9,8 +9,13 @@
         @endif
 
         @if($feedbacks->where('feedback_type_id', 5) != null)
-            @foreach($feedbacks->where('feedback_type_id', 5) as $feedback)
-                <p class="show-on-incorrect-{{ $question->id }}">{{ $feedback->message }}</p>
+            @foreach($feedbacks->where('feedback_type_id', 5) as $exp)
+                <p class="show-on-incorrect-{{ $question->id }}" id="{{ $question->alternatives[$loop->index]->title }}-explainatory" hidden>{{ $exp->message }}</p>
+                @php $count = count($feedbacks->where('feedback_type_id', 5)); @endphp 
+
+                @if($loop->index == $count-1)
+                    <p class="show-on-incorrect-{{ $question->id }}" id="{{ $question->alternatives[$count]->title }}-explainatory" hidden>{{ $exp->message }}</p>
+                @endif
             @endforeach
         @endif
 
@@ -23,10 +28,10 @@
         @endif
 
         @if($feedbacks->where('feedback_type_id', 3)->first() != null)
-        <audio controls class="col-12" class="show-on-incorrect-{{ $question->id }}">
-            <source src="{{ asset('esl/public/storage/files/'.$feedbacks->where('feedback_type_id', 3)->first()->audio_name) }}" type="audio/mpeg">
-        </audio>
-    @endif
+            <audio controls class="col-12" class="show-on-incorrect-{{ $question->id }}">
+                <source src="{{ asset('esl/public/storage/files/'.$feedbacks->where('feedback_type_id', 3)->first()->audio_name) }}" type="audio/mpeg">
+            </audio>
+        @endif
     
     </div>
 @endif

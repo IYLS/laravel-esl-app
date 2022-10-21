@@ -4,11 +4,31 @@
         <br>
         <p>Types configured:</p>
         <div class="col-12 col-md-8">
-            @forelse($exercise->feedbacks as $fb)
-                <p>- {{ $fb->feedbackType->name }}</p>
-            @empty
-                <p class="text-secondary text-center"><small>Nothing to show</small></p>
-            @endforelse
+            @php
+                $types = array();
+
+                foreach($exercise->feedbacks as $fb) {
+                    $type_name = $fb->feedbackType->name;
+                    if(!in_array($type_name, $types)) array_push($types, $type_name);
+                }
+
+                foreach($question->feedbacks as $fb) {
+                    $type_name = $fb->feedbackType->name;
+                    if(!in_array($type_name, $types)) array_push($types, $type_name);
+                }
+
+            @endphp
+
+            <ul>
+                @forelse($types as $fb)
+                    <li>
+                        <p>{{ $fb }}</p>
+                    </li>
+                @empty
+                    <p class="text-secondary text-center"><small>Nothing to show</small></p>
+                @endforelse            
+            </ul>
+
         </div>
         @include('modals.questions.delete_confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete feedback settings for exercise with id $exercise->id.", 'button_target_id' => 'delete_feedback_modal', 'route' => route("feedback.destroy", $exercise->id)])
         <div class="ms-1 me-1">

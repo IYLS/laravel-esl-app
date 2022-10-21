@@ -139,34 +139,18 @@
                         @endswitch
                         @break
                     @case('form')
-                        <div class="row p-2 d-flex justify-content-center" id="col-selection-form">
-                            <div class="col-12">
-                                <label class="form-label d-flex justify-content-center">
-                                    <p class="text-center">How many columns do you want for this activity?</p>
-                                </label>
-                            </div>
-                            <div class="col-4">
-                                <input class="form-control" type="number" placeholder="CANTIDAD DE COLUMNAS (1-2)" min="1" max="2" value="1" id="col-number">
-                            </div>
-                            <div class="col-4">
-                                <a class="btn btn-primary" onclick="showSelectedForm()">Show form</a>
-                            </div>
-                        </div>
-
-                        <div id="single-col-form" class="p-1" hidden>
-                            <input class="form-control mb-1" name="title" type="text" placeholder="Activity title">
-                            <input class="form-control mb-1" name="statement" type="text" placeholder="Column title">
-                            <a class="btn btn-primary btn-sm" onclick="addColumn()">Add question</a>
-                        </div>
-
-                        <div id="double-col-form" class="p-1" hidden>
+                        @php 
+                            $id = count($exercise->questions);
+                        @endphp
+                        <div id="double-col-form" class="p-1">
                             <input class="form-control mb-1" name="title" type="text" placeholder="Activity title">
                             <input class="form-control mb-1" name="statement" type="text" placeholder="Column 1 title">
-                            <input class="form-control mb-1" name="answer" type="text" placeholder="Column 2 title">
-                            <a class="btn btn-primary btn-sm" onclick="addColumn()">Add question</a>
-                        </div>
+                            <input class="form-control mb-1" name="answer" type="text" placeholder="(Optional) Column 2 title">
+                            <p class="text-secondary mb-1"><small>If you only need a single column leave this field empty.</small></p>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="addColumn({{ json_encode($id) }})">Add question</button>
 
-                        <div id="questions-form" class="mt-2 p-1"></div>
+                            <div id="questions-form-{{ $id }}" class="mt-2 p-1"></div>
+                        </div>
 
                     @endswitch
 
@@ -198,8 +182,8 @@
         }
     }
 
-    function addColumn() {
-        const questionsContainer = document.getElementById('questions-form');
+    function addColumn(id) {
+        const questionsContainer = document.getElementById(`questions-form-${id}`);
 
         var number = document.createElement('p');
         number.setAttribute('class', "text-center mt-1");

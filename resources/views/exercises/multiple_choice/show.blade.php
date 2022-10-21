@@ -93,9 +93,10 @@
                                     array_push($alts, $alt->title);
                                 }
 
+                                $alts = implode("/", $alts);
+
                                 $statement_array = explode(" ", $question->statement);
 
-                                $found_words = 0;
                                 $final_word = "";
 
                                 $words_to_add = array();
@@ -103,9 +104,8 @@
                                 {
                                     if($word == ";;" or $word == ";;." or $word == ";;," or $word == ";;!" or $word == ";;?")
                                     {   
-                                        $new_word = $alts[$found_words];
+                                        $new_word = $alts;
                                         $final_word = $final_word . " " . "<strong class='text-primary'>$new_word</strong>";
-                                        $found_words += 1;
                                     }
 
                                     $final_word = $final_word . " " . $word;
@@ -115,16 +115,7 @@
                             @endphp
                             
                             <p>{{ $question_number }}. {!! $final_word !!}</p>
-                            <div class="col-12 mt-2 mb-1">
-                                <p>Correct answer(s):</p>
-                                <ul>
-                                    @foreach(explode(";", $question->correct_answer) as $answer)
-                                        <li>{{ $answer }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
                         </div>
-                        {{ $question->audio_name }}
                         <div class="row">
                             <audio controls style="width: 350px;">
                                 <source src="{{ asset('esl/public/storage/files/'.$question->audio_name) }}" type="audio/mpeg">
