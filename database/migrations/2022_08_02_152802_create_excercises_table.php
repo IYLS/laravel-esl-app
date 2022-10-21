@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('video_name')->nullable(true);
             $table->text('extra_info')->nullable(true);
             $table->integer('attempts_number')->nullable(true);
-            $table->integer('position');
+            $table->integer('position')->nullable(true);
             $table->softDeletes();
 
             $table->integer('section_id');
