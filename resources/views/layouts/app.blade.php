@@ -27,6 +27,19 @@
         <script src="{{ asset('jquery/jquery-3.3.1.min.js') }}"></script>
         <script src="{{ asset('jquery/jquery-ui.min.js') }}" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
 
+        {{-- TinyMCE Rich Text Editor --}}
+        <script src="https://cdn.tiny.cloud/1/22wxdv2g7v8j7kmvusmhk2uclbvw4einqvtkoaujelsv2o6x/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+        <script>
+            tinymce.init({
+                selector: 'textarea.mce-editor',
+                plugins: 'lists',
+                statusbar: false,
+                toolbar: 'undo redo | bold italic underline | checklist numlist bullist',
+                mode: "specific_textareas",
+                editor_selector: "mce-editor"
+            });
+        </script>
+
         <title>Ideas for Listening</title>
     </head>
     <body class="d-flex flex-column min-vh-100">

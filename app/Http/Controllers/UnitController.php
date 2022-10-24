@@ -10,20 +10,13 @@ use App\Http\Requests\StoreUnitRequest;
 
 class UnitController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('teacher');
-    }
+    public function __construct() { $this->middleware('teacher'); }
+    public function create() { return view('units.create'); }
     
     public function index()
     {
         $units = Unit::all();
         return view('units.index', compact('units'));
-    }
-
-    public function create()
-    {
-        return view('units.create');
     }
 
     public function store(StoreUnitRequest $request)
@@ -33,11 +26,12 @@ class UnitController extends Controller
         $new_unit->title = $request->title;
         $new_unit->author = $request->author;
         $new_unit->description = $request-> description;
+        $new_unit->video_copyright = $request->video_copyright;
 
         $new_unit->listening_tips = $request->listening_tips;
         if($request->listening_tips_enabled == 'true')
         {
-            $new_unit->$listening_tips_enabled = true;
+            $new_unit->listening_tips_enabled = true;
         } else {
             $new_unit->listening_tips_enabled = false;
         }
@@ -90,11 +84,6 @@ class UnitController extends Controller
         return view('units.show', compact('unit'));
     }
 
-    public function edit(Unit $unit)
-    {
-        //
-    }
-
     public function update(Request $request, $unit)
     {
         $unit = Unit::find($unit);
@@ -102,6 +91,7 @@ class UnitController extends Controller
         if($request->has('title' and $request->title != '')) $unit->title = $request->title;
         if($request->has('author' and $request->author != '')) $unit->author = $request->author;
         if($request->has('description' and $request->description != '')) $unit->description = $request->description;
+        if($request->has('video_copyright' and $request->video_copyright != '')) $unit->video_copyright = $request->video_copyright;
 
         if($request->has('listening_tips') and $request->listening_tips != '') $unit->listening_tips = $request->listening_tips;
         if($request->listening_tips_enabled == 'true')
@@ -175,7 +165,7 @@ class UnitController extends Controller
 
             return $video_file_name;
         } else {
-            return "";
+            return null;
         }
     }
 }

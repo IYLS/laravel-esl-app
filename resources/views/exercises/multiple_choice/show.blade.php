@@ -14,6 +14,9 @@
         </div>
         <h5>Title: {{ $exercise->title }}</h5>
         <p>Description: {{ $exercise->description }}</p>
+        @isset($exercise->extra_info)<p class="text-info">Additional Information: {{ $exercise->extra_info }}</p>@endisset
+        @isset($exercise->instructions)<p>Instructions: {{ $exercise->instructions }}</p>@endisset
+        @isset($exercise->translated_instructions)<p>Translated Instructions: {{ $exercise->translated_instructions }}</p>@endisset
         @include('modals.exercises.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
         <p>
             Subtype:

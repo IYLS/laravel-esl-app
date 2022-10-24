@@ -13,6 +13,10 @@
                     <br>
                     <input id="description" name="description" type="text" class="form-control" placeholder="(Optional) Description" value="{{ $exercise->description }}">
                     <br>
+                    <input id="instructions" name="instructions" type="text" class="form-control" placeholder="(Optional) Instructions">
+                    <br>
+                    <input id="translated_instructions" name="translated_instructions" type="text" class="form-control" placeholder="(Optional) Translated instructions">
+                    <br>
                     <select id="section" name="section" class="form-select">
                         @foreach($sections as $section)
                             <option value="{{ $section->id }}" @if($section->id == $exercise->section->id) selected @endif>{{ $section->name }}</option>

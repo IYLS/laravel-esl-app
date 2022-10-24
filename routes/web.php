@@ -99,3 +99,6 @@ Route::post('/units/{unit}/sections/{section}/update', [SectionController::class
 Route::get('tracking/index', [TrackingController::class, 'index'])->name('tracking.index');
 Route::post('tracking/store/{exercise}/{user}', [TrackingController::class, 'store'])->name('tracking.store');
 Route::get('/tracking/show/{tracking}', [TrackingController::class, 'show'])->name('tracking.show');
+
+// Set exercise position
+Route::post('/units/{unit}/exercises/set/{exercise}', [ExerciseController::class, 'update_position'])->name('exercises.position');

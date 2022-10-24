@@ -43,5 +43,3 @@ Route::get('/migrate_fresh_seed', function () {
 Route::get('/seed', function () {
     return Artisan::call('db:seed');
 });
-
-Route::post('/units/{unit}/exercises/set/{exercise}', [ExerciseController::class, 'update_position'])->name('exercises.position');

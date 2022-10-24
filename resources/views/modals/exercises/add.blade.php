@@ -11,6 +11,10 @@
                     <input id="title" name="title" type="text" class="form-control" placeholder="Title" required>
                     <br>
                     <input id="description" name="description" type="text" class="form-control" placeholder="(Optional) Description">
+                    <br>
+                    <input id="instructions" name="instructions" type="text" class="form-control" placeholder="(Optional) Instructions">
+                    <br>
+                    <input id="translated_instructions" name="translated_instructions" type="text" class="form-control" placeholder="(Optional) Translated instructions">
                     @if($type->underscore_name == "multiple_choice")
                         <br>
                         <select id="subtype" name="subtype" class="form-select" required>

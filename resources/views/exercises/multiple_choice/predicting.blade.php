@@ -1,5 +1,4 @@
 {{--  PREDICTING --}}
-<h5>{{ $e->instructions }}</h5>
 @foreach($e->questions as $question)
     @php
         $statements = explode(";", $question->statement); 

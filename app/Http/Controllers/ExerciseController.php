@@ -40,6 +40,8 @@ class ExerciseController extends Controller
         $exercise = new Exercise;
         $exercise->title = $request->title;
         $exercise->description = $request->description;
+        $exercise->instructions = $request->instructions;
+        $exercise->translated_instructions = $request->translated_instructions;
         $exercise->exercise_type_id = $type_id;
         $exercise->section_id = $section_id;
         $exercise->extra_info = $request->extra_info;
@@ -73,6 +75,8 @@ class ExerciseController extends Controller
         $exercise = Exercise::find($exercise_id);
         $exercise->title = $request->title;
         $exercise->description = $request->description;
+        $exercise->instructions = $request->instructions;
+        $exercise->translated_instructions = $request->translated_instructions;
         $exercise->section_id = $request->section;
         $exercise->extra_info = $request->extra_info;
 
@@ -109,7 +113,6 @@ class ExerciseController extends Controller
 
     public function update_position(Request $request, $unit_id, $exercise_id) 
     {
-        
         $exercise = Exercise::find($exercise_id);
         $section_exercises = Exercise::where('section_id', $exercise->section_id)->get();
 
@@ -118,7 +121,6 @@ class ExerciseController extends Controller
 
         if($wanted_position == $original_position)
         {
-            // NO HACER NADA PORQUE SON IGUALES
             return redirect()->route('exercises.index', $unit_id)->with('success', 'No changes');
 
         } else if($wanted_position > $original_position) {

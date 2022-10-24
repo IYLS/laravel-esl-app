@@ -4,7 +4,10 @@
 <style>
     .strikable { text-decoration: line-through }
     .not-strikable { text-decoration: none }
-    .modal-backdrop { opacity: 0 !important }
+    .modal-backdrop { 
+        opacity: 0 !important;
+        position: static !important;
+    }
     .clickable {
         cursor: pointer !important;
         background-color: white;
@@ -28,11 +31,11 @@
 
 <div class="p-4 row w-100 h-100 col-12">
     <h5 class="pl-2">{{ $unit->title }}</h5>
-    <div class="row sticky-top p-1" style="background-color: white;">
+    <div class="row sticky-top p-1" id="sticky-bar" style="background-color: white;">
         <div class="col-12 col-xl-4">
             @forelse($keywords as $keyword)
                 @php $modal_id = "keyword_modal-$keyword->id"; @endphp
-                <button type="button" id="{{ $modal_id . "_button" }}" class="mt-1 btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#{{ $modal_id }}">{{ $keyword->keyword }}</button>
+                <button type="button" id="{{ $modal_id . "_button" }}" class="mt-1 btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#{{ $modal_id }}" onclick="unstick()">{{ $keyword->keyword }}</button>
                 @include('modals.keywords.show', ['modal_id' => $modal_id, 'description' => $keyword->description, 'modal_title' => $keyword->keyword])
             @empty
                 <p class="text-center text-secondary"><small>No keywords added for this unit.</small></p>
@@ -49,6 +52,7 @@
             <div class="ratio ratio-16x9 mt-3">
                 <iframe src="{{ asset('esl/public/storage/files') . "/" . $unit->video_name }}" title="Video" allowfullscreen controls></iframe>
             </div>
+            @if(isset($unit->video_copyright) and $unit->video_copyright != '') <p class="text-secondary"><small>{{ $unit->video_copyright }}</small></p> @endif
         @else
             <div class="text-center">
                 <p class="text-secondary"><small>No video set for this unit.</small></p>
@@ -129,11 +133,13 @@
                                     <div class="container">
                                         <h4>{{ $e->title }}</h4>
                                         <p class="text-secondary">{{ $e->description }}</p>
+                                        @isset($e->instructions) <p>{{ $e->instructions }}</p> @endisset
+                                        @isset($e->translated_instructions) <p>{{ $e->translated_instructions }}</p> @endisset
                                         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
                                         @include('layouts.tracking_complete')
 
                                         @if(isset($e->video_name) and $e->video_name != null and $e->video_name != '')
-                                            <div class="ratio ratio-16x9 mt-3">
+                                            <div class="ratio ratio-16x9 mt-3 w-75">
                                                 <iframe src="{{ asset('esl/public/storage/files') . "/" . $e->video_name }}" title="Video" allowfullscreen controls></iframe>
                                             </div>
                                         @endif
@@ -174,6 +180,8 @@
                                     <div class="container">
                                         <h4>{{ $e->title }}</h4>
                                         <p class="text-secondary">{{ $e->description }}</p>
+                                        @isset($e->instructions) <p>{{ $e->instructions }}</p> @endisset
+                                        @isset($e->translated_instructions) <p>{{ $e->translated_instructions }}</p> @endisset
                                         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
 
                                         {{--  Dictation Cloze  --}}

@@ -25,7 +25,7 @@
                     <tr>
                         <td colspan="2">
                             <h6>Description:</h6>
-                            <textarea id="description" name="description" class="form-control" type="text" rows="2" disabled>{{ $unit->description }}</textarea>
+                            <textarea id="description" name="description" class="form-control mce-editor" type="text" rows="1" disabled>{!! $unit->description !!}</textarea>
                         </td>
                     </tr>
                 </tbody>
@@ -51,7 +51,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <textarea id="listening_tips" name="listening_tips" type="text" class="form-control" rows="3" disabled>{{ $unit->listening_tips }}</textarea>
+                            <textarea id="listening_tips" name="listening_tips" type="text" class="form-control mce-editor" rows="3" disabled>{!! $unit->listening_tips !!}</textarea>
                         </div>
                         <div class="col-12 col-md-6 mt-1 mt-md-0">
                             <div class="d-flex justify-content-between">
@@ -63,7 +63,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <textarea id="cultural_notes" name="cultural_notes" type="text" class="form-control" rows="3" disabled>{{ $unit->cultural_notes }}</textarea>
+                            <textarea id="cultural_notes" name="cultural_notes" type="text" class="form-control mce-editor" rows="3" disabled>{!! $unit->cultural_notes !!}</textarea>
                         </div>
                     </div>
 
@@ -78,7 +78,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <textarea id="transcript" name="transcript" type="text" class="form-control" rows="3" disabled>{{ $unit->transcript }}</textarea>
+                            <textarea id="transcript" name="transcript" type="text" class="form-control mce-editor" rows="3" disabled>{!! $unit->transcript !!}</textarea>
                         </div>
                         <div class="col-12 col-md-6 mt-1 mt-md-0">
                             <div class="d-flex justify-content-between">
@@ -90,7 +90,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <textarea id="glossary" name="glossary" type="text" class="form-control" rows="3" disabled>{{ $unit->glossary }}</textarea>
+                            <textarea id="glossary" name="glossary" type="text" class="form-control mce-editor" rows="3" disabled>{!! $unit->glossary !!}</textarea>
                         </div>
                     </div>
 
@@ -105,7 +105,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <textarea id="translation" name="translation" type="text" class="form-control" rows="3" disabled>{{ $unit->translation }}</textarea>
+                            <textarea id="translation" name="translation" type="text" class="form-control mce-editor" rows="3" disabled>{!! $unit->translation !!}</textarea>
                         </div>
                         <div class="col-12 col-md-6 mt-1 mt-md-0">
                             <div class="d-flex justify-content-between">
@@ -117,7 +117,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <textarea id="dictionary" name="dictionary" type="text" class="form-control" rows="3" disabled>{{ $unit->dictionary }}</textarea>
+                            <textarea id="dictionary" name="dictionary" type="text" class="form-control mce-editor" rows="3" disabled>{!! $unit->dictionary !!}</textarea>
                         </div>
                     </div>
                 </div>
@@ -137,6 +137,9 @@
                     <label for="video" class="form-label">Select new video file: </label>
                     <input class="form-control" type="file" name="video" id="video" accept="video/*" value="{{ asset('/esl/public/storage/files/'.$unit->video_name) }}">
                 </div>
+                <div class="row ms-1 me-1">
+                    <input name="video_copyright" id="video_copyright" type="text" class="form-control" placeholder="Video copyright info" disabled>
+                </div>
             </div>
             <div class="d-flex justify-content-between">
                 <div>
@@ -155,24 +158,31 @@
 </div>
 
 <script>
+    var textarea_elements = document.getElementsByClassName('mce-editor');
+    $(document).ready(function() {
+        $('.mce-editor').each(function(i) {
+            tinymce.get(textarea_elements[i].id).mode.set("readonly");
+        })
+    });
+
     function enableFields() {
         var input_elements = document.getElementsByTagName('input');
-        var select_elements = document.getElementsByTagName('select');
-        var textarea_elements = document.getElementsByTagName('textarea');
-        var replaceButton = document.getElementById('replace_video_button');
-
         for (i = 0; i < input_elements.length; i++) {
             input_elements[i].disabled = false;
         }
 
+        var select_elements = document.getElementsByTagName('select');
         for (i = 0; i < select_elements.length; i++) {
             select_elements[i].disabled = false;
         }
 
+        var textarea_elements = document.getElementsByClassName('mce-editor');
         for (i = 0; i < textarea_elements.length; i++) {
-            textarea_elements[i].disabled = false;
+            const mode = tinymce.get(textarea_elements[i].id).mode.set("design");
+
         }
         
+        var replaceButton = document.getElementById('replace_video_button');
         replaceButton.disabled = false;
     }
 </script>

@@ -3,6 +3,8 @@
         <h4>{{ $e->title }}</h4>
         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
         <p class="text-secondary">{{ $e->description }}</p>
+        @isset($e->instructions) <p>{{ $e->instructions }}</p> @endisset
+        @isset($e->translated_instructions) <p>{{ $e->translated_instructions }}</p> @endisset
         <div class="row">
             @foreach($e->questions as $question)
                 <div class="col-12 col-md-6 mt-1 mb-1 text-center">

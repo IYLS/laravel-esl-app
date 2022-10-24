@@ -4,6 +4,8 @@
         <h4>{{ $e->title }}</h4>
         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
         <p class="text-secondary">{{ $e->description }}</p>
+        @isset($e->instructions) <p>{{ $e->instructions }}</p> @endisset
+        @isset($e->translated_instructions) <p>{{ $e->translated_instructions }}</p> @endisset
         <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="open_ended_form_{{ $e->id }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'open_ended')">
             @csrf
             @forelse($e->questions as $question)
