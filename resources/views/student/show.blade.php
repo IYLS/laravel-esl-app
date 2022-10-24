@@ -6,7 +6,7 @@
     .not-strikable { text-decoration: none }
     .modal-backdrop { 
         opacity: 0 !important;
-        position: static !important;
+        position: unset !important;
     }
     .clickable {
         cursor: pointer !important;
