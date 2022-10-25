@@ -138,7 +138,7 @@
                     <input class="form-control" type="file" name="video" id="video" accept="video/*" value="{{ asset('/esl/public/storage/files/'.$unit->video_name) }}">
                 </div>
                 <div class="row ms-1 me-1">
-                    <input name="video_copyright" id="video_copyright" type="text" class="form-control" placeholder="Video copyright info" disabled>
+                    <input name="video_copyright" id="video_copyright" type="text" class="form-control" placeholder="Video copyright info" value="{{ $unit->video_copyright }}" disabled>
                 </div>
             </div>
             <div class="d-flex justify-content-between">
