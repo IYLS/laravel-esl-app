@@ -20,10 +20,10 @@
                     <td>
                         <div class="card card-body">
                             @foreach($users as $user)
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" onclick="ifUserChecked(this);" value="{{ $user->id }}" id="user_checkbox" disabled @if($user->group_id == $group->id) checked name="users[]" @endif>
-                                <label class="form-check-label" for="user_checkbox" disabled>{{ $user->name }}</label>
-                            </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" onclick="ifUserChecked(this);" value="{{ $user->id }}" id="user_checkbox" disabled @if($user->group_id == $group->id) checked name="users[]" @endif>
+                                    <label class="form-check-label" for="user_checkbox" disabled>{{ $user->name }}</label>
+                                </div>
                             @endforeach
                         </div>
                     </td>
@@ -33,10 +33,10 @@
                     <td>
                         <div class="card card-body">
                             @foreach($units as $unit)
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" onclick="ifUnitChecked(this);" value="{{ $unit->id }}" id="user_checkbox" disabled @if(in_array($unit->id, $unit_groups_array)) checked name="units[]" @endif>
-                                <label class="form-check-label" for="user_checkbox" disabled>{{ $unit->title }}</label>
-                            </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" onclick="ifUnitChecked(this);" value="{{ $unit->id }}" id="user_checkbox" disabled @if(in_array($unit->id, $unit_groups_array)) checked name="units[]" @endif>
+                                    <label class="form-check-label" for="user_checkbox" disabled>{{ $unit->title }}</label>
+                                </div>
                             @endforeach
                         </div>
                     </td>

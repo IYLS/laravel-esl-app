@@ -11,7 +11,7 @@
                 <tr>
                     <td>Name</td>
                     <td>
-                        <input id="name" name="name" class="form-control" type="text" placeholder="Type an Name for the new level">
+                        <input id="name" name="name" class="form-control" type="text" placeholder="Type an Name for the new level" required>
                     </td>
                 </tr>
                 <tr>
@@ -19,10 +19,11 @@
                     <td>
                         <div class="card card-body">
                             @foreach($users as $user)
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" onclick="ifUserChecked(this);" value="{{ $user->id }}" id="user_checkbox">
-                                <label class="form-check-label" for="user_checkbox">{{ $user->name }}</label>
-                            </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" onclick="ifUserChecked(this);" value="{{ $user->id }}" id="user_checkbox">
+                                    {{ $user->id }}
+                                    <label class="form-check-label" for="user_checkbox">{{ $user->name }}</label>
+                                </div>
                             @endforeach
                         </div>
                     </td>
@@ -32,10 +33,11 @@
                     <td>
                         <div class="card card-body">
                             @foreach($units as $unit)
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" onclick="ifUnitChecked(this);" value="{{ $unit->id }}" id="user_checkbox">
-                                <label class="form-check-label" for="user_checkbox">{{ $unit->title }}</label>
-                            </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" onclick="ifUnitChecked(this);" value="{{ $unit->id }}" id="user_checkbox">
+                                    {{ $unit->id }}
+                                    <label class="form-check-label" for="user_checkbox">{{ $unit->title }}</label>
+                                </div>
                             @endforeach
                         </div>
                     </td>
@@ -50,14 +52,6 @@
 </div>
 
 <script>
-    function nameStudentFields() {
-        const fields = document.getElementsByClassName('form-check-input');
-
-        for (var i=0; i < fields.length; i++) { 
-            fields[i].setAttribute('name', `user_${i}`);
-        }
-    }
-
     function ifUserChecked(element) {
         if (element.checked) {
             element.name = "users[]";

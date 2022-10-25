@@ -45,24 +45,26 @@ class GroupController extends Controller
     {
         $group = new Group;
         $group->name = $request->name;
-        
         $group->save();
 
-        $users = array();
-        $count = 0;
-        $params = $request->collect();
+        $unit_ids = array();
+        if($request->has('units') and $request->units != null) $unit_ids = $request->units;
 
-        while ($params->contains("user_$count")) {
-            $user_id = $request->collect()["user_$count"];
+        $group->units()->attach($unit_ids);
 
-            $user = User::find($user_id);
-            $user->group_id = $group->id;
+        $user_ids = array();
+        if($request->has('users') and $request->users != null) $user_ids = $request->users;
+
+        $users = User::findMany($user_ids);
+        foreach($users as $user)
+        {
+            $user->group()->associate($group);
             $user->save();
-
-            $count++;
         }
 
-        return redirect()->route('groups.index');
+        if($group->isDirty()) $group->save();
+
+        return redirect()->route('groups.index')->with('success', 'Group created successfully');
     }
 
     public function show($id)
@@ -81,28 +83,38 @@ class GroupController extends Controller
         return view('groups.show', compact(['group', 'users', 'units', 'unit_groups_array']));
     }
 
-    public function edit($id)
-    {
-        //
-    }
-
     public function update(Request $request, $id)
     {
         $current_group = Group::find($id);
-        $current_group->name = $request->name;
+        
+        if($request->has('name') and $request->name != '') $current_group->name = $request->name;
 
-        $user_ids = $request->input('users');
-        foreach($user_ids as $user_id) {
-            $current_user = User::find($user_id);
-            $current_user->group()->associate($current_group)->save();
+        $unit_ids = array();
+        if($request->has('units') and $request->units != null) $unit_ids = $request->units;
+
+        $current_group->units()->sync($unit_ids);
+
+        $user_ids = array();
+        if($request->has('users') and $request->users != null) $user_ids = $request->users;
+
+        // Eliminar usuarios que no están en la lista
+        foreach($current_group->users as $user)
+        {
+            if (!in_array($user->id, $user_ids)) 
+            {
+                $user->group()->dissociate();
+                $user->save();
+            }
         }
 
-        $unit_ids = $request->input('units');
-        if ($unit_ids != null) {
-            $current_group->units()->sync($unit_ids);
+        // Asignar usuarios 
+        foreach($user_ids as $user_id) 
+        {
+            $user = User::find($user_id);
+            $user->group()->associate($current_group)->save();
         }
 
-        $current_group->save();
+        if($current_group->isDirty()) $current_group->save();
 
         return redirect()->route('groups.index');
     }
