@@ -153,7 +153,7 @@ class UnitController extends Controller
     public function destroy($id)
     {
         Unit::find($id)->delete();
-        return redirect()->route('units.index');    
+        return redirect()->route('units.index');
     }
 
     private function getVideoFrom(Request $request)
@@ -165,7 +165,7 @@ class UnitController extends Controller
 
             return $video_file_name;
         } else {
-            return null;
+            return "";
         }
     }
 }
