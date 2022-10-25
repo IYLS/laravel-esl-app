@@ -88,9 +88,9 @@ class UnitController extends Controller
     {
         $unit = Unit::find($unit);
 
-        if($request->has('title' and $request->title != '')) $unit->title = $request->title;
-        if($request->has('author' and $request->author != '')) $unit->author = $request->author;
-        if($request->has('description' and $request->description != '')) $unit->description = $request->description;
+        if($request->has('title') and $request->title != '') $unit->title = $request->title;
+        if($request->has('author') and $request->author != '') $unit->author = $request->author;
+        if($request->has('description') and $request->description != '') $unit->description = $request->description;
         if($request->has('video_copyright') and $request->video_copyright != '') $unit->video_copyright = $request->video_copyright;
 
         if($request->has('listening_tips') and $request->listening_tips != '') $unit->listening_tips = $request->listening_tips;

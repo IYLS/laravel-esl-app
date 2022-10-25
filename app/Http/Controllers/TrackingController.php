@@ -25,10 +25,9 @@ class TrackingController extends Controller
         }
     }
 
-    public function store(Request $request, $exercise_id, $user_id) 
+    public function store(Request $request, $exercise_id, $user_id)
     {
         $exercise = Exercise::find($exercise_id);
-
         $tracking = new Tracking;
 
         if($request->intent_number == null) {
@@ -74,26 +73,39 @@ class TrackingController extends Controller
                 }        
             }
         } else {
-            if ($request->answers != null) 
+            foreach($exercise->questions as $question)
             {
-                foreach($request->answers as $id=>$answer)
+                // EXCLUSIVE RESPONSES IS FALSE
+                if (!$question->exclusive_responses)
                 {
-                    $question_id = $id;
-                    foreach($answer as $a) 
+                    if ($request->answers != null) 
                     {
-                        foreach($a as $response)
+                        foreach($request->answers as $id=>$answer)
                         {
-                            $user_response = new UserResponse;
-                            $user_response->response = $response;
-                            $user_response->question_id = $question_id;
-                            $user_response->tracking_id = $tracking->id;
-                            $user_response->save();
+                            $question_id = $id;
+                            foreach($answer as $a) 
+                            {
+                                foreach($a as $response)
+                                {
+                                    $user_response = new UserResponse;
+                                    $user_response->response = $response;
+                                    $user_response->question_id = $question_id;
+                                    $user_response->tracking_id = $tracking->id;
+                                    $user_response->save();
+                                }
+                            }
                         }
+                    }
+                
+                // EXCLUSIVE RESPONSES IS TRUE
+                } else {
+                    if ($request->answers != null)
+                    {
+                        dump($request->answers);
                     }
                 }
             }
         }
-
 
         return redirect()->back()->with('success', 'Your answers have been saved.');
     }

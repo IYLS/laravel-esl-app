@@ -9,13 +9,13 @@ return new class extends Migration
     public function up()
     {
         Schema::table('questions', function (Blueprint $table) {
-            $table->boolean('exclusive_responses')->nullable(true)->after('user_response');
+            $table->boolean('personal_response')->nullable(true)->after('exclusive_responses');
         });
     }
 
     public function down() {
         Schema::table('questions', function (Blueprint $table) {
-            $table->dropColumn('exclusive_responses');
+            $table->dropColumn('personal_response');
         });
     }
 };

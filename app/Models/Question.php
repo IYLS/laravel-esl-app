@@ -21,6 +21,8 @@ class Question extends Model
         'image_name',
         'audio_name',
         'correct_answer',
+        'exclusive_responses',
+        'personal_response'
     ];
 
     public $timestamps = false;

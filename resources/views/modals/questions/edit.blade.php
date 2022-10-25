@@ -84,6 +84,11 @@
                             <p class="text-secondary"><small>Use a semicolon (;) at the end of each statement. Except the last one.</small></p>
                             @break
                         @endswitch
+                        <div>
+                            <input type="checkbox" value="true" name="personal_response" class="form-check-input" @if(isset($question->personal_response) and $question->personal_response == true) checked @endif>
+                            <label class="form-check-label">Is personal response</label>
+                            <p class="text-secondary"><small>Check this if this question does not have a correct answer.</small></p>
+                        </div>
                         @break
                     @case('voice_recognition')
                         <input id="statement" name="statement" type="text" class="form-control" placeholder="Item Title">
@@ -150,35 +155,39 @@
                         @endswitch
                         @break
                     @case('form')
-                        <div class="row p-2 d-flex justify-content-center" id="col-selection-form">
-                            <div class="col-12">
-                                <label class="form-label d-flex justify-content-center">
-                                    <p class="text-center">How many columns do you want for this activity?</p>
-                                </label>
+                        @php 
+                            $id = count($exercise->questions);
+                        @endphp
+                        <div id="double-col-form" class="p-1">
+                            <input class="form-control mb-1" name="title" type="text" placeholder="Activity title" value="{{ $question->correct_answer }}">
+                            <input class="form-control mb-1" name="statement" type="text" placeholder="Column 1 title" value="{{ $question->statement }}">
+                            <input class="form-control mb-1" name="answer" type="text" placeholder="(Optional) Column 2 title" value="{{ $question->answer }}">
+                            <p class="text-secondary mb-1"><small>If you only need a single column leave this field empty.</small></p>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" name="exclusive_responses" type="checkbox" value="true" @if($question->exclusive_responses) checked @endif>
+                                <label class="form-check-label">Exclusive responses</label>
                             </div>
-                            <div class="col-4">
-                                <input class="form-control" type="number" placeholder="CANTIDAD DE COLUMNAS (1-2)" min="1" max="2" value="1" id="col-number">
-                            </div>
-                            <div class="col-4">
-                                <a class="btn btn-primary" onclick="showSelectedForm()">Show form</a>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="addColumn({{ json_encode($id) }})">Add question</button>
+
+                            <div id="questions-form-{{ $id }}" class="mt-2 p-1">
+                                @foreach($question->alternatives as $alt)
+                                    @php 
+                                        $numberOfQuestions = $loop->index + 1;
+                                    @endphp
+                                    <div class="row form-question-title mt-1 mb-1" id="form-question-{{ $numberOfQuestions }}">
+                                        <div class="col-1">
+                                            <p>{{ $loop->index + 1 }}.</p>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="text" class="form-control" name="alternatives[]" placeholder="Statement" value="{{ $alt->title }}">
+                                        </div>
+                                        <div class="col-1">
+                                            <button type="button" class="btn btn-danger" onclick="deleteFormQuestion(`form-question-{{ $numberOfQuestions }}`)"><i class="mdi mdi-delete"></i></button>
+                                        </div>
+                                    </div>
+                                @endforeach 
                             </div>
                         </div>
-
-                        <div id="single-col-form" class="p-1" hidden>
-                            <input class="form-control mb-1" name="title" type="text" placeholder="Activity title">
-                            <input class="form-control mb-1" name="statement" type="text" placeholder="Column title">
-                            <a class="btn btn-primary btn-sm" onclick="addColumn()">Add question</a>
-                        </div>
-
-                        <div id="double-col-form" class="p-1" hidden>
-                            <input class="form-control mb-1" name="title" type="text" placeholder="Activity title">
-                            <input class="form-control mb-1" name="statement" type="text" placeholder="Column 1 title">
-                            <input class="form-control mb-1" name="answer" type="text" placeholder="Column 2 title">
-                            <a class="btn btn-primary btn-sm" onclick="addColumn()">Add question</a>
-                        </div>
-
-                        <div id="questions-form" class="mt-2 p-1"></div>
-
                     @endswitch
 
                     <div class="modal-footer">
@@ -209,8 +218,8 @@
         }
     }
 
-    function addColumn() {
-        const questionsContainer = document.getElementById('questions-form');
+    function addColumn(id) {
+        const questionsContainer = document.getElementById(`questions-form-${id}`);
 
         var number = document.createElement('p');
         number.setAttribute('class', "text-center mt-1");

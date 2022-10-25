@@ -25,7 +25,7 @@
                     <tr>
                         <td colspan="2">
                             <h6>Description:</h6>
-                            <textarea id="description" name="description" class="form-control mce-editor" type="text" rows="1" disabled>{!! $unit->description !!}</textarea>
+                            <textarea id="description" name="description" class="mce-editor"> {!! $unit->description !!} </textarea>
                         </td>
                     </tr>
                 </tbody>
@@ -51,7 +51,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <textarea id="listening_tips" name="listening_tips" type="text" class="form-control mce-editor" rows="3" disabled>{!! $unit->listening_tips !!}</textarea>
+                            <textarea id="listening_tips" name="listening_tips" class="mce-editor">{!! $unit->listening_tips !!}</textarea>
                         </div>
                         <div class="col-12 col-md-6 mt-1 mt-md-0">
                             <div class="d-flex justify-content-between">
@@ -63,7 +63,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <textarea id="cultural_notes" name="cultural_notes" type="text" class="form-control mce-editor" rows="3" disabled>{!! $unit->cultural_notes !!}</textarea>
+                            <textarea id="cultural_notes" name="cultural_notes" class="mce-editor">{!! $unit->cultural_notes !!}</textarea>
                         </div>
                     </div>
 
@@ -78,7 +78,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <textarea id="transcript" name="transcript" type="text" class="form-control mce-editor" rows="3" disabled>{!! $unit->transcript !!}</textarea>
+                            <textarea id="transcript" name="transcript" class="mce-editor">{!! $unit->transcript !!}</textarea>
                         </div>
                         <div class="col-12 col-md-6 mt-1 mt-md-0">
                             <div class="d-flex justify-content-between">
@@ -90,7 +90,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <textarea id="glossary" name="glossary" type="text" class="form-control mce-editor" rows="3" disabled>{!! $unit->glossary !!}</textarea>
+                            <textarea id="glossary" name="glossary" class="mce-editor">{!! $unit->glossary !!}</textarea>
                         </div>
                     </div>
 
@@ -105,7 +105,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <textarea id="translation" name="translation" type="text" class="form-control mce-editor" rows="3" disabled>{!! $unit->translation !!}</textarea>
+                            <textarea id="translation" name="translation" class="mce-editor">{!! $unit->translation !!}</textarea>
                         </div>
                         <div class="col-12 col-md-6 mt-1 mt-md-0">
                             <div class="d-flex justify-content-between">
@@ -117,7 +117,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <textarea id="dictionary" name="dictionary" type="text" class="form-control mce-editor" rows="3" disabled>{!! $unit->dictionary !!}</textarea>
+                            <textarea id="dictionary" name="dictionary" class="mce-editor">{!! $unit->dictionary !!}</textarea>
                         </div>
                     </div>
                 </div>
@@ -178,8 +178,8 @@
 
         var textarea_elements = document.getElementsByClassName('mce-editor');
         for (i = 0; i < textarea_elements.length; i++) {
-            const mode = tinymce.get(textarea_elements[i].id).mode.set("design");
-
+            console.log(tinymce.get(textarea_elements[i].id));
+            tinymce.get(textarea_elements[i].id).mode.set("design");
         }
         
         var replaceButton = document.getElementById('replace_video_button');

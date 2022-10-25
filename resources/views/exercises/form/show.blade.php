@@ -29,6 +29,11 @@
         <div class="card mt-2 p-3 mb-1">
             @php $question_number = $loop->index + 1;  @endphp
             <h6>{{ "Item " . $question_number }} - {{ $question->correct_answer }}</h6>
+            @if(isset($question->exclusive_responses) and $question->exclusive_responses) 
+            <p>Exclusive responses: True</p>
+            @else
+            <p>Exclusive responses: False</p>
+            @endif
             <table class="table table-bordered">
                 <thead>
                     <th>

@@ -32,11 +32,12 @@
         <script>
             tinymce.init({
                 selector: 'textarea.mce-editor',
-                plugins: 'lists',
+                plugins: 'lists link',
                 statusbar: false,
-                toolbar: 'undo redo | bold italic underline | checklist numlist bullist',
+                toolbar: 'undo redo | bold italic underline | link | checklist numlist bullist',
                 mode: "specific_textareas",
-                editor_selector: "mce-editor"
+                editor_selector: "mce-editor",
+                menubar: false,
             });
         </script>
 

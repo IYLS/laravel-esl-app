@@ -55,9 +55,6 @@
               </div>
         </div>
         <br>
-        <div class="p-2">
-            <h3>Recent Activity</h3>
-        </div>
     @elseif(Auth::user() != null and Auth::user()->role == 'student')
         <div class="p-5">
           <h3>Welcome, {{ Auth::user()->name }}!</h3>

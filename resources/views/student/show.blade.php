@@ -302,20 +302,18 @@
     function getResponseData(questions, exercise, type) {
         var answers;
         switch(type) {
-            case 'drag_and_drop':
-                answers = getDragAndDropResults(questions, exercise);
-                break;
-            case 'multiple_choice':
-                answers = getMultipleChoiceResults(questions, exercise);
-                break;
-            case 'fill_in_the_gaps':
-                answers = getFillInTheGapsResults(questions, exercise);
-                break;
-            case 'open_ended':
-                answers = getOpenEndedResults(questions, exercise);
-                break;
-            case 'form':
-                answers = getFormResults(questions, exercise);
+        case 'drag_and_drop':
+            answers = getDragAndDropResults(questions, exercise);
+            break;
+        case 'multiple_choice':
+            answers = getMultipleChoiceResults(questions, exercise);
+            break;
+        case 'fill_in_the_gaps':
+            answers = getFillInTheGapsResults(questions, exercise);
+            break;
+        case 'open_ended':
+            answers = getOpenEndedResults(questions, exercise);
+            break;
         }
 
         var currentTime = new Date().getTime();
@@ -384,14 +382,24 @@
                 if (alternative.checked && question.correct_answer == alternative.value) {
                     responses.push({'id': `${question.id}`, 'response': `${question.correct_answer}`});
                     
-                    document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
-                    document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
-
-                    correct_questions += 1;
+                    if(question.personal_response == null || !question.personal_response) {
+                        document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
+                        document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
+                    } else {
+                        document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
+                        document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
+                        correct_questions += 1;
+                    }
                 // Alternativa incorrecta
                 } else if(alternative.checked) {
-                    document.getElementById(`question-${question.id}-feedback-wrong`).hidden = false;
-                    document.getElementById(`question-${question.id}-feedback-correct`).hidden = true;
+                    if(question.personal_response == null || !question.personal_response) {
+                        document.getElementById(`question-${question.id}-feedback-wrong`).hidden = false;
+                        document.getElementById(`question-${question.id}-feedback-correct`).hidden = true;
+                    } else {
+                        document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
+                        document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
+                        correct_questions += 1;
+                    }
  
                     if (document.getElementById(`${alternative.value}-explainatory`) != null) {
                         document.getElementById(`${alternative.value}-explainatory`).hidden = false;
@@ -442,7 +450,14 @@
             const final_responses = question_responses.join(',');
             responses.push({'id': `${question.id}`, 'response': `${final_responses}` });
 
-            if(final_responses == correct_words) correct_questions += 1;
+            if(final_responses == correct_words) {
+                document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
+                document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
+                correct_questions += 1;
+            } else {
+                document.getElementById(`question-${question.id}-feedback-correct`).hidden = true;
+                document.getElementById(`question-${question.id}-feedback-wrong`).hidden = false;
+            }
         });
 
         wrong_questions = questions_number - correct_questions;
@@ -475,6 +490,8 @@
             answers.forEach(function (answer) {
                 responses.push({'id': `${question.id}`, 'response': `${answer.value}` });
             });
+
+            document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
         });
         
         var exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise.id}`);
@@ -509,8 +526,12 @@
             }
 
             if (definitionContainer.contains(wordContainer)) {
+                document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
+                document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
                 correct_questions += 1;
             } else {
+                document.getElementById(`question-${question.id}-feedback-correct`).hidden = true;
+                document.getElementById(`question-${question.id}-feedback-wrong`).hidden = false;
                 wrong_questions +=1;
             }
         });

@@ -29,13 +29,48 @@
                         </td>
                         <td>
                             <div class="form-check d-flex justify-content-center align-items-center">
-                                <input class="form-check-input answer-{{ $question->id}}" type="checkbox" name="answers[{{ $question->id}}][0][{{ $alt->id }}]" value="true" id="answer-{{ $question->id}}">
+                                <input 
+                                    class="form-check-input answer-{{ $question->id}}" 
+
+                                    @if(isset($question->exclusive_responses))
+                                        @if($question->exclusive_responses)
+                                            type="radio"
+                                            name="answers[{{ $question->id}}][0]" 
+                                        @elseif(!$question->exclusive_responses)
+                                            type="checkbox"
+                                            name="answers[{{ $question->id}}][0][{{ $alt->id }}]" 
+                                        @endif
+                                    @else
+                                        type="checkbox"
+                                        name="answers[{{ $question->id}}][0][{{ $alt->id }}]" 
+                                    @endif
+
+                                    value="true" 
+                                    id="answer-{{ $question->id}} "
+                                >
                             </div>
                         </td>
                         @isset($question->answer)
                         <td>
                             <div class="form-check d-flex justify-content-center align-items-center">
-                                <input class="form-check-input answer-{{ $question->id}}" type="checkbox" name="answers[{{ $question->id}}][1][]" value="true" id="answer-{{ $question->id}}">
+                                <input 
+                                class="form-check-input answer-{{ $question->id}}" 
+                                                                    
+                                @if(isset($question->exclusive_responses))
+                                    @if($question->exclusive_responses)
+                                        type="radio"
+                                        name="answers[{{ $question->id}}][1]"
+                                    @elseif(!$question->exclusive_responses)
+                                        type="checkbox"
+                                        name="answers[{{ $question->id}}][1][{{ $alt->id }}]"
+                                    @endif
+                                @else
+                                    type="checkbox"
+                                    name="answers[{{ $question->id}}][1][{{ $alt->id }}]" 
+                                @endif
+
+                                value="true" 
+                                id="answer-{{ $question->id}}">
                             </div>
                         </td>
                         @endisset

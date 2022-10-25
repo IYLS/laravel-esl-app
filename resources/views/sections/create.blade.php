@@ -20,7 +20,7 @@
                             <div class="card card-body">
                                 @foreach($users as $user)
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="{{ $user->id }}"w>
+                                    <input class="form-check-input" type="checkbox" value="{{ $user->id }}">
                                     <label class="form-check-label" for="flexCheckChecked">{{ $user->name }}</label>
                                 </div>
                                 @endforeach

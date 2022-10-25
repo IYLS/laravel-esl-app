@@ -31,6 +31,8 @@ class QuestionController extends Controller
         $question->statement = $request->statement;
         $question->answer = $request->answer;
         $question->exercise_id = $exercise_id;
+
+        if($request->has('personal_response') and $request->personal_response != null) $question->personal_response = true;
         
         $question->save();
 
@@ -103,6 +105,8 @@ class QuestionController extends Controller
         }
         else if($request->has('alternatives') and $request->alternatives != null and $request->alternatives != '' and $existing_alts_string != $request->alternatives and $exercise_type->underscore_name == "form")
         {
+            Alternative::where('question_id', $question->id)->delete();
+
             foreach($request->alternatives as $alt)
             {
                 $alternative = new Alternative;
@@ -110,9 +114,9 @@ class QuestionController extends Controller
                 $alternative->question_id = $question->id;
                 $alternative->correct_alt = false;
                 $alternative->save();
-    
-                $question->correct_answer = $request->title;
             }
+
+            $question->correct_answer = $request->title;
         }
         else if($request->has('boxes_number') and $request->boxes_number != '' and $request->boxes_number != null and $exercise_type->underscore_name == "open_ended" && $exercise->subtype == "991")
         {
@@ -126,9 +130,17 @@ class QuestionController extends Controller
             $question->correct_answer = $request->correct_answer;
         }
 
+        if ($request->has('exclusive_responses') and $request->exclusive_responses != null)
+        {
+            if ($request->exclusive_responses == "true") $question->exclusive_responses = true;
+            if ($request->exclusive_responses != "true") $question->exclusive_responses = false;
+        }
+
+        if($request->has('personal_response') and $request->personal_response != null) $question->personal_response = true;
+
         if ($question->isDirty()) {
             $question->save();
-            return redirect()->route('exercises.show', $question->exercise_id)->with('success', 'Pregunta actualizada correctamente');
+            return redirect()->route('exercises.show', $question->exercise_id)->with('success', 'Question updated successfully');
         }
         
         return redirect()->route('exercises.show', $question->exercise_id)->with('success', 'No changes made');

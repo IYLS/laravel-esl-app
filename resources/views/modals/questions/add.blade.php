@@ -73,6 +73,11 @@
                             <p class="text-secondary"><small>Use a semicolon (;) at the end of each statement. Except the last one.</small></p>
                             @break
                         @endswitch
+                        <div>
+                            <input type="checkbox" value="true" name="personal_response" class="form-check-input">
+                            <label class="form-check-label">Is personal response</label>
+                            <p class="text-secondary"><small>Check this if this question does not have a correct answer.</small></p>
+                        </div>
                         @break
                     @case('voice_recognition')
                         <input id="statement" name="statement" type="text" class="form-control" placeholder="Item Title">
@@ -147,6 +152,10 @@
                             <input class="form-control mb-1" name="statement" type="text" placeholder="Column 1 title">
                             <input class="form-control mb-1" name="answer" type="text" placeholder="(Optional) Column 2 title">
                             <p class="text-secondary mb-1"><small>If you only need a single column leave this field empty.</small></p>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" value="true">
+                                <label class="form-check-label">Exclusive responses</label>
+                            </div>
                             <button type="button" class="btn btn-primary btn-sm" onclick="addColumn({{ json_encode($id) }})">Add question</button>
 
                             <div id="questions-form-{{ $id }}" class="mt-2 p-1"></div>

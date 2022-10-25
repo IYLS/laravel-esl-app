@@ -24,7 +24,7 @@
                     <tr>
                         <td>Description</td>
                         <td colspan="2">
-                            <textarea id="description" name="description" class="form-control mce-editor" type="text" placeholder="Write a description for this new unit"></textarea>
+                            <textarea id="description" name="description" class="mce-editor" placeholder="Write a description for this new unit"></textarea>
                         </td>
                     </tr>
                     <tr><td colspan="3"><h5>Help options</h5></td></tr>
@@ -37,7 +37,7 @@
                               </div>
                         </td>
                         <td colspan="2">
-                            <textarea id="listening_tips" name="listening_tips" type="text" class="form-control mce-editor" placeholder="Write the listening tips for this new unit"></textarea>
+                            <textarea id="listening_tips" name="listening_tips" class="mce-editor" placeholder="Write the listening tips for this new unit"></textarea>
                         </td>
 
                     </tr>
@@ -50,7 +50,7 @@
                             </div>
                         </td>
                         <td colspan="2">
-                            <textarea id="cultural_notes" name="cultural_notes" type="text" class="form-control mce-editor" placeholder="Write the cultural notes for this new unit"></textarea>
+                            <textarea id="cultural_notes" name="cultural_notes" class="mce-editor" placeholder="Write the cultural notes for this new unit"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -62,7 +62,7 @@
                             </div>
                         </td>
                         <td>
-                            <textarea id="transcript" name="transcript" type="text" class="form-control mce-editor" placeholder="Write the transcript for this new unit"></textarea>
+                            <textarea id="transcript" name="transcript" class="mce-editor" placeholder="Write the transcript for this new unit"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -74,7 +74,7 @@
                               </div>
                         </td>
                         <td colspan="2">
-                            <textarea id="glossary" name="glossary" type="text" class="form-control mce-editor" placeholder="Write the glossary for this new unit"></textarea>
+                            <textarea id="glossary" name="glossary" class="mce-editor" placeholder="Write the glossary for this new unit"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -86,7 +86,7 @@
                               </div>
                         </td>
                         <td colspan="2">
-                            <textarea id="translation" name="translation" type="text" class="form-control mce-editor" placeholder="Write the translation for this new unit"></textarea>
+                            <textarea id="translation" name="translation" class="mce-editor" placeholder="Write the translation for this new unit"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -98,7 +98,7 @@
                               </div>
                         </td>
                         <td colspan="2">
-                            <textarea id="dictionary" name="dictionary" type="text" class="form-control mce-editor" placeholder="Write the dictionary for this new unit"></textarea>
+                            <textarea id="dictionary" name="dictionary" class="mce-editor" placeholder="Write the dictionary for this new unit"></textarea>
                         </td>
                     </tr>
                     <tr><td colspan="3"><h5>Unit video</h5></td></tr>
