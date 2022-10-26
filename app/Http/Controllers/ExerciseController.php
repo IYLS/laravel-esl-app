@@ -47,7 +47,7 @@ class ExerciseController extends Controller
         $exercise->extra_info = $request->extra_info;
         
         $exercise->image_name = $this->getImageFrom($request);
-        $exercise->video_name = $this->getVideoFrom($request);
+        $exercise->video_name = $this->getVideoFrom($request); 
 
         if(isset($request->subtype)) {
             $exercise->subtype = $request->subtype;

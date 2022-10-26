@@ -50,7 +50,9 @@
     <div class="col-12 col-xl-4">
         @if(isset($unit->video_name) and $unit->video_name != null and $unit->video_name != '')
             <div class="ratio ratio-16x9 mt-3">
-                <iframe src="{{ asset('esl/public/storage/files') . "/" . $unit->video_name }}" title="Video" allowfullscreen controls></iframe>
+                <video title="Video" allowfullscreen controls>
+                    <source src="{{ asset('esl/public/storage/files') . "/" . $unit->video_name }}">
+                </video>
             </div>
             @if(isset($unit->video_copyright) and $unit->video_copyright != '') <p class="text-secondary"><small>{{ $unit->video_copyright }}</small></p> @endif
         @else
@@ -133,8 +135,8 @@
                                     <div class="container">
                                         <h4>{{ $e->title }}</h4>
                                         <p class="text-secondary">{{ $e->description }}</p>
-                                        @isset($e->instructions) <p>{{ $e->instructions }}</p> @endisset
-                                        @isset($e->translated_instructions) <p>{{ $e->translated_instructions }}</p> @endisset
+                                        @isset($e->instructions) {!! $e->instructions !!} @endisset
+                                        @isset($e->translated_instructions) <p>{!! $e->translated_instructions !!}</p> @endisset
                                         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
                                         @include('layouts.tracking_complete')
 
@@ -180,8 +182,8 @@
                                     <div class="container">
                                         <h4>{{ $e->title }}</h4>
                                         <p class="text-secondary">{{ $e->description }}</p>
-                                        @isset($e->instructions) <p>{{ $e->instructions }}</p> @endisset
-                                        @isset($e->translated_instructions) <p>{{ $e->translated_instructions }}</p> @endisset
+                                        @isset($e->instructions) {!! $e->instructions !!} @endisset
+                                        @isset($e->translated_instructions) <p>{!! $e->translated_instructions !!}</p> @endisset
                                         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
 
                                         {{--  Dictation Cloze  --}}

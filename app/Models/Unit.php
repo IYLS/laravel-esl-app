@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Keyword;
 use App\Models\Group;
 use App\Models\Section;
+use App\Models\GlossedWord;
 
 class Unit extends Model
 {
@@ -39,5 +40,6 @@ class Unit extends Model
 
     public function sections() { return $this->hasMany(Section::class); }
     public function keywords() { return $this->hasMany(Keyword::class); }
+    public function glossedWords() { return $this->hasMany(GlossedWord::class); }
     public function groups() { return $this->belongsToMany(Group::class, 'unit_group'); }
 }

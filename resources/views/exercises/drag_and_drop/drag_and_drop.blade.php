@@ -2,8 +2,8 @@
     <div class="">
         <h4>{{ $e->title }}</h4>
         <p class="text-secondary">{{ $e->description }}</p>
-        @isset($e->instructions) <p>{{ $e->instructions }}</p> @endisset
-        @isset($e->translated_instructions) <p>{{ $e->translated_instructions }}</p> @endisset
+        @isset($e->instructions) {!! $e->instructions !!} @endisset
+        @isset($e->translated_instructions) <p>{!! $e->translated_instructions !!}</p> @endisset
         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
         @php
             $words = array();

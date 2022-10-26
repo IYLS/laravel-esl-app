@@ -3,8 +3,8 @@
         <h4>{{ $e->title }}</h4>
         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
         <p class="text-secondary">{{ $e->description }}</p>
-        @isset($e->instructions) <p>{{ $e->instructions }}</p> @endisset
-        @isset($e->translated_instructions) <p>{{ $e->translated_instructions }}</p> @endisset
+        @isset($e->instructions) {!! $e->instructions !!} @endisset
+        @isset($e->translated_instructions) <p>{!! $e->translated_instructions !!}</p> @endisset
         @include('layouts.tracking_complete')
         <form enctype="multipart/form-data" action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'open_ended');" method="POST" id="open_ended_form_{{ $e->id }}">
             @csrf
@@ -13,7 +13,7 @@
                 <h4>{{ $question->correct_answer }}</h4>
                 <table class="table table-bordered">
                     <thead>
-                        <th>{{ $question->statement }}</th>
+                        <th>{!! $question->statement !!}</th>
                         <th>{{ $question->answer }}</th>
                     </thead>
                     <tbody>

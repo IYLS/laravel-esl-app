@@ -149,6 +149,7 @@
                 </div>
                 <div>
                     <a class="btn btn-info mt-1" href="{{ route('sections.index', $unit->id) }}">Sections</a>
+                    <a class="btn btn-info mt-1" href="{{ route('glossed_words.index', $unit->id) }}">Glossed Words</a>
                     <a class="btn btn-info mt-1" href="{{ route('keywords.index', $unit->id) }}">Keywords</a>
                     <a class="btn btn-info mt-1" href="{{ route('exercises.index', $unit->id) }}">Exercises</a>
                 </div>

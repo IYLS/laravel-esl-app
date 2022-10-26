@@ -9,11 +9,11 @@
             @if($e->exerciseType->underscore_name == "open_ended") onclick="getOpenEndedResults({{ json_encode($questions) }}, {{ json_encode($e) }}); stepIntentCount();" @endif
             @if($e->exerciseType->underscore_name == "form") onclick="getFormResults({{ json_encode($questions) }}, {{ json_encode($e) }}); stepIntentCount();" @endif
             >
-                Check
+                Try again
             </a>
         </div>
     @endif
     <div class="m-2 mt-4 row">
-        <button class="btn btn-primary btn-sm col-12 col-lg-4" type="submit">Submit</button>
+        <button class="btn btn-primary btn-sm col-12 col-lg-4" type="submit">Check</button>
     </div>
 @endif

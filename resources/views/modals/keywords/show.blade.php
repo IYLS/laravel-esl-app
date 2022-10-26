@@ -7,7 +7,24 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {!! $description !!}
+                @if($modal_id == "transcriptModal")
+                    @php $final_description = $description; @endphp
+
+                    @foreach($unit->glossedWords as $word)
+                        @php
+                        $modal_id = "show_" . $word->id . "_glossed_word";
+                        
+                        $button_string = "<a href='#' role='button' class='' data-bs-toggle='popover' data-bs-content='$word->description'>$word->word</a>";
+
+                        $final_description = str_replace($word->word, $button_string, $final_description); 
+                        @endphp 
+                    @endforeach
+                    
+                    {!! $final_description !!}
+
+                @else
+                    {!! $description !!}
+                @endif
             </div>
         </div>
     </div>

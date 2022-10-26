@@ -15,6 +15,7 @@ use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\TrackingController;
+use App\Http\Controllers\GlossedWordsController;
 
 // Home
 Route::get('/', [AuthController::class, 'index'])->name('auth.index');
@@ -102,3 +103,9 @@ Route::get('/tracking/show/{tracking}', [TrackingController::class, 'show'])->na
 
 // Set exercise position
 Route::post('/units/{unit}/exercises/set/{exercise}', [ExerciseController::class, 'update_position'])->name('exercises.position');
+
+// GlossedWords Routes
+Route::get('/units/{unit}/glossed_words', [GlossedWordsController::class, 'index'])->name('glossed_words.index');
+Route::post('/units/{unit}/glossed_words/store', [GlossedWordsController::class, 'store'])->name('glossed_words.store');
+Route::delete('/glossed_words/{word}/destroy', [GlossedWordsController::class, 'destroy'])->name('glossed_words.destroy');
+Route::post('/units/{unit}/glossed_words/{word}/update', [GlossedWordsController::class, 'update'])->name('glossed_words.update');

@@ -120,7 +120,7 @@
                             @include('modals.exercises.metacognition', ['section' => $section, 'underscore_type' => 'drag_and_drop', 'type' => 'Drag and Drop'])
                         </div>
                         <div class="ms-1 me-1">
-                            <button type="button" id="add_open_ended_button" class="btn btn-sm btn-success mt-1" data-bs-toggle="modal" data-bs-target="#add_meta_open_ended_exercise_modal_{{ $section->id }}">
+                            <button type="button" id="add_open_ended_metacognition_button" class="btn btn-sm btn-success mt-1" data-bs-toggle="modal" data-bs-target="#add_meta_open_ended_exercise_modal_{{ $section->id }}">
                                 Open-ended
                             </button>
                             @include('modals.exercises.metacognition', ['section' => $section, 'underscore_type' => 'open_ended', 'type' => 'Open Ended'])

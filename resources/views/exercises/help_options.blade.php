@@ -33,5 +33,3 @@
 <button type="button" id="{{ $modal_id . "Button" }}" class="mt-1 btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#{{ $modal_id }}">Dictionary</button>
 @include('modals.keywords.show', ['modal_id' => $modal_id, 'description' => $unit->dictionary, 'modal_title' => 'Dictionary'])
 @endif
- {{-- @if($unit->listening_tips_enabled)<a href="#" class="mt-1 btn btn-primary btn-sm m-1 help-option-btn" onclick="presentHelpOptionsText()">Google search</a>@endif --}}
- {{-- @if($unit->listening_tips_enabled)<a href="#" class="mt-1 btn btn-primary btn-sm m-1 help-option-btn" onclick="presentHelpOptionsText()">Pronunciation aids</a>@endif --}}

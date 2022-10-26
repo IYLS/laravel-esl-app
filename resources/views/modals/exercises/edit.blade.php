@@ -13,9 +13,9 @@
                     <br>
                     <input id="description" name="description" type="text" class="form-control" placeholder="(Optional) Description" value="{{ $exercise->description }}">
                     <br>
-                    <input id="instructions" name="instructions" type="text" class="form-control" placeholder="(Optional) Instructions">
+                    <textarea id="instructions" name="instructions" class="mce-editor" placeholder="(Optional) Instructions">{!! $exercise->instructions !!}</textarea>
                     <br>
-                    <input id="translated_instructions" name="translated_instructions" type="text" class="form-control" placeholder="(Optional) Translated instructions">
+                    <textarea id="translated_instructions" name="translated_instructions" class="mce-editor" placeholder="(Optional) Translated instructions">{!! $exercise->translated_instructions !!}</textarea>
                     <br>
                     <select id="section" name="section" class="form-select">
                         @foreach($sections as $section)

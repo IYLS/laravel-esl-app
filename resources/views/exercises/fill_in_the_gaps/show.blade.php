@@ -27,8 +27,8 @@
             @endswitch
         </p>
         @isset($exercise->extra_info)<p class="text-info">Additional Information: {{ $exercise->extra_info }}</p>@endisset
-        @isset($exercise->instructions)<p>Instructions: {{ $exercise->instructions }}</p>@endisset
-        @isset($exercise->translated_instructions)<p>Translated Instructions: {{ $exercise->translated_instructions }}</p>@endisset
+        @isset($exercise->instructions)<p>Instructions: {!! $exercise->instructions !!}</p>@endisset
+        @isset($exercise->translated_instructions)<p>Translated Instructions: {!! $exercise->translated_instructions !!}</p>@endisset
     </div>
 
     <div class="card p-4 m-2">

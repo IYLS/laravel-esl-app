@@ -136,7 +136,7 @@
                             @case ('99')
                             @case (null)
                             @case ('')
-                                <textarea id="statement" name="statement" type="text" cols="40" class="form-control" placeholder="Question statement">{{ $question->statement }}</textarea>
+                                <textarea id="statement" name="statement" class="mce-editor" placeholder="Question statement">{!! $question->statement !!}</textarea>
                                 <br>
                                 @break
                             @case ('991')

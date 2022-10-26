@@ -20,8 +20,8 @@
             <p>Subtype: Metacognition (Table styled drag and drop)</p>
         @endif
         @isset($exercise->extra_info)<p class="text-info">Additional Information: {{ $exercise->extra_info }}</p>@endisset
-        @isset($exercise->instructions)<p>Instructions: {{ $exercise->instructions }}</p>@endisset
-        @isset($exercise->translated_instructions)<p>Translated Instructions: {{ $exercise->translated_instructions }}</p>@endisset
+        @isset($exercise->instructions)<p>Instructions: {!! $exercise->instructions !!}</p>@endisset
+        @isset($exercise->translated_instructions)<p>Translated Instructions: {!! $exercise->translated_instructions !!}</p>@endisset
         @include('modals.exercises.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
     </div>
 
@@ -33,7 +33,8 @@
                 @if ($exercise->subtype == '99' or $exercise->subtype == null or $exercise->subtype == 1 or $exercose->subtype == '')
                         <div class="row">
                             <div class="col-12">
-                                <p>{{ $question_number }}. {{ $question->statement }}</p>
+                                <p>{{ $question_number }}.</p>
+                                {!! $question->statement !!}
                             </div>
                         </div>
                 @elseif ($exercise->subtype == '991')

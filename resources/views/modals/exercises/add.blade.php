@@ -12,7 +12,7 @@
                     <br>
                     <input id="description" name="description" type="text" class="form-control" placeholder="(Optional) Description">
                     <br>
-                    <input id="instructions" name="instructions" type="text" class="form-control" placeholder="(Optional) Instructions">
+                    <textarea id="instructions" name="instructions" class="mce-editor" placeholder="(Optional) Instructions"> </textarea>
                     <br>
                     <input id="translated_instructions" name="translated_instructions" type="text" class="form-control" placeholder="(Optional) Translated instructions">
                     @if($type->underscore_name == "multiple_choice")
@@ -36,6 +36,8 @@
                             <option value="1">Dictation cloze</option>
                             <option value="2">Vocabulary practice</option>
                         </select>
+                    @else
+                        <input type="text" value="1" name="subtype" hidden>
                     @endif
                     <input type="text" class="form-control mt-1" placeholder="(Optional) Additional Information" name="extra_info">
                     <p class="text-info"><small>(Optional) Enter here any relevant information about the exercise. e.g. An example of how to complete the exercise.</small></p>
