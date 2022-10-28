@@ -17,7 +17,15 @@
                             <div class="col-4">
                                 <select class="form-select" name="positions[{{ $unit->id }}]" id="position">
                                     @foreach($units as $u)
-                                        <option value="{{ $loop->index + 1 }}">{{ $loop->index + 1 }}</option>
+                                        @php 
+                                        $current_position = 0;
+                                        if(isset($unit->position)) {
+                                            $current_position = $unit->position;
+                                        } else {
+                                            $current_position = 1;
+                                        }
+                                        @endphp
+                                        <option value="{{ $loop->index + 1 }}" @if($loop->index + 1 == $current_position) selected @endif>{{ $loop->index + 1 }}</option>
                                     @endforeach
                                 </select>
                             </div>
