@@ -75,8 +75,14 @@ class QuestionController extends Controller
             $question->statement = $request->statement;
         }
         
-        if($request->has('answer') and $request->answer != '' and $request->answer != null and $request->answer != $question->answer) {
-            $question->answer = $request->answer;
+        if($exercise_type->underscore_name == "form") {
+            if($request->has('answer') and $request->answer != $question->answer) {
+                $question->answer = $request->answer;
+            }
+        } else {
+            if($request->has('answer') and $request->answer != '' and $request->answer != null and $request->answer != $question->answer) {
+                $question->answer = $request->answer;
+            }
         }
 
         $existing_alts_array = array();
@@ -85,9 +91,17 @@ class QuestionController extends Controller
         }
         $existing_alts_string = implode(';', $existing_alts_array);
 
-        if($request->has('alternatives') and $request->alternatives != null and $request->alternatives != '' and $existing_alts_string != $request->alternatives and $exercise_type->underscore_name == "multiple_choice")
+        if($exercise_type->underscore_name == "form")
         {
             Alternative::where('question_id', $question->id)->delete();
+            if($request->has('title') and $request->title != null and $request->title != $question->correct_answer) {
+                dump($request->title);
+                $question->correct_answer = $request->title;
+            }
+        }
+
+        if($request->has('alternatives') and $request->alternatives != null and $request->alternatives != '' and $existing_alts_string != $request->alternatives and $exercise_type->underscore_name == "multiple_choice")
+        {
             $alternatives = str_replace(array("\r", "\n", '\''), '', $request->alternatives);
             $alts = explode(";", $alternatives);
 
@@ -105,8 +119,6 @@ class QuestionController extends Controller
         }
         else if($request->has('alternatives') and $request->alternatives != null and $request->alternatives != '' and $existing_alts_string != $request->alternatives and $exercise_type->underscore_name == "form")
         {
-            Alternative::where('question_id', $question->id)->delete();
-
             foreach($request->alternatives as $alt)
             {
                 $alternative = new Alternative;
@@ -115,8 +127,6 @@ class QuestionController extends Controller
                 $alternative->correct_alt = false;
                 $alternative->save();
             }
-
-            $question->correct_answer = $request->title;
         }
         else if($request->has('boxes_number') and $request->boxes_number != '' and $request->boxes_number != null and $exercise_type->underscore_name == "open_ended" && $exercise->subtype == "991")
         {
@@ -127,7 +137,7 @@ class QuestionController extends Controller
         }
         else 
         {
-            $question->correct_answer = $request->correct_answer;
+            if($exercise_type->underscore_name != "form") $question->correct_answer = $request->correct_answer;
         }
 
         if ($request->has('exclusive_responses') and $request->exclusive_responses != null)
@@ -143,7 +153,7 @@ class QuestionController extends Controller
             return redirect()->route('exercises.show', $question->exercise_id)->with('success', 'Question updated successfully');
         }
         
-        return redirect()->route('exercises.show', $question->exercise_id)->with('success', 'No changes made');
+        return redirect()->route('exercises.show', $question->exercise_id)->with('success', 'Question updated successfully');
     }
 
     public function destroy($exercise_id, $question_id)
@@ -216,17 +226,21 @@ class QuestionController extends Controller
 
     private function handleForm($question, $request)
     {
-        foreach($request->alternatives as $alt)
+        if($request->has('alternatives')) 
         {
-            $alternative = new Alternative;
-            $alternative->title = trim($alt);
-            $alternative->question_id = $question->id;
-            $alternative->correct_alt = false;
-            $alternative->save();
-
-            $question->correct_answer = $request->title;
-            $question->save();
+            foreach($request->alternatives as $alt)
+            {
+                $alternative = new Alternative;
+                $alternative->title = trim($alt);
+                $alternative->question_id = $question->id;
+                $alternative->correct_alt = false;
+                $alternative->save();
+    
+                $question->correct_answer = $request->title;
+                $question->save();
+            }
         }
+
     }
 
     private function handleOpenEndedTable($question, $request)

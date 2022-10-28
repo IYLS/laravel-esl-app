@@ -102,7 +102,8 @@ Route::post('tracking/store/{exercise}/{user}', [TrackingController::class, 'sto
 Route::get('/tracking/show/{tracking}', [TrackingController::class, 'show'])->name('tracking.show');
 
 // Set exercise position
-Route::post('/units/{unit}/exercises/set/{exercise}', [ExerciseController::class, 'update_position'])->name('exercises.position');
+Route::post('/units/{unit}/set_positions', [SectionController::class, 'setPositions'])->name('sections.positions');
+Route::post('/units/set_positions', [UnitController::class, 'setPositions'])->name('units.positions');
 
 // GlossedWords Routes
 Route::get('/units/{unit}/glossed_words', [GlossedWordsController::class, 'index'])->name('glossed_words.index');

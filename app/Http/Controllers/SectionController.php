@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Section;
 use App\Models\Unit;
+use App\Models\Exercise;
 
 class SectionController extends Controller
 {
@@ -40,11 +41,22 @@ class SectionController extends Controller
         return redirect()->route('sections.index', $unit_id)->with('success', 'Section updated successfully!');
     }
 
+    public function setPositions(Request $request, $unit_id)
+    {
+        foreach($request->positions as $id => $position) {
+            $exercise = Exercise::find($id);
+            $exercise->position = $position;
+            $exercise->save();
+        }
+
+        return redirect()->route('exercises.index', $unit_id)->with('success', 'Section positions defined successfully!');
+    }
+
     public function destroy(Section $section) {
         $unit_id = $section->unit_id;
         $section->delete();
 
-        return redirect()->route('sections.index', $unit_id)->with('success', 'Section deleted successfully!');;
+        return redirect()->route('sections.index', $unit_id)->with('success', 'Section deleted successfully!');
     }
 
     private function toSnakeCase($text) 

@@ -144,9 +144,7 @@
                         @endswitch
                         @break
                     @case('form')
-                        @php 
-                            $id = count($exercise->questions);
-                        @endphp
+                        @php  $id = count($exercise->questions); @endphp
                         <div id="double-col-form" class="p-1">
                             <input class="form-control mb-1" name="title" type="text" placeholder="Activity title">
                             <input class="form-control mb-1" name="statement" type="text" placeholder="Column 1 title">

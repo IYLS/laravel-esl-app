@@ -50,7 +50,7 @@ class StudentController extends Controller
         
         if(isset($user->group->units) and $user->group->units != null)
         {
-            $units = $user->group->units;
+            $units = $user->group->units->sortBy('position');
             return view('student.level_selection', compact(['user', 'units']));
         }
         else

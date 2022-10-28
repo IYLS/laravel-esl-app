@@ -31,6 +31,8 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        dump($request->group);
+
         $newUser = new User;
         $newUser->user_id = $request->user_id;
         $newUser->age = $request->age;
@@ -45,12 +47,12 @@ class UserController extends Controller
         if($request->group == 0) {
             $newUser->group_id = null;
         } else {
-            $user->group_id = $request->group;;
+            $newUser->group_id = $request->group;
         }
         
         $newUser->save();
 
-        return redirect()->route('users.index')->with('success', "User $newUser->name created successfully.");;
+        return redirect()->route('users.index')->with('success', "User $newUser->name created successfully.");
     }
 
     public function show($id)
@@ -81,7 +83,7 @@ class UserController extends Controller
         if($request->group == 0) {
             $user->group_id = null;
         } else {
-            $user->group_id = $request->group;;
+            $user->group_id = $request->group;
         }
 
         $user->save();

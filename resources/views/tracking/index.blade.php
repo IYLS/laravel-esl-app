@@ -29,7 +29,7 @@
                         {{ $t->user->name }}
                     </td>
                     <td class="text-center">
-                        {{ $t->exercise->section->unit->title }}
+                        @if(isset($t->exercise->section->unit->title)) {{ $t->exercise->section->unit->title }} @else Not found @endif
                     </td>
                     <td class="text-center">
                         {{ $t->created_at }}

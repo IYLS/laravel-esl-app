@@ -3,14 +3,14 @@
 
 <div class="container mt-3">
     <div class="border rounded ms-2 me-2 mb-2 p-2 d-flex justify-content-between">
-        <h4>{{ $tracking->exercise->exerciseType->name . " exercise tracking information"}}</h4>
+        <h4>@if(isset($tracking->exercise->exerciseType->name)) {{ $tracking->exercise->exerciseType->name }} exercise tracking information @else Tracking Information @endif </h4>
         <a href="{{ route('tracking.index') }}" class="btn btn-link">Go back</a>
     </div>
-
+    
     <div class="p-3">
         <h5>Exercise completion data</h5>
         <div class="p-3 mb-2 border rounded">
-            <p>Exercise Id: {{ $tracking->exercise->id }}</p>
+            @if(isset($tracking->exercise)) <p>Exercise Id: {{ $tracking->exercise->id }}</p> @endif
             <p>Time spent (minutes): {{ $tracking->time_spent_in_minutes }}</p>
             <p>Number of correct answers: {{ $tracking->correct_answers }}</p>
             <p>Number of wrong answers: {{ $tracking->wrong_answers }}</p>

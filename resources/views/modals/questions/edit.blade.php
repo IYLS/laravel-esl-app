@@ -156,7 +156,7 @@
                         @break
                     @case('form')
                         @php 
-                            $id = count($exercise->questions);
+                            $id = "".count($exercise->questions)."-$question->id";
                         @endphp
                         <div id="double-col-form" class="p-1">
                             <input class="form-control mb-1" name="title" type="text" placeholder="Activity title" value="{{ $question->correct_answer }}">
@@ -167,14 +167,11 @@
                                 <input class="form-check-input" name="exclusive_responses" type="checkbox" value="true" @if($question->exclusive_responses) checked @endif>
                                 <label class="form-check-label">Exclusive responses</label>
                             </div>
-                            <button type="button" class="btn btn-primary btn-sm" onclick="addColumn({{ json_encode($id) }})">Add question</button>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="addNewColumn({{ json_encode($id) }})">Add question</button>
 
                             <div id="questions-form-{{ $id }}" class="mt-2 p-1">
                                 @foreach($question->alternatives as $alt)
-                                    @php 
-                                        $numberOfQuestions = $loop->index + 1;
-                                    @endphp
-                                    <div class="row form-question-title mt-1 mb-1" id="form-question-{{ $numberOfQuestions }}">
+                                    <div class="row form-question-title-{{ $id }} mt-1 mb-1" id="form-question-{{ $id }}">
                                         <div class="col-1">
                                             <p>{{ $loop->index + 1 }}.</p>
                                         </div>
@@ -182,7 +179,7 @@
                                             <input type="text" class="form-control" name="alternatives[]" placeholder="Statement" value="{{ $alt->title }}">
                                         </div>
                                         <div class="col-1">
-                                            <button type="button" class="btn btn-danger" onclick="deleteFormQuestion(`form-question-{{ $numberOfQuestions }}`)"><i class="mdi mdi-delete"></i></button>
+                                            <button type="button" class="btn btn-danger" onclick="deleteFormQuestion(`form-question-{{ $id }}`)"><i class="mdi mdi-delete"></i></button>
                                         </div>
                                     </div>
                                 @endforeach 
@@ -218,7 +215,7 @@
         }
     }
 
-    function addColumn(id) {
+    function addNewColumn(id) {
         const questionsContainer = document.getElementById(`questions-form-${id}`);
 
         var number = document.createElement('p');
@@ -257,6 +254,6 @@
         questionsContainer.appendChild(container);
     }
 
-    function numberOfQuestions() { return document.getElementsByClassName('form-question-title').length; }
+    function numberOfQuestions() { return document.getElementsByClassName(`form-question-title-${id}`).length; }
     function deleteFormQuestion(id) { document.getElementById(id).remove(); }
 </script>

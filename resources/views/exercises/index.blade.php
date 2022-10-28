@@ -2,11 +2,11 @@
 @section('main')
 
 <div class="container">
-    <div class="row d-flex align-items-center">
-        <div class="mt-3 mb-1 col-10">
+    <div class="row d-flex align-items-center me-3 ms-3">
+        <div class="mt-3 mb-1 col-11">
             <h3>{{ $unit->title }}</h3>
         </div>
-        <div class="col-2">
+        <div class="col-1">
             <a href="{{ route('units.show', $unit->id) }}">
                 Go back
             </a>
@@ -18,26 +18,32 @@
                 <div class="card-body d-flex justify-content-between">
                     <div>
                         <h4>{{ $section->name }} section</h4>
-                        <p>{{ $section->instructions }}</p>
+                        <div class="row">
+                            <div class="col-10">
+                                <p>@if($section->instructions != "") {{ $section->instructions }} @else Empty instructions @endif</p>
+                            </div>
+                            <div class="col-2">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#positions_modal_{{ $section->id }}">
+                                    Positions  <i class="mdi mdi-sort-ascending"></i>
+                                </button>
+                                @include('modals.sections.set_positions', ["modal_id" => "positions_modal_$section->id"])
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <table class="table">
                 <thead>
-                    <th class="d-none d-md-table-cell">#</th>
                     <th>Activity title</th>
                     <th class="d-none d-md-table-cell">Description</th>
                     <th class="d-none d-md-table-cell">Type</th>
-                    <th class="d-none d-md-table-cell">Position</th>
                     <th>Actions</th>
                 </thead>
                 <tbody>
                     @forelse($section->exercises->sortBy('position') as $exercise)
                         <tr @if($exercise->subtype == 99 or $exercise->subtype == 991) style="background-color: #5fde72;" @endif>
-                            <td class="col-1">
-                                {{ $loop->index+1 }}.
-                            </td>
+
                             <td class="col-1">
                                 {{ $exercise->title }}
                             </td>
@@ -47,19 +53,6 @@
                             <td class="col-2 d-none d-md-table-cell">
                                 {{ $exercise->exerciseType->name }}
                             </td>
-                                @csrf
-                                <td class="col-1 d-none d-md-table-cell">
-                                    <form action="{{ route('exercises.position', ["$unit->id", "$exercise->id"]) }}" method="POST">
-                                        @csrf
-                                        <select class="form-select" name="position" id="position" onchange="this.form.submit()">
-                                            @forelse($section->exercises as $e)
-                                                <option value="{{ $loop->index + 1 }}" @if($exercise->position == $loop->index+1) selected @endif>{{ $loop->index + 1 }}</option>
-                                            @empty
-                                                <p class="text-secondary text-center"><small>No exercises to sort.</small></p>
-                                            @endforelse
-                                        </select>
-                                    </form>
-                                </td>
                             <td class="col-1">
                                 <div class="d-flex">
                                     <form action="{{ route("exercises.destroy", [$exercise->section->unit_id, $exercise->exercise_type_id, $exercise->id]) }}" method="POST">

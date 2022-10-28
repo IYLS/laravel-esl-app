@@ -52,7 +52,7 @@
                     @foreach($question->alternatives as $alt)
                     <tr>
                         <td>
-                            <p class="text-center">
+                            <p>
                                 {{ $loop->index + 1 . ". " .  $alt->title }}
                             </p>
                         </td>
@@ -83,6 +83,7 @@
 
         <div>
             <button type="button" id="addQuestionButton" class="btn btn-primary open-modal" data-bs-toggle="modal" data-bs-target="#addQuestionModal">Add question</button>
+            @include('modals.questions.add')
         </div>
     </div>
 
@@ -90,7 +91,5 @@
         <a class="btn btn-primary m-1" href="{{ route('exercises.index', [$exercise->section->unit_id]) }}">Done</a>
     </div>
 </div>
-
-@include('modals.questions.add');
 
 @endsection

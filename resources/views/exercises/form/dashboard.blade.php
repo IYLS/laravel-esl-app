@@ -23,7 +23,7 @@
                     @foreach($question->alternatives as $alt)
                     <tr>
                         <td>
-                            <div class="text-center">
+                            <div>
                                 {!! "<p class='d-inline text-center'>" .$loop->index + 1 . "</p>. <p class='d-inline text-center' name='alt-{{ $question->id }}' id='{{ $alt->id }}'>" . $alt->title . "</p>"  !!}
                             </div>
                         </td>

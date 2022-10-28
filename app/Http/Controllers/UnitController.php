@@ -15,7 +15,7 @@ class UnitController extends Controller
     
     public function index()
     {
-        $units = Unit::all();
+        $units = Unit::all()->sortBy('position');
         return view('units.index', compact('units'));
     }
 
@@ -148,6 +148,17 @@ class UnitController extends Controller
         }
 
         return redirect()->route('units.show', $unit->id)->with('success', "$unit->title Unit updated successfully");
+    }
+
+    public function setPositions(Request $request)
+    {
+        foreach($request->positions as $id => $position) {
+            $unit = Unit::find($id);
+            $unit->position = $position;
+            $unit->save();
+        }
+
+        return redirect()->route('units.index')->with('success', 'Section positions defined successfully!');
     }
 
     public function destroy($id)
