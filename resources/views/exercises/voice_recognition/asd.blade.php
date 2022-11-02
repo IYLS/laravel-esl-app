@@ -6,7 +6,7 @@
         @isset($e->instructions) {!! $e->instructions !!} @endisset
         @isset($e->translated_instructions) <p>{!! $e->translated_instructions !!}</p> @endisset
         <div class="row">
-            @foreach($e->questions as $question)
+            @foreach($e->questions->sortBy('position') as $question)
                 <div class="col-12 col-md-6 mt-1 mb-1 text-center">
                     <p>{{ $question->statement }}</p>
                     <img src="{{ asset('esl/public/storage/files/'.$question->image_name) }}" class="img-fluid col-6" alt="img">

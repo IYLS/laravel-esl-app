@@ -31,8 +31,6 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        dump($request->group);
-
         $newUser = new User;
         $newUser->user_id = $request->user_id;
         $newUser->age = $request->age;

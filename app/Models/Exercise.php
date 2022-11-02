@@ -25,7 +25,8 @@ class Exercise extends Model
         'video_name',
         'extra_info',
         'position',
-        'translated_instructions'
+        'translated_instructions',
+        'heading_title'
     ];
 
     public $timestamps = false;

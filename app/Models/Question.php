@@ -22,7 +22,8 @@ class Question extends Model
         'audio_name',
         'correct_answer',
         'exclusive_responses',
-        'personal_response'
+        'personal_response',
+        'position'
     ];
 
     public $timestamps = false;

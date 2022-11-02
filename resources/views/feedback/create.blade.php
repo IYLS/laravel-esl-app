@@ -68,7 +68,7 @@
                                 </ol>
                             </div>
                             @else
-                                <h5>{{ $loop->index + 1 . ". " . $question->statement }}</h5>
+                                <h6>{!! $loop->index + 1 . ". " . $question->statement !!}</h6>
                             @endif
                             <div class="mb-2 col-12 col-lg-6">
                                 @foreach($question->alternatives as $alternative)

@@ -101,7 +101,7 @@ class TrackingController extends Controller
                 } else {
                     if ($request->answers != null)
                     {
-                        dump($request->answers);
+                        
                     }
                 }
             }

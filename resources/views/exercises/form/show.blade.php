@@ -37,14 +37,14 @@
             <table class="table table-bordered">
                 <thead>
                     <th>
-                        <p class="text-center">Statements</p>
+                        <p class="text-center">{{ $question->heading_title }}</p>
                     </th>
                     <th>
-                        <p class="text-center">{{ $question->statement }}</p>
+                        <p class="text-center ms-2">{{ $question->statement }}</p>
                     </th>
                     @isset($question->answer)
                     <th>
-                        <p class="text-center">{{ $question->answer }}</p>
+                        <p class="text-center ms-2">{{ $question->answer }}</p>
                     </th>
                     @endisset                        
                 </thead>
@@ -53,7 +53,7 @@
                     <tr>
                         <td>
                             <p>
-                                {{ $loop->index + 1 . ". " .  $alt->title }}
+                                {{ $alt->title }}
                             </p>
                         </td>
                         <td></td>

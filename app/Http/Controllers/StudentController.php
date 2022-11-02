@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Unit;
 use App\Models\Section;
+use App\Models\Tracking;
 
 class StudentController extends Controller
 {
@@ -20,6 +21,10 @@ class StudentController extends Controller
         $keywords = $unit->keywords;
         $user = Auth::user();
 
+        $completed_exercises = Tracking::where('user_id', $user->id)->get()->map(function ($tracking) {
+            return $tracking->exercise_id;
+        })->toArray();
+
         $help_options = array();
         if ($unit->cultural_notes_enabled) array_push($help_options, $unit->cultural_notes);
         if ($unit->listening_tips_enabled) array_push($help_options, $unit->listening_tips);
@@ -28,7 +33,7 @@ class StudentController extends Controller
         if ($unit->translation_enabled) array_push($help_options, $unit->translation);
         if ($unit->dictionary_enabled) array_push($help_options, $unit->dictionary);
 
-        return view('student.show', compact(['unit', 'keywords', 'help_options', 'user']));
+        return view('student.show', compact(['unit', 'keywords', 'help_options', 'user', 'completed_exercises']));
     }
 
     public function select(Request $request)

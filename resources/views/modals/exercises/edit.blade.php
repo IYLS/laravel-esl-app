@@ -9,7 +9,7 @@
                 <form action="{{ route('exercises.update', [$section->unit->id, $type, $exercise->id]) }}" method="POST">
                     @csrf
                     @method('PUT')
-                    <input id="title" name="title" type="text" class="form-control" placeholder="Title" required value="{{ $exercise->title }}">
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title" value="{{ $exercise->title }}">
                     <br>
                     <input id="description" name="description" type="text" class="form-control" placeholder="(Optional) Description" value="{{ $exercise->description }}">
                     <br>

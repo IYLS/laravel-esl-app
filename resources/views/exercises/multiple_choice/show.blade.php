@@ -38,14 +38,14 @@
                 @break
             @endswitch
         </p>
-        @isset($exercise->extra_info)<p class="text-info">Additional Information: {{ $exercise->extra_info }}</p>@endisset
     </div>
 
     <div class="card p-4 m-2">
         <h4>Activity questions</h4>
         @forelse($exercise->questions as $question)
             @php $question_number = $loop->index + 1; @endphp
-            @if($exercise->subtype == 1 or $exercise->subtype == 4 or $exercise->subtype == 99)
+
+            @if($exercise->subtype == 1 or $exercise->subtype == 4 or $exercise->subtype == 99 or $exercise->subtype == 3)
                 <div class="card mt-1 mb-1 p-4">
                     @if(isset($e->video_name) and $e->video_name != null)
                         <div class="ratio ratio-16x9 mt-3">
@@ -54,34 +54,32 @@
                     @endif
                     <div class="row">
                         <div class="col-12 col-md-10">
-                            <p>Statements</p>
-                            <ol type="I">
-                                @php 
-                                    $statements = explode(";", $question->statement);
-                                @endphp
-                                @foreach($statements as $statement)
-                                <li>
-                                    {{ $statement }}
-                                </li>
-                                @endforeach
-                            </ol>
-                            <p>Alternatives</p>
+                            {!! $question->statement !!}
                             <ol type="a">
                                 @foreach($question->alternatives as $alt)
-                                <li>{{ $alt->title }}</li>
+                                    <li>
+                                        @if($alt->correct_alt) <strong class="text-primary">{{ $alt->title }}</strong>
+                                        @else {{ $alt->title }}
+                                        @endif
+                                    </li>
                                 @endforeach
                             </ol>
                         </div>
                         <div class="col-12 col-md-2 d-flex justify-content-center">
-                            <br>
-                            <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
-                                <i class="mdi mdi-delete"></i>
+                            <div>
+                                <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
+                                    <i class="mdi mdi-delete"></i>
+                                </button>
                             </button> 
-                            @include('modals.questions.delete_confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
-                            <button type="button" id="edit_question_button" class="btn btn-sm btn-warning ms-1" data-bs-toggle="modal" data-bs-target="#edit_question_{{ $question->id }}">
-                                <i class="mdi mdi-pencil"></i>
-                            </button>
-                            @include('modals.questions.edit', ['button_target_id' => "edit_question_$question->id", 'alternatives' => $question->alternatives])
+                                </button>
+                            </button> 
+                                </button>
+                                @include('modals.questions.delete_confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
+                                <button type="button" id="edit_question_button" class="btn btn-sm btn-warning ms-1" data-bs-toggle="modal" data-bs-target="#edit_question_{{ $question->id }}">
+                                    <i class="mdi mdi-pencil"></i>
+                                </button>
+                                @include('modals.questions.edit', ['button_target_id' => "edit_question_$question->id", 'alternatives' => $question->alternatives])
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -90,34 +88,33 @@
                     <div class="row">
                         <div class="col-12 col-md-12">
                             @php
-                                $alts = array();
-                                foreach($question->alternatives as $alt)
-                                {
-                                    array_push($alts, $alt->title);
-                                }
+                                $correct_words = explode('/', $question->correct_answer);
+                                $words = explode(' ', $question->statement);
 
-                                $alts = implode("/", $alts);
-
-                                $statement_array = explode(" ", $question->statement);
-
-                                $final_word = "";
-
-                                $words_to_add = array();
-                                foreach($statement_array as $word)
-                                {
-                                    if($word == ";;" or $word == ";;." or $word == ";;," or $word == ";;!" or $word == ";;?")
-                                    {   
-                                        $new_word = $alts;
-                                        $final_word = $final_word . " " . "<strong class='text-primary'>$new_word</strong>";
+                                $index = 0;
+                                foreach($words as $key=>$word) {
+                                    if($word == ";;") {
+                                        $words[$key] = "<strong class='text-primary'>$correct_words[$index]</strong>";
+                                        $index += 1;
                                     }
-
-                                    $final_word = $final_word . " " . $word;
                                 }
 
-                                $final_word = str_replace([";;", ";;.", ";;,", ";;!", ";;?", "\n"], '', $final_word);
+                                $final_string = implode(' ', $words);
                             @endphp
                             
-                            <p>{{ $question_number }}. {!! $final_word !!}</p>
+                            <p>{!! $final_string !!}</p>
+                            <ol type="a">
+                                @forelse($question->alternatives as $alt)
+                                    <li>
+                                        @if($alt->correct_alt)
+                                            <p><strong class="text-primary">{{ $alt->title }}</strong></p>
+                                        @else
+                                            <p>{{ $alt->title }}</p>
+                                        @endif
+                                    </li>
+                                @empty
+                                @endforelse
+                            </ol>
                         </div>
                         <div class="row">
                             <audio controls style="width: 350px;">
@@ -125,48 +122,6 @@
                             </audio> 
                         </div>
                         <div class="col-12 col-md-2 d-flex justify-content-start mt-1">
-                            <br>
-                            <button type="button" id="delete_question_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_question_{{ $question->id }}">
-                                <i class="mdi mdi-delete"></i>
-                            </button>
-                            @include('modals.questions.delete_confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete question number $question_number.", 'button_target_id' => "delete_question_$question->id", 'route' => route('questions.destroy', [$exercise->id, $question->id])])
-                            <button type="button" id="edit_question_button" class="btn btn-sm btn-warning ms-1" data-bs-toggle="modal" data-bs-target="#edit_question_{{ $question->id }}">
-                                <i class="mdi mdi-pencil"></i>
-                            </button>
-                            @include('modals.questions.edit', ['button_target_id' => "edit_question_$question->id", 'alternatives' => $question->alternatives])
-                        </div>
-                    </div>
-                </div>
-            @elseif($exercise->subtype == 3)
-                <div class="card mt-1 mb-1 p-4">
-                    <div class="row">
-                        <div class="col-12 col-md-10">
-                            <p>Statement:</p>
-                            <ul>
-                                <li>
-                                    <p>{{ $question->statement }}</p>
-                                </li>
-                            </ul>
-                            <p>Correct answer:</p>
-                            <ul>
-                                @if(strtolower(trim($question->correct_answer)) == 'true')
-                                    <li>
-                                        <p class="text-primary"><strong>True</strong></p>
-                                    </li>
-                                    <li>
-                                        <p class="text-primary">False</p>
-                                    </li>
-                                @elseif(strtolower(trim($question->correct_answer)) == 'false')
-                                    <li>
-                                        <p class="text-primary">True</p>
-                                    </li>
-                                    <li>
-                                        <p class="text-primary"><strong>False</strong></p>
-                                    </li>
-                                @endif
-                            </ul>
-                        </div>
-                        <div class="col-12 col-md-2 d-flex justify-content-center">
                             <br>
                             <button type="button" id="delete_question_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_question_{{ $question->id }}">
                                 <i class="mdi mdi-delete"></i>

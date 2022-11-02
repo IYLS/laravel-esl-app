@@ -10,24 +10,16 @@
                 <h4>Positions for {{ $section->name }} section</h4>
                 <form method="POST" action="{{ route('sections.positions', "$section->unit_id") }}" method="POST">
                     @csrf
-                    @forelse($section->exercises as $exercise)
+                    @forelse($section->exercises->sortBy('position') as $exercise)
                         <div class="row">
                             <div class="col-8">
                                 <p>{{ $exercise->title }}: </p>
                             </div>
                             <div class="col-4">
                                 <select class="form-select" name="positions[{{ $exercise->id }}]" id="position">
-                                    @php 
-                                    $current_position = 0;
-                                    if(isset($exercise->position)) {
-                                        $current_position = $exercise->position;
-                                    } else {
-                                        $current_position = 1;
-                                    }
-                                    @endphp
-
                                     @foreach($section->exercises as $e)
-                                        <option value="{{ $loop->index + 1 }}" @if($loop->index + 1 == $current_position) selected @endif>{{ $loop->index + 1 }}</option>
+                                        @php $index = $loop->index + 1; @endphp
+                                        <option value="{{ $index }}" @if($index == $exercise->position) selected @endif>{{ $index }}</option>
                                     @endforeach
                                 </select>
                             </div>

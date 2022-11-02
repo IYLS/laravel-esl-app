@@ -179,7 +179,6 @@
 
         var textarea_elements = document.getElementsByClassName('mce-editor');
         for (i = 0; i < textarea_elements.length; i++) {
-            console.log(tinymce.get(textarea_elements[i].id));
             tinymce.get(textarea_elements[i].id).mode.set("design");
         }
         

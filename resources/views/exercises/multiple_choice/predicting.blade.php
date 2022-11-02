@@ -1,19 +1,12 @@
 {{--  PREDICTING --}}
-@foreach($e->questions as $question)
-    @php
-        $statements = explode(";", $question->statement); 
-    @endphp
+@foreach($e->questions->sortBy('position') as $question)
     <div class="border rounded p-4 mt-3 mb-3 shadow">
-        <ol type="I" class="mb-3">
-            @foreach($statements as $s) 
-                <li>{{ $s }}</li> 
-            @endforeach
-        </ol>
+        {!! $question->statement !!}
         <ol type="a">
             @foreach($question->alternatives as $a)
                 <li>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="question-{{ $question->id }}" id="{{ $question->id }}-{{ $a->id }}" value="{{ $a->title }}">
+                        <input class="form-check-input multiple-choice-{{ $e->id }}-check" type="radio" name="question-{{ $question->id }}" id="{{ $question->id }}-{{ $a->id }}" value="{{ $a->title }}">
                         <label class="form-check-label">{{ $a->title }}</label>
                     </div>
                 </li>

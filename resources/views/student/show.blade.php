@@ -91,7 +91,7 @@
                     @endif
                     <div class="nav flex-column mt-2 nav-pills col-12 col-xl-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         @forelse($section->exercises->sortBy('position') as $e)
-                            <button class="nav-link @if($e->subtype == 99) meta @endif" id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" type="button" role="tab" aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" aria-selected="false" onclick="hideFeedback();startTimer();resetIntentCount();">{{ $e->title }}</button>
+                            <button class="nav-link @if($e->subtype == 99) meta @endif" id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" type="button" role="tab" aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" aria-selected="false" onclick="hideFeedback();startTimer();resetIntentCount();">@if($e->title == '' or $e->title == null) Activity #{{ $e->id }} @else {{ $e->title }} @endif</button>
                         @empty
                             <p class="text-center text-secondary"><small>No exercises added yet.</small></p>    
                         @endforelse
@@ -228,7 +228,6 @@
 
     function startTimer() {
         window.startTime = new Date().getTime();
-        console.log(window.startTime);
     }
 </script>
 
@@ -379,7 +378,6 @@
             });
 
             alternatives.forEach((alternative) => {
-
                 // Alternativa correcta
                 if (alternative.checked && question.correct_answer == alternative.value) {
                     responses.push({'id': `${question.id}`, 'response': `${question.correct_answer}`});
@@ -390,8 +388,8 @@
                     } else {
                         document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
                         document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
-                        correct_questions += 1;
                     }
+                    correct_questions += 1;
                 // Alternativa incorrecta
                 } else if(alternative.checked) {
                     if(question.personal_response == null || !question.personal_response) {
@@ -413,6 +411,26 @@
         });
 
         wrong_questions = questions_number - correct_questions;
+
+        if (document.getElementsByClassName(`show-on-all-correct-${exercise.id}`).length != 0) {
+            var shortMessageB = document.getElementsByClassName(`show-on-all-correct-${exercise.id}`)[0];
+            
+            if (questions_number == correct_questions) {
+                shortMessageB.hidden = false;
+            } else {
+                shortMessageB.hidden = true;
+            }
+        }
+
+        if (document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`).length != 0) {
+            var shortMessageC = document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`)[0];
+            
+            if (questions_number != correct_questions) {
+                shortMessageC.hidden = false;
+            } else {
+                shortMessageC.hidden = true;
+            }
+        }
 
         correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
         wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
@@ -464,6 +482,26 @@
 
         wrong_questions = questions_number - correct_questions;
 
+        if (document.getElementsByClassName(`show-on-all-correct-${exercise.id}`).length != 0) {
+            var shortMessageB = document.getElementsByClassName(`show-on-all-correct-${exercise.id}`)[0];
+            
+            if (questions_number == correct_questions) {
+                shortMessageB.hidden = false;
+            } else {
+                shortMessageB.hidden = true;
+            }
+        }
+
+        if (document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`).length != 0) {
+            var shortMessageC = document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`)[0];
+            
+            if (questions_number != correct_questions) {
+                shortMessageC.hidden = false;
+            } else {
+                shortMessageC.hidden = true;
+            }
+        }
+
         correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
         wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
         
@@ -495,6 +533,26 @@
 
             document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
         });
+
+        if (document.getElementsByClassName(`show-on-all-correct-${exercise.id}`).length != 0) {
+            var shortMessageB = document.getElementsByClassName(`show-on-all-correct-${exercise.id}`)[0];
+            
+            if (questions_number == correct_questions) {
+                shortMessageB.hidden = false;
+            } else {
+                shortMessageB.hidden = true;
+            }
+        }
+
+        if (document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`).length != 0) {
+            var shortMessageC = document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`)[0];
+            
+            if (questions_number != correct_questions) {
+                shortMessageC.hidden = false;
+            } else {
+                shortMessageC.hidden = true;
+            }
+        }
         
         var exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise.id}`);
         exerciseDetailsContainer.hidden = false;
@@ -539,6 +597,26 @@
         });
 
         wrong_questions = questions_number - correct_questions;
+
+        if (document.getElementsByClassName(`show-on-all-correct-${exercise.id}`).length != 0) {
+            var shortMessageB = document.getElementsByClassName(`show-on-all-correct-${exercise.id}`)[0];
+            
+            if (questions_number == correct_questions) {
+                shortMessageB.hidden = false;
+            } else {
+                shortMessageB.hidden = true;
+            }
+        }
+
+        if (document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`).length != 0) {
+            var shortMessageC = document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`)[0];
+            
+            if (questions_number != correct_questions) {
+                shortMessageC.hidden = false;
+            } else {
+                shortMessageC.hidden = true;
+            }
+        }
 
         correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
         wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);

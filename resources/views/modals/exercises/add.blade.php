@@ -8,7 +8,7 @@
             <div class="modal-body">
                 <form action="{{ route('exercises.store', [$section->unit->id, $type, $section_id]) }}" method="POST">
                     @csrf
-                    <input id="title" name="title" type="text" class="form-control" placeholder="Title" required>
+                    <input id="title" name="title" type="text" class="form-control" placeholder="Title">
                     <br>
                     <input id="description" name="description" type="text" class="form-control" placeholder="(Optional) Description">
                     <br>

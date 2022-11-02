@@ -1,14 +1,14 @@
 @include('layouts.tracking_complete')
 <form enctype="multipart/form-data" action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="form_form_{{ $e->id }}">
     @csrf
-    @foreach($e->questions as $question)
-        <div class="border rounded p-4">
-            <h6>{{ $loop->index + 1 . ". " }} - {{ $question->correct_answer }}</h6>
+    @foreach($e->questions->sortBy('position') as $question)
+        <div class="border rounded p-4 mb-2">
+            <h6>{{ $loop->index + 1 . ". " }} {{ $question->correct_answer }}</h6>
             @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
             <table class="table table-bordered">
                 <thead>
                     <th>
-                        <p class="text-center">Statements</p>
+                        <p class="text-center">{{ $question->heading_title }}</p>
                     </th>
                     <th>
                         <p class="text-center">{{ $question->statement }}</p>
@@ -24,7 +24,7 @@
                     <tr>
                         <td>
                             <div>
-                                {!! "<p class='d-inline text-center'>" .$loop->index + 1 . "</p>. <p class='d-inline text-center' name='alt-{{ $question->id }}' id='{{ $alt->id }}'>" . $alt->title . "</p>"  !!}
+                                {!! "<p class='d-inline text-center ps-3' name='alt-{{ $question->id }}' id='{{ $alt->id }}'>" . $alt->title . "</p>"  !!}
                             </div>
                         </td>
                         <td>

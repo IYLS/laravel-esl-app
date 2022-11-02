@@ -1,7 +1,7 @@
 @include('layouts.tracking_complete')
 <form enctype="multipart/form-data" action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'fill_in_the_gaps');" method="POST" id="fill_in_the_gaps_form_{{ $e->id }}">
     @csrf
-    @foreach($e->questions as $question)
+    @foreach($e->questions->sortBy('position') as $question)
         <div class="border rounded p-4">
             <p>{{ $loop->index + 1 }}. &nbsp;</p>
             <div class="row mt-2 mb-2">

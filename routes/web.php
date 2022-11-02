@@ -103,6 +103,7 @@ Route::get('/tracking/show/{tracking}', [TrackingController::class, 'show'])->na
 
 // Set exercise position
 Route::post('/units/{unit}/set_positions', [SectionController::class, 'setPositions'])->name('sections.positions');
+Route::post('/exercise/set_positions', [QuestionController::class, 'setPositions'])->name('questions.positions');
 Route::post('/units/set_positions', [UnitController::class, 'setPositions'])->name('units.positions');
 
 // GlossedWords Routes

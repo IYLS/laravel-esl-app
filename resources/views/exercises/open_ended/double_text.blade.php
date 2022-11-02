@@ -8,7 +8,7 @@
         @include('layouts.tracking_complete')
         <form enctype="multipart/form-data" action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'open_ended');" method="POST" id="open_ended_form_{{ $e->id }}">
             @csrf
-            @forelse($e->questions as $question)
+            @forelse($e->questions->sortBy('position') as $question)
                 <h6>{{ $loop->index + 1 . ". " }}</h6>
                 <h4>{{ $question->correct_answer }}</h4>
                 <table class="table table-bordered">

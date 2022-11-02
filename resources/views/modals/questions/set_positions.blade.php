@@ -3,22 +3,22 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Set units order</h5>
+                <h5 class="modal-title">Set questions order</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('units.positions') }}" method="POST">
+                <form method="POST" action="{{ route('questions.positions') }}" method="POST">
                     @csrf
-                    @forelse($units->sortBy('position') as $unit)
+                    @forelse($questions->sortBy('position') as $question)
                         <div class="row">
                             <div class="col-8">
-                                <p>{{ $unit->title }}: </p>
+                                <p>{{ $question->statement }}: </p>
                             </div>
                             <div class="col-4">
-                                <select class="form-select" name="positions[{{ $unit->id }}]" id="position">
-                                    @foreach($units as $u)
+                                <select class="form-select" name="positions[{{ $question->id }}]" id="position">
+                                    @foreach($questions as $q)
                                         @php $index = $loop->index + 1; @endphp
-                                        <option value="{{ $index }}" @if($index == $unit->position) selected @endif>{{ $index }}</option>
+                                        <option value="{{ $index }}" @if($question->position == $index) selected @endif>{{ $index }}</option>
                                     @endforeach
                                 </select>
                             </div>

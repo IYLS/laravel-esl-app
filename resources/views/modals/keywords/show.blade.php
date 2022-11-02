@@ -13,9 +13,7 @@
                     @foreach($unit->glossedWords as $word)
                         @php
                         $modal_id = "show_" . $word->id . "_glossed_word";
-                        
-                        $button_string = "<a href='#' role='button' class='' data-bs-toggle='popover' data-bs-content='$word->description'>$word->word</a>";
-
+                        $button_string = "<a href='#' role='button' data-bs-toggle='popover' data-bs-content='".$word->description."'>$word->word</a>";
                         $final_description = str_replace($word->word, $button_string, $final_description); 
                         @endphp 
                     @endforeach

@@ -21,7 +21,7 @@
         </div>
         <div class="mt-4 pt-2 pb-2 mb-2">
             <ol type="1">
-                @foreach($e->questions as $question)
+                @foreach($e->questions->sortBy('position') as $question)
                     @php
                         $statement = $question->statement;
                         $statement_split = explode(";;", $statement);

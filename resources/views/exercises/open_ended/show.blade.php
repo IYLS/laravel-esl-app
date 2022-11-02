@@ -30,7 +30,7 @@
         @forelse($exercise->questions as $question)
             @php $question_number = $loop->index + 1; @endphp
             <div class="card mt-1 mb-1 ps-4 pe-4 pt-3 pb-2">
-                @if ($exercise->subtype == '99' or $exercise->subtype == null or $exercise->subtype == 1 or $exercose->subtype == '')
+                @if ($exercise->subtype == '99' or $exercise->subtype == null or $exercise->subtype == 1 or $exercise->subtype == '')
                         <div class="row">
                             <div class="col-12">
                                 <p>{{ $question_number }}.</p>

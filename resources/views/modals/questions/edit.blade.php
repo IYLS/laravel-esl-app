@@ -15,73 +15,64 @@
                 <form enctype="multipart/form-data" action="{{ route('questions.update', $question->id) }}" method="POST">
                     @csrf
                     @method('PUT')
+
                     @switch($type)
                     @case('multiple_choice')
-                        @php
-                            $alts = array();
-                            $alts_string = "";
-                            foreach($alternatives as $alt)
-                            {
-                                array_push($alts, $alt->title);
-                                array_push($alts, ";");
-                            }
-                            $alts_string = implode("", $alts);
-                        @endphp
                         @switch($subtype)
-                        @case('1')
-                            <p><small>Question settings:</small></p>
-                            <input id="statement" name="statement" type="text" class="form-control" placeholder="Question Statement(s)" value="{{ $question->statement }}">
-                            <p class="text-secondary"><small>Use a semicolon (;) at the end of each statement. Except the last one.</small></p>
-                            <p><small>Alternatives settings:</small></p>
-                            <div class="mb-3">
-                                <input name="correct_answer" class="form-control" type="text" placeholder="Correct Alternative (only if applicable)" value="{{ $question->correct_answer }}">
-                                <textarea name="alternatives" class="form-control" rows="3" placeholder="Type alternatives separated by semicolon (;) except for the last one">{{ $alts_string }}</textarea>
-                            </div>
-                            @break
                         @case('2')
                             <p><small>Question settings:</small></p>
-                            <input id="statement" name="statement" type="text" class="form-control" placeholder="Statement to complete" value="{{ $question->statement }}">
-                            <p class="text-secondary"><small>Use double semicolon (;;) to indicate where the gap to fill will be placed.</small></p>
+                            <textarea id="statement" class="mce-editor" name="statement" type="text">{!! $question->statement !!}</textarea>
                             <p><small>Alternatives settings:</small></p>
-                            <div class="mb-3">
-                                <input name="correct_answer" class="form-control mb-1" type="text" placeholder="Correct words" value="{{ $question->correct_answer }}">
-                                <p class="text-secondary"><small>Use semicolon (;) to separate each correct response</small></p>
-                                <textarea name="alternatives" class="form-control" rows="3" placeholder="Type alternatives separated by semicolon (;) except for the last one">{{ $alts_string }}</textarea>
-                                <div class="row">
-                                    <p class="text-secondary col-12"><small>e.g:  Enter the following: <strong>afraid/affordable;reliable/relieved</strong></small></p>
-                                    <p class="text-secondary"><small>To get this result:</small></p>
-                                    <p class="text-secondary"><small><i>"I’ve just always been so <strong>afraid / affordable</strong> that you would say I wasn’t your real mum, and now you’ve actually said it, I’m almost <strong>reliable / relieved."</strong></i></small></p>
-                                </div>
+                            <button type="button" class="btn btn-primary btn-sm mb-2" onclick="addAlternative({{ json_encode($question->id) }})">Add alternative</button>
+                            <div class="mb-2" id="question-{{ $question->id }}-alternatives">
+                                @forelse($question->alternatives as $alt)
+                                    <div id="question-{{ $question->id }}-alternative-{{ $loop->index }}" class="row ms-1 me-1 question-{{ $question->id }}-alternative mb-1 d-flex justify-content-center align-items-center">
+                                        <div class="col-1 form-check">
+                                            <input class='form-check-input' type='radio' value="{{ $loop->index }}" name='correct_answer' @if($alt->correct_alt == true) checked @endif>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type='text' class='form-control' placeholder='Alternative title' name='alternatives[]' value="{{ $alt->title }}">
+                                        </div>
+                                        <div class="col-1">
+                                            <button class="btn btn-sm btn-danger" type="button" onclick="removeAlternative({{ json_encode($question->id) }}, {{ json_encode($loop->index) }})">
+                                                <i class="mdi mdi-delete"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                @empty
+                                @endforelse
                             </div>
                             <div class="mb-3">
                                 <label for="audio" class="form-label">Select audio file</label>
                                 <input class="form-control" type="file" name="audio" id="audio" accept="audio/*">
                             </div>
                             @break
+                        @case('1')
                         @case('3')
-                            <p><small>Question settings:</small></p>
-                            <input id="statement" name="statement" type="text" class="form-control" placeholder="Statement" value="{{ $question->statement }}">
-                            <input id="correct_answer" name="correct_answer" type="text" class="form-control" placeholder="Correct Answer" value="{{ $question->correct_answer }}">
-                            @break
                         @case('4')
-                            <p><small>Question settings:</small></p>
-                            <input id="statement" name="statement" type="text" class="form-control" placeholder="Statement" value="{{ $question->statement }}">
-                            <p><small>Alternatives settings:</small></p>
-                            <div class="mb-3">
-                                <input name="correct_answer" class="form-control" type="text" placeholder="Correct Alternative (only if applicable)" value="{{ $question->correct_answer }}">
-                                <textarea name="alternatives" class="form-control" rows="3" placeholder="Type alternatives separated by semicolon (;) except for the last one">{{ $alts_string }}</textarea>
-                            </div>
-                            <p class="text-secondary"><small>Use a semicolon (;) at the end of each statement. Except the last one.</small></p>
-                            @break
                         @case('99')
                             <p><small>Question settings:</small></p>
-                            <input id="statement" name="statement" type="text" class="form-control" placeholder="Statement" value="{{ $question->statement }}">
+                            <textarea id="statement" class="mce-editor" name="statement" type="text">{!! $question->statement !!}</textarea>
                             <p><small>Alternatives settings:</small></p>
-                            <div class="mb-3">
-                                <input name="correct_answer" class="form-control" type="text" placeholder="Correct Alternative (only if applicable)" value="{{ $question->correct_answer }}">
-                                <textarea name="alternatives" class="form-control" rows="3" placeholder="Type alternatives separated by semicolon (;) except for the last one">{{ $alts_string }}</textarea>
+                            <button type="button" class="btn btn-primary btn-sm mb-2" onclick="addAlternative({{ json_encode($question->id) }})">Add alternative</button>
+                            <div class="mb-2" id="question-{{ $question->id }}-alternatives">
+                                @forelse($question->alternatives as $alt)
+                                    <div id="question-{{ $question->id }}-alternative-{{ $loop->index }}" class="row ms-1 me-1 question-{{ $question->id }}-alternative mb-1 d-flex justify-content-center align-items-center">
+                                        <div class="col-1 form-check">
+                                            <input class='form-check-input' type='radio' value="{{ $loop->index }}" name='correct_answer' @if($alt->correct_alt == true) checked @endif>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type='text' class='form-control' placeholder='Alternative title' name='alternatives[]' value="{{ $alt->title }}">
+                                        </div>
+                                        <div class="col-1">
+                                            <button class="btn btn-sm btn-danger" type="button" onclick="removeAlternative({{ json_encode($question->id) }}, {{ json_encode($loop->index) }})">
+                                                <i class="mdi mdi-delete"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                @empty
+                                @endforelse
                             </div>
-                            <p class="text-secondary"><small>Use a semicolon (;) at the end of each statement. Except the last one.</small></p>
                             @break
                         @endswitch
                         <div>
@@ -160,6 +151,7 @@
                         @endphp
                         <div id="double-col-form" class="p-1">
                             <input class="form-control mb-1" name="title" type="text" placeholder="Activity title" value="{{ $question->correct_answer }}">
+                            <input class="form-control mb-1" name="heading" type="text" placeholder="Heading title" value="{{ $question->heading_title }}">
                             <input class="form-control mb-1" name="statement" type="text" placeholder="Column 1 title" value="{{ $question->statement }}">
                             <input class="form-control mb-1" name="answer" type="text" placeholder="(Optional) Column 2 title" value="{{ $question->answer }}">
                             <p class="text-secondary mb-1"><small>If you only need a single column leave this field empty.</small></p>
@@ -196,64 +188,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    function showSelectedForm() {
-        const columnNumber = document.getElementById('col-number').value;
-        const singleColumnContainer = document.getElementById('single-col-form');
-        const doubleColumnContainer = document.getElementById('double-col-form');
-        const columnSelectionForm = document.getElementById('col-selection-form');
-
-        if (columnNumber == 1) {
-            singleColumnContainer.hidden = false;
-            doubleColumnContainer.remove();
-            columnSelectionForm.remove();
-        } else if (columnNumber == 2) {
-            doubleColumnContainer.hidden = false;
-            singleColumnContainer.remove();
-            columnSelectionForm.remove();
-        }
-    }
-
-    function addNewColumn(id) {
-        const questionsContainer = document.getElementById(`questions-form-${id}`);
-
-        var number = document.createElement('p');
-        number.setAttribute('class', "text-center mt-1");
-        number.innerHTML = `${numberOfQuestions() + 1}.`;
-        var numContainer = document.createElement('div');
-        numContainer.setAttribute('class', "col-1 text-center d-flex justify-content-center align-items-center");
-        numContainer.appendChild(number);
-
-        var input = document.createElement('input');
-        input.setAttribute('type', "text");
-        input.setAttribute('class', "form-control");
-        input.setAttribute('placeholder', "Statement");
-        input.setAttribute('name', "alternatives[]");
-        var inputContainer = document.createElement('div');
-        inputContainer.setAttribute('class', "col-9");
-        inputContainer.appendChild(input);
-
-        var deleteIcon = document.createElement('i');
-        deleteIcon.setAttribute('class', 'mdi mdi-delete');
-        var deleteButton = document.createElement('a');
-        deleteButton.setAttribute('class', "btn btn-danger");
-        deleteButton.setAttribute('onclick', `deleteFormQuestion('form-question-${numberOfQuestions() + 1}')`);
-        deleteButton.appendChild(deleteIcon);
-        var deleteContainer = document.createElement('div');
-        deleteContainer.setAttribute('class', "col-2");
-        deleteContainer.appendChild(deleteButton);
-
-        var container = document.createElement('div');
-        container.setAttribute('class', "row form-question-title");
-        container.setAttribute('id', `form-question-${numberOfQuestions() + 1}`);
-        container.appendChild(numContainer);
-        container.appendChild(inputContainer);
-        container.appendChild(deleteContainer);
-
-        questionsContainer.appendChild(container);
-    }
-
-    function numberOfQuestions() { return document.getElementsByClassName(`form-question-title-${id}`).length; }
-    function deleteFormQuestion(id) { document.getElementById(id).remove(); }
-</script>

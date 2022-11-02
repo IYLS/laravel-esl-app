@@ -8,9 +8,8 @@
         @isset($e->translated_instructions) <p>{!! $e->translated_instructions !!}</p> @endisset
         <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="open_ended_form_{{ $e->id }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'open_ended')">
             @csrf
-            @forelse($e->questions as $question)
+            @forelse($e->questions->sortBy('position') as $question)
                 <div class="border rounded p-4 mt-3 mb-3 shadow">
-                    <p>{{ $loop->index + 1 . ". "}}</p>
                     {!! $question->statement  !!}
                     <textarea class="form-control" name="answer-{{ $question->id }}" rows="3" placeholder="Enter the Answer here"></textarea>
                     @if($e->subtype != '99')
