@@ -8,9 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::table('exercises', function (Blueprint $table) {
-            $table->text('title')->nullable(true)->change();
-        });
+        DB::statement('ALTER TABLE exercises ALTER COLUMN title DROP NOT NULL');
     }
 
     public function down() {}
