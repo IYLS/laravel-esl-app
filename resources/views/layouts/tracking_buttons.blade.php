@@ -31,5 +31,16 @@
         elements.forEach(function (element) {
             element.checked = false;
         });
+
+        // Hide feedback
+        var questionFeedbacks = document.getElementsByClassName('question-feedback');
+        console.log(questionFeedbacks);
+        questionFeedbacks.forEach(function (item) {
+            console.log('AH?');
+            item.hidden = true;
+        });
+
+        var exerciseFeedback = document.getElementById(`feedback-exercise-details-container-${id}`);
+        exerciseFeedback.hidden = true;
     }
 </script>

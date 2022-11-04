@@ -1,10 +1,10 @@
-@if(isset($feedbacks))
-    <div class="m-1 p-1 border rounded feedback question-feedback" id="question-feedback-container-{{ $question->id }}" hidden>
-        <div class="row">
-            <p class="p-3 text-success" id="question-{{ $question->id }}-feedback-correct" hidden>✅ Correct</p>
-            <p class="p-3 text-danger" id="question-{{ $question->id }}-feedback-wrong" hidden>❌ Wrong</p>
-        </div>
+<div class="m-1 ps-1 pe-1 border rounded feedback question-feedback" id="question-feedback-container-{{ $question->id }}" hidden>
+    <div class="row">
+        <p class="p-3 text-success" id="question-{{ $question->id }}-feedback-correct" hidden>✅ Correct</p>
+        <p class="p-3 text-danger" id="question-{{ $question->id }}-feedback-wrong" hidden>❌ Wrong</p>
+    </div>
 
+    @if(isset($feedbacks) and count($feedbacks) != 0)
         <ul class="nav nav-tabs" id="questionFeedbackTabs" role="tablist">
 
             @if($feedbacks->where('feedback_type_id', 6)->first() != null)
@@ -14,7 +14,7 @@
                 </li>
             @endif
 
-            @if($feedbacks->where('feedback_type_id', 5) != null)
+            @if($feedbacks->where('feedback_type_id', 5)->first() != null)
                 {{-- Explainatory --}}
                 <li class="nav-item show-on-incorrect-{{ $question->id }}" role="presentation">
                     <button type="button" class="nav-link" id="explainatory-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#explainatory-{{ $question->id }}" role="tab" aria-controls="explainatory-{{ $question->id }}" onclick="show('explainatory')">❓</button>
@@ -40,20 +40,23 @@
             <div class="tab-pane p-3 fade show active" id="directive-{{ $question->id }}" role="tabpanel" aria-labelledby="directive-{{ $question->id }}-tab">
                 {{-- Directive --}}
                 @if($feedbacks->where('feedback_type_id', 6)->first() != null)
+                    <p class="text-secondary mb-1 mt-1"><small>Directive feedback</small></p>
                     <p class="show-on-incorrect-{{ $question->id }}">{{ $feedbacks->where('feedback_type_id', 6)->first()->message }}</p>
                 @endif
             </div>
 
             <div class="tab-pane p-3 fade" id="explainatory-{{ $question->id }}" role="tabpanel" aria-labelledby="explainatory-{{ $question->id }}-tab">
                 {{-- Explainatory --}}
-                @if($feedbacks->where('feedback_type_id', 5) != null)
+                @if($feedbacks->where('feedback_type_id', 5)->first() != null)
+                    <p class="text-secondary mb-1 mt-1"><small>Explainatory feedback</small></p>
                     @foreach($feedbacks->where('feedback_type_id', 5) as $exp)
                         <p class="show-on-incorrect-{{ $question->id }}" id="{{ $question->alternatives[$loop->index]->title }}-explainatory">{{ $exp->message }}</p>
-                        @php $count = count($feedbacks->where('feedback_type_id', 5)); @endphp 
+
+                        {{-- @php $count = count($feedbacks->where('feedback_type_id', 5)); @endphp
 
                         @if($loop->index == $count-1)
                             <p class="show-on-incorrect-{{ $question->id }}" id="{{ $question->alternatives[$count]->title }}-explainatory">{{ $exp->message }}</p>
-                        @endif
+                        @endif --}}
                     @endforeach
                 @endif
             </div>
@@ -62,6 +65,7 @@
                 {{-- Knowledge of correct response --}}
                 @if($feedbacks->where('feedback_type_id', 7)->first() != null)
                     <div class="mt-2">
+                        <p class="text-secondary mb-1 mt-1"><small>Knowledge of correct response feedback</small></p>
                         <p class="show-on-incorrect-{{ $question->id }}">{{ $feedbacks->where('feedback_type_id', 7)->first()->message }}</p>
                     </div>
                 @endif
@@ -71,6 +75,7 @@
                 {{-- Elaborative --}}
                 @if($feedbacks->where('feedback_type_id', 3)->first() != null)  
                     <div class="mt-2">
+                        <p class="text-secondary mb-1 mt-1"><small>Elaborative feedback</small></p>
                         <audio id="elaborative-feedback" controls class="show-on-incorrect-{{ $question->id }}">
                             <source src="{{ asset('esl/public/storage/files/'.$feedbacks->where('feedback_type_id', 3)->first()->audio_name) }}" type="audio/mpeg">
                         </audio>
@@ -79,5 +84,6 @@
             </div>
         </div>
 
-    </div>
-@endif
+    @endif
+
+</div>

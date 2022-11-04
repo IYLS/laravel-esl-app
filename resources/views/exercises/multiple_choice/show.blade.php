@@ -48,9 +48,9 @@
             @if($exercise->subtype == 1 or $exercise->subtype == 4 or $exercise->subtype == 99 or $exercise->subtype == 3)
                 <div class="card mt-1 mb-1 p-4">
                     @if(isset($e->video_name) and $e->video_name != null)
-                        <div class="ratio ratio-16x9 mt-3">
-                            <iframe src="{{ asset('esl/public/storage/files') . "/" . $e->video_name }}" title="Video" allowfullscreen controls></iframe>
-                        </div>
+                        <video title="Video" allowfullscreen controls>
+                            <source src="{{ asset('esl/public/storage/files') . "/" . $e->video_name }}">
+                        </video>
                     @endif
                     <div class="row">
                         <div class="col-12 col-md-10">

@@ -141,9 +141,9 @@
                                         @include('layouts.tracking_complete')
 
                                         @if(isset($e->video_name) and $e->video_name != null and $e->video_name != '')
-                                            <div class="ratio ratio-16x9 mt-3 w-75">
-                                                <iframe src="{{ asset('esl/public/storage/files') . "/" . $e->video_name }}" title="Video" allowfullscreen controls></iframe>
-                                            </div>
+                                            <video title="Video" allowfullscreen controls class="ratio ratio-16x9 mt-3 w-75">
+                                                <source src="{{ asset('esl/public/storage/files') . "/" . $e->video_name }}">
+                                            </video>
                                         @endif
 
                                         @if(isset($e->image_name) and $e->image_name != null and $e->image_name != '')
