@@ -12,15 +12,21 @@
             <div class="mt-4 mb-4">
                 @php
                     $gaps_count = substr_count($question->statement, ";;");
-                    $strips = explode(";;", $question->statement);
+                    $words = explode(" ", $question->statement);
+
+                    $final_string = [];
+                    foreach($words as $key=>$word) {
+                        if($word == ";;") {
+                            array_push($final_string, "<input class='mt-1 mb-1 me-1 ms-1 d-inline p-2 border rounded' name='answer-$question->id' type='text' style='font-size:14px; height: 24px;'>");
+                        } else {
+                            array_push($final_string, $word);
+                        }
+                    }
+
+                    $statement = implode(' ', $final_string);
                 @endphp
 
-                @if(count($strips) > 0) 
-                    @foreach($strips as $strip)
-                        @php $text = "<p class='d-inline'>" . $strip . "</p>"; @endphp
-                        {!! $text !!} @if($loop->index < $gaps_count) <input class="mt-1 mb-1 me-1 ms-1 d-inline p-2 border rounded" name='answer-{{ $question->id }}' type="text" style="font-size:14px; height: 24px;"> @endif
-                    @endforeach
-                @endif
+                {!! $statement !!}
 
             </div>
             @include('feedback.question', ['feedbacks' => $question->feedbacks])

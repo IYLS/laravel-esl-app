@@ -66,9 +66,8 @@
                     @case('fill_in_the_gaps')
                         @switch($subtype)
                         @case('1')
-                            <textarea id="statement" name="statement" class="form-control" placeholder="Statement to fill"></textarea>
+                            <textarea id="statement" name="statement" class="mce-editor" placeholder="Statement to fill"></textarea>
                             <p class="text-secondary"><small>Use double semicolon (;;) to indicate where the gap to fill will be placed.</small></p>
-                            <br>
                             <input id="answer" name="answer" type="text" class="form-control" placeholder="Correct words">
                             <p class="text-secondary"><small>List the correct word for each gap separating them by a single comma.</small></p>
                             <div class="mb-3">
