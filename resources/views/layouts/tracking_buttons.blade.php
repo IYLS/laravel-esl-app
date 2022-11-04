@@ -15,7 +15,8 @@
     @endif
 
     <div class="col-2 ms-1 me-1">
-        <button class="btn btn-primary btn-sm" type="submit">Check</button>
+        @php $url = route("tracking.store", ["$e->id", "$user->id"]); @endphp
+        <button class="btn btn-primary btn-sm" id="exercise-{{ $e->id }}-check-btn" onclick='checkAction({{ json_encode($e) }}, {{ json_encode($e->questions) }}, {{ json_encode($e->exerciseType->underscore_name) }}, {{ json_encode($e->id) }}, {{ json_encode($user->id) }}, {{ json_encode($url) }}); stepIntentCount();' type="button">Check</button>
     </div>
 
     @if($e->exerciseType->underscore_name == 'multiple_choice')
@@ -24,23 +25,3 @@
         </div>
     @endif
 </div>
-
-<script>
-    function reset(id) {
-        var elements = document.getElementsByClassName(`multiple-choice-${id}-check`);
-        elements.forEach(function (element) {
-            element.checked = false;
-        });
-
-        // Hide feedback
-        var questionFeedbacks = document.getElementsByClassName('question-feedback');
-        console.log(questionFeedbacks);
-        questionFeedbacks.forEach(function (item) {
-            console.log('AH?');
-            item.hidden = true;
-        });
-
-        var exerciseFeedback = document.getElementById(`feedback-exercise-details-container-${id}`);
-        exerciseFeedback.hidden = true;
-    }
-</script>

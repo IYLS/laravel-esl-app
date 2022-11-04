@@ -91,7 +91,37 @@
                     @endif
                     <div class="nav flex-column mt-2 nav-pills col-12 col-xl-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         @forelse($section->exercises->sortBy('position') as $e)
-                            <button class="nav-link @if($e->subtype == 99) meta @endif" id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" type="button" role="tab" aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" aria-selected="false" onclick="hideFeedback();startTimer();resetIntentCount();">@if($e->title == '' or $e->title == null) Activity #{{ $e->id }} @else {{ $e->title }} @endif</button>
+                            <button 
+                                class="nav-link @if($e->subtype == 99) meta @endif" 
+                                id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" 
+                                data-bs-toggle="pill" 
+                                data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" 
+                                type="button" 
+                                role="tab" 
+                                aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" 
+                                aria-selected="false" 
+                                onclick="startTimer();">
+                                    @if($e->title == '' or $e->title == null) 
+                                        @if(count($completed_exercises) != 0 and in_array($e->id, $completed_exercises)) 
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <p class="text-end">Activity #{{ $e->id }}</p>
+                                                </div>
+                                                <div>
+                                                    <p>✅</p>
+                                                </div>
+                                            </div>
+                                        @else
+                                            Activity #{{ $e->id }}
+                                        @endif
+                                    @else 
+                                        @if(count($completed_exercises) != 0 and in_array($e->id, $completed_exercises)) 
+                                            {{ $e->title }} ✅
+                                        @else
+                                            {{ $e->title }}
+                                        @endif
+                                    @endif
+                            </button>
                         @empty
                             <p class="text-center text-secondary"><small>No exercises added yet.</small></p>    
                         @endforelse
@@ -301,7 +331,7 @@
 {{-- Get Response Data --}}
 <script>
     function getResponseData(questions, exercise, type) {
-        var answers;
+        var answers = {};
         switch(type) {
         case 'drag_and_drop':
             answers = getDragAndDropResults(questions, exercise);
@@ -348,14 +378,16 @@
         intentCount.hidden = true;
         form.appendChild(intentCount);
 
-        answers.responses.forEach(function (item){
-            var responseItem = document.createElement('input');
-            responseItem.setAttribute('value', `${item.response}`);
-            responseItem.setAttribute('name', `responses[${item.id}]`);
-            responseItem.hidden = true;
+        if (answers.length > 0) {
+            answers.responses.forEach(function (item){
+                var responseItem = document.createElement('input');
+                responseItem.setAttribute('value', `${item.response}`);
+                responseItem.setAttribute('name', `responses[${item.id}]`);
+                responseItem.hidden = true;
 
-            form.appendChild(responseItem);
-        });
+                form.appendChild(responseItem);
+            });
+        }
     }
 </script>
 
@@ -634,6 +666,62 @@
         showFeedback();
 
         return { 'correct': correct_questions, 'wrong': wrong_questions, 'responses': responses }
+    }
+</script>
+
+<script>
+    function reset(id) {
+        var elements = document.getElementsByClassName(`multiple-choice-${id}-check`);
+        elements.forEach(function (element) {
+            element.checked = false;
+        });
+
+        // Hide feedback
+        var questionFeedbacks = document.getElementsByClassName('question-feedback');
+        console.log(questionFeedbacks);
+        questionFeedbacks.forEach(function (item) {
+            console.log('AH?');
+            item.hidden = true;
+        });
+
+        var exerciseFeedback = document.getElementById(`feedback-exercise-details-container-${id}`);
+        exerciseFeedback.hidden = true;
+    }
+</script>
+
+@include('modals.exercises.message', ['message' => 'Your answers have been saved.', 'type' => 'success'])
+
+<script>
+    function checkAction(exercise, questions, type, exercise_id, user_id, route) {
+
+        console.log(type);
+
+        getResponseData(questions, exercise, type);
+
+        console.log(type);
+
+        console.log($(`#${type}_form_${exercise_id}`));
+
+        event.preventDefault();
+        $.ajax({
+            url: `${route}`,
+            type: 'post',
+            data: $(`#${type}_form_${exercise_id}`).serialize(), // Remember that you need to have your csrf token included
+            dataType: 'json',
+            success: function( _response ){
+                setTimeout(function(){
+                    $('#alert-modal').modal('hide')
+                }, 1000);
+    
+                $(function() {
+                    $("#alert-modal").modal("show");
+                });
+                console.log(_response.message);
+            },
+            error: function( _response ){
+                console.log(_response);
+            }
+        });
     }
 </script>
 

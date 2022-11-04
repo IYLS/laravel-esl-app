@@ -30,10 +30,12 @@ class TrackingController extends Controller
         $exercise = Exercise::find($exercise_id);
         $tracking = new Tracking;
 
+        $intent_number = Tracking::where('exercise_id', $exercise->id)->count();
+
         if($request->intent_number == null) {
             $tracking->intent_number = "0";
         } else {
-            $tracking->intent_number = $request->intent_number;
+            $tracking->intent_number = "$intent_number";
         }
 
         if($request->time == null) { 
@@ -107,7 +109,10 @@ class TrackingController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Your answers have been saved.');
+        return response()->json([
+            'result' => 'success',
+            'message' => 'Your answers have been saved.',
+        ]);
     }
 
     public function show($id) 
