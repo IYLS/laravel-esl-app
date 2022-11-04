@@ -17,7 +17,7 @@
             @if($feedbacks->where('feedback_type_id', 5)->first() != null)
                 {{-- Explainatory --}}
                 <li class="nav-item show-on-incorrect-{{ $question->id }}" role="presentation">
-                    <button type="button" class="nav-link" id="explainatory-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#explainatory-{{ $question->id }}" role="tab" aria-controls="explainatory-{{ $question->id }}" onclick="show('explainatory')">❓</button>
+                    <button type="button" class="nav-link" id="explanatory-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#explanatory-{{ $question->id }}" role="tab" aria-controls="explanatory-{{ $question->id }}" onclick="show('explanatory')">❓</button>
                 </li>
             @endif
 
@@ -45,17 +45,17 @@
                 @endif
             </div>
 
-            <div class="tab-pane p-3 fade" id="explainatory-{{ $question->id }}" role="tabpanel" aria-labelledby="explainatory-{{ $question->id }}-tab">
-                {{-- Explainatory --}}
+            <div class="tab-pane p-3 fade" id="explanatory-{{ $question->id }}" role="tabpanel" aria-labelledby="explanatory-{{ $question->id }}-tab">
+                {{-- Explanatory --}}
                 @if($feedbacks->where('feedback_type_id', 5)->first() != null)
-                    <p class="text-secondary mb-1 mt-1"><small>Explainatory feedback</small></p>
+                    <p class="text-secondary mb-1 mt-1"><small>Explanatory feedback</small></p>
                     @foreach($feedbacks->where('feedback_type_id', 5) as $exp)
-                        <p class="show-on-incorrect-{{ $question->id }}" id="{{ $question->alternatives[$loop->index]->title }}-explainatory">{{ $exp->message }}</p>
+                        <p class="show-on-incorrect-{{ $question->id }}" id="{{ $question->alternatives[$loop->index]->title }}-explanatory">{{ $exp->message }}</p>
 
                         {{-- @php $count = count($feedbacks->where('feedback_type_id', 5)); @endphp
 
                         @if($loop->index == $count-1)
-                            <p class="show-on-incorrect-{{ $question->id }}" id="{{ $question->alternatives[$count]->title }}-explainatory">{{ $exp->message }}</p>
+                            <p class="show-on-incorrect-{{ $question->id }}" id="{{ $question->alternatives[$count]->title }}-explanatory">{{ $exp->message }}</p>
                         @endif --}}
                     @endforeach
                 @endif

@@ -48,7 +48,7 @@
                         @if($type->text_based and $type->id == 5)
 
                         <div class="p-2 mb-2 row">
-                            <h5>Explainatory</h5>
+                            <h5>Explanatory</h5>
                             @if($exercise->exercise_type_id == 2 and $exercise->subtype == 1)
                             <div class="mb-1 col-12 col-lg-6">
                                 <ol type="I"> 

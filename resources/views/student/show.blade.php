@@ -404,8 +404,8 @@
             const alternatives = document.getElementsByName(`question-${question.id}`);
 
             alternatives.forEach((alternative) => {
-                if (document.getElementById(`${alternative.value}-explainatory`) != null) {
-                    document.getElementById(`${alternative.value}-explainatory`).hidden = true;
+                if (document.getElementById(`${alternative.value}-explanatory`) != null) {
+                    document.getElementById(`${alternative.value}-explanatory`).hidden = true;
                 }
             });
 
@@ -433,8 +433,8 @@
                         correct_questions += 1;
                     }
  
-                    if (document.getElementById(`${alternative.value}-explainatory`) != null) {
-                        document.getElementById(`${alternative.value}-explainatory`).hidden = false;
+                    if (document.getElementById(`${alternative.value}-explanatory`) != null) {
+                        document.getElementById(`${alternative.value}-explanatory`).hidden = false;
                     }
 
                     responses.push({'id': `${question.id}`, 'response': `${alternative.parentNode.children[1].innerHTML.trim()}`});
