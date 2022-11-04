@@ -31,6 +31,7 @@ class TrackingController extends Controller
         $tracking = new Tracking;
 
         $intent_number = Tracking::where('exercise_id', $exercise->id)->count();
+        $intent_number += 1;
 
         if($request->intent_number == null) {
             $tracking->intent_number = "0";

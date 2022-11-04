@@ -469,8 +469,8 @@
         
         exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise.id}`);
 
-        correctAnswersItem.innerHTML = `<strong>Correct answers:</strong> ${correct_questions}  ✅`;
-        wrongAnswersItem.innerHTML = `<strong>Wrong answers:</strong> ${wrong_questions}  ❌`;
+        correctAnswersItem.innerHTML = `<strong>${correct_questions}</strong>  ✅`;
+        wrongAnswersItem.innerHTML = `<strong>${wrong_questions}</strong>  ❌`;
 
         correctAnswersItem.hidden = false;
         wrongAnswersItem.hidden = false;

@@ -82,8 +82,11 @@
         @endforelse
 
         <div>
-            <button type="button" id="addQuestionButton" class="btn btn-primary open-modal" data-bs-toggle="modal" data-bs-target="#addQuestionModal">Add question</button>
-            @include('modals.questions.add')
+            <button type="button" id="addQuestionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addQuestionModal">Add question</button>
+            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#questions_positions_modal">
+                Positions  <i class="mdi mdi-sort-ascending"></i>
+            </button>
+            @include('modals.questions.set_positions', ["modal_id" => "questions_positions_modal", "questions" => $exercise->questions])
         </div>
     </div>
 

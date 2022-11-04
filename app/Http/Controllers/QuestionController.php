@@ -20,6 +20,9 @@ class QuestionController extends Controller
         $exercise_type = ExerciseType::find($exercise_type_id);
 
         $question = new Question;
+
+        $last_position = Question::select('position')->where('exercise_id', $exercise->id)->get()->count();
+        $question->position = $last_position+1;
         
         try {
             $question->audio_name = $this->getAudioFrom($request);
