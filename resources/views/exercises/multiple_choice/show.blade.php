@@ -90,12 +90,10 @@
                             @php
                                 $correct_words = explode('/', $question->correct_answer);
                                 $words = explode(' ', $question->statement);
-
-                                $index = 0;
+                                
                                 foreach($words as $key=>$word) {
-                                    if($word == ";;") {
-                                        $words[$key] = "<strong class='text-primary'>$correct_words[$index]</strong>";
-                                        $index += 1;
+                                    if($word == ";;" ) {
+                                        $words[$key] = "<strong>_________</strong>";
                                     }
                                 }
 
