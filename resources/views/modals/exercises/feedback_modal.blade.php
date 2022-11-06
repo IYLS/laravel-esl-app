@@ -12,8 +12,8 @@
                     @foreach($feedback_types as $type)
                         <div class="d-flex justify-content-between">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="{{ $type->id }}" name="types[]" id="feedback-types">
-                                <label class="form-check-label" for="feedback-types">{{ $type->name }}</label>
+                                <input class="form-check-input" type="checkbox" value="{{ $type->id }}" name="types[]" id="feedback-types-{{ $type->id }}">
+                                <label class="form-check-label" for="feedback-types-{{ $type->id }}">{{ $type->name }}</label>
                             </div>
                             <div class="mt-2">
                                 <button class="btn btn-link btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#feedback_description_{{ $type->id }}_modal">

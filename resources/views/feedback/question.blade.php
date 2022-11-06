@@ -7,17 +7,17 @@
     @if(isset($feedbacks) and count($feedbacks) != 0)
         <ul class="nav nav-tabs" id="questionFeedbackTabs" role="tablist">
 
+            @if($feedbacks->where('feedback_type_id', 3)->first() != null)
+                {{-- Elaborative --}}
+                <li class="nav-item" role="presentation">
+                    <button type="button" class="nav-link" id="elaborative-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#elaborative-{{ $question->id }}" role="tab" aria-controls="elaborative-{{ $question->id }}" onclick="show('elaborative')">🔈</button>
+                </li>
+            @endif
+
             @if($feedbacks->where('feedback_type_id', 6)->first() != null)
                 {{-- Directive --}}
                 <li class="nav-item" role="presentation">
                     <button type="button" class="nav-link active" id="directive-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#directive-{{ $question->id }}" role="tab" aria-controls="directive-{{ $question->id }}" onclick="show('directive')">🧭</button>
-                </li>
-            @endif
-
-            @if($feedbacks->where('feedback_type_id', 5)->first() != null)
-                {{-- Explainatory --}}
-                <li class="nav-item show-on-incorrect-{{ $question->id }}" role="presentation">
-                    <button type="button" class="nav-link" id="explanatory-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#explanatory-{{ $question->id }}" role="tab" aria-controls="explanatory-{{ $question->id }}" onclick="show('explanatory')">❓</button>
                 </li>
             @endif
 
@@ -28,12 +28,13 @@
                 </li>
             @endif
 
-            @if($feedbacks->where('feedback_type_id', 3)->first() != null)
-                {{-- Elaborative --}}
-                <li class="nav-item" role="presentation">
-                    <button type="button" class="nav-link" id="elaborative-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#elaborative-{{ $question->id }}" role="tab" aria-controls="elaborative-{{ $question->id }}" onclick="show('elaborative')">🔈</button>
+            @if($feedbacks->where('feedback_type_id', 5)->first() != null)
+                {{-- Explainatory --}}
+                <li class="nav-item show-on-incorrect-{{ $question->id }}" role="presentation">
+                    <button type="button" class="nav-link" id="explanatory-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#explanatory-{{ $question->id }}" role="tab" aria-controls="explanatory-{{ $question->id }}" onclick="show('explanatory')">❓</button>
                 </li>
             @endif
+
         </ul>
 
         <div class="tab-content" id="questionFeedbackTabsContent">
