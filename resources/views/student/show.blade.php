@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('main')
 
+@section('title', 'Student Module')
+
 <style>
     .strikable { text-decoration: line-through }
     .not-strikable { text-decoration: none }
@@ -66,11 +68,12 @@
     <div class="col-12 col-xl-8 bg-light mt-2 p-3 rounded shadow">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             @foreach($unit->sections as $section)
+                @php $index = $loop->index + 1; @endphp
                 <li class="nav-item" role="presentation">
-                    @if($loop->index == 0)
-                        <button class="nav-link active" id="{{ $section->underscore_name }}-tab" onclick="hideFeedback()" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="true">{{ $section->name }}</button>
+                    @if($index-1 == 0)
+                        <button class="nav-link active" id="{{ $section->underscore_name }}-tab" onclick="hideFeedback()" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="true">{{ $index . ". " . $section->name }}</button>
                     @else
-                        <button class="nav-link" id="{{ $section->underscore_name }}-tab" onclick="hideFeedback();" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="false">{{ $section->name }}</button>
+                        <button class="nav-link" id="{{ $section->underscore_name }}-tab" onclick="hideFeedback();" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="false">{{ $index . ". " . $section->name }}</button>
                     @endif
                 </li>
             @endforeach
@@ -168,7 +171,7 @@
                                         @isset($e->instructions) {!! $e->instructions !!} @endisset
                                         @isset($e->translated_instructions) <p>{!! $e->translated_instructions !!}</p> @endisset
                                         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
-                                        @include('layouts.tracking_complete')
+                                        @include('layouts.tracking.tracking_complete')
 
                                         @if(isset($e->video_name) and $e->video_name != null and $e->video_name != '')
                                             <video title="Video" allowfullscreen controls class="ratio ratio-16x9 mt-3 w-75">
@@ -202,7 +205,7 @@
                                             @endif
                                             
                                             <br>
-                                            @include('layouts.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
+                                            @include('layouts.tracking.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
                                         </form>
                                     </div>
                                 </div>

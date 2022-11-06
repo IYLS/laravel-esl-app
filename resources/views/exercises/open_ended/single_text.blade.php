@@ -1,4 +1,4 @@
-@include('layouts.tracking_complete')
+@include('layouts.tracking.tracking_complete')
 <div class="tab-pane fade show active" id="{{ $e->exerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->exerciseType->underscore_name . $e->id }}-tab">
     <div class="container">
         <h4>{{ $e->title }}</h4>
@@ -21,7 +21,7 @@
                     <p class="text-secondary">Empty</p>
                 </div>
             @endforelse
-            @include('layouts.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
+            @include('layouts.tracking.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
         </form>
     </div>
 </div>

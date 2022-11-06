@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('main')
 
+@section('title', 'Unit selection')
+
 <div class="container h-100">
     <div class="row align-items-center h-100">
         <div class="col-10 col-10 col-md-8 col-lg-6 col-xl-4 mx-auto">

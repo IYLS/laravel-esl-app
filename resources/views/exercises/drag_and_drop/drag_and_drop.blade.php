@@ -23,7 +23,7 @@
         <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="drag_and_drop_form_{{ $e->id }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'drag_and_drop')">
             @csrf
             <div class="row d-flex justify-content-between pt-2 pb-2">
-                @include('layouts.tracking_complete')
+                @include('layouts.tracking.tracking_complete')
                 @php $subtype = $e->subtype != null ? $e->subtype : 1; @endphp
                 @foreach($e->questions->sortBy('position') as $question)
                     <div class="col-6 col-lg-3 mt-1 d-flex justify-content-center border" style="border-style: dashed !important;" ondragover="allowDrop(event)" ondrop="drop(event)">
@@ -42,7 +42,7 @@
                     @endif
                 @endforeach
 
-                @include('layouts.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
+                @include('layouts.tracking.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
             </div>
         </form>
     </div>

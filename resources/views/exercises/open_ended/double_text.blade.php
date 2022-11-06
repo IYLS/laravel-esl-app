@@ -5,7 +5,7 @@
         <p class="text-secondary">{{ $e->description }}</p>
         @isset($e->instructions) {!! $e->instructions !!} @endisset
         @isset($e->translated_instructions) <p>{!! $e->translated_instructions !!}</p> @endisset
-        @include('layouts.tracking_complete')
+        @include('layouts.tracking.tracking_complete')
         <form enctype="multipart/form-data" action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'open_ended');" method="POST" id="open_ended_form_{{ $e->id }}">
             @csrf
             @forelse($e->questions->sortBy('position') as $question)
@@ -35,7 +35,7 @@
                 </div>
             @endforelse
             <br>
-            @include('layouts.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
+            @include('layouts.tracking.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
         </form>
     </div>
 </div>
