@@ -18,20 +18,22 @@
                 <tr>
                     <td>Students</td>
                     <td>
-                        <div class="card card-body">
-                            @foreach($users as $user)
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" onclick="ifUserChecked(this);" value="{{ $user->id }}" id="user_checkbox" disabled @if($user->group_id == $group->id) checked name="users[]" @endif>
-                                    <label class="form-check-label" for="user_checkbox" disabled>{{ $user->name }}</label>
-                                </div>
-                            @endforeach
+                        <div class="border rounded ms-2 me-2 p-2 row overflow-auto" style="height: 20vh !important;">
+                            <div class="col-6">
+                                @foreach($users as $user)
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" onclick="ifUserChecked(this);" value="{{ $user->id }}" id="user_checkbox" disabled @if($user->group_id == $group->id) checked name="users[]" @endif>
+                                        <label class="form-check-label" for="user_checkbox" disabled>{{ $user->user_id }}</label>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td>Units</td>
                     <td>
-                        <div class="card card-body">
+                        <div class="border rounded ms-2 me-2 p-2 row overflow-auto" style="height: 20vh !important;">
                             @foreach($units as $unit)
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" onclick="ifUnitChecked(this);" value="{{ $unit->id }}" id="user_checkbox" disabled @if(in_array($unit->id, $unit_groups_array)) checked name="units[]" @endif>
