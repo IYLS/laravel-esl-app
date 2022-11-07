@@ -564,7 +564,11 @@
             var correct_answer = question.answer.split(",");
 
             answers.forEach(function (answer) {
-                if (question.answer.includes(`${answer.value}`)) {
+
+                console.log(`Correct words: ${correct_answer}`);
+                console.log(`Student response: ${answer.value}`);
+
+                if (question.answer.includes(`${answer.value}`) && answer.value != "") {
                     answer.style.setProperty('border-color', 'lime', 'important');
                     correct_questions += 1;
                 } else if (!question.answer.includes(`${answer.value}`)) {
