@@ -3,8 +3,8 @@
         <h4>{{ $e->title }}</h4>
         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
         <p class="text-secondary">{{ $e->description }}</p>
-        @isset($e->instructions) {!! $e->instructions !!} @endisset
-        @isset($e->translated_instructions) <p>{!! $e->translated_instructions !!}</p> @endisset
+        @isset($e->instructions) <div class="text-dark">{!! $e->instructions !!}</div> @endisset
+        @isset($e->translated_instructions) <div class="text-secondary">{!! $e->translated_instructions !!}</div> @endisset
         <div class="row">
             @foreach($e->questions->sortBy('position') as $question)
                 <div class="col-12 col-md-6 mt-1 mb-1 text-center">

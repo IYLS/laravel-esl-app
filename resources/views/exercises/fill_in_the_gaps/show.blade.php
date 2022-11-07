@@ -50,9 +50,9 @@
                             {
                                 foreach($sentence_words as $key=>$word) 
                                 {
-                                    if($word == ";;")
+                                    if($word == ";;" or $word == ";;</p>")
                                     {
-                                        $sentence_words[$key] = "<strong class='text-primary border-primary ms-2 me-2 d-inline'>&nbsp;".$words[$count]."&nbsp;</strong>";
+                                        $sentence_words[$key] = "<strong class='text-primary border-primary ms-2 me-2 d-inline'>".$words[$count]."</strong>";
                                         $count += 1;
                                     }
                                 }
@@ -86,11 +86,15 @@
                         @php $statements = explode(";;", $question->statement) @endphp
                         <div class="col-12 col-md-10 d-flex">
                             <p>{{ $question_number }}. &nbsp;</p>
-                            <p style="height: 20px;"> {{ $statements[0] }} </p>
+
+                            {{ $question->statement }}
+
+                            {{-- FIXME: REVISAR POR QUE TIRA ERROR UNDEFINED ARRAY KEY 1 Al guardar el primer ejercicio de fill in the gaps --}}
+                            {{-- <p style="height: 20px;"> {{ $statements[0] }} </p>
                             
                             <input style="height: 20px; width: 100px; text-align: center; border-bottom: solid 0.7px lightgrey; border-top: none; border-left: none; border-right: none;" class="ms-2 me-2 text-primary fw-bold" type="text" value="{{ $question->answer }}" disabled>
 
-                            <p style="height: 20px;">{{ $statements[1] }}</p>
+                            <p style="height: 20px;">{{ $statements[1] }}</p> --}}
                         </div>
                         <div class="col-12 col-md-2 mt-5 mt-md-0 d-flex justify-content-end">
                             <button type="button" id="delete_question_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_question_{{ $question->id }}">

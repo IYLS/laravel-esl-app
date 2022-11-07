@@ -168,8 +168,8 @@
                                     <div class="container">
                                         <h4>{{ $e->title }}</h4>
                                         <p class="text-secondary">{{ $e->description }}</p>
-                                        @isset($e->instructions) {!! $e->instructions !!} @endisset
-                                        @isset($e->translated_instructions) <p>{!! $e->translated_instructions !!}</p> @endisset
+                                        @isset($e->instructions) <div class="text-dark">{!! $e->instructions !!}</div> @endisset
+                                        @isset($e->translated_instructions) <div class="text-secondary">{!! $e->translated_instructions !!}</div> @endisset
                                         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
                                         @include('layouts.tracking.tracking_complete')
 
@@ -215,8 +215,8 @@
                                     <div class="container">
                                         <h4>{{ $e->title }}</h4>
                                         <p class="text-secondary">{{ $e->description }}</p>
-                                        @isset($e->instructions) {!! $e->instructions !!} @endisset
-                                        @isset($e->translated_instructions) <p>{!! $e->translated_instructions !!}</p> @endisset
+                                        @isset($e->instructions) <div class="text-dark">{!! $e->instructions !!}</div> @endisset
+                                        @isset($e->translated_instructions) <div class="text-secondary">{!! $e->translated_instructions !!}</div> @endisset
                                         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
 
                                         {{--  Dictation Cloze  --}}
@@ -235,6 +235,8 @@
                                     <div class="container">
                                         <h4>{{ $e->title }}</h4>
                                         <p class="text-secondary">{{ $e->description }}</p>
+                                        @isset($e->instructions) <div class="text-dark">{!! $e->instructions !!}</div> @endisset
+                                        @isset($e->translated_instructions) <div class="text-secondary">{!! $e->translated_instructions !!}</div> @endisset
                                         @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
 
                                         {{-- Form --}}

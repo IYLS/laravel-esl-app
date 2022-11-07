@@ -35,9 +35,9 @@ class FeedbackController extends Controller
                 foreach($question_data as $key=>$q) {
                     $question = Question::find($key);
                     
-                    foreach($q as $key=>$item)
+                    foreach($q as $k=>$item)
                     {   
-                        switch($key)
+                        switch($k)
                         {
                             case'message':
                                 $feedback = new Feedback;
@@ -50,7 +50,7 @@ class FeedbackController extends Controller
                             case('audio'):
                                 $feedback = new Feedback;
                                 $feedback->feedback_type_id = $feedback_type_id;
-                                $feedback->audio_name = $item;
+                                $feedback->audio_name = $this->getAudioFrom($request, $key);
                                 $feedback->question_id = $question->id;
                                 $feedback->exercise_id = $exercise->id;
                                 $feedback->save();
@@ -98,4 +98,27 @@ class FeedbackController extends Controller
 
         return redirect()->route('exercises.show', $exercise_id)->with("success", "Feedback settings deleted successfully.");
     }
+
+    private function getAudioFrom(Request $request, $question_id)
+    {
+        if($request->file()['data']['question']['3'][$question_id]['audio'] != null) 
+        {
+            $audio_file = $request->file()['data']['question']['3'][$question_id]['audio'];
+
+            $audio_file_name = $audio_file->getClientOriginalName();
+            $audio_file_path = $audio_file->storeAs('public/files', $audio_file_name);
+            
+            return $audio_file_name;
+        } else {
+            return null;
+        }
+    }
+
+
+
+
+
+
+
+    
 }

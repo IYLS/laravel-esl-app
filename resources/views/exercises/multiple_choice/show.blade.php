@@ -43,7 +43,6 @@
     <div class="card p-4 m-2">
         <h4>Activity questions</h4>
         @forelse($exercise->questions as $question)
-            <h2>{{ $question->id }}</h2>
             @php $question_number = $loop->index + 1; @endphp
 
             @if($exercise->subtype == 1 or $exercise->subtype == 4 or $exercise->subtype == 99 or $exercise->subtype == 3)

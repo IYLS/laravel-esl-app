@@ -15,9 +15,9 @@
     </div>
     <div class="p-2 ps-2 pe-2 col-12 col-md-12">
 
-        <form action="{{ route('feedback.store', $exercise->id) }}" method="POST">
+        <form enctype="multipart/form-data" action="{{ route('feedback.store', $exercise->id) }}" method="POST">
             @csrf
-
+            
             <div class="card p-2 mt-2 mb-2">
                 <h4>Exercise based feedback</h4>
                 @forelse($feedback_types->where('level', 'exercise') as $type)
