@@ -561,15 +561,13 @@
             var correct_words = question.answer;
             var answers = document.getElementsByName(`answer-${question.id}`);
             var question_responses = [];
+            var correct_answer = question.answer.split(",");
 
             answers.forEach(function (answer) {
-                console.log(question.answer);
                 if (question.answer.includes(`${answer.value}`)) {
-                    answer.style.borderColor = 'green';
                     answer.style.setProperty('border-color', 'lime', 'important');
                     correct_questions += 1;
-                } else {
-                    answer.style.borderColor = 'red';
+                } else if (!question.answer.includes(`${answer.value}`)) {
                     answer.style.setProperty('border-color', 'red', 'important');
                 }
 
@@ -611,10 +609,10 @@
         correctAnswersItem.hidden = false;
         wrongAnswersItem.hidden = false;
 
-        var exerciseFeedback = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
-        exerciseFeedback.hidden = value;
+        var exerciseFeedback = document.getElementById(`feedback-exercise-details-container-${exercise.id}`);
+        exerciseFeedback.hidden = false;
 
-        toggleTryAgainButton("disabled", exercise_id);
+        toggleTryAgainButton("disabled", exercise.id);
 
         return { 'correct': correct_questions, 'wrong': wrong_questions, 'responses': responses };
     }
@@ -738,8 +736,6 @@
         setFeedbackHidden(true, exercise_id, questions);
     }
 </script>
-
-
 
 <script>
     function presentModal(message) {
