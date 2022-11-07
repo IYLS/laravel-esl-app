@@ -110,9 +110,9 @@ class TrackingController extends Controller
             }
         }
 
-        $message = 'Default message';
+        $message = '🎉 Submission completed successfully! 🎉';
         if(count($exercise->feedbacks) > 0) {
-            $message = $exercise->feedbacks->where('feedback_type_id', 4)->first();
+            $message = $exercise->feedbacks->where('feedback_type_id', 4)->first()->message;
         } 
 
         return response()->json([

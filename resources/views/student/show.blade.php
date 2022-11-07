@@ -328,8 +328,6 @@
 
         var exerciseFeedback = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
         exerciseFeedback.hidden = value;
-
-        toggleTryAgainButton("disabled", exercise_id);
     }
 </script>
 
@@ -741,9 +739,48 @@
     }
 </script>
 
-@include('modals.exercises.message', ['message' => 'Your answers have been saved.', 'type' => 'success'])
+
 
 <script>
+    function presentModal(message) {
+        var modalContainer = document.createElement('div');
+        modalContainer.setAttribute('class', 'modal fade');
+        modalContainer.setAttribute('id', 'alert-modal');
+        modalContainer.setAttribute('tabindex', '-1');
+        modalContainer.setAttribute('aria-labelledby', 'alert-modal');
+        modalContainer.setAttribute('aria-hidden', 'true');
+
+        var modalDialog = document.createElement('div');
+        modalDialog.setAttribute('class', 'modal-dialog modal-dialog-centered');
+
+        var modalContent = document.createElement('div');
+        modalContent.setAttribute('class', 'modal-content');
+
+
+        var modalBody = document.createElement('div');
+        modalBody.setAttribute('class', 'modal-body');
+        modalBody.innerHTML = `<div class="d-flex justify-content-center p-2"><p class="text-center text-success" id="alert-modal-message">${message}</p></div>`;
+
+        modalContent.appendChild(modalBody);
+        modalDialog.appendChild(modalContent);
+        modalContainer.appendChild(modalDialog);
+
+        if (document.getElementById("alert-modal") != null) {
+            var modal = document.getElementById("alert-modal");
+            modal.remove();
+        }
+
+        document.getElementsByTagName('body')[0].appendChild(modalContainer);
+
+        setTimeout(function(){
+            $('#alert-modal').modal('hide')
+        }, 1000);
+
+        $(function() {
+            $("#alert-modal").modal("show");
+        });
+    }
+
     function checkAction(exercise, questions, type, exercise_id, user_id, route) {
         getResponseData(questions, exercise, type);
 
@@ -754,13 +791,7 @@
             data: $(`#${type}_form_${exercise_id}`).serialize(), // Remember that you need to have your csrf token included
             dataType: 'json',
             success: function( _response ){
-                setTimeout(function(){
-                    $('#alert-modal').modal('hide')
-                }, 1000);
-    
-                $(function() {
-                    $("#alert-modal").modal("show");
-                });
+                presentModal(_response.message);
             },
             error: function( _response ){
                 console.log(_response);

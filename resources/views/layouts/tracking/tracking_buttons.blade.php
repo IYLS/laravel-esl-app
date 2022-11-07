@@ -13,8 +13,7 @@
             @endif
 
             @if($e->exerciseType->underscore_name == "open_ended") onclick="getOpenEndedResults({{ json_encode($questions) }}, {{ json_encode($e) }}); stepIntentCount();" @endif
-            @if($e->exerciseType->underscore_name == "form") onclick="getFormResults({{ json_encode($questions) }}, {{ json_encode($e) }}); stepIntentCount();" @endif
-            id="try_again_button_{{ $e->id }}"
+           id="try_again_button_{{ $e->id }}"
             
             disabled
             >
