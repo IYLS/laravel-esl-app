@@ -7,7 +7,7 @@
                 <li>
                     <div class="form-check">
                         <input class="form-check-input multiple-choice-{{ $e->id }}-check" type="radio" name="question-{{ $question->id }}" id="{{ $question->id }}-{{ $a->id }}" value="{{ $a->title }}">
-                        <label class="form-check-label">{{ $a->title }}</label>
+                        <label class="form-check-label" for="{{ $a->id }}">{{ $a->title }}</label>
                     </div>
                 </li>
             @endforeach

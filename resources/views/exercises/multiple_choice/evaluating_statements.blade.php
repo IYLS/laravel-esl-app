@@ -7,8 +7,8 @@
                 @forelse($question->alternatives as $alt)
                     <li>
                         <div class="form-check">
-                            <input class="form-check-input multiple-choice-{{ $e->id }}-check" name="question-{{ $question->id }}" type="radio" value="{{ $alt->title }}">
-                            <label class="form-check-label">{{ $alt->title }}</label>
+                            <input class="form-check-input multiple-choice-{{ $e->id }}-check" name="question-{{ $question->id }}" id="{{ $alt->id }}" type="radio" value="{{ $alt->title }}">
+                            <label class="form-check-label" for="{{ $alt->id }}">{{ $alt->title }}</label>
                         </div>
                     </li>
                 @empty

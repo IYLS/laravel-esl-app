@@ -40,8 +40,8 @@
                             @break
                         @endswitch
                         <div>
-                            <input type="checkbox" value="true" name="personal_response" class="form-check-input">
-                            <label class="form-check-label">Is personal response</label>
+                            <input type="checkbox" value="true" name="personal_response" id="personal_response_check_{{ $exercise->id }}" class="form-check-input">
+                            <label class="form-check-label" for="personal_response_check_{{ $exercise->id }}">Is personal response</label>
                             <p class="text-secondary"><small>Check this if this question does not have a correct answer.</small></p>
                         </div>
                         @break
@@ -117,8 +117,8 @@
                             <input class="form-control mb-1" name="answer" type="text" placeholder="(Optional) Column 2 title">
                             <p class="text-secondary mb-1"><small>If you only need a single column leave this field empty.</small></p>
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" value="true">
-                                <label class="form-check-label">Exclusive responses</label>
+                                <input class="form-check-input" type="checkbox" value="true" id="exclusive_response_check_{{ $exercise->id }}">
+                                <label class="form-check-label" for="exclusive_response_check_{{ $exercise->id }}">Exclusive responses</label>
                             </div>
                             <button type="button" class="btn btn-primary btn-sm" onclick="addColumn({{ json_encode($id) }})">Add question</button>
 

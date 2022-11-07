@@ -100,7 +100,7 @@ class TrackingController extends Controller
                         }
                     }
                 
-                // EXCLUSIVE RESPONSES IS TRUE
+                // FIXME: EXCLUSIVE RESPONSES IS TRUE
                 } else {
                     if ($request->answers != null)
                     {
@@ -110,9 +110,14 @@ class TrackingController extends Controller
             }
         }
 
+        $message = 'Default message';
+        if(count($exercise->feedbacks) > 0) {
+            $message = $exercise->feedbacks->where('feedback_type_id', 4)->first();
+        } 
+
         return response()->json([
             'result' => 'success',
-            'message' => 'Your answers have been saved.',
+            'message' => "$message",
         ]);
     }
 

@@ -19,7 +19,7 @@
                         <li>
                             <div class="form-check">
                                 <input class="form-check-input multiple-choice-{{ $e->id }}-check" type="radio" name="question-{{ $question->id }}" id="{{ $a->id }}" value="{{ $a->title }}">
-                                <label class="form-check-label">{{ $a->title }}</label>
+                                <label class="form-check-label" for="{{ $a->id }}">{{ $a->title }}</label>
                             </div>
                         </li>
                     @endforeach
@@ -37,25 +37,25 @@
                             <li>
                                 <div class="form-check">
                                     <input class="form-check-input multiple-choice-{{ $e->id }}-check" type="radio" name="question-{{ $question->id }}" id="{{ $a->id }}" value="{{ $alts[0][0] }};{{ $alts[1][0] }}">
-                                    <label class="form-check-label">{{ $alts[0][0] }}/{{ $alts[1][0] }}</label>
+                                    <label class="form-check-label" for="{{ $a->id }}">{{ $alts[0][0] }}/{{ $alts[1][0] }}</label>
                                 </div>
                             </li>
                             <li>
                                 <div class="form-check">
                                     <input class="form-check-input multiple-choice-{{ $e->id }}-check" type="radio" name="question-{{ $question->id }}" id="{{ $a->id }}" value="{{ $alts[0][0] }};{{ $alts[1][1] }}">
-                                    <label class="form-check-label">{{ $alts[0][0] }}/{{ $alts[1][1] }}</label>
+                                    <label class="form-check-label" for="{{ $a->id }}">{{ $alts[0][0] }}/{{ $alts[1][1] }}</label>
                                 </div>
                             </li>
                             <li>
                                 <div class="form-check">
                                     <input class="form-check-input multiple-choice-{{ $e->id }}-check" type="radio" name="question-{{ $question->id }}" id="{{ $a->id }}" value="{{ $alts[0][1] }};{{ $alts[1][0] }}">
-                                    <label class="form-check-label">{{ $alts[0][1] }}/{{ $alts[1][0] }}</label>
+                                    <label class="form-check-label" for="{{ $a->id }}">{{ $alts[0][1] }}/{{ $alts[1][0] }}</label>
                                 </div>
                             </li>
                             <li>
                                 <div class="form-check">
                                     <input class="form-check-input multiple-choice-{{ $e->id }}-check" type="radio" name="question-{{ $question->id }}" id="{{ $a->id }}" value="{{ $alts[0][1] }};{{ $alts[1][1] }}">
-                                    <label class="form-check-label">{{ $alts[0][1] }}/{{ $alts[1][1] }}</label>
+                                    <label class="form-check-label" for="{{ $a->id }}">{{ $alts[0][1] }}/{{ $alts[1][1] }}</label>
                                 </div>
                             </li>
                         @endif
@@ -75,49 +75,49 @@
                             <li>
                                 <div class="form-check">
                                     <input class="form-check-input multiple-choice-{{ $e->id }}-check" type="radio" name="question-{{ $question->id }}" id="{{ $a->id }}" value="{{ $alts[0][0] }};{{ $alts[1][0] }};{{ $alts[2][0] }}">
-                                    <label class="form-check-label">{{ $alts[0][0] }}/{{ $alts[1][0] }}/{{ $alts[2][0] }}</label>
+                                    <label class="form-check-label" for="{{ $a->id }}">{{ $alts[0][0] }}/{{ $alts[1][0] }}/{{ $alts[2][0] }}</label>
                                 </div>
                             </li>
                             <li>
                                 <div class="form-check">
                                     <input class="form-check-input multiple-choice-{{ $e->id }}-check" type="radio" name="question-{{ $question->id }}" id="{{ $a->id }}" value="{{ $alts[0][0] }};{{ $alts[1][0] }};{{ $alts[2][1] }}">
-                                    <label class="form-check-label">{{ $alts[0][0] }}/{{ $alts[1][0] }}/{{ $alts[2][1] }}</label>
+                                    <label class="form-check-label" for="{{ $a->id }}">{{ $alts[0][0] }}/{{ $alts[1][0] }}/{{ $alts[2][1] }}</label>
                                 </div>
                             </li>
                             <li>
                                 <div class="form-check">
                                     <input class="form-check-input multiple-choice-{{ $e->id }}-check" type="radio" name="question-{{ $question->id }}" id="{{ $a->id }}" value="{{ $alts[0][0] }};{{ $alts[1][1] }};{{ $alts[2][0] }}">
-                                    <label class="form-check-label">{{ $alts[0][0] }}/{{ $alts[1][1] }}/{{ $alts[2][0] }}</label>
+                                    <label class="form-check-label" for="{{ $a->id }}">{{ $alts[0][0] }}/{{ $alts[1][1] }}/{{ $alts[2][0] }}</label>
                                 </div>
                             </li>
                             <li>
                                 <div class="form-check">
                                     <input class="form-check-input multiple-choice-{{ $e->id }}-check" type="radio" name="question-{{ $question->id }}" id="{{ $a->id }}" value="{{ $alts[0][1] }};{{ $alts[1][1] }};{{ $alts[2][1] }}">
-                                    <label class="form-check-label">{{ $alts[0][1] }}/{{ $alts[1][1] }}/{{ $alts[2][1] }}</label>
+                                    <label class="form-check-label" for="{{ $a->id }}">{{ $alts[0][1] }}/{{ $alts[1][1] }}/{{ $alts[2][1] }}</label>
                                 </div>
                             </li>
                             <li>
                                 <div class="form-check">
                                     <input class="form-check-input multiple-choice-{{ $e->id }}-check" type="radio" name="question-{{ $question->id }}" id="{{ $a->id }}" value="{{ $alts[0][1] }};{{ $alts[1][0] }};{{ $alts[2][0] }}">
-                                    <label class="form-check-label">{{ $alts[0][1] }}/{{ $alts[1][0] }}/{{ $alts[2][0] }}</label>
+                                    <label class="form-check-label" for="{{ $a->id }}">{{ $alts[0][1] }}/{{ $alts[1][0] }}/{{ $alts[2][0] }}</label>
                                 </div>
                             </li>
                             <li>
                                 <div class="form-check">
                                     <input class="form-check-input multiple-choice-{{ $e->id }}-check" type="radio" name="question-{{ $question->id }}" id="{{ $a->id }}" value="{{ $alts[0][1] }};{{ $alts[1][0] }};{{ $alts[2][1] }}">
-                                    <label class="form-check-label">{{ $alts[0][1] }}/{{ $alts[1][0] }}/{{ $alts[2][1] }}</label>
+                                    <label class="form-check-label" for="{{ $a->id }}">{{ $alts[0][1] }}/{{ $alts[1][0] }}/{{ $alts[2][1] }}</label>
                                 </div>
                             </li>
                             <li>
                                 <div class="form-check">
                                     <input class="form-check-input multiple-choice-{{ $e->id }}-check" type="radio" name="question-{{ $question->id }}" id="{{ $a->id }}" value="{{ $alts[0][1] }};{{ $alts[1][1] }};{{ $alts[2][0] }}">
-                                    <label class="form-check-label">{{ $alts[0][1] }}/{{ $alts[1][1] }}/{{ $alts[2][0] }}</label>
+                                    <label class="form-check-label" for="{{ $a->id }}">{{ $alts[0][1] }}/{{ $alts[1][1] }}/{{ $alts[2][0] }}</label>
                                 </div>
                             </li>
                             <li>
                                 <div class="form-check">
                                     <input class="form-check-input multiple-choice-{{ $e->id }}-check" type="radio" name="question-{{ $question->id }}" id="{{ $a->id }}" value="{{ $alts[0][1] }};{{ $alts[1][1] }};{{ $alts[2][1] }}">
-                                    <label class="form-check-label">{{ $alts[0][1] }}/{{ $alts[1][1] }}/{{ $alts[2][1] }}</label>
+                                    <label class="form-check-label" for="{{ $a->id }}">{{ $alts[0][1] }}/{{ $alts[1][1] }}/{{ $alts[2][1] }}</label>
                                 </div>
                             </li>
                         @endif

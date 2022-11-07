@@ -71,9 +71,9 @@
                 @php $index = $loop->index + 1; @endphp
                 <li class="nav-item" role="presentation">
                     @if($index-1 == 0)
-                        <button class="nav-link active" id="{{ $section->underscore_name }}-tab" onclick="hideFeedback()" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="true">{{ $index . ". " . $section->name }}</button>
+                        <button class="nav-link active" id="{{ $section->underscore_name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="true">{{ $index . ". " . $section->name }}</button>
                     @else
-                        <button class="nav-link" id="{{ $section->underscore_name }}-tab" onclick="hideFeedback();" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="false">{{ $index . ". " . $section->name }}</button>
+                        <button class="nav-link" id="{{ $section->underscore_name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="false">{{ $index . ". " . $section->name }}</button>
                     @endif
                 </li>
             @endforeach
@@ -318,18 +318,18 @@
     }
 </script>
 
-{{-- Feedback  --}}
+{{-- Feedback Visibility  --}}
 <script>
-    function showFeedback() {
-        const feedbackElements = document.getElementsByClassName('feedback');
-        for (const element of feedbackElements) element.hidden = false;
-    }
+    function setFeedbackHidden(value, exercise_id, questions) {
+        questions.forEach(function (question) {
+            const questionFeedback = document.getElementById(`question-feedback-container-${question.id}`);
+            questionFeedback.hidden = value;
+        });
 
-    function hideFeedback() {
-        const feedbackElements = document.getElementsByClassName('feedback');
-        for (const element of feedbackElements){
-            element.hidden = true;
-        };
+        var exerciseFeedback = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
+        exerciseFeedback.hidden = value;
+
+        toggleTryAgainButton("disabled", exercise_id);
     }
 </script>
 
@@ -345,7 +345,11 @@
             answers = getMultipleChoiceResults(questions, exercise);
             break;
         case 'fill_in_the_gaps':
-            answers = getFillInTheGapsResults(questions, exercise);
+            if (exercise.subtype == 2) {
+                answers = getFillInTheGapsResults(questions, exercise);
+            } else {
+                answers = getDictationClozeResults(questions, exercise);
+            }
             break;
         case 'open_ended':
             answers = getOpenEndedResults(questions, exercise);
@@ -469,19 +473,14 @@
             }
         }
 
-        correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
-        wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
-        
-        exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise.id}`);
-
+        var correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
+        var wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
         correctAnswersItem.innerHTML = `<strong>${correct_questions}</strong>  ✅`;
-        wrongAnswersItem.innerHTML = `<strong>${wrong_questions}</strong>  ❌`;
-
         correctAnswersItem.hidden = false;
+        wrongAnswersItem.innerHTML = `<strong>${wrong_questions}</strong>  ❌`;
         wrongAnswersItem.hidden = false;
-        exerciseDetailsContainer.hidden = false;
 
-        showFeedback();
+        setFeedbackHidden(false, exercise.id, questions);
 
         return { 'correct': correct_questions, 'wrong': wrong_questions, 'responses': responses };
     }
@@ -541,18 +540,83 @@
 
         correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
         wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
-        
-        exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise.id}`);
-
-        correctAnswersItem.innerHTML = `<strong>Correct answers:</strong> ${correct_questions}  ✅`;
-        wrongAnswersItem.innerHTML = `<strong>Wrong answers:</strong> ${wrong_questions}  ❌`;
-
+        correctAnswersItem.innerHTML = `<strong></strong> ${correct_questions}  ✅`;
+        wrongAnswersItem.innerHTML = `<strong></strong> ${wrong_questions}  ❌`;
         correctAnswersItem.hidden = false;
         wrongAnswersItem.hidden = false;
 
-        exerciseDetailsContainer.hidden = false;
+        setFeedbackHidden(false, exercise.id, questions);
 
-        showFeedback();
+        return { 'correct': correct_questions, 'wrong': wrong_questions, 'responses': responses };
+    }
+</script>
+
+{{--  Dictation Cloze questions --}}
+<script>
+    function getDictationClozeResults(questions, exercise) {
+        var correct_questions = 0;
+        var wrong_questions = 0;
+        var questions_number = 0;
+        var responses = [];
+
+        questions.forEach(function (question) {
+            var correct_words = question.answer;
+            var answers = document.getElementsByName(`answer-${question.id}`);
+            var question_responses = [];
+
+            answers.forEach(function (answer) {
+                console.log(question.answer);
+                if (question.answer.includes(`${answer.value}`)) {
+                    answer.style.borderColor = 'green';
+                    answer.style.setProperty('border-color', 'lime', 'important');
+                    correct_questions += 1;
+                } else {
+                    answer.style.borderColor = 'red';
+                    answer.style.setProperty('border-color', 'red', 'important');
+                }
+
+                question_responses.push(answer.value);
+            });
+
+            questions_number = answers.length;
+
+            const final_responses = question_responses.join(',');
+            responses.push({'id': `${question.id}`, 'response': `${final_responses}` });
+        });
+
+        wrong_questions = questions_number - correct_questions;
+
+        if (document.getElementsByClassName(`show-on-all-correct-${exercise.id}`).length != 0) {
+            var shortMessageB = document.getElementsByClassName(`show-on-all-correct-${exercise.id}`)[0];
+            
+            if (questions_number == correct_questions) {
+                shortMessageB.hidden = false;
+            } else {
+                shortMessageB.hidden = true;
+            }
+        }
+
+        if (document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`).length != 0) {
+            var shortMessageC = document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`)[0];
+            
+            if (questions_number != correct_questions) {
+                shortMessageC.hidden = false;
+            } else {
+                shortMessageC.hidden = true;
+            }
+        }
+
+        correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
+        wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
+        correctAnswersItem.innerHTML = `<strong></strong> ${correct_questions}  ✅`;
+        wrongAnswersItem.innerHTML = `<strong></strong> ${wrong_questions}  ❌`;
+        correctAnswersItem.hidden = false;
+        wrongAnswersItem.hidden = false;
+
+        var exerciseFeedback = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
+        exerciseFeedback.hidden = value;
+
+        toggleTryAgainButton("disabled", exercise_id);
 
         return { 'correct': correct_questions, 'wrong': wrong_questions, 'responses': responses };
     }
@@ -590,11 +654,8 @@
                 shortMessageC.hidden = true;
             }
         }
-        
-        var exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise.id}`);
-        exerciseDetailsContainer.hidden = false;
 
-        showFeedback();
+        setFeedbackHidden(false, exercise.id, questions);
 
         return { 'responses': responses };
     }
@@ -657,40 +718,26 @@
 
         correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
         wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
-
-        exerciseDetailsContainer = document.getElementById(`feedback-exercise-details-container-${exercise.id}`);
-
-        correctAnswersItem.innerHTML = `<strong>Correct answers:</strong> ${correct_questions}  ✅`;
-        wrongAnswersItem.innerHTML = `<strong>Wrong answers:</strong> ${wrong_questions}  ❌`;
-
+        correctAnswersItem.innerHTML = `<strong></strong> ${correct_questions}  ✅`;
+        wrongAnswersItem.innerHTML = `<strong></strong> ${wrong_questions}  ❌`;
         correctAnswersItem.hidden = false;
         wrongAnswersItem.hidden = false;
 
-        exerciseDetailsContainer.hidden = false;
-
-        showFeedback();
+        setFeedbackHidden(false, exercise.id, questions);
 
         return { 'correct': correct_questions, 'wrong': wrong_questions, 'responses': responses }
     }
 </script>
 
+{{-- Resets the exercise's feedback and answers --}}
 <script>
-    function reset(id) {
-        var elements = document.getElementsByClassName(`multiple-choice-${id}-check`);
-        elements.forEach(function (element) {
+    function resetExercise(exercise_id, questions) {
+        var elements = document.getElementsByClassName(`multiple-choice-${exercise_id}-check`);
+        for (let element of elements) {
             element.checked = false;
-        });
-
-        // Hide feedback
-        var questionFeedbacks = document.getElementsByClassName('question-feedback');
-        console.log(questionFeedbacks);
-        questionFeedbacks.forEach(function (item) {
-            console.log('AH?');
-            item.hidden = true;
-        });
-
-        var exerciseFeedback = document.getElementById(`feedback-exercise-details-container-${id}`);
-        exerciseFeedback.hidden = true;
+        }
+        
+        setFeedbackHidden(true, exercise_id, questions);
     }
 </script>
 
@@ -698,14 +745,7 @@
 
 <script>
     function checkAction(exercise, questions, type, exercise_id, user_id, route) {
-
-        console.log(type);
-
         getResponseData(questions, exercise, type);
-
-        console.log(type);
-
-        console.log($(`#${type}_form_${exercise_id}`));
 
         event.preventDefault();
         $.ajax({
@@ -721,7 +761,6 @@
                 $(function() {
                     $("#alert-modal").modal("show");
                 });
-                console.log(_response.message);
             },
             error: function( _response ){
                 console.log(_response);

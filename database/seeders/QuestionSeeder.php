@@ -179,7 +179,7 @@ class QuestionSeeder extends Seeder
                 'answer' => "trauma,responds,releases,cortisol,childhood",
                 'image_name' => null,
                 'audio_name' => 'Steven_dictation.mp3',
-                'correct_answer' => 'ASD',
+                'correct_answer' => 'trauma,responds,releases,cortisol,childhood',
                 'exercise_id' => 18
             ],
             [            
@@ -188,7 +188,7 @@ class QuestionSeeder extends Seeder
                 'image_name' => null,
                 'audio_name' => null,
                 'answer' => 'lasting',
-                'correct_answer' => 'ASD',
+                'correct_answer' => 'lasting',
                 'exercise_id' => 19
             ],
             [            

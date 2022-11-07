@@ -1,4 +1,4 @@
-<div class="m-1 ps-1 pe-1 border rounded feedback question-feedback" id="question-feedback-container-{{ $question->id }}" hidden>
+<div class="m-1 ps-1 pe-1 border rounded question-feedback" id="question-feedback-container-{{ $question->id }}" hidden>
     <div class="row">
         <p class="p-3 text-success" id="question-{{ $question->id }}-feedback-correct" hidden>✅</p>
         <p class="p-3 text-danger" id="question-{{ $question->id }}-feedback-wrong" hidden>❌</p>
@@ -10,28 +10,28 @@
             @if($feedbacks->where('feedback_type_id', 3)->first() != null)
                 {{-- Elaborative --}}
                 <li class="nav-item" role="presentation">
-                    <button type="button" class="nav-link" id="elaborative-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#elaborative-{{ $question->id }}" role="tab" aria-controls="elaborative-{{ $question->id }}" onclick="show('elaborative')">🔈</button>
+                    <button type="button" class="nav-link" id="elaborative-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#elaborative-{{ $question->id }}" role="tab" aria-controls="elaborative-{{ $question->id }}">🔈</button>
                 </li>
             @endif
 
             @if($feedbacks->where('feedback_type_id', 6)->first() != null)
                 {{-- Directive --}}
                 <li class="nav-item" role="presentation">
-                    <button type="button" class="nav-link active" id="directive-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#directive-{{ $question->id }}" role="tab" aria-controls="directive-{{ $question->id }}" onclick="show('directive')">🧭</button>
+                    <button type="button" class="nav-link active" id="directive-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#directive-{{ $question->id }}" role="tab" aria-controls="directive-{{ $question->id }}">🧭</button>
                 </li>
             @endif
 
             @if($feedbacks->where('feedback_type_id', 7)->first() != null)
                 {{-- Knowledge of correct response --}}
                 <li class="nav-item" role="presentation">
-                    <button type="button" class="nav-link" id="knowledge-of-correct-response-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#knowledge-of-correct-response-{{ $question->id }}" role="tab" aria-controls="knowledge-of-correct-response-{{ $question->id }}" onclick="show('knowledge-of-correct-response')">✅</button>
+                    <button type="button" class="nav-link" id="knowledge-of-correct-response-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#knowledge-of-correct-response-{{ $question->id }}" role="tab" aria-controls="knowledge-of-correct-response-{{ $question->id }}">✅</button>
                 </li>
             @endif
 
             @if($feedbacks->where('feedback_type_id', 5)->first() != null)
                 {{-- Explainatory --}}
                 <li class="nav-item show-on-incorrect-{{ $question->id }}" role="presentation">
-                    <button type="button" class="nav-link" id="explanatory-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#explanatory-{{ $question->id }}" role="tab" aria-controls="explanatory-{{ $question->id }}" onclick="show('explanatory')">❓</button>
+                    <button type="button" class="nav-link" id="explanatory-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#explanatory-{{ $question->id }}" role="tab" aria-controls="explanatory-{{ $question->id }}">❓</button>
                 </li>
             @endif
 
@@ -51,13 +51,13 @@
                 @if($feedbacks->where('feedback_type_id', 5)->first() != null)
                     <p class="text-secondary mb-1 mt-1"><small>Explanatory feedback</small></p>
                     @foreach($feedbacks->where('feedback_type_id', 5) as $exp)
-                        <p class="show-on-incorrect-{{ $question->id }}" id="{{ $question->alternatives[$loop->index]->title }}-explanatory">{{ $exp->message }}</p>
-
-                        {{-- @php $count = count($feedbacks->where('feedback_type_id', 5)); @endphp
+                        @php $count = count($feedbacks->where('feedback_type_id', 5)); @endphp
 
                         @if($loop->index == $count-1)
                             <p class="show-on-incorrect-{{ $question->id }}" id="{{ $question->alternatives[$count]->title }}-explanatory">{{ $exp->message }}</p>
-                        @endif --}}
+                        @else 
+                            <p class="show-on-incorrect-{{ $question->id }}" id="{{ $question->alternatives[$loop->index]->title }}-explanatory">{{ $exp->message }}</p>
+                        @endif
                     @endforeach
                 @endif
             </div>
