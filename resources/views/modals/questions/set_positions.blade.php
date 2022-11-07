@@ -12,7 +12,7 @@
                     @forelse($questions->sortBy('position') as $question)
                         <div class="row">
                             <div class="col-8">
-                                <p>{{ $question->statement }}: </p>
+                                <p>{!! $question->statement !!}: </p>
                             </div>
                             <div class="col-4">
                                 <select class="form-select" name="positions[{{ $question->id }}]" id="position">

@@ -12,7 +12,7 @@
                         <a class="nav-link" onclick="this.classList.add('active');" aria-current="page" href="{{ route('auth.index') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" onclick="this.classList.add('active');" href="{{ route('users.index') }}">Manage Users</a>
+                        <a class="nav-link" onclick="this.classList.add('active');" href="{{ route('users.index') }}">Users</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" onclick="this.classList.add('active');" href="{{ route('units.index') }}">Units</a>

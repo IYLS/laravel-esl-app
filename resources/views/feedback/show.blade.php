@@ -12,9 +12,11 @@
                     if(!in_array($type_name, $types)) array_push($types, $type_name);
                 }
 
-                foreach($question->feedbacks as $fb) {
-                    $type_name = $fb->feedbackType->name;
-                    if(!in_array($type_name, $types)) array_push($types, $type_name);
+                if(isset($question)) {
+                    foreach($question->feedbacks as $fb) {
+                        $type_name = $fb->feedbackType->name;
+                        if(!in_array($type_name, $types)) array_push($types, $type_name);
+                    }
                 }
 
             @endphp

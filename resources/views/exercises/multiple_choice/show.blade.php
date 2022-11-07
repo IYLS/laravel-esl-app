@@ -43,6 +43,7 @@
     <div class="card p-4 m-2">
         <h4>Activity questions</h4>
         @forelse($exercise->questions as $question)
+            <h2>{{ $question->id }}</h2>
             @php $question_number = $loop->index + 1; @endphp
 
             @if($exercise->subtype == 1 or $exercise->subtype == 4 or $exercise->subtype == 99 or $exercise->subtype == 3)
@@ -56,25 +57,27 @@
                         <div class="col-12 col-md-10">
                             {!! $question->statement !!}
                             <ol type="a">
-                                @foreach($question->alternatives as $alt)
+                                @forelse($question->alternatives as $alt)
                                     <li>
                                         @if($alt->correct_alt) <strong class="text-primary">{{ $alt->title }}</strong>
                                         @else {{ $alt->title }}
                                         @endif
                                     </li>
-                                @endforeach
+                                @empty
+                                    <p class="text-secondary"><small>No alternatives added</small></p>
+                                @endforelse
                             </ol>
                         </div>
                         <div class="col-12 col-md-2 d-flex justify-content-center">
                             <div>
-                                <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_exercise_modal">
+                                <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_question_{{ $question->id }}">
                                     <i class="mdi mdi-delete"></i>
                                 </button>
                             </button> 
                                 </button>
                             </button> 
                                 </button>
-                                @include('modals.questions.delete_confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => 'delete_exercise_modal', 'route' => route('questions.destroy', [$exercise->id, $question->id])])
+                                @include('modals.questions.delete_confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete $exercise->title exercise.", 'button_target_id' => "delete_question_$question->id", 'route' => route('questions.destroy', [$exercise->id, $question->id])])
                                 <button type="button" id="edit_question_button" class="btn btn-sm btn-warning ms-1" data-bs-toggle="modal" data-bs-target="#edit_question_{{ $question->id }}">
                                     <i class="mdi mdi-pencil"></i>
                                 </button>
