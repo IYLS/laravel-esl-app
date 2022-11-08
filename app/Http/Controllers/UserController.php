@@ -17,7 +17,7 @@ class UserController extends Controller
 
     public function index($message = null)
     {
-        $users = User::all();
+        $users = User::orderBy('user_id')->get();
         $groups = Group::all();
 
         return view('user.index', compact(['users', 'groups']));
@@ -93,5 +93,27 @@ class UserController extends Controller
     {
         User::find($id)->delete();
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+    }
+
+    public function executeFilter(Request $request)
+    {
+        $group_id = $request->group;
+        $role = $request->role;
+        
+        if($role != null and $group_id != null) {
+            if ($role != 'any' and $group_id != 'any') {
+                $users = User::where('role', $role)->where('group_id', $group_id)->orderBy('user_id')->get();
+            } else if ($role == 'any' and $group_id != 'any') {
+                $users = User::where('group_id', $group_id)->orderBy('user_id')->get();
+            } else if ($role != 'any' and $group_id == 'any'){
+                $users = User::where('role', $role)->orderBy('user_id')->get();
+            } else {
+                $users = User::orderBy('user_id')->get();
+            }
+        }
+
+        $groups = Group::all();
+
+        return view('user.index', compact(['users', 'groups']));
     }
 }

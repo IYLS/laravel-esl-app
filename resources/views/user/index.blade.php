@@ -57,6 +57,36 @@
             </tbody>
 		</table>
   	</div>
+	  <form action="{{ route('users.execute_filter') }}" method="POST">
+		@csrf
+		@method('POST')
+		<div class="d-flex">
+			<div class="ms-2 me-2 row">
+				<p>Filter</p>
+			</div>
+			<div class="ms-2 me-2 row">
+				<select name="group" id="" class="form-select form-select-sm">
+					<option value="any">Any</option>
+					@foreach($groups as $group)
+						<option value="{{ $group->id }}">{{ $group->name }}</option>
+					@endforeach
+				</select>
+			</div>
+			<div class="ms-2 me-2 row">
+				<select name="role" id="" class="form-select form-select-sm">
+					<option value="any">Any</option>
+					<option value="teacher">Teacher</option>
+					<option value="student">Student</option>
+				</select>
+			</div>
+			<div class="ms-2 me-2 row">
+				<button class="btn btn-success" type="submit">
+					Filter
+				</button>
+			</div>
+		</div>
+	</form>
+	<br>
 	<div class="mt-2">
 		<a class="btn btn-primary" href="{{ route('users.create') }}">Add user</a>
 	</div>

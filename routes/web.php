@@ -29,6 +29,7 @@ Route::post('/users/store', [UserController::class, 'store'])->name('users.store
 Route::put('/users/update/{user}', [UserController::class, 'update'])->name('users.update');
 Route::get('/users/show/{user}', [UserController::class, 'show'])->name('users.show');
 Route::delete('/users/delete/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::post('/users/filter', [UserController::class, 'executeFilter'])->name('users.execute_filter');
 
 // Auth Router
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
