@@ -185,7 +185,7 @@
                                             </div>
                                         @endif
 
-                                        <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'multiple_choice');" method="POST" id="multiple_choice_form_{{ $e->id }}">
+                                        <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="multiple_choice_form_{{ $e->id }}">
                                             @csrf
                                             {{-- Subtype 1 = Predicting --}}
                                             @if($e->subtype == 1)
@@ -275,19 +275,6 @@
     }
 </script>
 
-{{-- Intent number count --}}
-<script>
-    var intentCount = 0;
-
-    function resetIntentCount() {
-        window.intentCount = 0;
-    }
-
-    function stepIntentCount() {
-        window.intentCount += 1;
-    }
-</script>
-
 {{-- Drag and Drop --}}
 <script>
     function allowDrop(ev) {
@@ -359,7 +346,7 @@
     
         var form = document.getElementById(`${type}_form_${exercise.id}`);
 
-        if(type != 'open_ended' && type != 'form' && exercise.subtype != 99 && exercise.subtype != 991) {            
+        if(type != 'open_ended' && type != 'form' && exercise.subtype != 99 && exercise.subtype != 991) {
             var wrong = document.createElement('input');
             wrong.setAttribute('value', `${answers.wrong}`);
             wrong.setAttribute('name', `wrong`);
@@ -379,13 +366,7 @@
         time.hidden = true;
         form.appendChild(time);
 
-        var intentCount = document.createElement('input');
-        intentCount.setAttribute('value', `${window.intentCount}`);
-        intentCount.setAttribute('name', `intent_number`);
-        intentCount.hidden = true;
-        form.appendChild(intentCount);
-
-        if (answers.length > 0) {
+        if (type != 'form' && answers.responses.length > 0) {
             answers.responses.forEach(function (item){
                 var responseItem = document.createElement('input');
                 responseItem.setAttribute('value', `${item.response}`);
@@ -564,10 +545,6 @@
             var correct_answer = question.answer.split(",");
 
             answers.forEach(function (answer) {
-
-                console.log(`Correct words: ${correct_answer}`);
-                console.log(`Student response: ${answer.value}`);
-
                 if (question.answer.includes(`${answer.value}`) && answer.value != "") {
                     answer.style.setProperty('border-color', 'lime', 'important');
                     correct_questions += 1;
@@ -683,47 +660,53 @@
                 return 'missing_responses';
             }
 
-            if (definitionContainer.contains(wordContainer)) {
-                document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
-                document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
-                correct_questions += 1;
-            } else {
-                document.getElementById(`question-${question.id}-feedback-correct`).hidden = true;
-                document.getElementById(`question-${question.id}-feedback-wrong`).hidden = false;
-                wrong_questions +=1;
+            if (exercise.subtype != 991 && exercise.subtype != 99) {
+                if (definitionContainer.contains(wordContainer)) {
+                    document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
+                    document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
+                    correct_questions += 1;
+                } else {
+                    document.getElementById(`question-${question.id}-feedback-correct`).hidden = true;
+                    document.getElementById(`question-${question.id}-feedback-wrong`).hidden = false;
+                    wrong_questions +=1;
+                }
             }
         });
 
-        wrong_questions = questions_number - correct_questions;
+        if (exercise.subtype != 991 && exercise.subtype != 99) {
 
-        if (document.getElementsByClassName(`show-on-all-correct-${exercise.id}`).length != 0) {
-            var shortMessageB = document.getElementsByClassName(`show-on-all-correct-${exercise.id}`)[0];
-            
-            if (questions_number == correct_questions) {
-                shortMessageB.hidden = false;
-            } else {
-                shortMessageB.hidden = true;
+            wrong_questions = questions_number - correct_questions;
+
+            if (document.getElementsByClassName(`show-on-all-correct-${exercise.id}`).length != 0) {
+                var shortMessageB = document.getElementsByClassName(`show-on-all-correct-${exercise.id}`)[0];
+                
+                if (questions_number == correct_questions) {
+                    shortMessageB.hidden = false;
+                } else {
+                    shortMessageB.hidden = true;
+                }
             }
-        }
 
-        if (document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`).length != 0) {
-            var shortMessageC = document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`)[0];
-            
-            if (questions_number != correct_questions) {
-                shortMessageC.hidden = false;
-            } else {
-                shortMessageC.hidden = true;
+            if (document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`).length != 0) {
+                var shortMessageC = document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`)[0];
+                
+                if (questions_number != correct_questions) {
+                    shortMessageC.hidden = false;
+                } else {
+                    shortMessageC.hidden = true;
+                }
             }
+
+            correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
+            wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
+            correctAnswersItem.innerHTML = `<strong></strong> ${correct_questions}  ✅`;
+            wrongAnswersItem.innerHTML = `<strong></strong> ${wrong_questions}  ❌`;
+            correctAnswersItem.hidden = false;
+            wrongAnswersItem.hidden = false;
+        
+
+            setFeedbackHidden(false, exercise.id, questions);
         }
-
-        correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
-        wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
-        correctAnswersItem.innerHTML = `<strong></strong> ${correct_questions}  ✅`;
-        wrongAnswersItem.innerHTML = `<strong></strong> ${wrong_questions}  ❌`;
-        correctAnswersItem.hidden = false;
-        wrongAnswersItem.hidden = false;
-
-        setFeedbackHidden(false, exercise.id, questions);
 
         return { 'correct': correct_questions, 'wrong': wrong_questions, 'responses': responses }
     }
@@ -790,10 +773,10 @@
             type: 'post',
             data: $(`#${type}_form_${exercise_id}`).serialize(), // Remember that you need to have your csrf token included
             dataType: 'json',
-            success: function( _response ){
+            success: function( _response ) {
                 presentModal(_response.message);
             },
-            error: function( _response ){
+            error: function( _response ) {
                 console.log(_response);
             }
         });

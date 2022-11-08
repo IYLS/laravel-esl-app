@@ -17,64 +17,86 @@
                     <th>
                         <p class="text-center">{{ $question->answer }}</p>
                     </th>
-                    @endisset                        
+                    @endisset
                 </thead>
                 <tbody>
                     @foreach($question->alternatives as $alt)
-                    <tr>
-                        <td>
-                            <div>
-                                {!! "<p class='d-inline text-center ps-3' name='alt-{{ $question->id }}' id='{{ $alt->id }}'>" . $alt->title . "</p>"  !!}
-                            </div>
-                        </td>
-                        <td>
-                            <div class="form-check d-flex justify-content-center align-items-center">
-                                <input 
-                                    class="form-check-input answer-{{ $question->id}}" 
+                        @if(isset($question->answer))
+                            {{-- DOUBLE COLUMN --}}    
+                            <input type="text" name="columns" value="2" hidden>
+                            <tr>
+                                <td>
+                                    <div>
+                                        {!! "<p class='d-inline text-center ps-3' name='alt-{{ $question->id }}' id='{{ $alt->id }}'>" . $alt->title . "</p>"  !!}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-check d-flex justify-content-center align-items-center">
+                                        <input 
+                                            class="form-check-input answer-{{ $question->id}}" 
+        
+                                            @if(isset($question->exclusive_responses) and $question->exclusive_responses)
+                                                type="radio"
+                                                name="answers[{{ $question->id}}][0]"
+                                            @else
+                                                type="checkbox"
+                                                name="answers[{{ $question->id}}][0][{{ $alt->id }}]" 
+                                            @endif
+        
+                                            value="{{ $question->statement . ": " . $alt->title}}" 
+                                            id="answer-{{ $question->id}} "
+                                        >
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-check d-flex justify-content-center align-items-center">
+                                        <input 
+                                            class="form-check-input answer-{{ $question->id}}" 
+                                                                                
+                                            @if(isset($question->exclusive_responses) and $question->exclusive_responses)
+                                                type="radio"
+                                                name="answers[{{ $question->id}}][1]"
+                                            @else
+                                                type="checkbox"
+                                                name="answers[{{ $question->id}}][1][{{ $alt->id }}]" 
+                                            @endif
 
-                                    @if(isset($question->exclusive_responses))
-                                        @if($question->exclusive_responses)
-                                            type="radio"
-                                            name="answers[{{ $question->id}}][0]" 
-                                        @elseif(!$question->exclusive_responses)
-                                            type="checkbox"
-                                            name="answers[{{ $question->id}}][0][{{ $alt->id }}]" 
-                                        @endif
-                                    @else
-                                        type="checkbox"
-                                        name="answers[{{ $question->id}}][0][{{ $alt->id }}]" 
-                                    @endif
 
-                                    value="true" 
-                                    id="answer-{{ $question->id}} "
-                                >
-                            </div>
-                        </td>
-                        @isset($question->answer)
-                        <td>
-                            <div class="form-check d-flex justify-content-center align-items-center">
-                                <input 
-                                class="form-check-input answer-{{ $question->id}}" 
-                                                                    
-                                @if(isset($question->exclusive_responses))
-                                    @if($question->exclusive_responses)
-                                        type="radio"
-                                        name="answers[{{ $question->id}}][1]"
-                                    @elseif(!$question->exclusive_responses)
-                                        type="checkbox"
-                                        name="answers[{{ $question->id}}][1][{{ $alt->id }}]"
-                                    @endif
-                                @else
-                                    type="checkbox"
-                                    name="answers[{{ $question->id}}][1][{{ $alt->id }}]" 
-                                @endif
-
-                                value="true" 
-                                id="answer-{{ $question->id}}">
-                            </div>
-                        </td>
-                        @endisset
-                    </tr>
+                                            value="{{ $question->answer . ": " . $alt->title}}" 
+                                            id="answer-{{ $question->id}}"
+                                        >
+                                    </div>
+                                </td>
+                            </tr>
+                        @else
+                            {{-- SINGLE COLUMN --}}
+                            <input type="text" name="columns" value="1" hidden>
+                            <tr>
+                                <td>
+                                    <div>
+                                        {!! "<p class='d-inline text-center ps-3' name='alt-{{ $question->id }}' id='{{ $alt->id }}'>" . $alt->title . "</p>"  !!}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-check d-flex justify-content-center align-items-center">
+                                        <input 
+                                            class="form-check-input answer-{{ $question->id}}"
+        
+                                            @if(isset($question->exclusive_responses) and $question->exclusive_response)
+                                                type="radio"
+                                                name="answers[{{ $question->id}}][0]"
+                                            @else
+                                                type="checkbox"
+                                                name="answers[{{ $question->id}}][0][{{ $alt->id }}]"
+                                            @endif
+        
+                                            value="{{ $question->statement . ": " . $alt->title}}"
+                                            id="answer-{{ $question->id}} "
+                                        >
+                                    </div>
+                                </td>
+                            </tr>
+                        @endif
                     @endforeach
                 </tbody>
             </table>

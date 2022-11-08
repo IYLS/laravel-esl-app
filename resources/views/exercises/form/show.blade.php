@@ -95,4 +95,6 @@
     </div>
 </div>
 
+@include('modals.questions.add')
+
 @endsection

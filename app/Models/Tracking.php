@@ -24,7 +24,7 @@ class Tracking extends Model
     public $timestamps = true;
     public $incrementing = true;
 
-    public function responses() { return $this->hasMany(UserResponse::class); }
+    public function userResponses() { return $this->hasMany(UserResponse::class); }
     public function exercise() { return $this->belongsTo(Exercise::class); } 
     public function user() { return $this->belongsTo(User::class); }
 }

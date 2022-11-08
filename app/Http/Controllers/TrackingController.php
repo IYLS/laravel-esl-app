@@ -33,11 +33,7 @@ class TrackingController extends Controller
         $intent_number = Tracking::where('exercise_id', $exercise->id)->count();
         $intent_number += 1;
 
-        if($request->intent_number == null) {
-            $tracking->intent_number = "0";
-        } else {
-            $tracking->intent_number = "$intent_number";
-        }
+        $tracking->intent_number = "$intent_number";
 
         if($request->time == null) { 
             $tracking->time_spent_in_minutes = "00:00";
@@ -60,7 +56,9 @@ class TrackingController extends Controller
         $tracking->exercise_id = $exercise_id;
         $tracking->user_id = $user_id;
         $tracking->save();
-    
+
+        $weaita;
+
         if($exercise != null and $exercise->exerciseType->underscore_name != 'form')
         {
             if ($request->responses != null) 
@@ -99,12 +97,22 @@ class TrackingController extends Controller
                             }
                         }
                     }
-                
                 // FIXME: EXCLUSIVE RESPONSES IS TRUE
                 } else {
                     if ($request->answers != null)
                     {
-                        
+                        foreach($request->answers as $id=>$answer) 
+                        {
+                            $question_id = $id;
+                            foreach($answer as $response) 
+                            {
+                                $user_response = new UserResponse;
+                                $user_response->response = $response;
+                                $user_response->question_id = $question_id;
+                                $user_response->tracking_id = $tracking->id;
+                                $user_response->save();
+                            }
+                        }
                     }
                 }
             }
