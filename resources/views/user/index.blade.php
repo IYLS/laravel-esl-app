@@ -57,7 +57,7 @@
             </tbody>
 		</table>
   	</div>
-	  <form action="{{ route('users.execute_filter') }}" method="POST">
+	<form action="{{ route('users.execute_filter') }}" method="POST">
 		@csrf
 		@method('POST')
 		<div class="d-flex">

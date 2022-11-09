@@ -33,7 +33,7 @@
 
     <div class="card p-4 m-2">
         <h4>Activity questions</h4>
-        @forelse($exercise->questions as $question)
+        @forelse($exercise->questions->sortBy('position') as $question)
             @php $question_number = $loop->index + 1; @endphp
             <div class="card mt-1 mb-1 p-3">
                 <div class="row">

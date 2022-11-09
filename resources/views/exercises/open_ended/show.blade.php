@@ -27,7 +27,7 @@
 
     <div class="card p-4 m-2">
         <h4>Activity questions</h4>
-        @forelse($exercise->questions as $question)
+        @forelse($exercise->questions->sortBy('position') as $question)
             @php $question_number = $loop->index + 1; @endphp
             <div class="card mt-1 mb-1 ps-4 pe-4 pt-3 pb-2">
                 @if ($exercise->subtype == '99' or $exercise->subtype == null or $exercise->subtype == 1 or $exercise->subtype == '')

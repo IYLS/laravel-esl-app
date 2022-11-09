@@ -21,7 +21,7 @@
 
     <div class="card p-4 m-2">
         <h4>Activity items</h4>        
-        @forelse($exercise->questions as $question)
+        @forelse($exercise->questions->sortBy('position') as $question)
             <div class="card mt-1 mb-1 p-4">
                 <div class="d-flex row">                    
                     @php $question_number = $loop->index + 1; @endphp

@@ -25,7 +25,7 @@
 
     <div class="card p-4 m-2">
         <h4>Activity items</h4>
-        @forelse($exercise->questions as $question)
+        @forelse($exercise->questions->sortBy('position') as $question)
         <div class="card mt-2 p-3 mb-1">
             @php $question_number = $loop->index + 1;  @endphp
             <h6>{{ "Item " . $question_number }} - {{ $question->correct_answer }}</h6>
