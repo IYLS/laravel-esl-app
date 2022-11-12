@@ -45,6 +45,7 @@
                             <div class="mb-3">
                                 <label for="audio" class="form-label">Select audio file</label>
                                 <input class="form-control" type="file" name="audio" id="audio" accept="audio/*">
+                                <p class="text-secondary">Current file: @if(isset($question->audio_name) and $question->audio_name != "") {{ $question->audio_name }} @else empty @endif </p>
                             </div>
                             @break
                         @case('1')
@@ -87,10 +88,12 @@
                         <div class="mb-3">
                             <label for="audio" class="form-label">Select audio file</label>
                             <input class="form-control" type="file" name="audio" id="audio" accept="audio/*">
+                            <p class="text-secondary">Current file: @if(isset($question->audio_name) and $question->audio_name != "") {{ $question->audio_name }} @else empty @endif </p>
                         </div>
                         <div class="mb-3">
                             <label for="image" class="form-label">Select image file</label>
                             <input class="form-control" type="file" name="image" id="image" accept="image/*">
+                            <p class="text-secondary">Current file: @if(isset($question->image_name) and $question->image_name != "") {{ $question->image_name }} @else empty @endif </p>
                         </div>
                         @break
                     @case('drag_and_drop')
@@ -109,6 +112,7 @@
                             <div class="mb-3">
                                 <label for="audio" class="form-label">Select audio file</label>
                                 <input class="form-control" type="file" name="audio" id="audio" accept="audio/*">
+                                <p class="text-secondary">Current file: @if(isset($question->audio_name) and $question->audio_name != "") {{ $question->audio_name }} @else empty @endif </p>
                             </div>
                             @break
                         @case('2')
