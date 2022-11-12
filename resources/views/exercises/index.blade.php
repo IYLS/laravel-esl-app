@@ -12,21 +12,21 @@
             </a>
         </div>
     </div>
-    @forelse($unit->sections as $section)
+    @forelse($unit->sections->sortBy('position') as $section)
         <div class="card p-4 m-4 shadow border-0">
             <div class="row">
                 <div class="card-body d-flex justify-content-between">
                     <div>
                         <h4>{{ $section->name }} section</h4>
-                        <div class="row">
-                            <div class="col-10">
+                        <div class="d-flex">
+                            <div class="m-1">
                                 <p>@if($section->instructions != "") {{ $section->instructions }} @else Empty instructions @endif</p>
                             </div>
-                            <div class="col-2">
+                            <div class="m-1">
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#positions_modal_{{ $section->id }}">
                                     Positions  <i class="mdi mdi-sort-ascending"></i>
                                 </button>
-                                @include('modals.sections.set_positions', ["modal_id" => "positions_modal_$section->id"])
+                                @include('modals.exercises.set_positions', ["modal_id" => "positions_modal_$section->id"])
                             </div>
                         </div>
                     </div>

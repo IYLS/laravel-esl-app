@@ -44,7 +44,7 @@
             <div class="card p-2 mt-2 mb-2">
                 <h4>Question based feedback</h4>
                 @forelse($feedback_types->where('level', 'question') as $type)
-                    @foreach($exercise->questions as $question)
+                    @foreach($exercise->questions->sortBy('position') as $question)
                         @if($type->text_based and $type->id == 5)
 
                         <div class="p-2 mb-2 row">

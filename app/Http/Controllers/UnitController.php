@@ -158,7 +158,7 @@ class UnitController extends Controller
             $unit->save();
         }
 
-        return redirect()->route('units.index')->with('success', 'Section positions defined successfully!');
+        return redirect()->route('units.index')->with('success', 'Units positions defined successfully!');
     }
 
     public function destroy($id)

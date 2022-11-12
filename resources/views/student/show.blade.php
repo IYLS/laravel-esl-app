@@ -67,7 +67,7 @@
     {{-- Exercises and content section --}}
     <div class="col-12 col-xl-8 bg-light mt-2 p-3 rounded shadow">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
-            @foreach($unit->sections as $section)
+            @foreach($unit->sections->sortBy('position') as $section)
                 @php $index = $loop->index + 1; @endphp
                 <li class="nav-item" role="presentation">
                     @if($index-1 == 0)
@@ -79,7 +79,7 @@
             @endforeach
         </ul>
         <div class="tab-content" id="myTabContent">
-            @foreach($unit->sections as $section)
+            @foreach($unit->sections->sortBy('position') as $section)
                 @if($loop->index == 0)
                     <div class="tab-pane fade show active m-2" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
                 @else

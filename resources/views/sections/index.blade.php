@@ -46,16 +46,26 @@
             @endforelse
         </tbody>
     </table>
-    <div>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSectionModal">
-            Add section
-        </button>
-        <a type="button" class="btn btn-secondary" href="{{ route('units.show', $unit_id) }}">
-            Go back
-        </a>
+    <div class="d-flex">
+        <div class="m-1">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSectionModal">
+                Add section
+            </button>
+        </div>
+        <div class="m-1">
+            <a type="button" class="btn btn-secondary" href="{{ route('units.show', $unit_id) }}">
+                Go back
+            </a>
+        </div>
+        <div class="m-1">
+            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#sections_positions_modal">
+                Positions  <i class="mdi mdi-sort-ascending"></i>
+            </button>
+        </div>
     </div>
 </div>
 
+@include('modals.sections.set_positions', ["modal_id" => "sections_positions_modal"])
 @include('modals.sections.add')
 
 @endsection

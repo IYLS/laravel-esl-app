@@ -12,7 +12,7 @@ class SectionController extends Controller
 {
     public function index($unit_id) {
         $unit = Unit::find($unit_id);
-        $sections = $unit->sections;
+        $sections = $unit->sections->sortBy('position');
 
         return view('sections.index', compact('sections', 'unit_id', 'unit'));
     }
@@ -44,12 +44,12 @@ class SectionController extends Controller
     public function setPositions(Request $request, $unit_id)
     {
         foreach($request->positions as $id => $position) {
-            $exercise = Exercise::find($id);
-            $exercise->position = $position;
-            $exercise->save();
+            $section = Section::find($id);
+            $section->position = $position;
+            $section->save();
         }
 
-        return redirect()->route('exercises.index', $unit_id)->with('success', 'Section positions defined successfully!');
+        return redirect()->route('sections.index', $unit_id)->with('success', 'Sections positions defined successfully!');
     }
 
     public function destroy(Section $section) {

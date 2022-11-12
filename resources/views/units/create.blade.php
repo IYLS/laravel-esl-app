@@ -30,14 +30,14 @@
                     <tr><td colspan="3"><h5>Help options</h5></td></tr>
                     <tr>
                         <td>
-                            <p>Listening tips</p>
+                            <p>Tips</p>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="listening_tips_enabled" value="true" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">Enabled</label>
+                                <input class="form-check-input" type="checkbox" name="listening_tips_enabled" value="true" id="listening_tips_enabled">
+                                <label class="form-check-label" for="listening_tips_enabled">Enabled</label>
                               </div>
                         </td>
                         <td colspan="2">
-                            <textarea id="listening_tips" name="listening_tips" class="mce-editor" placeholder="Write the listening tips for this new unit"></textarea>
+                            <textarea id="listening_tips" name="listening_tips" class="mce-editor" placeholder="Write the Tips for this new unit"></textarea>
                         </td>
 
                     </tr>
@@ -45,8 +45,8 @@
                         <td>
                             <p>Cultural Notes</p>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="cultural_notes_enabled" value="true" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">Enabled</label>
+                                <input class="form-check-input" type="checkbox" name="cultural_notes_enabled" value="true" id="cultural_notes_enabled">
+                                <label class="form-check-label" for="cultural_notes_enabled">Enabled</label>
                             </div>
                         </td>
                         <td colspan="2">
@@ -57,8 +57,8 @@
                         <td>
                             <p>Transcript</p>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="transcript_enabled" value="true" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">Enabled</label>
+                                <input class="form-check-input" type="checkbox" name="transcript_enabled" value="true" id="transcript_enabled">
+                                <label class="form-check-label" for="transcript_enabled">Enabled</label>
                             </div>
                         </td>
                         <td>
@@ -69,8 +69,8 @@
                         <td>
                             <p>Glossary</p>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="glossary_enabled" value="true" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">Enabled</label>
+                                <input class="form-check-input" type="checkbox" name="glossary_enabled" value="true" id="glossary_enabled">
+                                <label class="form-check-label" for="glossary_enabled">Enabled</label>
                               </div>
                         </td>
                         <td colspan="2">
@@ -81,8 +81,8 @@
                         <td>
                             <p>Translation</p>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="translation_enabled" value="true" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">Enabled</label>
+                                <input class="form-check-input" type="checkbox" name="translation_enabled" value="true" id="translation_enabled">
+                                <label class="form-check-label" for="translation_enabled">Enabled</label>
                               </div>
                         </td>
                         <td colspan="2">
@@ -93,8 +93,8 @@
                         <td>
                             <p>Dictionary</p>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="dictionary_enabled" value="true" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">Enabled</label>
+                                <input class="form-check-input" type="checkbox" name="dictionary_enabled" value="true" id="dictionary_enabled">
+                                <label class="form-check-label" for="dictionary_enabled">Enabled</label>
                               </div>
                         </td>
                         <td colspan="2">

@@ -97,6 +97,17 @@ class ExerciseController extends Controller
         return redirect()->route('exercises.show', $exercise->id);
     }
 
+    public function setPositions(Request $request, $unit_id)
+    {
+        foreach($request->positions as $id => $position) {
+            $exercise = Exercise::find($id);
+            $exercise->position = $position;
+            $exercise->save();
+        }
+
+        return redirect()->route('exercises.index', $unit_id)->with('success', 'Exercises positions defined successfully!');
+    }
+
     public function destroy($unit_id, $exercise_type_id, $exercise_id)
     {
         $exercise = Exercise::find($exercise_id);

@@ -19,10 +19,10 @@
                         <td>
                             <div class="card card-body">
                                 @foreach($users as $user)
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="{{ $user->id }}">
-                                    <label class="form-check-label" for="flexCheckChecked">{{ $user->name }}</label>
-                                </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="user_{{ $user->id }}" type="checkbox" value="{{ $user->id }}">
+                                        <label class="form-check-label" for="user_{{ $user->id }}">{{ $user->name }}</label>
+                                    </div>
                                 @endforeach
                             </div>
                         </td>

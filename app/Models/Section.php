@@ -16,7 +16,8 @@ class Section extends Model
     protected $fillable = [
         'name',
         'underscore_name',
-        'instructions'
+        'instructions',
+        'position'
     ];
 
     public $timestamps = false;

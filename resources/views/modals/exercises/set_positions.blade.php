@@ -1,25 +1,25 @@
-<!-- Multiple choice modal -->
+<!-- Set exercise positions modal -->
 <div class="modal fade" id="{{ $modal_id }}" tabindex="-1" aria-labelledby="{{ $modal_id }}" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Set sections positions</h5>
+                <h5 class="modal-title">Set exercises positions</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h4>Positions for {{ $unit->title }} unit sections</h4>
-                <form method="POST" action="{{ route('sections.positions', "$unit->id") }}" method="POST">
+                <h4>Positions for {{ $section->name }} section</h4>
+                <form method="POST" action="{{ route('exercises.positions', "$section->unit_id") }}" method="POST">
                     @csrf
-                    @forelse($unit->sections->sortBy('position') as $section)
+                    @forelse($section->exercises->sortBy('position') as $exercise)
                         <div class="row">
                             <div class="col-8">
-                                <p>{{ $section->name }}: </p>
+                                <p>{{ $exercise->title }}: </p>
                             </div>
                             <div class="col-4">
-                                <select class="form-select" name="positions[{{ $section->id }}]" id="position">
-                                    @foreach($unit->sections as $section)
+                                <select class="form-select" name="positions[{{ $exercise->id }}]" id="position">
+                                    @foreach($section->exercises as $e)
                                         @php $index = $loop->index + 1; @endphp
-                                        <option value="{{ $index }}" @if($index == $section->position) selected @endif>{{ $index }}</option>
+                                        <option value="{{ $index }}" @if($index == $exercise->position) selected @endif>{{ $index }}</option>
                                     @endforeach
                                 </select>
                             </div>

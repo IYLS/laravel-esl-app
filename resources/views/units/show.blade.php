@@ -43,10 +43,10 @@
                     <div class="row mb-2">
                         <div class="col-12 col-md-6 mt-1 mt-md-0">
                             <div class="d-flex justify-content-between">
-                                <h6>Listening Tips:</h6>
+                                <h6>Tips:</h6>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" @if($unit->listening_tips_enabled) checked @endif  name="listening_tips_enabled" value="true" id="flexCheckDefault" disabled>
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" @if($unit->listening_tips_enabled) checked @endif  name="listening_tips_enabled" value="true" id="listening_tips_enabled" disabled>
+                                    <label class="form-check-label" for="listening_tips_enabled">
                                       Enabled
                                     </label>
                                 </div>
@@ -57,8 +57,8 @@
                             <div class="d-flex justify-content-between">
                                 <h6>Cultural Notes:</h6>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" @if($unit->cultural_notes_enabled) checked @endif  name="cultural_notes_enabled" value="true" id="flexCheckDefault" disabled>
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" @if($unit->cultural_notes_enabled) checked @endif  name="cultural_notes_enabled" value="true" id="cultural_notes_enabled" disabled>
+                                    <label class="form-check-label" for="cultural_notes_enabled">
                                       Enabled
                                     </label>
                                 </div>
@@ -72,8 +72,8 @@
                             <div class="d-flex justify-content-between">
                                 <h6>Transcript:</h6>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" @if($unit->transcript_enabled) checked @endif  name="transcript_enabled" value="true" id="flexCheckDefault" disabled>
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" @if($unit->transcript_enabled) checked @endif  name="transcript_enabled" value="true" id="transcript_enabled" disabled>
+                                    <label class="form-check-label" for="transcript_enabled">
                                       Enabled
                                     </label>
                                 </div>
@@ -84,8 +84,8 @@
                             <div class="d-flex justify-content-between">
                                 <h6>Glossary:</h6>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" @if($unit->glossary_enabled) checked @endif  name="glossary_enabled" value="true" id="flexCheckDefault" disabled>
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" @if($unit->glossary_enabled) checked @endif  name="glossary_enabled" value="true" id="glossary_enabled" disabled>
+                                    <label class="form-check-label" for="glossary_enabled">
                                       Enabled
                                     </label>
                                 </div>
@@ -99,9 +99,9 @@
                             <div class="d-flex justify-content-between">
                                 <h6>Translation:</h6>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" @if($unit->translation_enabled) checked @endif  name="translation_enabled" value="true" id="flexCheckDefault" disabled>
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                      Enabled
+                                    <input class="form-check-input" type="checkbox" @if($unit->translation_enabled) checked @endif  name="translation_enabled" value="true" id="translation_enabled" disabled>
+                                    <label class="form-check-label" for="translation_enabled">
+                                        Enabled
                                     </label>
                                 </div>
                             </div>
@@ -111,8 +111,8 @@
                             <div class="d-flex justify-content-between">
                                 <h6>Dictionary:</h6>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" @if($unit->dictionary_enabled) checked @endif  name="dictionary_enabled" value="true" id="flexCheckDefault" disabled>
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" @if($unit->dictionary_enabled) checked @endif  name="dictionary_enabled" value="true" id="dictionary_enabled" disabled>
+                                    <label class="form-check-label" for="dictionary_enabled">
                                       Enabled
                                     </label>
                                 </div>

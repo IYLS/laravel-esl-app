@@ -35,11 +35,11 @@
             @endforelse
         </tbody>
     </table>
-    <div class="row">
-        <div class="col-2">
+    <div class="d-flex">
+        <div class="m-1">
             <a class="btn btn-primary" href="{{ route('units.create') }}">Add unit</a>
         </div>
-        <div class="col-2">
+        <div class="m-1">
             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#units_positions_modal">
                 Positions  <i class="mdi mdi-sort-ascending"></i>
             </button>

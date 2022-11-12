@@ -1,7 +1,7 @@
 @if($unit->listening_tips_enabled)
     @php $modal_id = "listeningTipsModal"; @endphp
-    <button type="button" id="{{ $modal_id . "Button" }}" class="mt-1 btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#{{ $modal_id }}">Listening Tips</button>
-    @include('modals.keywords.show', ['modal_id' => $modal_id, 'description' => $unit->listening_tips, 'modal_title' => 'Listening Tips'])
+    <button type="button" id="{{ $modal_id . "Button" }}" class="mt-1 btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#{{ $modal_id }}">Tips</button>
+    @include('modals.keywords.show', ['modal_id' => $modal_id, 'description' => $unit->listening_tips, 'modal_title' => 'Tips'])
 @endif
 
 @if($unit->cultural_notes_enabled)

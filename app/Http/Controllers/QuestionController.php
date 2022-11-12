@@ -160,7 +160,7 @@ class QuestionController extends Controller
             $exercise_id = $question->exercise->id;
         }
 
-        return redirect()->route('exercises.show', $exercise_id)->with('success', 'Section positions defined successfully!');
+        return redirect()->route('exercises.show', $exercise_id)->with('success', 'Questions positions defined successfully!');
     }
 
 
