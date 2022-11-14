@@ -633,7 +633,9 @@
                 responses.push({'id': `${question.id}`, 'response': `${answer.value}` });
             });
 
-            document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
+            if (document.getElementById(`question-${question.id}-feedback-correct`) != null) {
+                document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
+            }
         });
 
         if (document.getElementsByClassName(`show-on-all-correct-${exercise.id}`).length != 0) {
@@ -749,7 +751,7 @@
 </script>
 
 <script>
-    function presentModal(feedback_message, status_message, url, type) {
+    function presentModal(feedback_message, status_message, url, type, current_exercise_url) {
         var modalContainer = document.createElement('div');
         modalContainer.setAttribute('class', 'modal fade');
         modalContainer.setAttribute('id', 'alert-modal');
@@ -785,14 +787,13 @@
         var statusButton = document.createElement('button');
         statusButton.setAttribute('class', 'text-center btn btn-primary btn-sm');
         statusButton.setAttribute('type', 'button');
-        statusButton.setAttribute('onclick', `goTo('${url}', '${type}')`);
+        statusButton.setAttribute('onclick', `goTo('${url}', '${type}', '${current_exercise_url}')`);
 
         if(type == 'section') {
             statusButton.innerHTML = `Next stage`;
         } else {
             statusButton.innerHTML = `Next ${type}`;
         }
-        
 
         statusButtonContainer.appendChild(statusButton);
         modalMessageContainer.appendChild(messageText);
@@ -825,8 +826,9 @@
             data: $(`#${type}_form_${exercise_id}`).serialize(), // Remember that you need to have your csrf token included
             dataType: 'json',
             success: function( _response ) {
+                const current_exercise_url = `${type}${exercise.id}`;
                 console.log(_response);
-                presentModal(_response.feedback_message, _response.status_message, _response.navigation_url, _response.navigation_type);
+                presentModal(_response.feedback_message, _response.status_message, _response.navigation_url, _response.navigation_type, current_exercise_url);
             },
             error: function( _response ) {
                 console.log(_response);
@@ -836,16 +838,42 @@
 </script>
 
 <script>
-    function goTo(uri, type) {
+    function goTo(uri, type, current_exercise_url) {
         if (type == 'unit') {
             console.log(uri);
-            window.location.href = `${uri}`;
-        } else if (type == 'section' || type == 'exercise') {
+
+            if (uri != "") {
+                window.location.href = `${uri}`;
+            } else {
+                window.location.reload();
+            }
+        } 
+        if (type == 'section') {
             var wantedTabButton = document.querySelector(`button#${uri}-tab`);
             var activeTabButton = document.querySelector(`button.${type}-btn.active`);
 
             var wantedTabPane = document.querySelector(`div#${uri}`);
             var activeTabPane = document.querySelector(`div.${type}-pane.active`);
+
+            activeTabButton.classList.remove('active');
+            wantedTabButton.classList.add('active');
+
+            activeTabPane.classList.remove('active');
+            activeTabPane.classList.remove('show');
+            wantedTabPane.classList.add('show');
+            wantedTabPane.classList.add('active');
+
+            wantedTabButton.click();
+        }
+
+        if (type == 'exercise') {
+            console.log(current_exercise_url);
+
+            var wantedTabButton = document.querySelector(`button#${uri}-tab`);
+            var activeTabButton = document.querySelector(`button#${current_exercise_url}-tab`);
+
+            var wantedTabPane = document.querySelector(`div#${uri}`);
+            var activeTabPane = document.querySelector(`div#${current_exercise_url}`);
 
             activeTabButton.classList.remove('active');
             wantedTabButton.classList.add('active');

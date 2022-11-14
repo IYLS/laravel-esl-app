@@ -6,11 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Tracking;
 use App\Models\UserResponse;
 use App\Models\Exercise;
-use App\Http\Requests\StoreMultipleChoiceRequest;
-use App\Http\Requests\StoreDragAndDropRequest;
-use App\Http\Requests\StoreOpenEndedRequest;
-use App\Http\Requests\StoreFillInTheGapsRequest;
-use App\Http\Requests\StoreVoiceRecognitionRequest;
+use App\Models\User;
+use App\Models\Unit;
+use App\Models\Group;
 
 class TrackingController extends Controller
 {
@@ -117,7 +115,7 @@ class TrackingController extends Controller
         }
 
         $message = '🎉 Submission completed successfully! 🎉';
-        if(count($exercise->feedbacks) > 0) {
+        if($exercise->feedbacks->where('feedback_type_id', 1)->first() != null) {
             $message = $exercise->feedbacks->where('feedback_type_id', 1)->first()->message;
         }
 
@@ -142,38 +140,41 @@ class TrackingController extends Controller
         $section = $exercise->section;
         $exercises = $section->exercises->where('exercise_type_id', '!=', 5);
         $section_completed = false;
-        $completed_exercises = [];
+        $completed_exercises = array();
 
         foreach($exercises as $exercise) {
-            $tracking = Tracking::where('user_id', $user_id)->where('exercise_id', $exercise->id)->get();
-            $tracking_count = count($tracking);
+            $tracking_count = Tracking::where('user_id', $user_id)->where('exercise_id', $exercise->id)->count();
             if($tracking_count >= 1) array_push($completed_exercises, $exercise->id);
         }
-        if(count($exercises) == count($completed_exercises)) $section_completed = true;
-
-        return $section_completed;
+        if(count($exercises) == count($completed_exercises)) 
+            return true;
+        else {
+            return false;
+        }
     }
 
     private function unitStatus($exercise, $user_id) {
         $unit = $exercise->section->unit;
-        $unit_completed = false;
-        $sections_completed = [];
-        $completed_exercises = [];
+        $section_completed = false;
+        $sections_completed = array();
 
         foreach($unit->sections as $section) {
             $exercises = $section->exercises->where('exercise_type_id', '!=', 5);
 
+            $completed_exercises = array();
             foreach($exercises as $exercise) {
-                $tracking = Tracking::where('exercise_id', $exercise->id)->where('user_id', $user_id)->get();
-                $tracking_count = count($tracking);
-                array_push($completed_exercises, $exercise->id);
+                $tracking_count = Tracking::where('exercise_id', $exercise->id)->where('user_id', $user_id)->count();
+                if($tracking_count >= 1) array_push($completed_exercises, $exercise->id);
             }
 
             if (count($completed_exercises) == count($exercises)) array_push($sections_completed, $section->id);
         }
-        if(count($unit->sections) == count($sections_completed)) $unit_completed = true;
 
-        return $unit_completed;
+        if(count($unit->sections) == count($sections_completed)) 
+            return true;
+        else {
+            return false;
+        }
     }
 
     private function getNextExercise($exercise, $user_id) {
@@ -181,7 +182,7 @@ class TrackingController extends Controller
 
         $section = $exercise->section;
         $exercises = $section->exercises->where('exercise_type_id', '!=', 5);
-        $next_exercise;
+        $next_exercise = "";
 
         foreach($exercises as $exercise)
         {
@@ -216,7 +217,11 @@ class TrackingController extends Controller
             }
         }
 
-        $url = $next_section->underscore_name;
+        if(isset($next_section)) {
+            $url = $next_section->underscore_name;
+        } else {
+            $url = "";
+        }
 
         return $url;
     }
@@ -227,26 +232,34 @@ class TrackingController extends Controller
         $user = User::find($user_id);
         $group = Group::find($user->group_id);
         $units = $group->units;
+        $completed_sections = [];
 
         $next_unit;
 
         foreach($units as $unit) {
             foreach($unit->sections as $section) {
                 $exercises = $section->exercises->where('exercise_type_id', '!=', 5);
+                $completed_exercises = [];
                 foreach($exercises as $exercise)
                 {
                     $exercise_tracking_count = Tracking::where('exercise_id', $exercise->id)->where('user_id', $user_id)->count();
-                    if($exercise_tracking_count == 0) {
-                        $next_unit = $exercise->unit;
-                        break;
-                    }
+                    if($exercise_tracking_count >= 1) array_push($completed_exercises, $exercise->id);
                 }
+                if(count($exercises) == count($completed_exercises)) array_push($completed_sections, $section->id);
+            }
+            if(count($unit->sections) == count($completed_sections)) {
+                $u = Unit::where('position', $unit->position + 1)->get()->first();
+                $next_unit = route('student.show', "$u->id");
+                break;
             }
         }
 
-        $url = route('student.show', "$next_unit->id");
-
-        return $url;
+        if ($next_unit != null and isset($next_unit)) {
+            return $next_unit;
+        } else {
+            return "";
+        }
+        
     }
 
     private function exerciseStatus($exercise, $user_id) {
