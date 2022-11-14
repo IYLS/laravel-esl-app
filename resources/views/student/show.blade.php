@@ -29,6 +29,11 @@
         color: #f8f9fa !important;
         background-color: #198754 !important;
     }
+
+    .meta.active {
+        color: #f8f9fa !important;
+        background-color: #198754 !important;
+    }
 </style>
 
 <div class="p-4 row w-100 h-100 col-12">
@@ -65,15 +70,15 @@
     </div>
 
     {{-- Exercises and content section --}}
-    <div class="col-12 col-xl-8 bg-light mt-2 p-3 rounded shadow">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <div class="col-12 col-xl-8 bg-light mt-2 p-3 rounded shadow" id="top_student_area">
+        <ul class="nav nav-tabs" id="sectionsTabs" role="tablist">
             @foreach($unit->sections->sortBy('position') as $section)
                 @php $index = $loop->index + 1; @endphp
                 <li class="nav-item" role="presentation">
                     @if($index-1 == 0)
-                        <button class="nav-link active" id="{{ $section->underscore_name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="true">{{ $index . ". " . $section->name }}</button>
+                        <button class="nav-link section-btn active" id="{{ $section->underscore_name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="true">{{ $index . ". " . $section->name }}</button>
                     @else
-                        <button class="nav-link" id="{{ $section->underscore_name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="false">{{ $index . ". " . $section->name }}</button>
+                        <button class="nav-link section-btn" id="{{ $section->underscore_name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="false">{{ $index . ". " . $section->name }}</button>
                     @endif
                 </li>
             @endforeach
@@ -81,9 +86,9 @@
         <div class="tab-content" id="myTabContent">
             @foreach($unit->sections->sortBy('position') as $section)
                 @if($loop->index == 0)
-                    <div class="tab-pane fade show active m-2" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
+                    <div class="tab-pane fade show section-pane active m-2" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
                 @else
-                    <div class="tab-pane fade" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
+                    <div class="tab-pane fade section-pane" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
                 @endif
                 <div class="d-flex align-items-start row mt-2">
                     {{-- (Optional) Additional Information --}}
@@ -94,15 +99,20 @@
                     @endif
                     <div class="nav flex-column mt-2 nav-pills col-12 col-xl-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         @forelse($section->exercises->sortBy('position') as $e)
+                            @php $index = $loop->index; @endphp
                             <button 
-                                class="nav-link @if($e->subtype == 99) meta @endif" 
+                                class="nav-link exercise-btn @if($e->subtype == 99) meta @endif @if($index == 0) active @endif"
                                 id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" 
                                 data-bs-toggle="pill" 
                                 data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" 
                                 type="button" 
                                 role="tab" 
                                 aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" 
-                                aria-selected="false" 
+                                @if($index == 0)
+                                    aria-selected="true"
+                                @else
+                                    aria-selected="false"
+                                @endif
                                 onclick="startTimer();">
                                     @if($e->title == '' or $e->title == null) 
                                         @if(count($completed_exercises) != 0 and in_array($e->id, $completed_exercises)) 
@@ -154,17 +164,31 @@
                                 @include('exercises.drag_and_drop.drag_and_drop')
                                 @break
                             @case('open_ended')
-                                @if($e->subtype == 1 or $e->subtype == 99)
-                                    @include('exercises.open_ended.single_text')
-                                @elseif($e->subtype == 991)
-                                    @include('exercises.open_ended.double_text')
-                                @endif
+                                <div class="tab-pane exercise-pane fade @if($loop->index == 0) show active @endif" id="{{ $e->exerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->exerciseType->underscore_name . $e->id }}-tab">
+                                    <div class="container">
+                                        <h4>{{ $e->title }}</h4>
+                                        @include('layouts.tracking.tracking_complete')
+                                        @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
+                                        <p class="text-secondary">{{ $e->description }}</p>
+                                        @isset($e->instructions) <div class="text-dark">{!! $e->instructions !!}</div> @endisset
+                                        @isset($e->translated_instructions) <div class="text-secondary">{!! $e->translated_instructions !!}</div> @endisset
+                                        <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="open_ended_form_{{ $e->id }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'open_ended')">
+                                            @csrf
+                                            @if($e->subtype == 1 or $e->subtype == 99)
+                                                @include('exercises.open_ended.single_text')
+                                            @elseif($e->subtype == 991)
+                                                @include('exercises.open_ended.double_text')
+                                            @endif
+                                            @include('layouts.tracking.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
+                                        </form>
+                                    </div>
+                                </div>
                                 @break
                             @case('voice_recognition')
                                 @include('exercises.voice_recognition.asd')
                                 @break
                             @case('multiple_choice')
-                                <div class="tab-pane fade" id="{{ $e->exerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->exerciseType->underscore_name . $e->id }}-tab">
+                                <div class="tab-pane fade exercise-pane @if($loop->index == 0) show active @endif" id="{{ $e->exerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->exerciseType->underscore_name . $e->id }}-tab">
                                     <div class="container">
                                         <h4>{{ $e->title }}</h4>
                                         <p class="text-secondary">{{ $e->description }}</p>
@@ -211,7 +235,7 @@
                                 </div>
                                 @break
                             @case('fill_in_the_gaps')
-                                <div class="tab-pane fade" id="{{ $e->exerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->exerciseType->underscore_name . $e->id }}-tab">
+                                <div class="tab-pane fade exercise-pane @if($loop->index == 0) show active @endif" id="{{ $e->exerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->exerciseType->underscore_name . $e->id }}-tab">
                                     <div class="container">
                                         <h4>{{ $e->title }}</h4>
                                         <p class="text-secondary">{{ $e->description }}</p>
@@ -231,7 +255,7 @@
                                 </div>
                                 @break
                             @case('form')
-                                <div class="tab-pane fade" id="{{ $e->exerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->exerciseType->underscore_name . $e->id }}-tab">
+                                <div class="tab-pane fade exercise-pane @if($loop->index == 0) show active @endif" id="{{ $e->exerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->exerciseType->underscore_name . $e->id }}-tab">
                                     <div class="container">
                                         <h4>{{ $e->title }}</h4>
                                         <p class="text-secondary">{{ $e->description }}</p>
@@ -725,7 +749,7 @@
 </script>
 
 <script>
-    function presentModal(message) {
+    function presentModal(feedback_message, status_message, url, type) {
         var modalContainer = document.createElement('div');
         modalContainer.setAttribute('class', 'modal fade');
         modalContainer.setAttribute('id', 'alert-modal');
@@ -739,11 +763,42 @@
         var modalContent = document.createElement('div');
         modalContent.setAttribute('class', 'modal-content');
 
-
         var modalBody = document.createElement('div');
         modalBody.setAttribute('class', 'modal-body');
-        modalBody.innerHTML = `<div class="d-flex justify-content-center p-2"><p class="text-center text-success" id="alert-modal-message">${message}</p></div>`;
 
+        var modalMessageContainer = document.createElement('div');
+        modalMessageContainer.setAttribute('class', 'p-2');
+
+        var messageText = document.createElement('p');
+        messageText.setAttribute('class', 'text-center text-success');
+        messageText.setAttribute('id', 'alert-modal-message');
+        messageText.innerHTML = `${feedback_message}`;
+
+        var statusMessage = document.createElement('h4');
+        statusMessage.setAttribute('class', 'text-center text-dark');
+        statusMessage.setAttribute('id', 'alert-modal-message');
+        statusMessage.innerHTML = `${status_message}`;
+        
+        var statusButtonContainer = document.createElement('div');
+        statusButtonContainer.setAttribute('class', 'd-flex justify-content-center p-2');
+
+        var statusButton = document.createElement('button');
+        statusButton.setAttribute('class', 'text-center btn btn-primary btn-sm');
+        statusButton.setAttribute('type', 'button');
+        statusButton.setAttribute('onclick', `goTo('${url}', '${type}')`);
+
+        if(type == 'section') {
+            statusButton.innerHTML = `Next stage`;
+        } else {
+            statusButton.innerHTML = `Next ${type}`;
+        }
+        
+
+        statusButtonContainer.appendChild(statusButton);
+        modalMessageContainer.appendChild(messageText);
+        modalMessageContainer.appendChild(statusMessage);
+        modalMessageContainer.appendChild(statusButtonContainer);
+        modalBody.appendChild(modalMessageContainer);
         modalContent.appendChild(modalBody);
         modalDialog.appendChild(modalContent);
         modalContainer.appendChild(modalDialog);
@@ -754,10 +809,6 @@
         }
 
         document.getElementsByTagName('body')[0].appendChild(modalContainer);
-
-        setTimeout(function(){
-            $('#alert-modal').modal('hide')
-        }, 1000);
 
         $(function() {
             $("#alert-modal").modal("show");
@@ -774,12 +825,40 @@
             data: $(`#${type}_form_${exercise_id}`).serialize(), // Remember that you need to have your csrf token included
             dataType: 'json',
             success: function( _response ) {
-                presentModal(_response.message);
+                console.log(_response);
+                presentModal(_response.feedback_message, _response.status_message, _response.navigation_url, _response.navigation_type);
             },
             error: function( _response ) {
                 console.log(_response);
             }
         });
+    }
+</script>
+
+<script>
+    function goTo(uri, type) {
+        if (type == 'unit') {
+            console.log(uri);
+            window.location.href = `${uri}`;
+        } else if (type == 'section' || type == 'exercise') {
+            var wantedTabButton = document.querySelector(`button#${uri}-tab`);
+            var activeTabButton = document.querySelector(`button.${type}-btn.active`);
+
+            var wantedTabPane = document.querySelector(`div#${uri}`);
+            var activeTabPane = document.querySelector(`div.${type}-pane.active`);
+
+            activeTabButton.classList.remove('active');
+            wantedTabButton.classList.add('active');
+
+            activeTabPane.classList.remove('active');
+            activeTabPane.classList.remove('show');
+            wantedTabPane.classList.add('show');
+            wantedTabPane.classList.add('active');
+
+            wantedTabButton.click();
+        }
+
+        $('#alert-modal').modal('hide')
     }
 </script>
 

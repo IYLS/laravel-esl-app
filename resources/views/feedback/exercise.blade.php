@@ -1,4 +1,4 @@
-<div class="m-1 p-4 border" id="feedback-exercise-details-container-{{ $e->id }}" hidden>
+<div class="m-1 p-2 border" id="feedback-exercise-details-container-{{ $e->id }}" hidden>
     <p class="text-success text-center" id="feedback-exercise-correct-{{ $e->id }}" hidden></p>
     <p class="text-danger text-center" id="feedback-exercise-wrong-{{ $e->id }}" hidden></p>
     
