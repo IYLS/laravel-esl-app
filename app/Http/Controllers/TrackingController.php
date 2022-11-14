@@ -14,13 +14,73 @@ class TrackingController extends Controller
 {
     public function index()
     {
-        $tracking = Tracking::all();
+        $groups = Group::all();
+        $students = User::where('role', 'student')->get();
+
+        $months = [
+            'Jan' => '1', 
+            'Feb' => '2', 
+            'Mar' => '3', 
+            'Apr' => '4', 
+            'May' => '5', 
+            'Jun' => '6', 
+            'Jul' => '7', 
+            'Aug' => '8', 
+            'Sept' => '9', 
+            'Oct' => '10', 
+            'Nov' => '11', 
+            'Dec' => '12'
+        ];
+        
+        
+        $tracking = Tracking::all()->sortByDesc('created_at')->take(50);
+        
         if ($tracking != null)  {
-            return view('tracking.index', compact('tracking'));
+            return view('tracking.index', compact('tracking', 'groups', 'students', 'months'));
         } else if($tracking == null) {
             $tracking = array();
-            return view('tracking.index', compact('tracking'));
+            return view('tracking.index', compact('tracking', 'groups', 'students', 'months'));
         }
+    }
+
+    public function executeFilter(Request $request)
+    {
+        $group_id = $request->group;
+        $month_number = $request->month;
+        $user_id = $request->student;
+        
+        if($user_id != null and $group_id != null) {
+            if ($user_id != 'any' and $group_id != 'any') {
+                $tracking = Tracking::where('user_id', $user_id)->where('group_id', $group_id)->orderBy('created_at', 'desc')->get();
+            } else if ($user_id == 'any' and $group_id != 'any') {
+                $tracking = Tracking::where('group_id', $group_id)->orderBy('created_at', 'desc')->get();
+            } else if ($user_id != 'any' and $group_id == 'any'){
+                $tracking = Tracking::where('user_id', $user_id)->orderBy('created_at', 'desc')->get();
+            } else {
+                $tracking = Tracking::orderBy('created_at', 'desc')->get();
+            }
+        } else {
+            $tracking = Tracking::orderBy('created_at', 'desc')->get();
+        }
+
+        $groups = Group::all();
+        $students = User::where('role', 'student')->get();
+        $months = [
+            'Jan' => '1', 
+            'Feb' => '2', 
+            'Mar' => '3', 
+            'Apr' => '4', 
+            'May' => '5', 
+            'Jun' => '6', 
+            'Jul' => '7', 
+            'Aug' => '8', 
+            'Sept' => '9', 
+            'Oct' => '10', 
+            'Nov' => '11', 
+            'Dec' => '12'
+        ];
+
+        return view('tracking.index', compact('tracking', 'groups', 'students', 'months'));
     }
 
     public function store(Request $request, $exercise_id, $user_id)

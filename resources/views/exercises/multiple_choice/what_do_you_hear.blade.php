@@ -4,7 +4,10 @@
         @php 
         $statement = str_replace(";;","_______", $question->statement)
         @endphp
-        <p>{!! $loop->index + 1 . ". " . $statement !!}</p>
+        <div class="d-flex">
+            <p>{{ $loop->index + 1 . ".  " }}&nbsp;</p>
+            {!! $statement !!}
+        </div>
         <br>
         <audio controls class="col-6">
             <source src="{{ asset('esl/public/storage/files/'.$question->audio_name) }}" type="audio/mpeg">
