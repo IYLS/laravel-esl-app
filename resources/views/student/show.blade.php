@@ -426,27 +426,31 @@
                 if (alternative.checked && question.correct_answer == alternative.value) {
                     responses.push({'id': `${question.id}`, 'response': `${question.correct_answer}`});
                     
-                    if(question.personal_response == null || !question.personal_response) {
-                        document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
-                        document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
-                    } else {
-                        document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
-                        document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
+                    if(exercise.subtype != 99 && exercise.subtype != 991) {
+                        if(question.personal_response == null || !question.personal_response) {
+                            document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
+                            document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
+                        } else {
+                            document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
+                            document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
+                        }
                     }
                     correct_questions += 1;
                 // Alternativa incorrecta
                 } else if(alternative.checked) {
-                    if(question.personal_response == null || !question.personal_response) {
-                        document.getElementById(`question-${question.id}-feedback-wrong`).hidden = false;
-                        document.getElementById(`question-${question.id}-feedback-correct`).hidden = true;
-                    } else {
-                        document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
-                        document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
-                        correct_questions += 1;
-                    }
- 
-                    if (document.getElementById(`${alternative.value}-explanatory`) != null) {
-                        document.getElementById(`${alternative.value}-explanatory`).hidden = false;
+                    if(exercise.subtype != 99 && exercise.subtype != 991) {
+                        if(question.personal_response == null || !question.personal_response) {
+                            document.getElementById(`question-${question.id}-feedback-wrong`).hidden = false;
+                            document.getElementById(`question-${question.id}-feedback-correct`).hidden = true;
+                        } else {
+                            document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
+                            document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
+                            correct_questions += 1;
+                        }
+    
+                        if (document.getElementById(`${alternative.value}-explanatory`) != null) {
+                            document.getElementById(`${alternative.value}-explanatory`).hidden = false;
+                        }
                     }
 
                     responses.push({'id': `${question.id}`, 'response': `${alternative.parentNode.children[1].innerHTML.trim()}`});
@@ -476,14 +480,17 @@
             }
         }
 
-        var correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
-        var wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
-        correctAnswersItem.innerHTML = `<strong>${correct_questions}</strong>  ✅`;
-        correctAnswersItem.hidden = false;
-        wrongAnswersItem.innerHTML = `<strong>${wrong_questions}</strong>  ❌`;
-        wrongAnswersItem.hidden = false;
+        console.log(exercise.subtype);
+        if(exercise.subtype != 99 && exercise.subtype != 991 && question.personal_response != true) {
+            var correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
+            var wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
+            correctAnswersItem.innerHTML = `<strong>${correct_questions}</strong>  ✅`;
+            correctAnswersItem.hidden = false;
+            wrongAnswersItem.innerHTML = `<strong>${wrong_questions}</strong>  ❌`;
+            wrongAnswersItem.hidden = false;
 
-        setFeedbackHidden(false, exercise.id, questions);
+            setFeedbackHidden(false, exercise.id, questions);
+        }
 
         return { 'correct': correct_questions, 'wrong': wrong_questions, 'responses': responses };
     }
