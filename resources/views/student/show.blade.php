@@ -480,8 +480,7 @@
             }
         }
 
-        console.log(exercise.subtype);
-        if(exercise.subtype != 99 && exercise.subtype != 991 && question.personal_response != true) {
+        if(exercise.subtype != 99 && exercise.subtype != 991) {
             var correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
             var wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
             correctAnswersItem.innerHTML = `<strong>${correct_questions}</strong>  ✅`;
