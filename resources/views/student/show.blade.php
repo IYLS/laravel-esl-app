@@ -771,6 +771,10 @@
         var modalContent = document.createElement('div');
         modalContent.setAttribute('class', 'modal-content');
 
+        var modalHeader = document.createElement('div');
+        modalHeader.setAttribute('class', 'd-flex justify-content-end pt-2 pe-2');
+        modalHeader.innerHTML = '<button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>'
+
         var modalBody = document.createElement('div');
         modalBody.setAttribute('class', 'modal-body');
 
@@ -795,17 +799,25 @@
         statusButton.setAttribute('type', 'button');
         statusButton.setAttribute('onclick', `goTo('${url}', '${type}', '${current_exercise_url}')`);
 
+        var cancelButton = document.createElement('button');
+        cancelButton.setAttribute('class', 'btn btn-sm btn-secondary me-2');
+        cancelButton.setAttribute('type', 'button');
+        cancelButton.setAttribute('data-bs-dismiss', 'modal');
+        cancelButton.innerHTML = 'Check results'
+
         if(type == 'section') {
             statusButton.innerHTML = `Next stage`;
         } else {
             statusButton.innerHTML = `Next ${type}`;
         }
 
+        statusButtonContainer.appendChild(cancelButton);
         statusButtonContainer.appendChild(statusButton);
         modalMessageContainer.appendChild(messageText);
         modalMessageContainer.appendChild(statusMessage);
         modalMessageContainer.appendChild(statusButtonContainer);
         modalBody.appendChild(modalMessageContainer);
+        modalContent.appendChild(modalHeader);
         modalContent.appendChild(modalBody);
         modalDialog.appendChild(modalContent);
         modalContainer.appendChild(modalDialog);
@@ -846,8 +858,6 @@
 <script>
     function goTo(uri, type, current_exercise_url) {
         if (type == 'unit') {
-            console.log(uri);
-
             if (uri != "") {
                 window.location.href = `${uri}`;
             } else {

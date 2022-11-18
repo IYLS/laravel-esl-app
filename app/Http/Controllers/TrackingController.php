@@ -328,13 +328,13 @@ class TrackingController extends Controller
 
         if ($unit_completed) {
             $next_unit_url = $this->getNextUnit($exercise, $user_id);
-            return ["message" => "You completed this unit, now move to the next unit", "url" => "$next_unit_url", 'type' => 'unit'];
+            return ["message" => "You completed this unit, now you can move to the next unit", "url" => "$next_unit_url", 'type' => 'unit'];
         } else if ($section_completed) {
             $next_section_url = $this->getNextSection($exercise, $user_id);
-            return ["message" => "You completed this stage now continue with the next one", "url" => "$next_section_url", 'type' => 'section'];
+            return ["message" => "You completed this stage, now you can continue with the next one", "url" => "$next_section_url", 'type' => 'section'];
         } else {
             $next_exercise_url = $this->getNextExercise($exercise, $user_id);
-            return ["message" => "You completed this exercise now continue with the next one", "url" => "$next_exercise_url", 'type' => 'exercise'];
+            return ["message" => "You completed this exercise, now you can continue with the next one", "url" => "$next_exercise_url", 'type' => 'exercise'];
         }
     }
 }
