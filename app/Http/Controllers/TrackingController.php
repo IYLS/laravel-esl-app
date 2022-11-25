@@ -16,30 +16,14 @@ class TrackingController extends Controller
     {
         $groups = Group::all();
         $students = User::where('role', 'student')->get();
-
-        $months = [
-            'Jan' => '1', 
-            'Feb' => '2', 
-            'Mar' => '3', 
-            'Apr' => '4', 
-            'May' => '5', 
-            'Jun' => '6', 
-            'Jul' => '7', 
-            'Aug' => '8', 
-            'Sept' => '9', 
-            'Oct' => '10', 
-            'Nov' => '11', 
-            'Dec' => '12'
-        ];
-        
         
         $tracking = Tracking::all()->sortByDesc('created_at')->take(50);
         
         if ($tracking != null)  {
-            return view('tracking.index', compact('tracking', 'groups', 'students', 'months'));
+            return view('tracking.index', compact('tracking', 'groups', 'students'));
         } else if($tracking == null) {
             $tracking = array();
-            return view('tracking.index', compact('tracking', 'groups', 'students', 'months'));
+            return view('tracking.index', compact('tracking', 'groups', 'students'));
         }
     }
 
@@ -157,18 +141,21 @@ class TrackingController extends Controller
             }
         }
         
-        // if ($request->has('feedback_interactions')) {
-        //     $feedback_interactions = array();
-        //     foreach($request->feedback_interactions as $item) {
 
-        //         $directive = $item["directive"];
-        //         $explanatory = $item["explanatory"];
-        //         $elaborative = $item["elaborative"];
-        //         $knowledge = $item["knowledge"];
+        if ($exercise->subtype != 99 and $exercise->subtype != 991) {
+            $feedback_interactions = array();
+            foreach($exercise->questions as $index=>$question) {
+                $directive_count = $request->directive["$question->id"];
+                $explanatory_count = $request->explanatory["$question->id"];
+                $elaborative_count = $request->elaborative["$question->id"];
+                $knowledge_count = $request->knowledge["$question->id"];
 
-        //         array_push($feedback_interactions, "Directive~$directive;Exaplanatory~$explanatory;Elaborative~$elaborative;Knowledge of Correct Response~$knowledge;");
-        //     }
-        // }
+                $question_number = $index+1;
+                array_push($feedback_interactions, "$question_number:Directive~$directive_count,Explanatory~$explanatory_count,Elaborative~$elaborative_count,Knowledge of Correct Response~$knowledge_count");
+            }
+
+            $tracking->feedback = implode(';', $feedback_interactions);
+        }
 
         $help_options_interactions = array();
         array_push($help_options_interactions, "Transcript~$request->transcript_count~$request->transcript_total_time");
@@ -194,8 +181,10 @@ class TrackingController extends Controller
             'feedback_message' => "$message",
             'status_message' => $status['message'],
             'navigation_url' => $status['url'],
-            'navigation_type' => $status['type']
+            'navigation_type' => $status['type'],
         ]);
+
+        return response()->json($request);
     }
 
     public function show($id) 

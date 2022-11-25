@@ -35,28 +35,73 @@
             @if($elaborative)
                 {{-- Elaborative --}}
                 <li class="nav-item" role="presentation">
-                    <button type="button" class="nav-link @if($first == 'elaborative') active @endif" id="elaborative-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#elaborative-{{ $question->id }}" role="tab" aria-controls="elaborative-{{ $question->id }}">🔈</button>
+                    <button 
+                        type="button" 
+                        class="nav-link @if($first == 'elaborative') active @endif" 
+                        id="elaborative-{{ $question->id }}-tab" 
+                        data-bs-toggle="tab" 
+                        data-bs-target="#elaborative-{{ $question->id }}" 
+                        aria-controls="elaborative-{{ $question->id }}"
+                        role="tab" 
+                        onclick="onFeedbackButtonPressed({{ json_encode($question->id) }}, 'elaborative');"
+                    >
+                        🔈
+                    </button>
                 </li>
+                
             @endif
 
             @if($directive)
                 {{-- Directive --}}
                 <li class="nav-item" role="presentation">
-                    <button type="button" class="nav-link @if($first == 'directive') active @endif" id="directive-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#directive-{{ $question->id }}" role="tab" aria-controls="directive-{{ $question->id }}">🧭</button>
+                    <button 
+                        type="button" 
+                        class="nav-link @if($first == 'directive') active @endif" 
+                        id="directive-{{ $question->id }}-tab" 
+                        data-bs-toggle="tab" 
+                        data-bs-target="#directive-{{ $question->id }}"
+                        aria-controls="directive-{{ $question->id }}"
+                        role="tab" 
+                        onclick="onFeedbackButtonPressed({{ json_encode($question->id) }}, 'directive');"
+                    >
+                        🧭
+                    </button>
                 </li>
             @endif
 
             @if($knowledge)
                 {{-- Knowledge of correct response --}}
                 <li class="nav-item" role="presentation">
-                    <button type="button" class="nav-link @if($first == 'knowledge') active @endif" id="knowledge-of-correct-response-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#knowledge-of-correct-response-{{ $question->id }}" role="tab" aria-controls="knowledge-of-correct-response-{{ $question->id }}">✅</button>
+                    <button 
+                        type="button" 
+                        class="nav-link @if($first == 'knowledge') active @endif" 
+                        id="knowledge-of-correct-response-{{ $question->id }}-tab" 
+                        data-bs-toggle="tab" 
+                        data-bs-target="#knowledge-of-correct-response-{{ $question->id }}"
+                        aria-controls="knowledge-of-correct-response-{{ $question->id }}"
+                        role="tab" 
+                        onclick="onFeedbackButtonPressed({{ json_encode($question->id) }}, 'knowledge');"
+                    >
+                        ✅
+                    </button>
                 </li>
             @endif
 
             @if($explanatory)
                 {{-- Explanatory --}}
                 <li class="nav-item show-on-incorrect-{{ $question->id }}" role="presentation">
-                    <button type="button" class="nav-link @if($first == 'explanatory') active @endif" id="explanatory-{{ $question->id }}-tab" data-bs-toggle="tab" data-bs-target="#explanatory-{{ $question->id }}" role="tab" aria-controls="explanatory-{{ $question->id }}">❓</button>
+                    <button 
+                        type="button" 
+                        class="nav-link @if($first == 'explanatory') active @endif" 
+                        id="explanatory-{{ $question->id }}-tab" 
+                        data-bs-toggle="tab" 
+                        data-bs-target="#explanatory-{{ $question->id }}"
+                        aria-controls="explanatory-{{ $question->id }}"
+                        role="tab"
+                        onclick="onFeedbackButtonPressed({{ json_encode($question->id) }}, 'explanatory');"
+                    >
+                        ❓
+                    </button>
                 </li>
             @endif
 
@@ -111,11 +156,21 @@
         </div>
 
     @endif
-
 </div>
 
+{{-- Feedback interactions --}}
+<input type="text" value="0" class="feedback_interactions_count_{{ $e->id }}" id="directive_count_{{ $question->id }}" name="directive[{{ $question->id }}]" hidden>
+<input type="text" value="0" class="feedback_interactions_count_{{ $e->id }}" id="elaborative_count_{{ $question->id }}" name="elaborative[{{ $question->id }}]" hidden>
+<input type="text" value="0" class="feedback_interactions_count_{{ $e->id }}" id="explanatory_count_{{ $question->id }}" name="explanatory[{{ $question->id }}]" hidden>
+<input type="text" value="0" class="feedback_interactions_count_{{ $e->id }}" id="knowledge_count_{{ $question->id }}" name="knowledge[{{ $question->id }}]" hidden>
+
 <script>
+    function onFeedbackButtonPressed(question_id, type) {
+        var item = document.getElementById(`${type}_count_${question_id}`);
+        var new_value = parseInt(item.value) + 1;
 
-    
-
+        console.log(`ABRISTE EL ${type} DE LA PREGUNTA ${question_id} EL CONTADOR VA EN ${new_value}`);
+        
+        item.setAttribute('value', `${new_value}`);
+    }
 </script>

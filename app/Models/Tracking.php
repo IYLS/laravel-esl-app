@@ -19,7 +19,8 @@ class Tracking extends Model
         'time_spent_in_minutes',
         'correct_answers',
         'wrong_ansers',
-        'help_options'
+        'help_options',
+        'feedback'
     ];
 
     public $timestamps = true;

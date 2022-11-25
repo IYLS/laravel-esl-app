@@ -25,7 +25,13 @@
 
     @if($e->exerciseType->underscore_name == 'multiple_choice')
         <div class="m-1">
-            <button class="btn btn-info btn-sm" onclick="resetExercise({{ json_encode($e->id) }}, {{ json_encode($e->questions) }});" type="button">Reset</button>
+            <button 
+                class="btn btn-info btn-sm" 
+                onclick="resetExercise({{ json_encode($e->id) }}, {{ json_encode($e->questions) }}); resetFeedbackInteractionsCount({{ json_encode($e->id) }});" 
+                type="button"
+            >
+                Reset
+            </button>
         </div>
     @endif
 </div>

@@ -1019,6 +1019,15 @@
         window.dictionary_total_time = 0;
 
         setCurrentExercise(exercise_id);
+        resetFeedbackInteractionsCount(exercise_id);
+    }
+
+    function resetFeedbackInteractionsCount(exercise_id) {
+        var items = document.getElementsByClassName(`feedback_interactions_count_${exercise_id}`);
+
+        for (let item of items) {
+            item.setAttribute('value', '0');
+        }
     }
 
     function appendTrackingValues(exercise_id, type) {
