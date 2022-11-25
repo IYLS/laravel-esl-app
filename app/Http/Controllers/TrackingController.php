@@ -48,47 +48,30 @@ class TrackingController extends Controller
         $group_id = $request->group;
         $month_number = $request->month;
         $user_id = $request->student;
-        
-        if($user_id != null and $group_id != null) {
-            if ($user_id != 'any' and $group_id != 'any') {
-                $tracking = Tracking::where('user_id', $user_id)->where('group_id', $group_id)->orderBy('created_at', 'desc')->get();
-            } else if ($user_id == 'any' and $group_id != 'any') {
-                $tracking = Tracking::where('group_id', $group_id)->orderBy('created_at', 'desc')->get();
-            } else if ($user_id != 'any' and $group_id == 'any'){
-                $tracking = Tracking::where('user_id', $user_id)->orderBy('created_at', 'desc')->get();
-            } else {
-                $tracking = Tracking::orderBy('created_at', 'desc')->get();
-            }
+
+        if ($user_id != null and $user_id != "any") {
+            $tracking = Tracking::where('user_id', $user_id)->orderBy('created_at', 'desc')->get();
+        } else if ($group_id != "any" and $group_id != null) {
+            $users = User::where('group_id', $group_id)->get();
+            $track = collect(new Tracking);
+            foreach($users as $user) { $track = $track->merge(Tracking::where('user_id', $user->id)->get()); }
+            $tracking = $track->sortByDesc('created_at');
         } else {
             $tracking = Tracking::orderBy('created_at', 'desc')->get();
         }
 
         $groups = Group::all();
         $students = User::where('role', 'student')->get();
-        $months = [
-            'Jan' => '1', 
-            'Feb' => '2', 
-            'Mar' => '3', 
-            'Apr' => '4', 
-            'May' => '5', 
-            'Jun' => '6', 
-            'Jul' => '7', 
-            'Aug' => '8', 
-            'Sept' => '9', 
-            'Oct' => '10', 
-            'Nov' => '11', 
-            'Dec' => '12'
-        ];
 
-        return view('tracking.index', compact('tracking', 'groups', 'students', 'months'));
+        return view('tracking.index', compact('tracking', 'groups', 'students'));
     }
 
     public function store(Request $request, $exercise_id, $user_id)
     {
         $exercise = Exercise::find($exercise_id);
         $tracking = new Tracking;
-
-        $intent_number = Tracking::where('exercise_id', $exercise->id)->count();
+        
+        $intent_number = Tracking::where('exercise_id', $exercise->id)->where('user_id', $user_id)->count();
         $intent_number += 1;
 
         $tracking->intent_number = "$intent_number";
@@ -173,6 +156,31 @@ class TrackingController extends Controller
                 }
             }
         }
+        
+        // if ($request->has('feedback_interactions')) {
+        //     $feedback_interactions = array();
+        //     foreach($request->feedback_interactions as $item) {
+
+        //         $directive = $item["directive"];
+        //         $explanatory = $item["explanatory"];
+        //         $elaborative = $item["elaborative"];
+        //         $knowledge = $item["knowledge"];
+
+        //         array_push($feedback_interactions, "Directive~$directive;Exaplanatory~$explanatory;Elaborative~$elaborative;Knowledge of Correct Response~$knowledge;");
+        //     }
+        // }
+
+        $help_options_interactions = array();
+        array_push($help_options_interactions, "Transcript~$request->transcript_count~$request->transcript_total_time");
+        array_push($help_options_interactions, "Listening tips~$request->listening_tips_count~$request->listening_tips_total_time");
+        array_push($help_options_interactions, "Culturalnotes~$request->cultural_notes_count~$request->cultural_notes_total_time");
+        array_push($help_options_interactions, "Glossary~$request->glossary_count~$request->glossary_total_time");
+        array_push($help_options_interactions, "Translation~$request->translation_count~$request->translation_total_time");
+        array_push($help_options_interactions, "Dictionary~$request->dictionary_count~$request->dictionary_total_time");
+
+        $tracking->help_options = implode(",", $help_options_interactions);
+
+        $tracking->save();
 
         $message = '🎉 Submission completed successfully! 🎉';
         if($exercise->feedbacks->where('feedback_type_id', 1)->first() != null) {

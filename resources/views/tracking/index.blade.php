@@ -47,7 +47,7 @@
                             @if(isset($t->user->group->name)) {{ $t->user->group->name }} @else Not found @endif
                         </td>
                         <td class="text-center">
-                            @if(isset($t->exercise)) {{ $t->exercise->exerciseType->name . " - " . $t->exercise->id }} @else Not found @endif
+                            @if(isset($t->exercise)) {{ $t->exercise->exerciseType->name . " - " . $t->exercise->section->name }} @else Not found @endif
                         </td>
                         <td class="text-center">
                             {{ date('d/m/Y ~ h:m', strtotime($t->created_at)); }}
@@ -74,6 +74,9 @@
 			<div class="ms-2 me-2 row">
 				<select name="group" id="" class="form-select form-select-sm">
 					<option value="any">Any</option>
+                    @foreach($groups as $group)
+                        <option value="{{ $group->id }}">{{ $group->name }}</option>
+                    @endforeach
 				</select>
 			</div>
 			<div class="ms-2 me-2 row">

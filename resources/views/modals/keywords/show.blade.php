@@ -4,7 +4,19 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">{{ $modal_title }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button 
+                    type="button" 
+                    class="btn-close" 
+                    data-bs-dismiss="modal" 
+                    aria-label="Close"
+
+                    @if(isset($type))
+                        onclick="onHelpOptionDismissed({{ json_encode($type) }});"
+                    @else
+                        onclick="onHelpOptionDismissed('');"
+                    @endif
+                    >
+                </button>
             </div>
             <div class="modal-body">
                 @if($modal_id == "transcriptModal")

@@ -73,12 +73,39 @@
     <div class="col-12 col-xl-8 bg-light mt-2 p-3 rounded shadow" id="top_student_area">
         <ul class="nav nav-tabs" id="sectionsTabs" role="tablist">
             @foreach($unit->sections->sortBy('position') as $section)
-                @php $index = $loop->index + 1; @endphp
+                @php 
+                    $index = $loop->index + 1; 
+                    $section_first_exercise_id = $section->exercises->first()->id;
+                @endphp
                 <li class="nav-item" role="presentation">
                     @if($index-1 == 0)
-                        <button class="nav-link section-btn active" id="{{ $section->underscore_name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="true">{{ $index . ". " . $section->name }}</button>
+                        <button 
+                            class="nav-link section-btn active" 
+                            id="{{ $section->underscore_name }}-tab" 
+                            data-bs-toggle="tab" 
+                            data-bs-target="#{{ $section->underscore_name}}" 
+                            type="button" 
+                            role="tab" 
+                            aria-controls="{{ $section->underscore_name }}" 
+                            aria-selected="true"
+                            onclick="setCurrentExercise({{ json_encode($section_first_exercise_id) }}); onExerciseClicked({{ json_encode($section_first_exercise_id) }});"
+                        >
+                            {{ $index . ". " . $section->name }}
+                        </button>
                     @else
-                        <button class="nav-link section-btn" id="{{ $section->underscore_name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $section->underscore_name}}" type="button" role="tab" aria-controls="{{ $section->underscore_name }}" aria-selected="false">{{ $index . ". " . $section->name }}</button>
+                        <button 
+                            class="nav-link section-btn" 
+                            id="{{ $section->underscore_name }}-tab" 
+                            data-bs-toggle="tab" 
+                            data-bs-target="#{{ $section->underscore_name}}" 
+                            type="button" 
+                            role="tab" 
+                            aria-controls="{{ $section->underscore_name }}" 
+                            aria-selected="false"
+                            onclick="setCurrentExercise({{ json_encode($section_first_exercise_id) }}); onExerciseClicked({{ json_encode($section_first_exercise_id) }});"
+                        >
+                            {{ $index . ". " . $section->name }}
+                        </button>
                     @endif
                 </li>
             @endforeach
@@ -113,7 +140,7 @@
                                 @else
                                     aria-selected="false"
                                 @endif
-                                onclick="startTimer();">
+                                onclick="startTimer(); onExerciseClicked({{ json_encode($e->id) }})">
                                     @if($e->title == '' or $e->title == null) 
                                         @if(count($completed_exercises) != 0 and in_array($e->id, $completed_exercises)) 
                                             <div class="d-flex justify-content-between">
@@ -364,6 +391,8 @@
             answers = getOpenEndedResults(questions, exercise);
             break;
         }
+
+        appendTrackingValues(exercise.id, type);
 
         var currentTime = new Date().getTime();
         var timeSpent = millisToMinutesAndSeconds(currentTime - window.startTime);
@@ -845,7 +874,6 @@
             dataType: 'json',
             success: function( _response ) {
                 const current_exercise_url = `${type}${exercise.id}`;
-                console.log(_response);
                 presentModal(_response.feedback_message, _response.status_message, _response.navigation_url, _response.navigation_type, current_exercise_url);
             },
             error: function( _response ) {
@@ -883,8 +911,6 @@
         }
 
         if (type == 'exercise') {
-            console.log(current_exercise_url);
-
             var wantedTabButton = document.querySelector(`button#${uri}-tab`);
             var activeTabButton = document.querySelector(`button#${current_exercise_url}-tab`);
 
@@ -903,6 +929,179 @@
         }
 
         $('#alert-modal').modal('hide')
+    }
+</script>
+
+{{-- Tracking system for Help Options info --}}
+<script>
+    var transcript_count = 0;
+    var transcript_total_time = 0;
+    var listening_tips_count = 0;
+    var listening_tips_total_time = 0;
+    var cultural_notes_count = 0;
+    var cultural_notes_total_time = 0;
+    var glossary_count = 0;
+    var glossary_total_time = 0;
+    var translation_count = 0;
+    var translation_total_time = 0;
+    var dictionary_count = 0;
+    var dictionary_total_time = 0;
+
+    var help_option_start_time;
+
+    var current_exercise_id = {{ json_encode($first_exercise_id) }};
+
+    function onHelpOptionClicked(type) {
+        window.help_option_start_time = new Date().getTime();
+    }
+
+    function onHelpOptionDismissed(type) {
+        var dismiss_time = new Date().getTime();
+        var time_spent = dismiss_time - window.help_option_start_time;
+        
+        switch (type) {
+            case "transcript":
+                window.transcript_count += 1;
+                window.transcript_total_time += time_spent;
+                console.log(`Total time spent in Transcript: ${millisToMinutesAndSeconds(window.transcript_total_time)}`);
+                console.log(`transcript_count: ${window.transcript_count}`);
+                break;
+            case "listening_tips":
+                window.listening_tips_count += 1;
+                window.listening_tips_total_time += time_spent;
+                console.log(`Total time spent in Listening Tips: ${millisToMinutesAndSeconds(window.listening_tips_total_time)}`);
+                console.log(`listening_tips_count: ${window.listening_tips_count}`);
+                break;
+            case "cultural_notes":
+                window.cultural_notes_count += 1;
+                window.cultural_notes_total_time += time_spent;
+                console.log(`Total time spent in Cultural notes: ${millisToMinutesAndSeconds(window.cultural_notes_total_time)}`);
+                console.log(`cultural_notes_count: ${window.cultural_notes_count}`);
+                break;
+            case "glossary":
+                window.glossary_count += 1;
+                window.glossary_total_time += time_spent;
+                console.log(`Total time spent in Glossary: ${millisToMinutesAndSeconds(window.glossary_total_time)}`);
+                console.log(`glossary_count: ${window.glossary_count}`);
+                break;
+            case "translation":
+                window.translation_count += 1;
+                window.translation_total_time += time_spent;
+                console.log(`Total time spent in Translation: ${millisToMinutesAndSeconds(window.translation_total_time)}`);
+                console.log(`translation_count: ${window.translation_count}`);
+                break;
+            case "dictionary":
+                window.dictionary_count += 1;
+                window.dictionary_total_time += time_spent;
+                console.log(`Total time spent in Dictionary: ${millisToMinutesAndSeconds(window.dictionary_total_time)}`);
+                console.log(`dictionary_count: ${window.dictionary_count}`);
+                break;
+        }
+    }
+
+    function setCurrentExercise(exercise_id) {
+        window.current_exercise_id = exercise_id;
+        console.log(`Current exercise id: ${exercise_id}`);
+    }
+
+    function onExerciseClicked(exercise_id) {
+        window.transcript_count = 0;
+        window.transcript_total_time = 0;
+        window.listening_tips_count = 0;
+        window.listening_tips_total_time = 0;
+        window.cultural_notes_count = 0;
+        window.cultural_notes_total_time = 0;
+        window.glossary_count = 0;
+        window.glossary_total_time = 0;
+        window.translation_count = 0;
+        window.translation_total_time = 0;
+        window.dictionary_count = 0;
+        window.dictionary_total_time = 0;
+
+        setCurrentExercise(exercise_id);
+    }
+
+    function appendTrackingValues(exercise_id, type) {
+        var current_form = document.getElementById(`${type}_form_${exercise_id}`);
+
+        var transcript_count_input = document.createElement('input');
+        transcript_count_input.setAttribute('name', 'transcript_count');
+        transcript_count_input.setAttribute('value', `${transcript_count}`);
+        transcript_count_input.hidden = true;
+
+        var transcript_total_time_input = document.createElement('input');
+        transcript_total_time_input.setAttribute('name', 'transcript_total_time');
+        transcript_total_time_input.setAttribute('value', `${millisToMinutesAndSeconds(transcript_total_time)}`);
+        transcript_total_time_input.hidden = true;
+
+        var listening_tips_count_input = document.createElement('input');
+        listening_tips_count_input.setAttribute('name', 'listening_tips_count');
+        listening_tips_count_input.setAttribute('value', `${listening_tips_count}`);
+        listening_tips_count_input.hidden = true;
+
+        var listening_tips_total_time_input = document.createElement('input');
+        listening_tips_total_time_input.setAttribute('name', 'listening_tips_total_time');
+        listening_tips_total_time_input.setAttribute('value', `${millisToMinutesAndSeconds(listening_tips_total_time)}`);
+        listening_tips_total_time_input.hidden = true;
+
+        var cultural_notes_count_input = document.createElement('input');
+        cultural_notes_count_input.setAttribute('name', 'cultural_notes_count');
+        cultural_notes_count_input.setAttribute('value', `${cultural_notes_count}`);
+        cultural_notes_count_input.hidden = true;
+
+        var cultural_notes_total_time_input = document.createElement('input');
+        cultural_notes_total_time_input.setAttribute('name', 'cultural_notes_total_time');
+        cultural_notes_total_time_input.setAttribute('value', `${millisToMinutesAndSeconds(cultural_notes_total_time)}`);
+        cultural_notes_total_time_input.hidden = true;
+
+        var glossary_count_input = document.createElement('input');
+        glossary_count_input.setAttribute('name', 'glossary_count');
+        glossary_count_input.setAttribute('value', `${glossary_count}`);
+        glossary_count_input.hidden = true;
+
+        var glossary_total_time_input = document.createElement('input');
+        glossary_total_time_input.setAttribute('name', 'glossary_total_time');
+        glossary_total_time_input.setAttribute('value', `${millisToMinutesAndSeconds(glossary_total_time)}`);
+        glossary_total_time_input.hidden = true;
+
+        var translation_count_input = document.createElement('input');
+        translation_count_input.setAttribute('name', 'translation_count');
+        translation_count_input.setAttribute('value', `${translation_count}`);
+        translation_count_input.hidden = true;
+
+        var translation_total_time_input = document.createElement('input');
+        translation_total_time_input.setAttribute('name', 'translation_total_time');
+        translation_total_time_input.setAttribute('value', `${millisToMinutesAndSeconds(translation_total_time)}`);
+        translation_total_time_input.hidden = true;
+
+        var dictionary_count_input = document.createElement('input');
+        dictionary_count_input.setAttribute('name', 'dictionary_count');
+        dictionary_count_input.setAttribute('value', `${dictionary_count}`);
+        dictionary_count_input.hidden = true;
+
+        var dictionary_total_time_input = document.createElement('input');
+        dictionary_total_time_input.setAttribute('name', 'dictionary_total_time');
+        dictionary_total_time_input.setAttribute('value', `${millisToMinutesAndSeconds(dictionary_total_time)}`);
+        dictionary_total_time_input.hidden = true;
+
+        current_form.appendChild(transcript_count_input);
+        current_form.appendChild(transcript_total_time_input);
+
+        current_form.appendChild(listening_tips_count_input);
+        current_form.appendChild(listening_tips_total_time_input);
+        
+        current_form.appendChild(cultural_notes_count_input);
+        current_form.appendChild(cultural_notes_total_time_input);
+
+        current_form.appendChild(glossary_count_input);
+        current_form.appendChild(glossary_total_time_input);
+
+        current_form.appendChild(translation_count_input);
+        current_form.appendChild(translation_total_time_input);
+
+        current_form.appendChild(dictionary_count_input);
+        current_form.appendChild(dictionary_total_time_input);
+
     }
 </script>
 

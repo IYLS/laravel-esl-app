@@ -120,6 +120,7 @@ class QuestionController extends Controller
             }
         } else if($request->has('boxes_number') and $request->boxes_number != '' and $request->boxes_number != null and $exercise_type->underscore_name == "open_ended" && $exercise->subtype == "991") {
             $question->image_name = $request->boxes_number;
+            if($request->title != null) $question->correct_answer = $request->title;
         } else if($request->has('title') and $request->title != '' and $request->title != null and $exercise_type->underscore_name == "open_ended" && $exercise->subtype == "991") {
             $question->correct_answer = $request->title;
         } else {

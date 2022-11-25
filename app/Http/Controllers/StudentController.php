@@ -16,10 +16,12 @@ class StudentController extends Controller
     }
 
     public function show($unit_id)
-    {   
+    {
         $unit = Unit::find($unit_id);
         $keywords = $unit->keywords;
         $user = Auth::user();
+
+        $first_exercise_id = $unit->sections->first()->exercises->first()->id;
 
         $completed_exercises = Tracking::where('user_id', $user->id)->get()->map(function ($tracking) {
             return $tracking->exercise_id;
@@ -33,7 +35,7 @@ class StudentController extends Controller
         if ($unit->translation_enabled) array_push($help_options, $unit->translation);
         if ($unit->dictionary_enabled) array_push($help_options, $unit->dictionary);
 
-        return view('student.show', compact(['unit', 'keywords', 'help_options', 'user', 'completed_exercises']));
+        return view('student.show', compact(['unit', 'keywords', 'help_options', 'user', 'completed_exercises', 'first_exercise_id']));
     }
 
     public function select(Request $request)

@@ -10,30 +10,98 @@
     <div class="p-3">
         <h5>Exercise completion data</h5>
         <div class="p-3 mb-2 border rounded">
-            <p class="text-secondary"><small>Student Info:</small></p>
-            <ul>
-                <li>ID: {{ $tracking->user->user_id }}</li>
-                <li>Name: {{ $tracking->user->name }}</li>
-                <li>Group: {{ $tracking->user->group->name }}</li>
-                <li>E-mail: {{ $tracking->user->email }}</li>
-            </ul>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td colspan=2><small class="text-secondary">Student info:</small></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Student ID</strong></td>
+                        <td>{{ $tracking->user->user_id }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Group</strong></td>
+                        <td>{{ $tracking->user->group->name }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan=2><small class="text-secondary">Activity info:</small></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Activity title</strong></td>
+                        <td>{{ $tracking->exercise->title }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Unit</strong></td>
+                        <td>{{ $tracking->exercise->section->unit->title }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Section</strong></td>
+                        <td>{{ $tracking->exercise->section->name }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan=2><small class="text-secondary">Response info:</small></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Time spent</strong></td>
+                        <td>{{ $tracking->time_spent_in_minutes }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Correct answers</strong></td>
+                        <td>{{ $tracking->correct_answers }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Wrong answers</strong></td>
+                        <td>{{ $tracking->wrong_answers }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Number of tries</strong></td>
+                        <td>{{ $tracking->intent_number }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Date</strong></td>
+                        <td>{{ date('d/m/Y ~ h:m', strtotime($tracking->created_at)); }}</td>
+                    </tr>
+                </tbody>
+            </table>
 
-            <p class="text-secondary"><small>Exercise Info:</small></p>
-            <ul>
-                @if(isset($tracking->exercise)) <li>Exercise ID: {{ $tracking->exercise->id }}</li> @endif
-                <li>Exercise Name: {{ $tracking->exercise->title }}</li>
-                <li>Unit: {{ $tracking->exercise->section->unit->title }}</li>
-                <li>Section: {{ $tracking->exercise->section->name }}</li>
-            </ul>
+            <br>
 
-            <p class="text-secondary"><small>Results:</small></p>
-            <ul>
-                <li>Time spent (minutes): {{ $tracking->time_spent_in_minutes }}</li>
-                <li>Number of correct answers: {{ $tracking->correct_answers }}</li>
-                <li>Number of wrong answers: {{ $tracking->wrong_answers }}</li>
-                <li>Number of tries: {{ $tracking->intent_number }}</li>
-                <li>Date: {{ $tracking->created_at }}</li>
-            </ul>
+            @if(isset($tracking->help_options))
+                @php
+                $s = explode(',', $tracking->help_options);
+            
+                $dictionary = $s[5];
+                $transcript = $s[0];
+                $tips = $s[1];
+                $cultural = $s[2];
+                $glossary = $s[3];
+                $translation = $s[4];
+                @endphp
+                <p class="text-secondary"><small>Help Options:</small></p>
+                <table class="table table-bordered">
+                    <thead>
+                        <th>Name</th>
+                        <th>Interactions count</th>
+                        <th>Time spent</th>
+                    </thead>
+                    <tbody>
+                        @foreach($s as $i)
+                            @php 
+                                $i_array = explode("~", $i);
+
+                                $name = $i_array[0];
+                                $interactions = $i_array[1];
+                                $time = $i_array[2];
+                            @endphp
+                            <tr>
+                                <td>{{ $name }}</td>
+                                <td>{{ $interactions }}</td>
+                                <td>{{ $time }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
         </div>
     </div>
 

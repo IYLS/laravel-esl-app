@@ -8,14 +8,14 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::table('sections', function (Blueprint $table) {
-            $table->integer('position')->nullable(true)->after('instructions');
+        Schema::table('tracking', function (Blueprint $table) {
+            $table->text('help_options')->nullable(true)->after('wrong_answers');
         });
     }
 
     public function down() {
-        Schema::table('sections', function (Blueprint $table) {
-            $table->dropColumn('position');
+        Schema::table('tracking', function (Blueprint $table) {
+            $table->dropColumn('help_options');
         });
     }
 };
