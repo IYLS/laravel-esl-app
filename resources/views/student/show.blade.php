@@ -74,7 +74,7 @@
         <ul class="nav nav-tabs" id="sectionsTabs" role="tablist">
             @foreach($unit->sections->sortBy('position') as $section)
                 @php 
-                    $index = $loop->index + 1; 
+                    $index = $loop->index + 1;
                     $section_first_exercise_id = $section->exercises->first()->id;
                 @endphp
                 <li class="nav-item" role="presentation">
@@ -115,9 +115,10 @@
                 @if($loop->index == 0)
                     <div class="tab-pane fade show section-pane active m-2" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
                 @else
-                    <div class="tab-pane fade section-pane" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
+                    <div class="tab-pane fade section-pane m-2" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
                 @endif
                 <div class="d-flex align-items-start row mt-2">
+
                     {{-- (Optional) Additional Information --}}
                     @if(isset($section->instructions) and $section->instructions != '')
                     <div class="card pt-1 mb-2 pb-1 d-flex justify-content-center">
@@ -128,7 +129,7 @@
                         @forelse($section->exercises->sortBy('position') as $e)
                             @php $index = $loop->index; @endphp
                             <button 
-                                class="nav-link exercise-btn @if($e->subtype == 99) meta @endif @if($index == 0) active @endif"
+                                class="nav-link exercise-btn @if($e->subtype == 99) meta @elseif($e->subtype == 991) @endif @if($index == 0) active @endif"
                                 id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" 
                                 data-bs-toggle="pill" 
                                 data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" 
@@ -167,7 +168,7 @@
                         @endforelse
                     </div>
                     <div class="tab-content container-fluid col-12 col-xl-10" id="v-pills-tabContent">
-                        @foreach($section->exercises as $e)
+                        @foreach($section->exercises->sortBy('position') as $e)
                             @php
                                 $feedback_content = array(
                                     'ids' => [],
@@ -235,7 +236,7 @@
                                                 <img src="{{ asset('esl/public/storage/files'. "/" . $e->image_name) }}" class="img-fluid col-12 col-lg-8" alt="img">
                                             </div>
                                         @endif
-
+                                        
                                         <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="multiple_choice_form_{{ $e->id }}">
                                             @csrf
                                             {{-- Subtype 1 = Predicting --}}

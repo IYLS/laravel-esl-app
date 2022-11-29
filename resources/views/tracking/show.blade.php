@@ -57,7 +57,7 @@
             </tr>
             <tr>
                 <td><strong>Date</strong></td>
-                <td colspan=2>{{ date('d/m/Y ~ h:m', strtotime($tracking->created_at)); }}</td>
+                <td colspan=2>{{ date('d/m/Y - h:i:s', strtotime($tracking->created_at)); }}</td>
             </tr>
             <tr>
                 <td colspan=3><small class="text-secondary">Help Options Interactions:</small></td>
