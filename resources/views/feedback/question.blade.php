@@ -120,13 +120,16 @@
                 {{-- Explanatory --}}
                 @if($feedbacks->where('feedback_type_id', 5)->first() != null)
                     <p class="text-secondary mb-1 mt-1"><small>Explanatory feedback</small></p>
-                    @foreach($feedbacks->where('feedback_type_id', 5) as $exp)
-                        @php $count = count($feedbacks->where('feedback_type_id', 5)); @endphp
 
-                        @if($loop->index == $count-1)
-                            <p class="show-on-incorrect-{{ $question->id }}" id="{{ $question->alternatives[$count]->title }}-explanatory">{{ $exp->message }}</p>
-                        @else 
-                            <p class="show-on-incorrect-{{ $question->id }}" id="{{ $question->alternatives[$loop->index]->title }}-explanatory">{{ $exp->message }}</p>
+                    @php 
+                        $fb = $feedbacks->where('feedback_type_id', 5); 
+                        $index = 0;
+                    @endphp
+
+                    @foreach($question->alternatives as $alt)
+                        @if(!$alt->correct_alt)
+                            <p class="show-on-incorrect-{{ $question->id }}" id="{{ $alt->title }}-explanatory">{{ $fb[$index]->message }}</p>
+                            @php $index = $index + 1; @endphp
                         @endif
                     @endforeach
                 @endif
