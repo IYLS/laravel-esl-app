@@ -75,7 +75,11 @@
             @foreach($unit->sections->sortBy('position') as $section)
                 @php 
                     $index = $loop->index + 1;
-                    $section_first_exercise_id = $section->exercises->first()->id;
+                    if(isset($section_first_exercise_id)) {
+                        $section_first_exercise_id = $section->exercises->first()->id;
+                    } else {
+                        $section_first_exercise_id = 0;
+                    }
                 @endphp
                 <li class="nav-item" role="presentation">
                     @if($index-1 == 0)
@@ -456,7 +460,7 @@
                 if (alternative.checked && question.correct_answer == alternative.value) {
                     responses.push({'id': `${question.id}`, 'response': `${question.correct_answer}`});
                     
-                    if(exercise.subtype != 99 && exercise.subtype != 991) {
+                    if(exercise.subtype != 99 && exercise.subtype != 991 && !question.personal_response) {
                         if(question.personal_response == null || !question.personal_response) {
                             document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
                             document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
@@ -468,7 +472,7 @@
                     correct_questions += 1;
                 // Alternativa incorrecta
                 } else if(alternative.checked) {
-                    if(exercise.subtype != 99 && exercise.subtype != 991) {
+                    if(exercise.subtype != 99 && exercise.subtype != 991 && !question.personal_response) {
                         if(question.personal_response == null || !question.personal_response) {
                             document.getElementById(`question-${question.id}-feedback-wrong`).hidden = false;
                             document.getElementById(`question-${question.id}-feedback-correct`).hidden = true;
@@ -510,7 +514,13 @@
             }
         }
 
-        if(exercise.subtype != 99 && exercise.subtype != 991) {
+        var is_personal_response = false;
+
+        if(questions[0].personal_response == true) {
+            is_personal_response = true;    
+        }
+
+        if(exercise.subtype != 99 && exercise.subtype != 991 && !is_personal_response) {
             var correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
             var wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
             correctAnswersItem.innerHTML = `<strong>${correct_questions}</strong>  ✅`;
@@ -949,7 +959,7 @@
     var dictionary_total_time = 0;
 
     var help_option_start_time;
-
+ 
     var current_exercise_id = {{ json_encode($first_exercise_id) }};
 
     function onHelpOptionClicked(type) {
