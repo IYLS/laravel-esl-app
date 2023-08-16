@@ -36,7 +36,11 @@ class UserController extends Controller
         $newUser->age = $request->age;
         $newUser->name = $request->name;
         $newUser->gender = $request->gender;
-        $newUser->language = $request->language;
+
+        if($request->language == null || empty($request->language)) {
+            $newUser->language = "";
+        }
+        
         $newUser->email = $request->email;
         $newUser->role = $request->role;
         $newUser->activated = $request->activated;
@@ -69,7 +73,11 @@ class UserController extends Controller
         $user->age = $request->age;
         $user->name = $request->name;
         $user->gender = $request->gender;
-        $user->language = $request->language;
+
+        if($request->language == null || empty($request->language)) {
+            $user->language = "";
+        }
+        
         $user->email = $request->email;
         $user->role = $request->role;
         $user->activated = $request->activated;
