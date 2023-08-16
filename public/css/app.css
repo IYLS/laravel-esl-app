@@ -3,3 +3,23 @@ body {
     height: 100%; 
     color: var(--primary-color-dark-2) !important;
 }
+
+select optgroup{
+    background: grey;
+    color:#fff;
+    font-style:normal;
+    font-weight:normal;
+}
+
+ol {
+    counter-reset: list;
+}
+
+ol > li {
+    list-style: none;
+}
+
+ol > li:before {
+    content: counter(list, lower-alpha) ". ";
+    counter-increment: list;
+}

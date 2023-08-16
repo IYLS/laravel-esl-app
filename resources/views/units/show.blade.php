@@ -47,7 +47,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" @if($unit->listening_tips_enabled) checked @endif  name="listening_tips_enabled" value="true" id="listening_tips_enabled" disabled>
                                     <label class="form-check-label" for="listening_tips_enabled">
-                                      Enabled
+                                        Enabled
                                     </label>
                                 </div>
                             </div>
@@ -59,7 +59,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" @if($unit->cultural_notes_enabled) checked @endif  name="cultural_notes_enabled" value="true" id="cultural_notes_enabled" disabled>
                                     <label class="form-check-label" for="cultural_notes_enabled">
-                                      Enabled
+                                        Enabled
                                     </label>
                                 </div>
                             </div>
@@ -74,7 +74,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" @if($unit->transcript_enabled) checked @endif  name="transcript_enabled" value="true" id="transcript_enabled" disabled>
                                     <label class="form-check-label" for="transcript_enabled">
-                                      Enabled
+                                        Enabled
                                     </label>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" @if($unit->glossary_enabled) checked @endif  name="glossary_enabled" value="true" id="glossary_enabled" disabled>
                                     <label class="form-check-label" for="glossary_enabled">
-                                      Enabled
+                                        Enabled
                                     </label>
                                 </div>
                             </div>
@@ -113,7 +113,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" @if($unit->dictionary_enabled) checked @endif  name="dictionary_enabled" value="true" id="dictionary_enabled" disabled>
                                     <label class="form-check-label" for="dictionary_enabled">
-                                      Enabled
+                                        Enabled
                                     </label>
                                 </div>
                             </div>
