@@ -39,6 +39,8 @@ class UserController extends Controller
 
         if($request->language == null || empty($request->language)) {
             $newUser->language = "";
+        } else {
+            $newUser->language = $request->language;
         }
         
         $newUser->email = $request->email;
@@ -76,6 +78,8 @@ class UserController extends Controller
 
         if($request->language == null || empty($request->language)) {
             $user->language = "";
+        } else {
+            $user->language = $request->language;
         }
         
         $user->email = $request->email;
