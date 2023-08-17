@@ -21,11 +21,7 @@ class StudentController extends Controller
         $keywords = $unit->keywords;
         $user = Auth::user();
 
-        if (isset($unit->sections->first()->exercises)) {
-            $first_exercise_id = $unit->sections->first()->exercises->first()->id;
-        } else {
-            $first_exercise_id = 0;
-        }
+        $first_exercise_id = $unit->sections->first()->exercises->first()->id;
 
         $completed_exercises = Tracking::where('user_id', $user->id)->get()->map(function ($tracking) {
             return $tracking->exercise_id;

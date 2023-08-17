@@ -128,8 +128,8 @@
 
                     @foreach($question->alternatives as $alt)
                         @if(!$alt->correct_alt)
-                            <p class="show-on-incorrect-{{ $question->id }}" id="{{ $alt->title }}-explanatory">{{ $fb[$index]->message }}</p>
                             @php $index = $index + 1; @endphp
+                            <p class="show-on-incorrect-{{ $question->id }}" id="{{ $alt->title }}-explanatory">{{ $fb[$index]->message }}</p>
                         @endif
                     @endforeach
                 @endif

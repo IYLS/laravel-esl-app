@@ -6,9 +6,9 @@
             {!! $question->statement !!}
         </div>
         <div class="mt-2">
-            <ol type="a" class="list-group">
+            <ol type="a">
                 @foreach($question->alternatives as $a)
-                <li class="list-group-item">
+                <li>
                     <div class="form-check">
                         <input class="form-check-input multiple-choice-{{ $e->id }}-check" type="radio" name="question-{{ $question->id }}" id="{{ $a->id }}" value="{{ $a->title }}">
                         <label class="form-check-label" for="{{ $a->id }}">{{ $a->title }}</label>

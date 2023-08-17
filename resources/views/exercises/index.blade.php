@@ -68,7 +68,7 @@
                     @empty
                         <tr>
                             <td colspan="4 mt-3 mb-3">
-                                <p class="text-secondary text-center"><small>Nothing yet</small></p>
+                                <p class="text-secondary text-center"><small>Nothing yet</small></p>  
                             </td>
                         </tr>
                     @endforelse
