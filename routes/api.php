@@ -27,7 +27,7 @@ Route::get('/migrate', function () {
 Route::get('/config_cache', function () {
     Artisan::call('cache:clear');
 	Artisan::call('route:cache');
-    Artisan::call('config:cache');
+ 	Artisan::call('config:cache');
     Artisan::call('view:clear');
     return 'Cache clear and configured.';
 });
