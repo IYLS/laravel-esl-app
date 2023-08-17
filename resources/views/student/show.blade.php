@@ -133,7 +133,7 @@
                         @forelse($section->exercises->sortBy('position') as $e)
                             @php $index = $loop->index; @endphp
                             <button 
-                                class="nav-link exercise-btn @if($e->subtype == 99) meta @elseif($e->subtype == 991) @endif @if($index == 0) active @endif"
+                                class="nav-link exercise-btn @if($e->subtype == 99 || $e->subtype == 991) meta @endif @if($index == 0) active @endif"
                                 id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" 
                                 data-bs-toggle="pill" 
                                 data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" 
