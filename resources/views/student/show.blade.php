@@ -334,17 +334,17 @@
 {{-- Drag and Drop --}}
 <script>
     function allowDrop(ev) {
-      ev.preventDefault();
+        ev.preventDefault();
     }
     
     function drag(ev) {
-      ev.dataTransfer.setData("text", ev.target.id);
+        ev.dataTransfer.setData("text", ev.target.id);
     }
     
     function drop(ev) {
-      ev.preventDefault();
-      var data = ev.dataTransfer.getData("text");
-      ev.target.appendChild(document.getElementById(data));
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementById(data));
     }
 </script>
 
@@ -366,11 +366,15 @@
     function setFeedbackHidden(value, exercise_id, questions) {
         questions.forEach(function (question) {
             const questionFeedback = document.getElementById(`question-feedback-container-${question.id}`);
-            questionFeedback.hidden = value;
+            if(questionFeedback != null) {
+                questionFeedback.hidden = value;
+            }
         });
 
-        var exerciseFeedback = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
-        exerciseFeedback.hidden = value;
+        const exerciseFeedback = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
+        if(exerciseFeedback != null) {
+            exerciseFeedback.hidden = value;
+        }
     }
 </script>
 
