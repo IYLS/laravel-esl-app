@@ -98,9 +98,16 @@
 					Filter
 				</button>
 			</div>
+            <div class="ms-2 me-2 row">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#selectGroupForDataExportModal">
+                    Export data
+                </button>
+            </div>
 		</div>
 	</form>
 </div>
+
+@include('modals.tracking.export_data')
 
 <script>
     function navigateTo(url) {

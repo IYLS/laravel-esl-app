@@ -9,6 +9,9 @@ use App\Models\Exercise;
 use App\Models\User;
 use App\Models\Unit;
 use App\Models\Group;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ExportTracking;
+use Carbon\Carbon;
 
 class TrackingController extends Controller
 {
@@ -160,7 +163,7 @@ class TrackingController extends Controller
         $help_options_interactions = array();
         array_push($help_options_interactions, "Transcript~$request->transcript_count~$request->transcript_total_time");
         array_push($help_options_interactions, "Listening tips~$request->listening_tips_count~$request->listening_tips_total_time");
-        array_push($help_options_interactions, "Culturalnotes~$request->cultural_notes_count~$request->cultural_notes_total_time");
+        array_push($help_options_interactions, "Cultural notes~$request->cultural_notes_count~$request->cultural_notes_total_time");
         array_push($help_options_interactions, "Glossary~$request->glossary_count~$request->glossary_total_time");
         array_push($help_options_interactions, "Translation~$request->translation_count~$request->translation_total_time");
         array_push($help_options_interactions, "Dictionary~$request->dictionary_count~$request->dictionary_total_time");
@@ -191,6 +194,15 @@ class TrackingController extends Controller
     {
         $tracking = Tracking::find($id);
         return view('tracking.show', compact('tracking'));
+    }
+
+    public function exportData(Request $request) 
+    {
+        $groupId = $request->group;
+        $group = Group::find($groupId);
+        $groupName = $group->name;
+        $currentDate = Carbon::now()->format('d-m-Y h:m');
+        return Excel::download(new ExportTracking($groupId), "$groupName - $currentDate.xlsx");
     }
 
     private function sectionStatus($exercise, $user_id) {
