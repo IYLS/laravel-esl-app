@@ -155,7 +155,7 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
             $dictionaryInteractionsUnit = 0;
             $dictionaryTimesUnit = array();
 
-            // Extraer todos los tracking de cada sección y ejercicio
+            // Extraer todos los tracking de cada secci贸n y ejercicio
             foreach($unit->sections as $section)
             {
                 $exercises = $section->exercises;
@@ -222,9 +222,6 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
         
         return $unitsIndicators;
     }
-
-    private function processSectionExerciseData($section, $user)
-    {}
 
     private function sumTime($times): string
     {
