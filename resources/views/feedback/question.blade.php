@@ -122,12 +122,12 @@
                     <p class="text-secondary mb-1 mt-1"><small>Explanatory feedback</small></p>
 
                     @php 
-                        $fb = $feedbacks->where('feedback_type_id', 5); 
+                        $fb = $feedbacks->where('feedback_type_id', 5);
                         $index = 0;
                     @endphp
 
                     @foreach($question->alternatives as $alt)
-                        @if(!$alt->correct_alt)
+                        @if(!$alt->correct_alt and isset($fb[$index]))
                             <p class="show-on-incorrect-{{ $question->id }}" id="{{ $alt->title }}-explanatory">{{ $fb[$index]->message }}</p>
                             @php $index = $index + 1; @endphp
                         @endif
@@ -171,8 +171,6 @@
     function onFeedbackButtonPressed(question_id, type) {
         var item = document.getElementById(`${type}_count_${question_id}`);
         var new_value = parseInt(item.value) + 1;
-
-        console.log(`ABRISTE EL ${type} DE LA PREGUNTA ${question_id} EL CONTADOR VA EN ${new_value}`);
         
         item.setAttribute('value', `${new_value}`);
     }
