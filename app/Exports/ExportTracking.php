@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 class ExportTracking implements FromCollection, WithHeadings, WithMapping
 {
     protected $groupId;
-    
+
     function __construct(string $groupId) {
         $this->groupId = $groupId;
     }
@@ -65,44 +65,74 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
                 "Aciertos totales en plataforma",
                 "U1: TIEMPO",
                 "U1: ACIERTOS",
-                "U1: Tips",
-                "U1: Cultural Notes",
-                "U1: Transcript",
-                "U1: Glossary",
-                "U1: Translation",
-                "U1: Dictionary",
+                "U1: Transcript Time Spent",
+                "U1: Transcript Interactions",
+                "U1: Tips Time Spent",
+                "U1: Tips Interactions",
+                "U1: Cultural Notes Time Spent",
+                "U1: Cultural Notes Interactions",
+                "U1: Glossary Time Spent",
+                "U1: Glossary Interactions",
+                "U1: Translation Time Spent",
+                "U1: Translation Interactions",
+                "U1: Dictionary Time Spent",
+                "U1: Dictionary Interactions",
                 "U2: TIEMPO",
                 "U2: ACIERTOS",
-                "U2: Tips",
-                "U2: Cultural Notes",
-                "U2: Transcript",
-                "U2: Glossary",
-                "U2: Translation",
-                "U2: Dictionary",
+                "U2: Transcript Time Spent",
+                "U2: Transcript Interactions",
+                "U2: Tips Time Spent",
+                "U2: Tips Interactions",
+                "U2: Cultural Notes Time Spent",
+                "U2: Cultural Notes Interactions",
+                "U2: Glossary Time Spent",
+                "U2: Glossary Interactions",
+                "U2: Translation Time Spent",
+                "U2: Translation Interactions",
+                "U2: Dictionary Time Spent",
+                "U2: Dictionary Interactions",
                 "U3: TIEMPO",
                 "U3: ACIERTOS",
-                "U3: Tips",
-                "U3: Cultural Notes",
-                "U3: Transcript",
-                "U3: Glossary",
-                "U3: Translation",
-                "U3: Dictionary",
+                "U3: Transcript Time Spent",
+                "U3: Transcript Interactions",
+                "U3: Tips Time Spent",
+                "U3: Tips Interactions",
+                "U3: Cultural Notes Time Spent",
+                "U3: Cultural Notes Interactions",
+                "U3: Glossary Time Spent",
+                "U3: Glossary Interactions",
+                "U3: Translation Time Spent",
+                "U3: Translation Interactions",
+                "U3: Dictionary Time Spent",
+                "U3: Dictionary Interactions",
                 "U4: TIEMPO",
                 "U4: ACIERTOS",
-                "U4: Tips",
-                "U4: Cultural Notes",
-                "U4: Transcript",
-                "U4: Glossary",
-                "U4: Translation",
-                "U4: Dictionary",
+                "U4: Transcript Time Spent",
+                "U4: Transcript Interactions",
+                "U4: Tips Time Spent",
+                "U4: Tips Interactions",
+                "U4: Cultural Notes Time Spent",
+                "U4: Cultural Notes Interactions",
+                "U4: Glossary Time Spent",
+                "U4: Glossary Interactions",
+                "U4: Translation Time Spent",
+                "U4: Translation Interactions",
+                "U4: Dictionary Time Spent",
+                "U4: Dictionary Interactions",
                 "U5: TIEMPO",
                 "U5: ACIERTOS",
-                "U5: Tips",
-                "U5: Cultural Notes",
-                "U5: Transcript",
-                "U5: Glossary",
-                "U5: Translation",
-                "U5: Dictionary",
+                "U5: Transcript Time Spent",
+                "U5: Transcript Interactions",
+                "U5: Tips Time Spent",
+                "U5: Tips Interactions",
+                "U5: Cultural Notes Time Spent",
+                "U5: Cultural Notes Interactions",
+                "U5: Glossary Time Spent",
+                "U5: Glossary Interactions",
+                "U5: Translation Time Spent",
+                "U5: Translation Interactions",
+                "U5: Dictionary Time Spent",
+                "U5: Dictionary Interactions",
             ];
     }
 
@@ -140,7 +170,7 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
             $unitTrackings = array();
             $timeSpentInUnit = array();
             $correctAnswersInUnit = 0;
-            
+
             // Indicadores de opciones de ayuda por unidad
             $transcriptInteractionsUnit = 0;
             $transcriptTimesUnit = array();
@@ -155,7 +185,7 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
             $dictionaryInteractionsUnit = 0;
             $dictionaryTimesUnit = array();
 
-            // Extraer todos los tracking de cada secci贸n y ejercicio
+            // Extraer todos los tracking de cada seccion y ejercicio
             foreach($unit->sections as $section)
             {
                 $exercises = $section->exercises;
@@ -242,10 +272,10 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
                 "dictionaryInteractions" => "$dictionaryInteractionsUnit",
                 "dictionaryTime" => $this->sumTime($dictionaryTimesUnit),
             ];
-            
+
             array_push($unitsIndicators, $unitData);
         }
-        
+
         return $unitsIndicators;
     }
 
