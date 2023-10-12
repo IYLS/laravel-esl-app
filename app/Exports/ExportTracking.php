@@ -171,18 +171,44 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
             {
                 $helpOptions = explode(",", $tracking->help_options);
 
-                $transcriptInteractions = explode("~", $helpOptions[0])[1];
-                $transcriptTime = explode("~", $helpOptions[0])[2];
-                $tipsInteractions = explode("~", $helpOptions[1])[1];
-                $tipsTime = explode("~", $helpOptions[1])[2];
-                $culturalNotesInteractions = explode("~", $helpOptions[2])[1];
-                $culturalNotesTime = explode("~", $helpOptions[2])[2];
-                $glossaryInteractions = explode("~", $helpOptions[3])[1];
-                $glossaryTime = explode("~", $helpOptions[3])[2];
-                $translationInteractions = explode("~", $helpOptions[4])[1];
-                $translationTime = explode("~", $helpOptions[4])[2];
-                $dictionaryInteractions = explode("~", $helpOptions[5])[1];
-                $dictionaryTime = explode("~", $helpOptions[5])[2];
+                if ($helpOptions != null and count($helpOptions) == 6) {
+                    $transcriptData = explode("~", $helpOptions[0]);
+                    $tipsData = explode("~", $helpOptions[1]);
+                    $culturalNotesData = explode("~", $helpOptions[2]);
+                    $glossaryData = explode("~", $helpOptions[3]);
+                    $translationData = explode("~", $helpOptions[4]);
+                    $dictionaryData = explode("~", $helpOptions[5]);
+
+                    if (count($transcriptData) == 3) {
+                        $transcriptInteractions = $transcriptData[1];
+                        $transcriptTime = $transcriptData[2];
+                    }
+
+                    if (count($tipsData) == 3) {
+                        $tipsInteractions = $tipsData[1];
+                        $tipsTime = $tipsData[2];
+                    }
+
+                    if (count($culturalNotesData) == 3) {
+                        $culturalNotesInteractions = $culturalNotesData[1];
+                        $culturalNotesTime = $culturalNotesData[2];
+                    }
+
+                    if (count($glossaryData) == 3) {
+                        $glossaryInteractions = $glossaryData[1];
+                        $glossaryTime = $glossaryData[2];
+                    }
+
+                    if (count($translationData) == 3) {
+                        $translationInteractions = $translationData[1];
+                        $translationTime = $translationData[2];
+                    }
+
+                    if (count($dictionaryData) == 3) {
+                        $dictionaryInteractions = $dictionaryData[1];
+                        $dictionaryTime = $dictionaryData[2];
+                    }
+                }
 
                 $correctAnswersInUnit += intval($tracking->correct_answers);
                 array_push($timeSpentInUnit, $tracking->time_spent_in_minutes);
