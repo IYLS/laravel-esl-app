@@ -12,15 +12,15 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 
 class ExportTracking implements FromCollection, WithHeadings, WithMapping
 {
-    protected $groupId;
+    protected $userId;
 
-    function __construct(string $groupId) {
-        $this->groupId = $groupId;
+    function __construct(string $userId) {
+        $this->userId = $userId;
     }
 
     public function collection()
     {
-        return User::where('group_id', $this->groupId)->get();
+        return User::where("id", $this->userId)->first();
     }
 
     public function map($user): array
@@ -57,83 +57,34 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
 
     public function headings(): array
     {
-        return [
-                "ID Usuario",
-                "Nombre",
-                "Numero de unidades completadas",
-                "Tiempo total en plataforma",
-                "Aciertos totales en plataforma",
-                "U1: TIEMPO",
-                "U1: ACIERTOS",
-                "U1: Transcript Time Spent",
-                "U1: Transcript Interactions",
-                "U1: Tips Time Spent",
-                "U1: Tips Interactions",
-                "U1: Cultural Notes Time Spent",
-                "U1: Cultural Notes Interactions",
-                "U1: Glossary Time Spent",
-                "U1: Glossary Interactions",
-                "U1: Translation Time Spent",
-                "U1: Translation Interactions",
-                "U1: Dictionary Time Spent",
-                "U1: Dictionary Interactions",
-                "U2: TIEMPO",
-                "U2: ACIERTOS",
-                "U2: Transcript Time Spent",
-                "U2: Transcript Interactions",
-                "U2: Tips Time Spent",
-                "U2: Tips Interactions",
-                "U2: Cultural Notes Time Spent",
-                "U2: Cultural Notes Interactions",
-                "U2: Glossary Time Spent",
-                "U2: Glossary Interactions",
-                "U2: Translation Time Spent",
-                "U2: Translation Interactions",
-                "U2: Dictionary Time Spent",
-                "U2: Dictionary Interactions",
-                "U3: TIEMPO",
-                "U3: ACIERTOS",
-                "U3: Transcript Time Spent",
-                "U3: Transcript Interactions",
-                "U3: Tips Time Spent",
-                "U3: Tips Interactions",
-                "U3: Cultural Notes Time Spent",
-                "U3: Cultural Notes Interactions",
-                "U3: Glossary Time Spent",
-                "U3: Glossary Interactions",
-                "U3: Translation Time Spent",
-                "U3: Translation Interactions",
-                "U3: Dictionary Time Spent",
-                "U3: Dictionary Interactions",
-                "U4: TIEMPO",
-                "U4: ACIERTOS",
-                "U4: Transcript Time Spent",
-                "U4: Transcript Interactions",
-                "U4: Tips Time Spent",
-                "U4: Tips Interactions",
-                "U4: Cultural Notes Time Spent",
-                "U4: Cultural Notes Interactions",
-                "U4: Glossary Time Spent",
-                "U4: Glossary Interactions",
-                "U4: Translation Time Spent",
-                "U4: Translation Interactions",
-                "U4: Dictionary Time Spent",
-                "U4: Dictionary Interactions",
-                "U5: TIEMPO",
-                "U5: ACIERTOS",
-                "U5: Transcript Time Spent",
-                "U5: Transcript Interactions",
-                "U5: Tips Time Spent",
-                "U5: Tips Interactions",
-                "U5: Cultural Notes Time Spent",
-                "U5: Cultural Notes Interactions",
-                "U5: Glossary Time Spent",
-                "U5: Glossary Interactions",
-                "U5: Translation Time Spent",
-                "U5: Translation Interactions",
-                "U5: Dictionary Time Spent",
-                "U5: Dictionary Interactions",
-            ];
+        $units = Unit::all();
+        $array = [
+            "ID Usuario",
+            "Nombre",
+            "Numero de unidades completadas",
+            "Tiempo total en plataforma",
+            "Aciertos totales en plataforma",
+        ];
+
+        foreach($units as $key=>$unit) {
+            $key += 1;
+            array_push($array, "U$key: Tiempo");
+            array_push($array, "U$key: Aciertos");
+            array_push($array, "U$key: Transcript Time Spent");
+            array_push($array, "U$key: Transcript Interactions");
+            array_push($array, "U$key: Tips Time Spent");
+            array_push($array, "U$key: Tips Interactions");
+            array_push($array, "U$key: Cultural Notes Time Spent");
+            array_push($array, "U$key: Cultural Notes Interactions");
+            array_push($array, "U$key: Glossary Time Spent");
+            array_push($array, "U$key: Glossary Interactions");
+            array_push($array, "U$key: Translation Time Spent");
+            array_push($array, "U$key: Translation Interactions");
+            array_push($array, "U$key: Dictionary Time Spent");
+            array_push($array, "U$key: Dictionary Interactions");
+        };
+
+        return $array;
     }
 
     private function processTrackingData($user): array
@@ -190,7 +141,7 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
             {
                 $exercises = $section->exercises;
                 foreach($exercises as $exercise) {
-                    if ($exercise->tracking != null) {
+                    if (isset($exercise->tracking) and $exercise->tracking != null and $exercise->tracking->user->id == $user->id) {
                         array_push($timeSpentInUnit, $exercise->tracking->time_spent_in_minutes);
                         array_push($unitTrackings, $exercise->tracking);
                     }
@@ -212,49 +163,48 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
                     if (count($transcriptData) == 3) {
                         $transcriptInteractions = $transcriptData[1];
                         $transcriptTime = $transcriptData[2];
+                        array_push($transcriptTimesUnit, $transcriptTime);
+                        $transcriptInteractionsUnit += intval($transcriptInteractions);
                     }
 
                     if (count($tipsData) == 3) {
                         $tipsInteractions = $tipsData[1];
                         $tipsTime = $tipsData[2];
+                        array_push($tipsTimesUnit, $tipsTime);
+                        $tipsInteractionsUnit += intval($tipsInteractions);
                     }
 
                     if (count($culturalNotesData) == 3) {
                         $culturalNotesInteractions = $culturalNotesData[1];
                         $culturalNotesTime = $culturalNotesData[2];
+                        array_push($culturalNotesTimesUnit, $culturalNotesTime);
+                        $culturalNotesInteractionsUnit += intval($culturalNotesInteractions);
                     }
 
                     if (count($glossaryData) == 3) {
                         $glossaryInteractions = $glossaryData[1];
                         $glossaryTime = $glossaryData[2];
+                        array_push($glossaryTimesUnit, $glossaryTime);
+                        $glossaryInteractionsUnit += intval($glossaryInteractions);
                     }
 
                     if (count($translationData) == 3) {
                         $translationInteractions = $translationData[1];
                         $translationTime = $translationData[2];
+                        array_push($translationTimesUnit, $translationTime);
+                        $translationInteractionsUnit += intval($translationInteractions);
                     }
 
                     if (count($dictionaryData) == 3) {
                         $dictionaryInteractions = $dictionaryData[1];
                         $dictionaryTime = $dictionaryData[2];
+                        array_push($dictionaryTimesUnit, $dictionaryTime);
+                        $dictionaryInteractionsUnit += intval($dictionaryInteractions);
                     }
                 }
 
                 $correctAnswersInUnit += intval($tracking->correct_answers);
                 array_push($timeSpentInUnit, $tracking->time_spent_in_minutes);
-
-                array_push($transcriptTimesUnit, $transcriptTime);
-                $transcriptInteractionsUnit += intval($transcriptInteractions);
-                array_push($tipsTimesUnit, $tipsTime);
-                $tipsInteractionsUnit += intval($tipsInteractions);
-                array_push($culturalNotesTimesUnit, $culturalNotesTime);
-                $culturalNotesInteractionsUnit += intval($culturalNotesInteractions);
-                array_push($glossaryTimesUnit, $glossaryTime);
-                $glossaryInteractionsUnit += intval($glossaryInteractions);
-                array_push($translationTimesUnit, $translationTime);
-                $translationInteractionsUnit += intval($translationInteractions);
-                array_push($dictionaryTimesUnit, $dictionaryTime);
-                $dictionaryInteractionsUnit += intval($dictionaryInteractions);
             }
 
             $unitData = [
