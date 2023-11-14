@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-use App\Models\Group;
 use App\Models\Tracking;
 use App\Models\User;
 use App\Models\Unit;
@@ -12,7 +11,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 
 class ExportTracking implements FromCollection, WithHeadings, WithMapping
 {
-    protected $userId;
+    protected string $userId;
 
     function __construct(string $userId) {
         $this->userId = $userId;
@@ -20,7 +19,7 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
 
     public function collection()
     {
-        return User::where("id", $this->userId)->first();
+        return User::where('id', $this->userId)->get();
     }
 
     public function map($user): array
@@ -113,7 +112,6 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
     {
         $units = Unit::all();
         $data = array();
-        $tips = 0;
         $unitsIndicators = array();
 
         foreach($units as $unit)
