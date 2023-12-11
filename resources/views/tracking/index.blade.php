@@ -38,7 +38,11 @@
                 @forelse($tracking as $t)
                 <tr class="clickable-table-row" onclick="navigateTo({{ json_encode(route('tracking.show', $t->id)) }})">
                         <td class="text-center">
+                        @if(is_null($t->user))
+                            -
+                        @else
                             {{ $t->user->user_id }}
+                        @endif
                         </td>
                         <td class="text-center">
                             @if(isset($t->exercise->section->unit->title)) {{ $t->exercise->section->unit->title }} @else Not found @endif

@@ -24,7 +24,8 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
 
     public function map($user): array
     {
-        $trackingData = $this->processTrackingData($user);
+        $units = $this->getUserUnits();
+        $trackingData = $this->processTrackingData($user, $units);
         $unitsData = $this->processUnits($user);
 
         $data = [
@@ -37,6 +38,7 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
 
         foreach($unitsData as $unitData) {
             array_push($data, $unitData["timeSpentInUnit"]);
+            array_push($data, $unitData["rightAnswersAmount"]);
             array_push($data, $unitData["transcriptInteractions"]);
             array_push($data, $unitData["transcriptTime"]);
             array_push($data, $unitData["tipsInteractions"]);
@@ -56,7 +58,7 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
 
     public function headings(): array
     {
-        $units = Unit::all();
+        $units = $this->getUserUnits();
         $array = [
             "ID Usuario",
             "Nombre",
@@ -69,26 +71,25 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
             $key += 1;
             array_push($array, "U$key: Tiempo");
             array_push($array, "U$key: Aciertos");
-            array_push($array, "U$key: Transcript Time Spent");
             array_push($array, "U$key: Transcript Interactions");
-            array_push($array, "U$key: Tips Time Spent");
+            array_push($array, "U$key: Transcript Time Spent");
             array_push($array, "U$key: Tips Interactions");
-            array_push($array, "U$key: Cultural Notes Time Spent");
+            array_push($array, "U$key: Tips Time Spent");
             array_push($array, "U$key: Cultural Notes Interactions");
-            array_push($array, "U$key: Glossary Time Spent");
+            array_push($array, "U$key: Cultural Notes Time Spent");
             array_push($array, "U$key: Glossary Interactions");
-            array_push($array, "U$key: Translation Time Spent");
+            array_push($array, "U$key: Glossary Time Spent");
             array_push($array, "U$key: Translation Interactions");
-            array_push($array, "U$key: Dictionary Time Spent");
+            array_push($array, "U$key: Translation Time Spent");
             array_push($array, "U$key: Dictionary Interactions");
+            array_push($array, "U$key: Dictionary Time Spent");
         };
 
         return $array;
     }
 
-    private function processTrackingData($user): array
+    private function processTrackingData($user, $units): array
     {
-        $units = Unit::orderBy('title', 'asc')->get();
         $trackings = Tracking::where('user_id', $user->id)->get();
         $interactionTimes = array();
         $totalCorrectAnswersOnPlatform = 0;
@@ -100,9 +101,10 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
         }
 
         $totalTimeSpentOnPlatform = $this->sumTime($interactionTimes);
+        $completedUnitsCount = $units->count();
 
         return [
-            "5",
+            $completedUnitsCount,
             $totalTimeSpentOnPlatform,
             "$totalCorrectAnswersOnPlatform",
         ];
@@ -110,13 +112,17 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
 
     private function processUnits($user): array
     {
-        $units = Unit::all();
-        $data = array();
+        $units = $this->getUserUnits();
+        $userId = $this->userId;
         $unitsIndicators = array();
 
         foreach($units as $unit)
         {
-            $unitTrackings = array();
+            $unitId = $unit->id;
+            $unitTrackings = Tracking::whereHas('exercise.section.unit', function ($query) use ($unitId) {
+                $query->where('units.id', $unitId);
+            })->where('user_id', "$userId")->get();
+
             $timeSpentInUnit = array();
             $correctAnswersInUnit = 0;
 
@@ -133,18 +139,6 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
             $translationTimesUnit = array();
             $dictionaryInteractionsUnit = 0;
             $dictionaryTimesUnit = array();
-
-            // Extraer todos los tracking de cada seccion y ejercicio
-            foreach($unit->sections as $section)
-            {
-                $exercises = $section->exercises;
-                foreach($exercises as $exercise) {
-                    if (isset($exercise->tracking) and $exercise->tracking != null and $exercise->tracking->user->id == $user->id) {
-                        array_push($timeSpentInUnit, $exercise->tracking->time_spent_in_minutes);
-                        array_push($unitTrackings, $exercise->tracking);
-                    }
-                }
-            }
 
             foreach($unitTrackings as $tracking)
             {
@@ -207,6 +201,7 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
 
             $unitData = [
                 "timeSpentInUnit" => $this->sumTime($timeSpentInUnit),
+                "rightAnswersAmount" => "$correctAnswersInUnit",
                 "transcriptInteractions" => "$transcriptInteractionsUnit",
                 "transcriptTime" => $this->sumTime($transcriptTimesUnit),
                 "tipsInteractions" => "$tipsInteractionsUnit",
@@ -256,6 +251,32 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
             $accumulatedHours += $hoursToSum;
         }
 
-        return "$accumulatedHours:$accumulatedMinutes";
+        $finalMinutes = "";
+        $finalHours = "";
+
+        if(strlen($accumulatedMinutes) == 1) {
+            $finalMinutes = "0$accumulatedMinutes";
+        } else {
+            $finalMinutes = $accumulatedMinutes;
+        }
+
+        if(strlen($accumulatedHours) == 1) {
+            $finalHours = "0$accumulatedHours";
+        } else {
+            $finalHours = $accumulatedHours;
+        }
+
+        return "$finalHours:$finalMinutes";
+    }
+
+    private function getUserUnits()
+    {
+        $user = $this->currentUser();
+        return $user->group->units()->orderBy('title', 'asc')->get();
+    }
+
+    private function currentUser()
+    {
+        return User::where('id', $this->userId)->get()->first();
     }
 }
