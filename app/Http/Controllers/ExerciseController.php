@@ -121,7 +121,7 @@ class ExerciseController extends Controller
         if($request->hasFile('video') and $request->file('video')->isValid()) 
         {
             $video_file_name = $request->file('video')->getClientOriginalName();
-            $video_file_path = $request->file('video')->storeAs('public/files', $video_file_name);
+            $video_file_path = $request->file('video')->storeAs('files', $video_file_name, 'public');
 
             return $video_file_name;
         } else {
@@ -134,7 +134,7 @@ class ExerciseController extends Controller
         if($request->hasFile('image') and $request->file('image')->isValid()) 
         {
             $image_name = $request->file('image')->getClientOriginalName();
-            $image_path = $request->file('image')->storeAs('public/files', $image_name);
+            $image_path = $request->file('image')->storeAs('files', $image_name, 'public');
 
             return $image_name;
         } else {

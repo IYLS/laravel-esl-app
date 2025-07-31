@@ -58,7 +58,7 @@
         @if(isset($unit->video_name) and $unit->video_name != null and $unit->video_name != '')
             <div class="ratio ratio-16x9 mt-3">
                 <video title="Video" allowfullscreen controls>
-                    <source src="{{ asset('esl/public/storage/files') . "/" . $unit->video_name }}">
+                    <source src="{{ asset('storage/files') . "/" . $unit->video_name }}">
                 </video>
             </div>
             @if(isset($unit->video_copyright) and $unit->video_copyright != '') <p class="text-secondary"><small>{{ $unit->video_copyright }}</small></p> @endif
@@ -231,13 +231,13 @@
 
                                         @if(isset($e->video_name) and $e->video_name != null and $e->video_name != '')
                                             <video title="Video" allowfullscreen controls class="ratio ratio-16x9 mt-3 w-75">
-                                                <source src="{{ asset('esl/public/storage/files') . "/" . $e->video_name }}">
+                                                <source src="{{ asset('storage/files') . "/" . $e->video_name }}">
                                             </video>
                                         @endif
 
                                         @if(isset($e->image_name) and $e->image_name != null and $e->image_name != '')
                                             <div class="row m-3">
-                                                <img src="{{ asset('esl/public/storage/files'. "/" . $e->image_name) }}" class="img-fluid col-12 col-lg-8" alt="img">
+                                                <img src="{{ asset('storage/files'. "/" . $e->image_name) }}" class="img-fluid col-12 col-lg-8" alt="img">
                                             </div>
                                         @endif
                                         

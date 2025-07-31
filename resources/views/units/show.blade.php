@@ -135,7 +135,7 @@
                 </div>
                 <div class="mb-3" id="video-picker-container" hidden>
                     <label for="video" class="form-label">Select new video file: </label>
-                    <input class="form-control" type="file" name="video" id="video" accept="video/*" value="{{ asset('/esl/public/storage/files/'.$unit->video_name) }}">
+                    <input class="form-control" type="file" name="video" id="video" accept="video/*" value="{{ asset('storage/files/'.$unit->video_name) }}">
                 </div>
                 <div class="row ms-1 me-1">
                     <input name="video_copyright" id="video_copyright" type="text" class="form-control" placeholder="Video copyright info" value="{{ $unit->video_copyright }}" disabled>

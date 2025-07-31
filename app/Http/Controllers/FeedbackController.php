@@ -106,7 +106,7 @@ class FeedbackController extends Controller
             $audio_file = $request->file()['data']['question']['3'][$question_id]['audio'];
 
             $audio_file_name = $audio_file->getClientOriginalName();
-            $audio_file_path = $audio_file->storeAs('public/files', $audio_file_name);
+            $audio_file_path = $audio_file->storeAs('files', $audio_file_name, 'public');
             
             return $audio_file_name;
         } else {

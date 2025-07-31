@@ -151,7 +151,7 @@
                     <div class="mt-2">
                         <p class="text-secondary mb-1 mt-1"><small>Elaborative feedback</small></p>
                         <audio id="elaborative-feedback" controls class="show-on-incorrect-{{ $question->id }}">
-                            <source src="{{ asset('esl/public/storage/files/'.$feedbacks->where('feedback_type_id', 3)->first()->audio_name) }}" type="audio/mpeg">
+                            <source src="{{ asset('storage/files/'.$feedbacks->where('feedback_type_id', 3)->first()->audio_name) }}" type="audio/mpeg">
                         </audio>
                     </div>
                 @endif
