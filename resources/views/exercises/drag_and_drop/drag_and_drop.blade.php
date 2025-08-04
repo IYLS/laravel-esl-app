@@ -15,26 +15,26 @@
                 array_push($definitions, $question->answer);
             }
 
-            shuffle($definitions);
+            shuffle($words);
 
-            $components = array_combine($words, $definitions);
+            $components = array_combine($definitions, $words);
         @endphp
         <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="drag_and_drop_form_{{ $e->id }}" onsubmit="return getResponseData({{ json_encode($e->questions) }}, {{ json_encode($e) }}, 'drag_and_drop')">
             @csrf
             <div class="row d-flex justify-content-between pt-2 pb-2">
                 @include('layouts.tracking.tracking_complete')
                 @php $subtype = $e->subtype != null ? $e->subtype : 1; @endphp
-                @foreach($e->questions->sortBy('position') as $question)
+                @foreach($e->questions->shuffle() as $question)
                     <div class="col-6 col-lg-3 mt-1 d-flex justify-content-center border" style="border-style: dashed !important;" ondragover="allowDrop(event)" ondrop="drop(event)">
-                        <div style="height:30px; width: 140px;" id="word-origin-{{ $question->statement }}">
-                            <div class="border pe-2 ps-2 text-primary" id="word-{{ $question->statement }}" ondragstart="drag(event)" draggable="true" style="display: inline-block; border-style: dashed !important; height:30px;">
-                                {{ $question->statement }}
+                        <div style="height:30px; width: 140px;" id="word-origin-{{ $components[$question->answer] }}">
+                            <div class="border pe-2 ps-2 text-primary" id="word-{{ $components[$question->answer] }}" ondragstart="drag(event)" draggable="true" style="display: inline-block; border-style: dashed !important; height:30px;">
+                                {{ $components[$question->answer] }}
                             </div>
                         </div>
                     </div>
                     <div class="mt-1 col-6 col-lg-9 row">
-                        <div class="d-inline col-5 border d-flex align-items-center" style="height:45px; width: 140px;" id="word-destination-{{ $components[$question->statement] }}" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                        <div class="d-inline col-7" id="word-definition-{{ $components[$question->statement] }}">{{ $components[$question->statement] }}</div>
+                        <div class="d-inline col-5 border d-flex align-items-center" style="height:45px; width: 140px;" id="word-destination-{{ $question->answer }}" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                        <div class="d-inline col-7" id="word-definition-{{ $question->answer }}">{{ $question->answer }}</div>
                     </div>
                     @if($e->subtype != '99' && $e->subtype != '991')
                         @include('feedback.question', ['feedbacks' => isset($question->feedbacks) ? $question->feedbacks : null])

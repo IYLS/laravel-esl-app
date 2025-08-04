@@ -200,7 +200,7 @@ class TrackingController extends Controller
         $userId = $request->student;
         $user = User::find($userId);
         $userName = $user->name;
-        $currentDate = Carbon::now()->format('d-m-Y h:m');
+        $currentDate = Carbon::now()->format('d-m-Y H:i');
         return Excel::download(new ExportTracking($userId), "$userName - $currentDate.xlsx");
     }
 
