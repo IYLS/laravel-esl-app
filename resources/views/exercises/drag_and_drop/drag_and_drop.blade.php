@@ -15,7 +15,6 @@
                 array_push($definitions, $question->answer);
             }
 
-            shuffle($words);
             shuffle($definitions);
 
             $components = array_combine($words, $definitions);

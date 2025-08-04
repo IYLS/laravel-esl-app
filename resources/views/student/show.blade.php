@@ -589,8 +589,8 @@
 
         correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
         wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
-        correctAnswersItem.innerHTML = `<strong></strong> ${correct_questions}  ✅`;
-        wrongAnswersItem.innerHTML = `<strong></strong> ${wrong_questions}  ❌`;
+        correctAnswersItem.innerHTML = `<strong> ${correct_questions}</strong>  ✅`;
+        wrongAnswersItem.innerHTML = `<strong> ${wrong_questions}</strong>  ❌`;
         correctAnswersItem.hidden = false;
         wrongAnswersItem.hidden = false;
 
@@ -655,8 +655,8 @@
 
         correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
         wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
-        correctAnswersItem.innerHTML = `<strong></strong> ${correct_questions}  ✅`;
-        wrongAnswersItem.innerHTML = `<strong></strong> ${wrong_questions}  ❌`;
+        correctAnswersItem.innerHTML = `<strong> ${correct_questions}</strong>  ✅`;
+        wrongAnswersItem.innerHTML = `<strong> ${wrong_questions}</strong>  ❌`;
         correctAnswersItem.hidden = false;
         wrongAnswersItem.hidden = false;
 
@@ -771,12 +771,11 @@
 
             correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
             wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
-            correctAnswersItem.innerHTML = `<strong></strong> ${correct_questions}  ✅`;
-            wrongAnswersItem.innerHTML = `<strong></strong> ${wrong_questions}  ❌`;
+            correctAnswersItem.innerHTML = `<strong> ${correct_questions}</strong>  ✅`;
+            wrongAnswersItem.innerHTML = `<strong> ${wrong_questions}</strong>  ❌`;
             correctAnswersItem.hidden = false;
             wrongAnswersItem.hidden = false;
         
-
             setFeedbackHidden(false, exercise.id, questions);
         }
 

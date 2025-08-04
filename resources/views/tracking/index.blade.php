@@ -38,7 +38,11 @@
                 @forelse($tracking as $t)
                 <tr class="clickable-table-row" onclick="navigateTo({{ json_encode(route('tracking.show', $t->id)) }})">
                         <td class="text-center">
+                        @if(is_null($t->user))
+                            -
+                        @else
                             {{ $t->user->user_id }}
+                        @endif
                         </td>
                         <td class="text-center">
                             @if(isset($t->exercise->section->unit->title)) {{ $t->exercise->section->unit->title }} @else Not found @endif
@@ -98,9 +102,16 @@
 					Filter
 				</button>
 			</div>
+            <div class="ms-2 me-2 row">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#selectGroupForDataExportModal">
+                    Export data
+                </button>
+            </div>
 		</div>
 	</form>
 </div>
+
+@include('modals.tracking.export_data')
 
 <script>
     function navigateTo(url) {

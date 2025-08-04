@@ -9,6 +9,9 @@ use App\Models\Exercise;
 use App\Models\User;
 use App\Models\Unit;
 use App\Models\Group;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ExportTracking;
+use Carbon\Carbon;
 
 class TrackingController extends Controller
 {
@@ -16,9 +19,8 @@ class TrackingController extends Controller
     {
         $groups = Group::all();
         $students = User::where('role', 'student')->get();
-        
         $tracking = Tracking::all()->sortByDesc('created_at')->take(50);
-        
+
         if ($tracking != null)  {
             return view('tracking.index', compact('tracking', 'groups', 'students'));
         } else if($tracking == null) {
@@ -54,13 +56,13 @@ class TrackingController extends Controller
     {
         $exercise = Exercise::find($exercise_id);
         $tracking = new Tracking;
-        
+
         $intent_number = Tracking::where('exercise_id', $exercise->id)->where('user_id', $user_id)->count();
         $intent_number += 1;
 
         $tracking->intent_number = "$intent_number";
 
-        if($request->time == null) { 
+        if($request->time == null) {
             $tracking->time_spent_in_minutes = "00:00";
         } else {
             $tracking->time_spent_in_minutes = $request->time;
@@ -84,7 +86,7 @@ class TrackingController extends Controller
 
         if($exercise != null and $exercise->exerciseType->underscore_name != 'form')
         {
-            if ($request->responses != null) 
+            if ($request->responses != null)
             {
                 foreach($request->responses as $id=>$response)
                 {
@@ -94,7 +96,7 @@ class TrackingController extends Controller
                     $user_response->question_id = $id;
                     $user_response->tracking_id = $tracking->id;
                     $user_response->save();
-                }        
+                }
             }
         } else {
             foreach($exercise->questions as $question)
@@ -102,12 +104,12 @@ class TrackingController extends Controller
                 // EXCLUSIVE RESPONSES IS FALSE
                 if (!$question->exclusive_responses)
                 {
-                    if ($request->answers != null) 
+                    if ($request->answers != null)
                     {
                         foreach($request->answers as $id=>$answer)
                         {
                             $question_id = $id;
-                            foreach($answer as $a) 
+                            foreach($answer as $a)
                             {
                                 foreach($a as $response)
                                 {
@@ -124,10 +126,10 @@ class TrackingController extends Controller
                 } else {
                     if ($request->answers != null)
                     {
-                        foreach($request->answers as $id=>$answer) 
+                        foreach($request->answers as $id=>$answer)
                         {
                             $question_id = $id;
-                            foreach($answer as $response) 
+                            foreach($answer as $response)
                             {
                                 $user_response = new UserResponse;
                                 $user_response->response = $response;
@@ -140,7 +142,7 @@ class TrackingController extends Controller
                 }
             }
         }
-        
+
 
         if ($exercise->subtype != 99 and $exercise->subtype != 991) {
             $feedback_interactions = array();
@@ -160,7 +162,7 @@ class TrackingController extends Controller
         $help_options_interactions = array();
         array_push($help_options_interactions, "Transcript~$request->transcript_count~$request->transcript_total_time");
         array_push($help_options_interactions, "Listening tips~$request->listening_tips_count~$request->listening_tips_total_time");
-        array_push($help_options_interactions, "Culturalnotes~$request->cultural_notes_count~$request->cultural_notes_total_time");
+        array_push($help_options_interactions, "Cultural notes~$request->cultural_notes_count~$request->cultural_notes_total_time");
         array_push($help_options_interactions, "Glossary~$request->glossary_count~$request->glossary_total_time");
         array_push($help_options_interactions, "Translation~$request->translation_count~$request->translation_total_time");
         array_push($help_options_interactions, "Dictionary~$request->dictionary_count~$request->dictionary_total_time");
@@ -187,10 +189,19 @@ class TrackingController extends Controller
         return response()->json($request);
     }
 
-    public function show($id) 
+    public function show($id)
     {
         $tracking = Tracking::find($id);
         return view('tracking.show', compact('tracking'));
+    }
+
+    public function exportData(Request $request)
+    {
+        $userId = $request->student;
+        $user = User::find($userId);
+        $userName = $user->name;
+        $currentDate = Carbon::now()->format('d-m-Y h:m');
+        return Excel::download(new ExportTracking($userId), "$userName - $currentDate.xlsx");
     }
 
     private function sectionStatus($exercise, $user_id) {
@@ -203,7 +214,7 @@ class TrackingController extends Controller
             $tracking_count = Tracking::where('user_id', $user_id)->where('exercise_id', $exercise->id)->count();
             if($tracking_count >= 1) array_push($completed_exercises, $exercise->id);
         }
-        if(count($exercises) == count($completed_exercises)) 
+        if(count($exercises) == count($completed_exercises))
             return true;
         else {
             return false;
@@ -227,7 +238,7 @@ class TrackingController extends Controller
             if (count($completed_exercises) == count($exercises)) array_push($sections_completed, $section->id);
         }
 
-        if(count($unit->sections) == count($sections_completed)) 
+        if(count($unit->sections) == count($sections_completed))
             return true;
         else {
             return false;
@@ -316,7 +327,7 @@ class TrackingController extends Controller
         } else {
             return "";
         }
-        
+
     }
 
     private function exerciseStatus($exercise, $user_id) {
