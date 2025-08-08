@@ -33,6 +33,8 @@
         editor_selector: "mce-editor",
         menubar: false,
         height: 200,
+        link_context_toolbar: true,
+        relative_urls: false,
         advlist_number_styles: "default,lower-alpha,upper-roman"
     });
 </script>
