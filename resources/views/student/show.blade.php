@@ -366,11 +366,15 @@
     function setFeedbackHidden(value, exercise_id, questions) {
         questions.forEach(function (question) {
             const questionFeedback = document.getElementById(`question-feedback-container-${question.id}`);
-            questionFeedback.hidden = value;
+            if (questionFeedback != null) {
+                questionFeedback.hidden = value;
+            }
         });
 
         var exerciseFeedback = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
-        exerciseFeedback.hidden = value;
+        if (exerciseFeedback != null) {
+            exerciseFeedback.hidden = value;
+        }
     }
 </script>
 
