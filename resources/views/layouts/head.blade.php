@@ -16,27 +16,24 @@
 <!-- FontAwesome Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css">
 
-<link rel="stylesheet" href="{{ asset('all.css') }}" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-
 <script src="{{ asset('jquery/jquery-3.3.1.min.js') }}"></script>
 <script src="{{ asset('jquery/jquery-ui.min.js') }}" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
 
-{{-- TinyMCE Rich Text Editor --}}
-<script src="https://cdn.tiny.cloud/1/22wxdv2g7v8j7kmvusmhk2uclbvw4einqvtkoaujelsv2o6x/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js"></script>
 <script>
-    tinymce.init({
-        selector: 'textarea.mce-editor',
-        plugins: 'advlist lists link',
-        statusbar: false,
-        toolbar: 'undo redo | bold italic underline | link | checklist numlist bullist',
-        mode: "specific_textareas",
-        editor_selector: "mce-editor",
-        menubar: false,
-        height: 200,
-        link_context_toolbar: true,
-        relative_urls: false,
-        advlist_number_styles: "default,lower-alpha,upper-roman"
-    });
+document.addEventListener('DOMContentLoaded', () => {
+  if (!document.querySelector('textarea.mce-editor')) return;
+  tinymce.init({
+    selector: 'textarea.mce-editor',
+    statusbar: false,
+    license_key: 'gpl',
+    plugins: 'advlist lists link',
+    toolbar: 'undo redo | bold italic underline | link | checklist numlist bullist',
+    menubar: false,
+    height: 200,
+    relative_urls: false,
+  });
+});
 </script>
 
 <!-- CSS -->
