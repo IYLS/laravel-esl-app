@@ -312,6 +312,11 @@
     </div>
 </div>
 
+<script>
+  window.unstick = function () {
+    document.getElementById('sticky-bar')?.classList.remove('sticky-top');
+  };
+</script>
 
 {{-- Time spent on exercise --}}
 <script>
@@ -323,7 +328,7 @@
 </script>
 
 <script>
-  function millisToHms(ms, { alwaysShowHours = false } = {}) {
+  function millisToHms(ms) {
     const n = Number(ms);
     if (!Number.isFinite(n) || n < 0) return '00:00';
 
@@ -333,10 +338,9 @@
     const s = totalSeconds % 60;
 
     const base = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    return (h > 0 || alwaysShowHours) ? `${h}:${base}` : base;
+    return (h > 0) ? `${h}:${base}` : base;
   }
 </script>
-
 
 {{-- Drag and Drop --}}
 <script>
@@ -411,7 +415,7 @@
         appendTrackingValues(exercise.id, type);
 
         var currentTime = new Date().getTime();
-        var timeSpent = millisToMinutesAndSeconds(currentTime - window.startTime);
+        var timeSpent = millisToHms(currentTime - window.startTime);
     
         var form = document.getElementById(`${type}_form_${exercise.id}`);
 
@@ -984,37 +988,37 @@
             case "transcript":
                 window.transcript_count += 1;
                 window.transcript_total_time += time_spent;
-                console.log(`Total time spent in Transcript: ${millisToMinutesAndSeconds(window.transcript_total_time)}`);
+                console.log(`Total time spent in Transcript: ${millisToHms(window.transcript_total_time)}`);
                 console.log(`transcript_count: ${window.transcript_count}`);
                 break;
             case "listening_tips":
                 window.listening_tips_count += 1;
                 window.listening_tips_total_time += time_spent;
-                console.log(`Total time spent in Listening Tips: ${millisToMinutesAndSeconds(window.listening_tips_total_time)}`);
+                console.log(`Total time spent in Listening Tips: ${millisToHms(window.listening_tips_total_time)}`);
                 console.log(`listening_tips_count: ${window.listening_tips_count}`);
                 break;
             case "cultural_notes":
                 window.cultural_notes_count += 1;
                 window.cultural_notes_total_time += time_spent;
-                console.log(`Total time spent in Cultural notes: ${millisToMinutesAndSeconds(window.cultural_notes_total_time)}`);
+                console.log(`Total time spent in Cultural notes: ${millisToHms(window.cultural_notes_total_time)}`);
                 console.log(`cultural_notes_count: ${window.cultural_notes_count}`);
                 break;
             case "glossary":
                 window.glossary_count += 1;
                 window.glossary_total_time += time_spent;
-                console.log(`Total time spent in Glossary: ${millisToMinutesAndSeconds(window.glossary_total_time)}`);
+                console.log(`Total time spent in Glossary: ${millisToHms(window.glossary_total_time)}`);
                 console.log(`glossary_count: ${window.glossary_count}`);
                 break;
             case "translation":
                 window.translation_count += 1;
                 window.translation_total_time += time_spent;
-                console.log(`Total time spent in Translation: ${millisToMinutesAndSeconds(window.translation_total_time)}`);
+                console.log(`Total time spent in Translation: ${millisToHms(window.translation_total_time)}`);
                 console.log(`translation_count: ${window.translation_count}`);
                 break;
             case "dictionary":
                 window.dictionary_count += 1;
                 window.dictionary_total_time += time_spent;
-                console.log(`Total time spent in Dictionary: ${millisToMinutesAndSeconds(window.dictionary_total_time)}`);
+                console.log(`Total time spent in Dictionary: ${millisToHms(window.dictionary_total_time)}`);
                 console.log(`dictionary_count: ${window.dictionary_count}`);
                 break;
         }
@@ -1061,7 +1065,7 @@
 
         var transcript_total_time_input = document.createElement('input');
         transcript_total_time_input.setAttribute('name', 'transcript_total_time');
-        transcript_total_time_input.setAttribute('value', `${millisToMinutesAndSeconds(transcript_total_time)}`);
+        transcript_total_time_input.setAttribute('value', `${millisToHms(transcript_total_time)}`);
         transcript_total_time_input.hidden = true;
 
         var listening_tips_count_input = document.createElement('input');
@@ -1071,7 +1075,7 @@
 
         var listening_tips_total_time_input = document.createElement('input');
         listening_tips_total_time_input.setAttribute('name', 'listening_tips_total_time');
-        listening_tips_total_time_input.setAttribute('value', `${millisToMinutesAndSeconds(listening_tips_total_time)}`);
+        listening_tips_total_time_input.setAttribute('value', `${millisToHms(listening_tips_total_time)}`);
         listening_tips_total_time_input.hidden = true;
 
         var cultural_notes_count_input = document.createElement('input');
@@ -1081,7 +1085,7 @@
 
         var cultural_notes_total_time_input = document.createElement('input');
         cultural_notes_total_time_input.setAttribute('name', 'cultural_notes_total_time');
-        cultural_notes_total_time_input.setAttribute('value', `${millisToMinutesAndSeconds(cultural_notes_total_time)}`);
+        cultural_notes_total_time_input.setAttribute('value', `${millisToHms(cultural_notes_total_time)}`);
         cultural_notes_total_time_input.hidden = true;
 
         var glossary_count_input = document.createElement('input');
@@ -1091,7 +1095,7 @@
 
         var glossary_total_time_input = document.createElement('input');
         glossary_total_time_input.setAttribute('name', 'glossary_total_time');
-        glossary_total_time_input.setAttribute('value', `${millisToMinutesAndSeconds(glossary_total_time)}`);
+        glossary_total_time_input.setAttribute('value', `${millisToHms(glossary_total_time)}`);
         glossary_total_time_input.hidden = true;
 
         var translation_count_input = document.createElement('input');
@@ -1101,7 +1105,7 @@
 
         var translation_total_time_input = document.createElement('input');
         translation_total_time_input.setAttribute('name', 'translation_total_time');
-        translation_total_time_input.setAttribute('value', `${millisToMinutesAndSeconds(translation_total_time)}`);
+        translation_total_time_input.setAttribute('value', `${millisToHms(translation_total_time)}`);
         translation_total_time_input.hidden = true;
 
         var dictionary_count_input = document.createElement('input');
@@ -1111,7 +1115,7 @@
 
         var dictionary_total_time_input = document.createElement('input');
         dictionary_total_time_input.setAttribute('name', 'dictionary_total_time');
-        dictionary_total_time_input.setAttribute('value', `${millisToMinutesAndSeconds(dictionary_total_time)}`);
+        dictionary_total_time_input.setAttribute('value', `${millisToHms(dictionary_total_time)}`);
         dictionary_total_time_input.hidden = true;
 
         current_form.appendChild(transcript_count_input);
