@@ -322,14 +322,21 @@
     }
 </script>
 
-{{-- Helper function to transform milliseconds to minutes and seconds format --}}
 <script>
-    function millisToMinutesAndSeconds(millis) {
-        var minutes = Math.floor(millis / 60000);
-        var seconds = ((millis % 60000) / 1000).toFixed(0);
-        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-    }
+  function millisToHms(ms, { alwaysShowHours = false } = {}) {
+    const n = Number(ms);
+    if (!Number.isFinite(n) || n < 0) return '00:00';
+
+    const totalSeconds = Math.floor(n / 1000);         // no rounding to 60
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = totalSeconds % 60;
+
+    const base = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    return (h > 0 || alwaysShowHours) ? `${h}:${base}` : base;
+  }
 </script>
+
 
 {{-- Drag and Drop --}}
 <script>
@@ -1124,7 +1131,6 @@
 
         current_form.appendChild(dictionary_count_input);
         current_form.appendChild(dictionary_total_time_input);
-
     }
 </script>
 
