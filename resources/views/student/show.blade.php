@@ -3,39 +3,6 @@
 
 @section('title', 'Student Module')
 
-<style>
-    .strikable { text-decoration: line-through }
-    .not-strikable { text-decoration: none }
-    .modal-backdrop { 
-        opacity: 0 !important;
-        position: unset !important;
-    }
-    .clickable {
-        cursor: pointer !important;
-        background-color: white;
-    }
-
-    .meta {
-        color: green !important;
-        background-color: #f8f9fa !important;
-    }
-
-    .meta:active {
-        color: #f8f9fa !important;
-        background-color: #198754 !important;
-    }
-
-    .meta:focus {
-        color: #f8f9fa !important;
-        background-color: #198754 !important;
-    }
-
-    .meta.active {
-        color: #f8f9fa !important;
-        background-color: #198754 !important;
-    }
-</style>
-
 <div class="p-4 row w-100 h-100 col-12">
     <h5 class="pl-2">{{ $unit->title }}</h5>
     <div class="row sticky-top p-1" id="sticky-bar" style="background-color: white;">
@@ -313,33 +280,27 @@
 </div>
 
 <script>
-  window.unstick = function () {
-    document.getElementById('sticky-bar')?.classList.remove('sticky-top');
-  };
-</script>
+    window.unstick = function () {
+        document.getElementById('sticky-bar')?.classList.remove('sticky-top');
+    };
 
-{{-- Time spent on exercise --}}
-<script>
+    // Time spent on exercise
     var startTime;
-
     function startTimer() {
         window.startTime = new Date().getTime();
     }
-</script>
 
-<script>
-  function millisToHms(ms) {
-    const n = Number(ms);
-    if (!Number.isFinite(n) || n < 0) return '00:00';
+    function millisToHms(ms) {
+        const n = Number(ms);
+        if (!Number.isFinite(n) || n < 0) return '00:00';
 
-    const totalSeconds = Math.floor(n / 1000);         // no rounding to 60
-    const h = Math.floor(totalSeconds / 3600);
-    const m = Math.floor((totalSeconds % 3600) / 60);
-    const s = totalSeconds % 60;
-
-    const base = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    return (h > 0) ? `${h}:${base}` : base;
-  }
+        const totalSeconds = Math.floor(n / 1000);
+        const h = Math.floor(totalSeconds / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        const s = totalSeconds % 60;
+        const base = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        return (h > 0) ? `${h}:${base}` : base;
+    }
 </script>
 
 {{-- Drag and Drop --}}
