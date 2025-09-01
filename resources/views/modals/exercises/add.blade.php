@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('exercises.store', [$section->unit->id, $type, $section_id]) }}" method="POST">
+                <form enctype="multipart/form-data" action="{{ route('exercises.store', [$section->unit->id, $type, $section_id]) }}" method="POST">
                     @csrf
                     <input id="title" name="title" type="text" class="form-control" placeholder="Title">
                     <br>

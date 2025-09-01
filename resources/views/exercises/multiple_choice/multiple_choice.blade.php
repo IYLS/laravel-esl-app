@@ -9,8 +9,8 @@
             <div class="alternatives-list">
                 @foreach($question->alternatives as $a)
                 <div class="d-flex align-items-center mb-2">
-                    <span class="me-3">{{ chr(97 + $loop->index) }}.</span>
                     <input class="form-check-input multiple-choice-{{ $e->id }}-check me-3" type="radio" name="question-{{ $question->id }}" id="{{ $a->id }}" value="{{ $a->title }}">
+                    <span class="me-3">{{ chr(97 + $loop->index) }}.</span>
                     <label class="form-check-label mb-0" for="{{ $a->id }}">{{ $a->title }}</label>
                 </div>
                 @endforeach
