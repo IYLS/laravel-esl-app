@@ -6,16 +6,15 @@
             {!! $question->statement !!}
         </div>
         <div class="mt-2">
-            <ol type="a" class="list-group">
+            <div class="alternatives-list">
                 @foreach($question->alternatives as $a)
-                <li class="list-group-item">
-                    <div class="form-check">
-                        <input class="form-check-input multiple-choice-{{ $e->id }}-check" type="radio" name="question-{{ $question->id }}" id="{{ $a->id }}" value="{{ $a->title }}">
-                        <label class="form-check-label" for="{{ $a->id }}">{{ $a->title }}</label>
-                    </div>
-                </li>
+                <div class="d-flex align-items-center mb-2">
+                    <span class="me-3">{{ chr(97 + $loop->index) }}.</span>
+                    <input class="form-check-input multiple-choice-{{ $e->id }}-check me-3" type="radio" name="question-{{ $question->id }}" id="{{ $a->id }}" value="{{ $a->title }}">
+                    <label class="form-check-label mb-0" for="{{ $a->id }}">{{ $a->title }}</label>
+                </div>
                 @endforeach
-            </ol>
+            </div>
         </div>
         @if($e->subtype != '99' && $e->subtype != '991')
             @include('feedback.question', ['feedbacks' => $question->feedbacks])
