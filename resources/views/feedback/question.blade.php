@@ -51,20 +51,20 @@
 
             @endif
 
-            @if($directive)
-                {{-- Directive --}}
-                <li class="nav-item" role="presentation">
+            @if($explanatory)
+                {{-- Explanatory --}}
+                <li class="nav-item show-on-incorrect-{{ $question->id }}" role="presentation">
                     <button
                         type="button"
-                        class="nav-link @if($first == 'directive') active @endif"
-                        id="directive-{{ $question->id }}-tab"
+                        class="nav-link @if($first == 'explanatory') active @endif"
+                        id="explanatory-{{ $question->id }}-tab"
                         data-bs-toggle="tab"
-                        data-bs-target="#directive-{{ $question->id }}"
-                        aria-controls="directive-{{ $question->id }}"
+                        data-bs-target="#explanatory-{{ $question->id }}"
+                        aria-controls="explanatory-{{ $question->id }}"
                         role="tab"
-                        onclick="onFeedbackButtonPressed({{ json_encode($question->id) }}, 'directive');"
+                        onclick="onFeedbackButtonPressed({{ json_encode($question->id) }}, 'explanatory');"
                     >
-                        🧭
+                        ❓
                     </button>
                 </li>
             @endif
@@ -87,20 +87,20 @@
                 </li>
             @endif
 
-            @if($explanatory)
-                {{-- Explanatory --}}
-                <li class="nav-item show-on-incorrect-{{ $question->id }}" role="presentation">
+            @if($directive)
+                {{-- Directive --}}
+                <li class="nav-item" role="presentation">
                     <button
                         type="button"
-                        class="nav-link @if($first == 'explanatory') active @endif"
-                        id="explanatory-{{ $question->id }}-tab"
+                        class="nav-link @if($first == 'directive') active @endif"
+                        id="directive-{{ $question->id }}-tab"
                         data-bs-toggle="tab"
-                        data-bs-target="#explanatory-{{ $question->id }}"
-                        aria-controls="explanatory-{{ $question->id }}"
+                        data-bs-target="#directive-{{ $question->id }}"
+                        aria-controls="directive-{{ $question->id }}"
                         role="tab"
-                        onclick="onFeedbackButtonPressed({{ json_encode($question->id) }}, 'explanatory');"
+                        onclick="onFeedbackButtonPressed({{ json_encode($question->id) }}, 'directive');"
                     >
-                        ❓
+                        🧭
                     </button>
                 </li>
             @endif

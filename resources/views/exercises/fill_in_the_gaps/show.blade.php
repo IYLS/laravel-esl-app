@@ -83,18 +83,13 @@
                             @include('modals.questions.edit', ['button_target_id' => "edit_question_$question->id", 'alternatives' => $question->alternatives])
                         </div>
                     @elseif($exercise->subtype == 2)
-                        @php $statements = explode(";;", $question->statement) @endphp
+                        @php 
+                        $result = str_replace(";;", "<strong class='text-primary border-primary ms-2 me-2 d-inline'>" . $question->answer . "</strong>", $question->statement);
+                        @endphp
                         <div class="col-12 col-md-10 d-flex">
                             <p>{{ $question_number }}. &nbsp;</p>
 
-                            {{ $question->statement }}
-
-                            {{-- FIXME: REVISAR POR QUE TIRA ERROR UNDEFINED ARRAY KEY 1 Al guardar el primer ejercicio de fill in the gaps --}}
-                            {{-- <p style="height: 20px;"> {{ $statements[0] }} </p>
-                            
-                            <input style="height: 20px; width: 100px; text-align: center; border-bottom: solid 0.7px lightgrey; border-top: none; border-left: none; border-right: none;" class="ms-2 me-2 text-primary fw-bold" type="text" value="{{ $question->answer }}" disabled>
-
-                            <p style="height: 20px;">{{ $statements[1] }}</p> --}}
+                            {!! $result !!}
                         </div>
                         <div class="col-12 col-md-2 mt-5 mt-md-0 d-flex justify-content-end">
                             <button type="button" id="delete_question_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_question_{{ $question->id }}">
