@@ -54,7 +54,7 @@
                             @if(isset($t->exercise)) {{ $t->exercise->exerciseType->name . " - " . $t->exercise->section->name }} @else Not found @endif
                         </td>
                         <td class="text-center">
-                            {{ date('d/m/Y - h:i:s', strtotime($t->created_at)); }}
+                            {{ date('d-m-Y - H:i:s', strtotime($t->created_at)); }}
                         </td>
                         <td class="text-center">
                             <div class="btn rounded-cirlce btn-link">

@@ -649,6 +649,8 @@
 <script>
     function getOpenEndedResults(questions, exercise) {
         var responses = [];
+        var questions_number = 0;
+        
         questions.forEach(function (question) {
             var answers = document.getElementsByName(`answer-${question.id}`);
             answers.forEach(function (answer) {
@@ -658,6 +660,8 @@
             if (document.getElementById(`question-${question.id}-feedback-correct`) != null) {
                 document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
             }
+
+            questions_number = answers.length;
         });
 
         if (document.getElementsByClassName(`show-on-all-correct-${exercise.id}`).length != 0) {
