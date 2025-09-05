@@ -650,6 +650,7 @@
     function getOpenEndedResults(questions, exercise) {
         var responses = [];
         var questions_number = 0;
+        var correct_questions = 0;
         
         questions.forEach(function (question) {
             var answers = document.getElementsByName(`answer-${question.id}`);
@@ -662,6 +663,7 @@
             }
 
             questions_number = answers.length;
+            correct_questions = questions_number;
         });
 
         if (document.getElementsByClassName(`show-on-all-correct-${exercise.id}`).length != 0) {
