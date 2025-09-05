@@ -32,6 +32,24 @@
     @if(isset($feedbacks) and count($feedbacks) != 0)
         <ul class="nav nav-tabs" id="questionFeedbackTabs" role="tablist">
 
+            @if($directive)
+                {{-- Directive --}}
+                <li class="nav-item" role="presentation">
+                    <button
+                        type="button"
+                        class="nav-link @if($first == 'directive') active @endif"
+                        id="directive-{{ $question->id }}-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#directive-{{ $question->id }}"
+                        aria-controls="directive-{{ $question->id }}"
+                        role="tab"
+                        onclick="onFeedbackButtonPressed({{ json_encode($question->id) }}, 'directive');"
+                    >
+                        🧭
+                    </button>
+                </li>
+            @endif
+
             @if($elaborative)
                 {{-- Elaborative --}}
                 <li class="nav-item" role="presentation">
@@ -83,24 +101,6 @@
                         onclick="onFeedbackButtonPressed({{ json_encode($question->id) }}, 'knowledge');"
                     >
                         ✅
-                    </button>
-                </li>
-            @endif
-
-            @if($directive)
-                {{-- Directive --}}
-                <li class="nav-item" role="presentation">
-                    <button
-                        type="button"
-                        class="nav-link @if($first == 'directive') active @endif"
-                        id="directive-{{ $question->id }}-tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#directive-{{ $question->id }}"
-                        aria-controls="directive-{{ $question->id }}"
-                        role="tab"
-                        onclick="onFeedbackButtonPressed({{ json_encode($question->id) }}, 'directive');"
-                    >
-                        🧭
                     </button>
                 </li>
             @endif
