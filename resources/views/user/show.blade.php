@@ -32,7 +32,7 @@
                     <tr>
                         <td>Name</td>
                         <td>
-                            <input id="name" name="name" class="form-control" type="text" disabled value={{ $user->name }}>
+                            <input id="name" name="name" class="form-control" type="text" disabled value="{{ $user->name }}">
                         </td>
                     </tr>
                     <tr>
