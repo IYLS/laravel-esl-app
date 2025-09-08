@@ -55,63 +55,83 @@ class TrackingController extends Controller
     public function store(Request $request, $exercise_id, $user_id)
     {
         $exercise = Exercise::find($exercise_id);
-        $tracking = new Tracking;
 
-        $intent_number = Tracking::where('exercise_id', $exercise->id)->where('user_id', $user_id)->count();
-        $intent_number += 1;
+        if($exercise->exercise_type_id != 5) {
+            $tracking = new Tracking;
 
-        $tracking->intent_number = "$intent_number";
-
-        if($request->time == null) {
-            $tracking->time_spent_in_minutes = "00:00";
-        } else {
-            $tracking->time_spent_in_minutes = $request->time;
-        }
-
-        if($request->correct == null) {
-            $tracking->correct_answers = "0";
-        } else {
-            $tracking->correct_answers = $request->correct;
-        }
-
-        if($request->wrong == null) {
-            $tracking->wrong_answers = "0";
-        } else {
-            $tracking->wrong_answers = $request->wrong;
-        }
-
-        $tracking->exercise_id = $exercise_id;
-        $tracking->user_id = $user_id;
-        $tracking->save();
-
-        if($exercise != null and $exercise->exerciseType->underscore_name != 'form')
-        {
-            if ($request->responses != null)
-            {
-                foreach($request->responses as $id=>$response)
-                {
-                    $user_response = new UserResponse;
-                    if($response == null) $response = "";
-                    $user_response->response = $response;
-                    $user_response->question_id = $id;
-                    $user_response->tracking_id = $tracking->id;
-                    $user_response->save();
-                }
+            $intent_number = Tracking::where('exercise_id', $exercise->id)->where('user_id', $user_id)->count();
+            $intent_number += 1;
+    
+            $tracking->intent_number = "$intent_number";
+    
+            if($request->time == null) {
+                $tracking->time_spent_in_minutes = "00:00";
+            } else {
+                $tracking->time_spent_in_minutes = $request->time;
             }
-        } else {
-            foreach($exercise->questions as $question)
+    
+            if($request->correct == null) {
+                $tracking->correct_answers = "0";
+            } else {
+                $tracking->correct_answers = $request->correct;
+            }
+    
+            if($request->wrong == null) {
+                $tracking->wrong_answers = "0";
+            } else {
+                $tracking->wrong_answers = $request->wrong;
+            }
+    
+            $tracking->exercise_id = $exercise_id;
+            $tracking->user_id = $user_id;
+            $tracking->save();
+    
+            if($exercise != null and $exercise->exerciseType->underscore_name != 'form')
             {
-                // EXCLUSIVE RESPONSES IS FALSE
-                if (!$question->exclusive_responses)
+                if ($request->responses != null)
                 {
-                    if ($request->answers != null)
+                    foreach($request->responses as $id=>$response)
                     {
-                        foreach($request->answers as $id=>$answer)
+                        $user_response = new UserResponse;
+                        if($response == null) $response = "";
+                        $user_response->response = $response;
+                        $user_response->question_id = $id;
+                        $user_response->tracking_id = $tracking->id;
+                        $user_response->save();
+                    }
+                }
+            } else {
+                foreach($exercise->questions as $question)
+                {
+                    // EXCLUSIVE RESPONSES IS FALSE
+                    if (!$question->exclusive_responses)
+                    {
+                        if ($request->answers != null)
                         {
-                            $question_id = $id;
-                            foreach($answer as $a)
+                            foreach($request->answers as $id=>$answer)
                             {
-                                foreach($a as $response)
+                                $question_id = $id;
+                                foreach($answer as $a)
+                                {
+                                    foreach($a as $response)
+                                    {
+                                        $user_response = new UserResponse;
+                                        $user_response->response = $response;
+                                        $user_response->question_id = $question_id;
+                                        $user_response->tracking_id = $tracking->id;
+                                        $user_response->save();
+                                    }
+                                }
+                            }
+                        }
+                    // FIXME: EXCLUSIVE RESPONSES IS TRUE
+                    } else {
+                        if ($request->answers != null)
+                        {
+                            foreach($request->answers as $id=>$answer)
+                            {
+                                $question_id = $id;
+                                foreach($answer as $response)
                                 {
                                     $user_response = new UserResponse;
                                     $user_response->response = $response;
@@ -122,54 +142,37 @@ class TrackingController extends Controller
                             }
                         }
                     }
-                // FIXME: EXCLUSIVE RESPONSES IS TRUE
-                } else {
-                    if ($request->answers != null)
-                    {
-                        foreach($request->answers as $id=>$answer)
-                        {
-                            $question_id = $id;
-                            foreach($answer as $response)
-                            {
-                                $user_response = new UserResponse;
-                                $user_response->response = $response;
-                                $user_response->question_id = $question_id;
-                                $user_response->tracking_id = $tracking->id;
-                                $user_response->save();
-                            }
-                        }
-                    }
                 }
             }
-        }
-
-
-        if ($exercise->subtype != 99 and $exercise->subtype != 991) {
-            $feedback_interactions = array();
-            foreach($exercise->questions as $index=>$question) {
-                $directive_count = $request->directive["$question->id"];
-                $explanatory_count = $request->explanatory["$question->id"];
-                $elaborative_count = $request->elaborative["$question->id"];
-                $knowledge_count = $request->knowledge["$question->id"];
-
-                $question_number = $index+1;
-                array_push($feedback_interactions, "$question_number:Directive~$directive_count,Explanatory~$explanatory_count,Elaborative~$elaborative_count,Knowledge of Correct Response~$knowledge_count");
+    
+    
+            if ($exercise->subtype != 99 and $exercise->subtype != 991) {
+                $feedback_interactions = array();
+                foreach($exercise->questions as $index=>$question) {
+                    $directive_count = $request->directive["$question->id"];
+                    $explanatory_count = $request->explanatory["$question->id"];
+                    $elaborative_count = $request->elaborative["$question->id"];
+                    $knowledge_count = $request->knowledge["$question->id"];
+    
+                    $question_number = $index+1;
+                    array_push($feedback_interactions, "$question_number:Directive~$directive_count,Explanatory~$explanatory_count,Elaborative~$elaborative_count,Knowledge of Correct Response~$knowledge_count");
+                }
+    
+                $tracking->feedback = implode(';', $feedback_interactions);
             }
-
-            $tracking->feedback = implode(';', $feedback_interactions);
+    
+            $help_options_interactions = array();
+            array_push($help_options_interactions, "Transcript~$request->transcript_count~$request->transcript_total_time");
+            array_push($help_options_interactions, "Listening tips~$request->listening_tips_count~$request->listening_tips_total_time");
+            array_push($help_options_interactions, "Cultural notes~$request->cultural_notes_count~$request->cultural_notes_total_time");
+            array_push($help_options_interactions, "Glossary~$request->glossary_count~$request->glossary_total_time");
+            array_push($help_options_interactions, "Translation~$request->translation_count~$request->translation_total_time");
+            array_push($help_options_interactions, "Dictionary~$request->dictionary_count~$request->dictionary_total_time");
+    
+            $tracking->help_options = implode(",", $help_options_interactions);
+    
+            $tracking->save();
         }
-
-        $help_options_interactions = array();
-        array_push($help_options_interactions, "Transcript~$request->transcript_count~$request->transcript_total_time");
-        array_push($help_options_interactions, "Listening tips~$request->listening_tips_count~$request->listening_tips_total_time");
-        array_push($help_options_interactions, "Cultural notes~$request->cultural_notes_count~$request->cultural_notes_total_time");
-        array_push($help_options_interactions, "Glossary~$request->glossary_count~$request->glossary_total_time");
-        array_push($help_options_interactions, "Translation~$request->translation_count~$request->translation_total_time");
-        array_push($help_options_interactions, "Dictionary~$request->dictionary_count~$request->dictionary_total_time");
-
-        $tracking->help_options = implode(",", $help_options_interactions);
-
-        $tracking->save();
 
         $message = '🎉 Submission completed successfully! 🎉';
         if($exercise->feedbacks->where('feedback_type_id', 1)->first() != null) {

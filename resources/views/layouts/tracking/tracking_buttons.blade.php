@@ -1,12 +1,12 @@
 <div class="row">
-    @if($subtype != '99' && $subtype != '991')
+    @if(isset($subtype) && $subtype != '99' && $subtype != '991')
         @include('feedback.exercise')
     @endif
 </div>
 
 <div class="d-flex">
     @php $url = route("tracking.store", ["$e->id", "$user->id"]); @endphp
-    @if($subtype != '99' && $subtype != '991')
+    @if(isset($subtype) &&$subtype != '99' && $subtype != '991')
         <div class="m-1">
             <button class="btn btn-primary btn-sm" type="button"
             onclick="checkAction({{ json_encode($e) }}, {{ json_encode($e->questions) }}, {{ json_encode($e->exerciseType->underscore_name) }}, {{ json_encode($e->id) }}, {{ json_encode($user->id) }}, {{ json_encode($url) }});"
@@ -19,9 +19,15 @@
         </div>
     @endif
 
-    <div class="m-1">
-        <button class="btn btn-primary btn-sm" id="exercise-{{ $e->id }}-check-btn" onclick='checkAction({{ json_encode($e) }}, {{ json_encode($e->questions) }}, {{ json_encode($e->exerciseType->underscore_name) }}, {{ json_encode($e->id) }}, {{ json_encode($user->id) }}, {{ json_encode($url) }});  toggleTryAgainButton("enabled",{{ json_encode($e->id) }});' type="button">Check</button>
-    </div>
+    @if(isset($type) && $type == 'voice_recognition')
+        <div class="m-1">
+            <button class="btn btn-primary btn-sm" id="exercise-{{ $e->id }}-check-btn" onclick='checkAction({{ json_encode($e) }}, {{ json_encode($e->questions) }}, {{ json_encode("voice_recognition") }}, {{ json_encode($e->id) }}, {{ json_encode($user->id) }}, {{ json_encode($url) }});' type="button">Check</button>
+        </div>
+    @else
+        <div class="m-1">
+            <button class="btn btn-primary btn-sm" id="exercise-{{ $e->id }}-check-btn" onclick='checkAction({{ json_encode($e) }}, {{ json_encode($e->questions) }}, {{ json_encode($e->exerciseType->underscore_name) }}, {{ json_encode($e->id) }}, {{ json_encode($user->id) }}, {{ json_encode($url) }});  toggleTryAgainButton("enabled",{{ json_encode($e->id) }});' type="button">Check</button>
+        </div>
+    @endif
 
     @if($e->exerciseType->underscore_name == 'multiple_choice')
         <div class="m-1">

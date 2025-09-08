@@ -856,7 +856,9 @@
     }
 
     function checkAction(exercise, questions, type, exercise_id, user_id, route) {
-        getResponseData(questions, exercise, type);
+        if(type != 'voice_recognition') {
+            getResponseData(questions, exercise, type);
+        }
 
         event.preventDefault();
         $.ajax({
