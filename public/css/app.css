@@ -11,19 +11,6 @@ select optgroup {
     font-weight: normal;
 }
 
-ol {
-    counter-reset: list;
-}
-
-ol > li {
-    list-style: none;
-}
-
-ol > li:before {
-    content: counter(list, lower-alpha) ". ";
-    counter-increment: list;
-}
-
 .strikable {
     text-decoration: line-through;
 }
