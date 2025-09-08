@@ -37,7 +37,7 @@
     </div>
 
     {{-- Exercises and content section --}}
-    <div class="col-12 col-xl-8 bg-light mt-2 p-3 rounded shadow" id="top_student_area">
+    <div class="col-12 col-xl-8 bg-light mt-2 p-3 rounded shadow overflow-auto" id="top_student_area" style="max-height: calc(100vh - 120px);">
         <ul class="nav nav-tabs" id="sectionsTabs" role="tablist">
             @foreach($unit->sections->sortBy('position') as $section)
                 @php 
