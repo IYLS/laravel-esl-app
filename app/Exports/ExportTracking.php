@@ -94,13 +94,14 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
         $interactionTimes = array();
         $totalCorrectAnswersOnPlatform = 0;
 
+        $totalSecondsOnPlatform = 0;
         foreach($trackings as $tracking)
         {
-            array_push($interactionTimes, $tracking->time_spent_in_minutes);
+            $totalSecondsOnPlatform += (int)$tracking->time_spent_in_seconds;
             $totalCorrectAnswersOnPlatform += intval($tracking->correct_answers);
         }
 
-        $totalTimeSpentOnPlatform = $this->sumTime($interactionTimes);
+        $totalTimeSpentOnPlatform = $this->formatSecondsToTime($totalSecondsOnPlatform);
         $completedUnitsCount = $units->count();
 
         return [
@@ -121,99 +122,81 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
             $unitId = $unit->id;
             $unitTrackings = Tracking::whereHas('exercise.section.unit', function ($query) use ($unitId) {
                 $query->where('units.id', $unitId);
-            })->where('user_id', "$userId")->get();
+            })->where('user_id', "$userId")->with('helpUsage')->get();
 
-            $timeSpentInUnit = array();
+            $timeSpentInUnit = 0; // Ahora es un entero (segundos totales)
             $correctAnswersInUnit = 0;
 
-            // Indicadores de opciones de ayuda por unidad
+            // Indicadores de opciones de ayuda por unidad (ahora en segundos)
             $transcriptInteractionsUnit = 0;
-            $transcriptTimesUnit = array();
+            $transcriptTimesUnit = 0;
             $tipsInteractionsUnit = 0;
-            $tipsTimesUnit = array();
+            $tipsTimesUnit = 0;
             $culturalNotesInteractionsUnit = 0;
-            $culturalNotesTimesUnit = array();
+            $culturalNotesTimesUnit = 0;
             $glossaryInteractionsUnit = 0;
-            $glossaryTimesUnit = array();
+            $glossaryTimesUnit = 0;
             $translationInteractionsUnit = 0;
-            $translationTimesUnit = array();
+            $translationTimesUnit = 0;
             $dictionaryInteractionsUnit = 0;
-            $dictionaryTimesUnit = array();
+            $dictionaryTimesUnit = 0;
 
             foreach($unitTrackings as $tracking)
             {
-                $helpOptions = explode(",", $tracking->help_options);
+                // Leer help usage desde la nueva tabla
+                foreach($tracking->helpUsage as $helpUsage) {
+                    $helpType = $helpUsage->help_type;
+                    $count = $helpUsage->open_count;
+                    $time = $helpUsage->time_spent_seconds;
 
-                if ($helpOptions != null and count($helpOptions) == 6) {
-                    $transcriptData = explode("~", $helpOptions[0]);
-                    $tipsData = explode("~", $helpOptions[1]);
-                    $culturalNotesData = explode("~", $helpOptions[2]);
-                    $glossaryData = explode("~", $helpOptions[3]);
-                    $translationData = explode("~", $helpOptions[4]);
-                    $dictionaryData = explode("~", $helpOptions[5]);
-
-                    if (count($transcriptData) == 3) {
-                        $transcriptInteractions = $transcriptData[1];
-                        $transcriptTime = $transcriptData[2];
-                        array_push($transcriptTimesUnit, $transcriptTime);
-                        $transcriptInteractionsUnit += intval($transcriptInteractions);
-                    }
-
-                    if (count($tipsData) == 3) {
-                        $tipsInteractions = $tipsData[1];
-                        $tipsTime = $tipsData[2];
-                        array_push($tipsTimesUnit, $tipsTime);
-                        $tipsInteractionsUnit += intval($tipsInteractions);
-                    }
-
-                    if (count($culturalNotesData) == 3) {
-                        $culturalNotesInteractions = $culturalNotesData[1];
-                        $culturalNotesTime = $culturalNotesData[2];
-                        array_push($culturalNotesTimesUnit, $culturalNotesTime);
-                        $culturalNotesInteractionsUnit += intval($culturalNotesInteractions);
-                    }
-
-                    if (count($glossaryData) == 3) {
-                        $glossaryInteractions = $glossaryData[1];
-                        $glossaryTime = $glossaryData[2];
-                        array_push($glossaryTimesUnit, $glossaryTime);
-                        $glossaryInteractionsUnit += intval($glossaryInteractions);
-                    }
-
-                    if (count($translationData) == 3) {
-                        $translationInteractions = $translationData[1];
-                        $translationTime = $translationData[2];
-                        array_push($translationTimesUnit, $translationTime);
-                        $translationInteractionsUnit += intval($translationInteractions);
-                    }
-
-                    if (count($dictionaryData) == 3) {
-                        $dictionaryInteractions = $dictionaryData[1];
-                        $dictionaryTime = $dictionaryData[2];
-                        array_push($dictionaryTimesUnit, $dictionaryTime);
-                        $dictionaryInteractionsUnit += intval($dictionaryInteractions);
+                    switch ($helpType) {
+                        case 'Transcript':
+                            $transcriptTimesUnit += (int)$time;
+                            $transcriptInteractionsUnit += $count;
+                            break;
+                        case 'Listening tips':
+                            $tipsTimesUnit += (int)$time;
+                            $tipsInteractionsUnit += $count;
+                            break;
+                        case 'Cultural notes':
+                            $culturalNotesTimesUnit += (int)$time;
+                            $culturalNotesInteractionsUnit += $count;
+                            break;
+                        case 'Glossary':
+                            $glossaryTimesUnit += (int)$time;
+                            $glossaryInteractionsUnit += $count;
+                            break;
+                        case 'Translation':
+                            $translationTimesUnit += (int)$time;
+                            $translationInteractionsUnit += $count;
+                            break;
+                        case 'Dictionary':
+                            $dictionaryTimesUnit += (int)$time;
+                            $dictionaryInteractionsUnit += $count;
+                            break;
                     }
                 }
 
                 $correctAnswersInUnit += intval($tracking->correct_answers);
-                array_push($timeSpentInUnit, $tracking->time_spent_in_minutes);
+                // Acumular segundos directamente
+                $timeSpentInUnit += (int)$tracking->time_spent_in_seconds;
             }
 
             $unitData = [
-                "timeSpentInUnit" => $this->sumTime($timeSpentInUnit),
+                "timeSpentInUnit" => $this->formatSecondsToTime($timeSpentInUnit),
                 "rightAnswersAmount" => "$correctAnswersInUnit",
                 "transcriptInteractions" => "$transcriptInteractionsUnit",
-                "transcriptTime" => $this->sumTime($transcriptTimesUnit),
+                "transcriptTime" => $this->formatSecondsToTime($transcriptTimesUnit),
                 "tipsInteractions" => "$tipsInteractionsUnit",
-                "tipsTime" => $this->sumTime($tipsTimesUnit),
+                "tipsTime" => $this->formatSecondsToTime($tipsTimesUnit),
                 "culturalNotesInteractions" => "$culturalNotesInteractionsUnit",
-                "culturalNotesTime" => $this->sumTime($culturalNotesTimesUnit),
+                "culturalNotesTime" => $this->formatSecondsToTime($culturalNotesTimesUnit),
                 "glossaryInteractions" => "$glossaryInteractionsUnit",
-                "glossaryTime" => $this->sumTime($glossaryTimesUnit),
+                "glossaryTime" => $this->formatSecondsToTime($glossaryTimesUnit),
                 "translationInteractions" => "$translationInteractionsUnit",
-                "translationTime" => $this->sumTime($translationTimesUnit),
+                "translationTime" => $this->formatSecondsToTime($translationTimesUnit),
                 "dictionaryInteractions" => "$dictionaryInteractionsUnit",
-                "dictionaryTime" => $this->sumTime($dictionaryTimesUnit),
+                "dictionaryTime" => $this->formatSecondsToTime($dictionaryTimesUnit),
             ];
 
             array_push($unitsIndicators, $unitData);
@@ -222,51 +205,26 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
         return $unitsIndicators;
     }
 
-    private function sumTime($times): string
+    /**
+     * Formatea segundos a formato "HH:MM:SS" o "MM:SS" para Excel
+     */
+    private function formatSecondsToTime($seconds): string
     {
-        $accumulatedHours = 0;
-        $accumulatedMinutes = 0;
-
-        foreach($times as $time) {
-            $timeExploded = explode(":", $time);
-
-            $hours = $timeExploded[0];
-            $minutes = $timeExploded[1];
-
-            if ($hours != "NaN" && $minutes != "NaN") {
-                $hours = intval($hours);
-                $minutes = intval($minutes);
-
-                $accumulatedHours += $hours;
-                $accumulatedMinutes += $minutes;
-            } else {
-                $accumulatedHours += 0;
-                $accumulatedMinutes += 0;
-            }
+        $seconds = (int)$seconds;
+        
+        if ($seconds === 0) {
+            return '00:00';
         }
 
-        if ($accumulatedMinutes >= 60) {
-            $hoursToSum = intval($accumulatedMinutes/60);
-            $accumulatedMinutes = intval($accumulatedMinutes%60);
-            $accumulatedHours += $hoursToSum;
-        }
+        $hours = floor($seconds / 3600);
+        $minutes = floor(($seconds % 3600) / 60);
+        $secs = $seconds % 60;
 
-        $finalMinutes = "";
-        $finalHours = "";
-
-        if(strlen($accumulatedMinutes) == 1) {
-            $finalMinutes = "0$accumulatedMinutes";
+        if ($hours > 0) {
+            return sprintf('%02d:%02d:%02d', $hours, $minutes, $secs);
         } else {
-            $finalMinutes = $accumulatedMinutes;
+            return sprintf('%02d:%02d', $minutes, $secs);
         }
-
-        if(strlen($accumulatedHours) == 1) {
-            $finalHours = "0$accumulatedHours";
-        } else {
-            $finalHours = $accumulatedHours;
-        }
-
-        return "$finalHours:$finalMinutes";
     }
 
     private function getUserUnits()

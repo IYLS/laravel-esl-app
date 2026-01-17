@@ -3,32 +3,27 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\UserResponse;
-use App\Models\Exercise;
-use App\Models\Unit;
 
-class Tracking extends Model
+class TrackingHelpUsage extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
-    protected $table = 'tracking';
+    protected $table = 'tracking_help_usage';
+
     protected $fillable = [
-        'intent_number',
-        'time_spent_in_seconds',
-        'correct_answers',
-        'wrong_ansers'
+        'tracking_id',
+        'help_type',
+        'open_count',
+        'time_spent_seconds'
     ];
 
     public $timestamps = true;
-    public $incrementing = true;
 
-    public function userResponses() { return $this->hasMany(UserResponse::class); }
-    public function exercise() { return $this->belongsTo(Exercise::class); } 
-    public function user() { return $this->belongsTo(User::class); }
-    public function helpUsage() { return $this->hasMany(TrackingHelpUsage::class); }
-    public function feedbackUsage() { return $this->hasMany(TrackingFeedbackUsage::class); }
+    public function tracking()
+    {
+        return $this->belongsTo(Tracking::class);
+    }
 
     /**
      * Formatea el tiempo en segundos a formato legible (04h 30m 23s)
@@ -36,7 +31,7 @@ class Tracking extends Model
      */
     public function getFormattedTimeAttribute()
     {
-        $seconds = (int)$this->time_spent_in_seconds;
+        $seconds = (int)$this->time_spent_seconds;
         
         if ($seconds === 0) {
             return '0s';

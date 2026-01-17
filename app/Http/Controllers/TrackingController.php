@@ -9,6 +9,8 @@ use App\Models\Exercise;
 use App\Models\User;
 use App\Models\Unit;
 use App\Models\Group;
+use App\Models\TrackingHelpUsage;
+use App\Models\TrackingFeedbackUsage;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ExportTracking;
 use Carbon\Carbon;
@@ -65,9 +67,22 @@ class TrackingController extends Controller
             $tracking->intent_number = "$intent_number";
     
             if($request->time == null) {
-                $tracking->time_spent_in_minutes = "00:00";
+                $tracking->time_spent_in_seconds = 0;
             } else {
-                $tracking->time_spent_in_minutes = $request->time;
+                // Convertir formato "HH:MM:SS" o "MM:SS" a segundos
+                $time = $request->time;
+                $parts = explode(':', $time);
+                
+                if (count($parts) == 3) {
+                    // Formato HH:MM:SS
+                    $tracking->time_spent_in_seconds = (int)$parts[0] * 3600 + (int)$parts[1] * 60 + (int)$parts[2];
+                } elseif (count($parts) == 2) {
+                    // Formato MM:SS
+                    $tracking->time_spent_in_seconds = (int)$parts[0] * 60 + (int)$parts[1];
+                } else {
+                    // Si no es formato válido, asumir que ya viene en segundos
+                    $tracking->time_spent_in_seconds = (int)$time;
+                }
             }
     
             if($request->correct == null) {
@@ -147,29 +162,61 @@ class TrackingController extends Controller
     
     
             if ($exercise->subtype != 99 and $exercise->subtype != 991) {
-                $feedback_interactions = array();
-                foreach($exercise->questions as $index=>$question) {
-                    $directive_count = $request->directive["$question->id"];
-                    $explanatory_count = $request->explanatory["$question->id"];
-                    $elaborative_count = $request->elaborative["$question->id"];
-                    $knowledge_count = $request->knowledge["$question->id"];
-    
-                    $question_number = $index+1;
-                    array_push($feedback_interactions, "$question_number:Directive~$directive_count,Explanatory~$explanatory_count,Elaborative~$elaborative_count,Knowledge of Correct Response~$knowledge_count");
+                // Acumular contadores de feedback por tipo
+                $feedback_counts = [
+                    'Directive' => 0,
+                    'Explanatory' => 0,
+                    'Elaborative' => 0,
+                    'Knowledge of Correct Response' => 0
+                ];
+                
+                foreach($exercise->questions as $question) {
+                    if (isset($request->directive["$question->id"])) {
+                        $feedback_counts['Directive'] += (int)$request->directive["$question->id"];
+                    }
+                    if (isset($request->explanatory["$question->id"])) {
+                        $feedback_counts['Explanatory'] += (int)$request->explanatory["$question->id"];
+                    }
+                    if (isset($request->elaborative["$question->id"])) {
+                        $feedback_counts['Elaborative'] += (int)$request->elaborative["$question->id"];
+                    }
+                    if (isset($request->knowledge["$question->id"])) {
+                        $feedback_counts['Knowledge of Correct Response'] += (int)$request->knowledge["$question->id"];
+                    }
                 }
     
-                $tracking->feedback = implode(';', $feedback_interactions);
+                // Guardar feedback usage en la nueva tabla
+                foreach($feedback_counts as $feedback_type => $count) {
+                    if ($count > 0) {
+                        TrackingFeedbackUsage::create([
+                            'tracking_id' => $tracking->id,
+                            'feedback_type' => $feedback_type,
+                            'open_count' => $count
+                        ]);
+                    }
+                }
             }
     
-            $help_options_interactions = array();
-            array_push($help_options_interactions, "Transcript~$request->transcript_count~$request->transcript_total_time");
-            array_push($help_options_interactions, "Listening tips~$request->listening_tips_count~$request->listening_tips_total_time");
-            array_push($help_options_interactions, "Cultural notes~$request->cultural_notes_count~$request->cultural_notes_total_time");
-            array_push($help_options_interactions, "Glossary~$request->glossary_count~$request->glossary_total_time");
-            array_push($help_options_interactions, "Translation~$request->translation_count~$request->translation_total_time");
-            array_push($help_options_interactions, "Dictionary~$request->dictionary_count~$request->dictionary_total_time");
+            // Guardar help options en la nueva tabla
+            $help_options = [
+                'Transcript' => ['count' => $request->transcript_count ?? 0, 'time' => $request->transcript_total_time ?? 0],
+                'Listening tips' => ['count' => $request->listening_tips_count ?? 0, 'time' => $request->listening_tips_total_time ?? 0],
+                'Cultural notes' => ['count' => $request->cultural_notes_count ?? 0, 'time' => $request->cultural_notes_total_time ?? 0],
+                'Glossary' => ['count' => $request->glossary_count ?? 0, 'time' => $request->glossary_total_time ?? 0],
+                'Translation' => ['count' => $request->translation_count ?? 0, 'time' => $request->translation_total_time ?? 0],
+                'Dictionary' => ['count' => $request->dictionary_count ?? 0, 'time' => $request->dictionary_total_time ?? 0]
+            ];
     
-            $tracking->help_options = implode(",", $help_options_interactions);
+            foreach($help_options as $help_type => $data) {
+                if ($data['count'] > 0 || $data['time'] > 0) {
+                    TrackingHelpUsage::create([
+                        'tracking_id' => $tracking->id,
+                        'help_type' => $help_type,
+                        'open_count' => (int)$data['count'],
+                        'time_spent_seconds' => (int)$data['time']
+                    ]);
+                }
+            }
     
             $tracking->save();
         }
@@ -194,7 +241,7 @@ class TrackingController extends Controller
 
     public function show($id)
     {
-        $tracking = Tracking::find($id);
+        $tracking = Tracking::with(['helpUsage', 'feedbackUsage'])->find($id);
         return view('tracking.show', compact('tracking'));
     }
 

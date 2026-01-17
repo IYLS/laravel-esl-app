@@ -41,7 +41,7 @@
             </tr>
             <tr>
                 <td><strong>Time spent</strong></td>
-                <td colspan=2>{{ $tracking->time_spent_in_minutes }}</td>
+                <td colspan=2>{{ $tracking->formatted_time }}</td>
             </tr>
             <tr>
                 <td><strong>Correct answers</strong></td>
@@ -62,32 +62,15 @@
             <tr>
                 <td colspan=3><small class="text-secondary">Help Options Interactions:</small></td>
             </tr>
-            @if(isset($tracking->help_options))
-                @php
-                $s = explode(',', $tracking->help_options);
-            
-                $dictionary = $s[5];
-                $transcript = $s[0];
-                $tips = $s[1];
-                $cultural = $s[2];
-                $glossary = $s[3];
-                $translation = $s[4];
-                @endphp
+            @if($tracking->helpUsage->count() > 0)
                 <th>Name</th>
                 <th>Interactions count</th>
                 <th>Time spent</th>
-                @foreach($s as $i)
-                    @php 
-                        $i_array = explode("~", $i);
-
-                        $name = $i_array[0];
-                        $interactions = $i_array[1];
-                        $time = $i_array[2];
-                    @endphp
+                @foreach($tracking->helpUsage as $helpUsage)
                     <tr>
-                        <td>{{ $name }}</td>
-                        <td>{{ $interactions }}</td>
-                        <td>{{ $time }}</td>
+                        <td>{{ $helpUsage->help_type }}</td>
+                        <td>{{ $helpUsage->open_count }}</td>
+                        <td>{{ $helpUsage->formatted_time }}</td>
                     </tr>
                 @endforeach
             @endif
@@ -109,35 +92,17 @@
                             </ul>
                         </td>
                     </tr>
-                    @if(isset($tracking->feedback))
-                        @php
-                        $items = explode(';', $tracking->feedback);
-                        $questions_count = count($items);
-                        @endphp
+                    @if($tracking->feedbackUsage->count() > 0)
                         <tr>
                             <td colspan="3"><small class="text-secondary">Feedback Interactions:</small></td>
                         </tr>
                         <th>Name</th>
                         <th colspan=2>Interactions count</th>
-                        @foreach($items as $question_data)
-                            @php 
-                            $question_number = explode(':', $question_data)[0];
-                            $feedback_content = explode(':', $question_data)[1];
-                            $content = explode(",", $feedback_content);
-                            @endphp
-
-                            @if($question_number == $q_n)
-                                @foreach($content as $type)
-                                    @php 
-                                        $name = explode("~", $type)[0];
-                                        $count = explode("~", $type)[1];
-                                    @endphp
-                                    <tr>
-                                        <td>{{ $name }}</td>
-                                        <td colspan=2>{{ $count }}</td>
-                                    </tr>
-                                @endforeach
-                            @endif
+                        @foreach($tracking->feedbackUsage as $feedbackUsage)
+                            <tr>
+                                <td>{{ $feedbackUsage->feedback_type }}</td>
+                                <td colspan=2>{{ $feedbackUsage->open_count }}</td>
+                            </tr>
                         @endforeach
                     @endif
                 @endforeach
@@ -149,35 +114,17 @@
                         <td><strong>Response</strong></td>
                         <td colspan=2>{{ $response->response }}</td>
                     </tr>
-                    @if(isset($tracking->feedback))
-                        @php
-                        $items = explode(';', $tracking->feedback);
-                        $questions_count = count($items);
-                        @endphp
+                    @if($tracking->feedbackUsage->count() > 0)
                         <tr>
                             <td colspan="3"><small class="text-secondary">Feedback Interactions:</small></td>
                         </tr>
                         <th>Name</th>
                         <th colspan=2>Interactions count</th>
-                        @foreach($items as $question_data)
-                            @php 
-                            $question_number = explode(':', $question_data)[0];
-                            $feedback_content = explode(':', $question_data)[1];
-                            $content = explode(",", $feedback_content);
-                            @endphp
-
-                            @if($question_number == $q_n)
-                                @foreach($content as $type)
-                                    @php 
-                                        $name = explode("~", $type)[0];
-                                        $count = explode("~", $type)[1];
-                                    @endphp
-                                    <tr>
-                                        <td>{{ $name }}</td>
-                                        <td colspan=2>{{ $count }}</td>
-                                    </tr>
-                                @endforeach
-                            @endif
+                        @foreach($tracking->feedbackUsage as $feedbackUsage)
+                            <tr>
+                                <td>{{ $feedbackUsage->feedback_type }}</td>
+                                <td colspan=2>{{ $feedbackUsage->open_count }}</td>
+                            </tr>
                         @endforeach
                     @endif
                 @empty
@@ -191,35 +138,17 @@
                         <td><strong>Response</strong></td>
                         <td colspan=2>{{ $response->response }}</td>
                     </tr>
-                    @if(isset($tracking->feedback))
-                        @php
-                        $items = explode(';', $tracking->feedback);
-                        $questions_count = count($items);
-                        @endphp
+                    @if($tracking->feedbackUsage->count() > 0)
                         <tr>
                             <td colspan="3"><small class="text-secondary">Feedback Interactions:</small></td>
                         </tr>
                         <th>Name</th>
                         <th colspan=2>Interactions count</th>
-                        @foreach($items as $question_data)
-                            @php 
-                            $question_number = explode(':', $question_data)[0];
-                            $feedback_content = explode(':', $question_data)[1];
-                            $content = explode(",", $feedback_content);
-                            @endphp
-
-                            @if($question_number == $q_n)
-                                @foreach($content as $type)
-                                    @php 
-                                        $name = explode("~", $type)[0];
-                                        $count = explode("~", $type)[1];
-                                    @endphp
-                                    <tr>
-                                        <td>{{ $name }}</td>
-                                        <td colspan=2>{{ $count }}</td>
-                                    </tr>
-                                @endforeach
-                            @endif
+                        @foreach($tracking->feedbackUsage as $feedbackUsage)
+                            <tr>
+                                <td>{{ $feedbackUsage->feedback_type }}</td>
+                                <td colspan=2>{{ $feedbackUsage->open_count }}</td>
+                            </tr>
                         @endforeach
                     @endif
                 @empty
@@ -233,35 +162,17 @@
                         <td><strong>Response</strong></td>
                         <td colspan=2>{{ $response->response }}</td>
                     </tr>
-                    @if(isset($tracking->feedback))
-                        @php
-                        $items = explode(';', $tracking->feedback);
-                        $questions_count = count($items);
-                        @endphp
+                    @if($tracking->feedbackUsage->count() > 0)
                         <tr>
                             <td colspan="3"><small class="text-secondary">Feedback Interactions:</small></td>
                         </tr>
                         <th>Name</th>
                         <th colspan=2>Interactions count</th>
-                        @foreach($items as $question_data)
-                            @php 
-                            $question_number = explode(':', $question_data)[0];
-                            $feedback_content = explode(':', $question_data)[1];
-                            $content = explode(",", $feedback_content);
-                            @endphp
-
-                            @if($question_number == $q_n)
-                                @foreach($content as $type)
-                                    @php 
-                                        $name = explode("~", $type)[0];
-                                        $count = explode("~", $type)[1];
-                                    @endphp
-                                    <tr>
-                                        <td>{{ $name }}</td>
-                                        <td colspan=2>{{ $count }}</td>
-                                    </tr>
-                                @endforeach
-                            @endif
+                        @foreach($tracking->feedbackUsage as $feedbackUsage)
+                            <tr>
+                                <td>{{ $feedbackUsage->feedback_type }}</td>
+                                <td colspan=2>{{ $feedbackUsage->open_count }}</td>
+                            </tr>
                         @endforeach
                     @endif
                 @empty
