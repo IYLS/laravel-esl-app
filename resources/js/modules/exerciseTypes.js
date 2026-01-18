@@ -1,0 +1,275 @@
+/**
+ * Módulo de procesamiento de respuestas por tipo de ejercicio
+ * Maneja la lógica específica de cada tipo de ejercicio
+ */
+const ExerciseTypes = {
+    /**
+     * Procesa respuestas de Multiple Choice
+     * @param {Array} questions - Preguntas del ejercicio
+     * @param {Object} exercise - Datos del ejercicio
+     * @returns {Object} - Resultados procesados
+     */
+    processMultipleChoice(questions, exercise) {
+        let correctQuestions = 0;
+        let wrongQuestions = 0;
+        const responses = [];
+        const isPersonalResponse = questions[0]?.personal_response === true;
+        const shouldShowFeedback = exercise.subtype !== 99 && exercise.subtype !== 991 && !isPersonalResponse;
+
+        questions.forEach(question => {
+            const alternatives = document.getElementsByName(`question-${question.id}`);
+            let questionAnswered = false;
+
+            alternatives.forEach(alternative => {
+                // Ocultar feedback explicativo de todas las alternativas primero
+                const explanatory = document.getElementById(`${alternative.value}-explanatory`);
+                if (explanatory) {
+                    explanatory.hidden = true;
+                }
+
+                if (alternative.checked) {
+                    questionAnswered = true;
+                    const isCorrect = question.correct_answer == alternative.value;
+
+                    if (isCorrect) {
+                        responses.push({
+                            id: String(question.id),
+                            response: String(question.correct_answer)
+                        });
+
+                        if (shouldShowFeedback) {
+                            Feedback.showCorrect(question.id);
+                        }
+                        correctQuestions++;
+                    } else {
+                        const responseText = alternative.parentNode.children[1]?.innerHTML?.trim() || '';
+                        responses.push({
+                            id: String(question.id),
+                            response: responseText
+                        });
+
+                        if (shouldShowFeedback) {
+                            Feedback.showWrong(question.id);
+                            if (explanatory) {
+                                explanatory.hidden = false;
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        wrongQuestions = questions.length - correctQuestions;
+
+        // Actualizar mensajes condicionales
+        Feedback.toggleConditionalMessages(exercise.id, questions.length, correctQuestions);
+
+        // Actualizar contadores si corresponde
+        if (shouldShowFeedback) {
+            Feedback.updateCounters(exercise.id, correctQuestions, wrongQuestions);
+            Feedback.setVisibility(false, exercise.id, questions);
+        }
+
+        return {
+            correct: correctQuestions,
+            wrong: wrongQuestions,
+            responses: responses
+        };
+    },
+
+    /**
+     * Procesa respuestas de Fill in the Gaps (Vocabulary Practice)
+     * @param {Array} questions - Preguntas del ejercicio
+     * @param {Object} exercise - Datos del ejercicio
+     * @returns {Object} - Resultados procesados
+     */
+    processFillInTheGaps(questions, exercise) {
+        let correctQuestions = 0;
+        const responses = [];
+
+        questions.forEach(question => {
+            const answers = document.getElementsByName(`answer-${question.id}`);
+            const questionResponses = Array.from(answers).map(a => a.value);
+            const finalResponses = questionResponses.join(',');
+
+            responses.push({
+                id: String(question.id),
+                response: finalResponses
+            });
+
+            if (finalResponses === question.answer) {
+                Feedback.showCorrect(question.id);
+                correctQuestions++;
+            } else {
+                Feedback.showWrong(question.id);
+            }
+        });
+
+        const wrongQuestions = questions.length - correctQuestions;
+
+        Feedback.toggleConditionalMessages(exercise.id, questions.length, correctQuestions);
+        Feedback.updateCounters(exercise.id, correctQuestions, wrongQuestions);
+        Feedback.setVisibility(false, exercise.id, questions);
+
+        return {
+            correct: correctQuestions,
+            wrong: wrongQuestions,
+            responses: responses
+        };
+    },
+
+    /**
+     * Procesa respuestas de Dictation Cloze
+     * @param {Array} questions - Preguntas del ejercicio
+     * @param {Object} exercise - Datos del ejercicio
+     * @returns {Object} - Resultados procesados
+     */
+    processDictationCloze(questions, exercise) {
+        let correctQuestions = 0;
+        const responses = [];
+
+        questions.forEach(question => {
+            const answers = document.getElementsByName(`answer-${question.id}`);
+            const questionResponses = [];
+            const correctAnswers = question.answer.split(',');
+
+            Array.from(answers).forEach(answer => {
+                const isCorrect = question.answer.includes(answer.value) && answer.value !== '';
+                
+                if (isCorrect) {
+                    answer.style.setProperty('border-color', 'lime', 'important');
+                    correctQuestions++;
+                } else if (!question.answer.includes(answer.value)) {
+                    answer.style.setProperty('border-color', 'red', 'important');
+                }
+
+                questionResponses.push(answer.value);
+            });
+
+            responses.push({
+                id: String(question.id),
+                response: questionResponses.join(',')
+            });
+        });
+
+        const wrongQuestions = Array.from(document.getElementsByName(`answer-${questions[0].id}`)).length - correctQuestions;
+
+        Feedback.toggleConditionalMessages(exercise.id, 
+            Array.from(document.getElementsByName(`answer-${questions[0].id}`)).length, 
+            correctQuestions
+        );
+        Feedback.updateCounters(exercise.id, correctQuestions, wrongQuestions);
+
+        const exerciseFeedback = document.getElementById(`feedback-exercise-details-container-${exercise.id}`);
+        if (exerciseFeedback) {
+            exerciseFeedback.hidden = false;
+        }
+
+        // Deshabilitar botón de intentar de nuevo
+        const tryAgainBtn = document.querySelector(`[onclick*="resetExercise(${exercise.id}"]`);
+        if (tryAgainBtn) {
+            tryAgainBtn.disabled = true;
+        }
+
+        return {
+            correct: correctQuestions,
+            wrong: wrongQuestions,
+            responses: responses
+        };
+    },
+
+    /**
+     * Procesa respuestas de Drag and Drop
+     * @param {Array} questions - Preguntas del ejercicio
+     * @param {Object} exercise - Datos del ejercicio
+     * @returns {Object} - Resultados procesados
+     */
+    processDragAndDrop(questions, exercise) {
+        let correctQuestions = 0;
+        let wrongQuestions = 0;
+        const responses = [];
+        const shouldShowFeedback = exercise.subtype !== 991 && exercise.subtype !== 99;
+
+        questions.forEach(question => {
+            const definitionContainer = document.getElementById(`word-destination-${question.answer}`);
+            const wordContainer = document.getElementById(`word-${question.statement}`);
+
+            if (definitionContainer && definitionContainer.firstChild) {
+                const actualResponse = definitionContainer.firstChild.innerHTML.trim();
+                responses.push({
+                    id: String(question.id),
+                    response: actualResponse
+                });
+
+                if (shouldShowFeedback) {
+                    if (definitionContainer.contains(wordContainer)) {
+                        Feedback.showCorrect(question.id);
+                        correctQuestions++;
+                    } else {
+                        Feedback.showWrong(question.id);
+                        wrongQuestions++;
+                    }
+                }
+            } else {
+                // Respuesta faltante
+                responses.push({
+                    id: String(question.id),
+                    response: ''
+                });
+            }
+        });
+
+        if (shouldShowFeedback) {
+            wrongQuestions = questions.length - correctQuestions;
+            Feedback.toggleConditionalMessages(exercise.id, questions.length, correctQuestions);
+            Feedback.updateCounters(exercise.id, correctQuestions, wrongQuestions);
+            Feedback.setVisibility(false, exercise.id, questions);
+        }
+
+        return {
+            correct: correctQuestions,
+            wrong: wrongQuestions,
+            responses: responses
+        };
+    },
+
+    /**
+     * Procesa respuestas de Open Ended
+     * @param {Array} questions - Preguntas del ejercicio
+     * @param {Object} exercise - Datos del ejercicio
+     * @returns {Object} - Resultados procesados
+     */
+    processOpenEnded(questions, exercise) {
+        const responses = [];
+        let questionsNumber = 0;
+
+        questions.forEach(question => {
+            const answers = document.getElementsByName(`answer-${question.id}`);
+            
+            Array.from(answers).forEach(answer => {
+                responses.push({
+                    id: String(question.id),
+                    response: String(answer.value)
+                });
+            });
+
+            if (answers.length > 0) {
+                questionsNumber = answers.length;
+                Feedback.showCorrect(question.id);
+            }
+        });
+
+        const correctQuestions = questionsNumber;
+        Feedback.toggleConditionalMessages(exercise.id, questionsNumber, correctQuestions);
+        Feedback.setVisibility(false, exercise.id, questions);
+
+        return {
+            responses: responses
+        };
+    }
+};
+
+// Exportar
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = ExerciseTypes;
+}
