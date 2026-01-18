@@ -18,7 +18,12 @@
                     </div>
                     <div class="mb-3">
                         <label for="password" name="password-label" class="form-label">Password</label>
-                        <input type="password" name="password" protected class="form-control" required aria-label placeholder="Please enter your password">
+                        <div class="input-group">
+                            <input type="password" name="password" id="password" class="form-control" required aria-label placeholder="Please enter your password">
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword" aria-label="Show password">
+                                <i class="mdi mdi-eye" id="togglePasswordIcon"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="role" name="role" class="form-label">Select Role</label>
@@ -43,5 +48,29 @@
         </footer>
     </div>    
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const togglePasswordIcon = document.getElementById('togglePasswordIcon');
+        
+        if (togglePassword && passwordInput && togglePasswordIcon) {
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                // Cambiar icono
+                if (type === 'text') {
+                    togglePasswordIcon.classList.remove('mdi-eye');
+                    togglePasswordIcon.classList.add('mdi-eye-off');
+                } else {
+                    togglePasswordIcon.classList.remove('mdi-eye-off');
+                    togglePasswordIcon.classList.add('mdi-eye');
+                }
+            });
+        }
+    });
+</script>
 
 @endsection
