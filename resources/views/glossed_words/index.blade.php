@@ -24,7 +24,7 @@
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-danger btn-sm" >
-                                <i class="mdi mdi-delete"></i>
+                                <span class="material-symbols-outlined">delete</span>
                             </button>
                         </form>
                         <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editGlossedWordModal-{{ $word->id }}">

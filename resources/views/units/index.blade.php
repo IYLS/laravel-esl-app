@@ -20,14 +20,14 @@
                         <form action="{{ route('units.duplicate', $unit->id) }}" method="POST" class="ms-1">
 							@csrf
 							<button class="btn btn-info" type="submit" title="Duplicate unit">
-								<i class="mdi mdi-content-copy"></i>
+								<span class="material-symbols-outlined">content_copy</span>
 							</button>
 						</form>
                         <form action="{{ route('units.destroy', $unit->id) }}" method="POST" class="ms-1">
 							@csrf
 							@method('DELETE')
 							<button class="btn btn-danger" type="submit">
-								<i class="mdi mdi-delete"></i>
+								<span class="material-symbols-outlined">delete</span>
 							</button>
 						</form>
                     </td>
@@ -47,7 +47,7 @@
         </div>
         <div class="m-1">
             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#units_positions_modal">
-                Positions  <i class="mdi mdi-sort-ascending"></i>
+                Positions  <span class="material-symbols-outlined">sort</span>
             </button>
             @include('modals.units.set_positions', ["modal_id" => "units_positions_modal"])
         </div>

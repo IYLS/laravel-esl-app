@@ -47,14 +47,14 @@
                         </div>
                         <div class="col-12 col-md-4 d-flex align-items-center justify-content-end">
                             <a class="btn d-flex" href="{{ route('forum.show', $comment->id) }}">
-                                <i class="mdi mdi-18px mdi-comment-multiple-outline me-1 text-primary"></i><p class="text-primary"><small>{{ $comment->replies->count() }} replies</small></p>
+                                <span class="material-symbols-outlined me-1 text-primary" style="font-size: 18px;">comment</span><p class="text-primary"><small>{{ $comment->replies->count() }} replies</small></p>
                             </a>
                             @if ($comment->user_id == $current_user->id or Auth::user()->role == 'teacher')
                                 <form action="{{ route('forum.destroy', $comment->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn d-flex" type="submit">
-                                        <i class="mdi mdi-delete text-danger"></i><p class="text-danger"><small>delete</small></p>
+                                        <span class="material-symbols-outlined text-danger">delete</span><p class="text-danger"><small>delete</small></p>
                                     </button>
                                 </form>
                             @endif
@@ -79,7 +79,7 @@
                 <textarea class="form-control m-1" name="content" type="text" placeholder="Content" required></textarea>
             </div>
             <button class="col-1 text-center btn btn-primary" type="submit">
-                <i class="mdi mdi-24px mdi-send"></i>
+                <span class="material-symbols-outlined" style="font-size: 24px;">send</span>
             </button>
         </form>
     </div>

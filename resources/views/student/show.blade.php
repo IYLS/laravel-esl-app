@@ -93,7 +93,7 @@
                     {{-- (Optional) Additional Information --}}
                     @if(isset($section->instructions) and $section->instructions != '')
                     <div class="card pt-1 mb-2 pb-1 d-flex justify-content-center">
-                        <p class="text-primary"><i class="mdi mdi-information-outline text-primary"></i>&nbsp;{{ $section->instructions }}</p>
+                        <p class="text-primary"><span class="material-symbols-outlined text-primary">info</span>&nbsp;{{ $section->instructions }}</p>
                     </div>
                     @endif
                     <div class="nav flex-column mt-2 nav-pills col-12 col-xl-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -167,7 +167,7 @@
                                     <div class="container">
                                         <h4>{{ $e->title }}</h4>
                                         @include('layouts.tracking.tracking_complete')
-                                        @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
+                                        @isset($e->extra_info) <p class="text-info"><span class="material-symbols-outlined text-info">info</span> &nbsp; {{ $e->extra_info }}</p> @endisset
                                         <p class="text-secondary">{{ $e->description }}</p>
                                         @isset($e->instructions) <div class="text-dark">{!! $e->instructions !!}</div> @endisset
                                         @isset($e->translated_instructions) <div class="text-secondary">{!! $e->translated_instructions !!}</div> @endisset
@@ -193,7 +193,7 @@
                                         <p class="text-secondary">{{ $e->description }}</p>
                                         @isset($e->instructions) <div class="text-dark">{!! $e->instructions !!}</div> @endisset
                                         @isset($e->translated_instructions) <div class="text-secondary">{!! $e->translated_instructions !!}</div> @endisset
-                                        @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
+                                        @isset($e->extra_info) <p class="text-info"><span class="material-symbols-outlined text-info">info</span> &nbsp; {{ $e->extra_info }}</p> @endisset
                                         @include('layouts.tracking.tracking_complete')
 
                                         @if(isset($e->video_name) and $e->video_name != null and $e->video_name != '')
@@ -240,7 +240,7 @@
                                         <p class="text-secondary">{{ $e->description }}</p>
                                         @isset($e->instructions) <div class="text-dark">{!! $e->instructions !!}</div> @endisset
                                         @isset($e->translated_instructions) <div class="text-secondary">{!! $e->translated_instructions !!}</div> @endisset
-                                        @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
+                                        @isset($e->extra_info) <p class="text-info"><span class="material-symbols-outlined text-info">info</span> &nbsp; {{ $e->extra_info }}</p> @endisset
 
                                         {{--  Dictation Cloze  --}}
                                         @if($e->subtype == 1) 
@@ -260,7 +260,7 @@
                                         <p class="text-secondary">{{ $e->description }}</p>
                                         @isset($e->instructions) <div class="text-dark">{!! $e->instructions !!}</div> @endisset
                                         @isset($e->translated_instructions) <div class="text-secondary">{!! $e->translated_instructions !!}</div> @endisset
-                                        @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
+                                        @isset($e->extra_info) <p class="text-info"><span class="material-symbols-outlined text-info">info</span> &nbsp; {{ $e->extra_info }}</p> @endisset
 
                                         {{-- Form --}}
                                         @include('exercises.form.dashboard')

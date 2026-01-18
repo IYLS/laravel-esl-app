@@ -34,7 +34,7 @@
                 <div class="d-flex align-items-center">
                     <h4>Help options</h4>
                     <a class="btn btn-primary btn-sm ms-3" data-bs-toggle="collapse" href="#collapsableHelpOptions" role="button" aria-expanded="false" aria-controls="collapsableHelpOptions">
-                        <i class="mdi mdi-chevron-down"></i>
+                        <span class="material-symbols-outlined">expand_more</span>
                     </a>
                 </div>
             </div>

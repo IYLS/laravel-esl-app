@@ -18,8 +18,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-{{-- Material Design Icons (not FontAwesome) --}}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css">
+{{-- Material Symbols (Google) --}}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
 {{-- jQuery UI CSS (only if you actually use draggable/sortable/etc.) --}}
 <link rel="stylesheet" href="{{ asset('jquery/jquery-ui.min.css') }}">

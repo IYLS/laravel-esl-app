@@ -40,11 +40,11 @@
                         <div>
                             <br>
                             <button type="button" id="delete_question_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_question_{{ $question->id }}">
-                                <i class="mdi mdi-delete"></i>
+                                <span class="material-symbols-outlined">delete</span>
                             </button>
                             @include('modals.questions.delete_confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete question number $question_number.", 'button_target_id' => "delete_question_$question->id", 'route' => route('questions.destroy', [$exercise->id, $question->id])])
                             <button type="button" id="edit_question_button" class="btn btn-sm btn-warning ms-1" data-bs-toggle="modal" data-bs-target="#edit_question_{{ $question->id }}">
-                                <i class="mdi mdi-pencil"></i>
+                                <span class="material-symbols-outlined">edit</span>
                             </button>
                             @include('modals.questions.edit', ['button_target_id' => "edit_question_$question->id", 'alternatives' => $question->alternatives])
                         </div>
@@ -60,7 +60,7 @@
         <div>
             <button type="button" id="addQuestionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addQuestionModal">Add question</button>
             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#questions_positions_modal">
-                Positions  <i class="mdi mdi-sort-ascending"></i>
+                Positions  <span class="material-symbols-outlined">sort</span>
             </button>
             @include('modals.questions.set_positions', ["modal_id" => "questions_positions_modal", "questions" => $exercise->questions])
         </div>

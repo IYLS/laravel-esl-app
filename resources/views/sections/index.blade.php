@@ -28,7 +28,7 @@
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger btn-sm" >
-                            <i class="mdi mdi-delete"></i>
+                            <span class="material-symbols-outlined">delete</span>
                         </button>
                     </form>
                     <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editSectionModal-{{ $section->id }}">
@@ -59,7 +59,7 @@
         </div>
         <div class="m-1">
             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#sections_positions_modal">
-                Positions  <i class="mdi mdi-sort-ascending"></i>
+                Positions  <span class="material-symbols-outlined">sort</span>
             </button>
         </div>
     </div>

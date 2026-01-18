@@ -23,7 +23,7 @@
                                 <input id="password" name="password" type="password" class="form-control" disabled placeholder="*********">
                                 <span class="input-group-btn">
                                   <a class="btn btn-primary" onclick="revealPassword()">
-                                      <i class="mdi mdi-eye"></i>
+                                      <span class="material-symbols-outlined">visibility</span>
                                   </a>
                                 </span>
                             </div>

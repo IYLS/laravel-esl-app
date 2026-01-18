@@ -21,7 +21,7 @@
                         <div class="input-group">
                             <input type="password" name="password" id="password" class="form-control" required aria-label placeholder="Please enter your password">
                             <button class="btn btn-outline-secondary" type="button" id="togglePassword" aria-label="Show password">
-                                <i class="mdi mdi-eye" id="togglePasswordIcon"></i>
+                                <span class="material-symbols-outlined" id="togglePasswordIcon">visibility</span>
                             </button>
                         </div>
                     </div>
@@ -62,11 +62,9 @@
                 
                 // Cambiar icono
                 if (type === 'text') {
-                    togglePasswordIcon.classList.remove('mdi-eye');
-                    togglePasswordIcon.classList.add('mdi-eye-off');
+                    togglePasswordIcon.textContent = 'visibility_off';
                 } else {
-                    togglePasswordIcon.classList.remove('mdi-eye-off');
-                    togglePasswordIcon.classList.add('mdi-eye');
+                    togglePasswordIcon.textContent = 'visibility';
                 }
             });
         }

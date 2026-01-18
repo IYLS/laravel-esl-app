@@ -8,7 +8,7 @@
 <div>
     <button type="button" id="addQuestionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{ $addModalId }}">Add question</button>
     <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#{{ $positionsModalId }}">
-        Positions  <i class="mdi mdi-sort-ascending"></i>
+        Positions  <span class="material-symbols-outlined">sort</span>
     </button>
     @include('modals.questions.set_positions', [
         "modal_id" => $positionsModalId, 

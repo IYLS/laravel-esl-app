@@ -8,7 +8,7 @@
 <div class="d-flex justify-content-end">
     @if($showDelete)
         <button type="button" id="delete_question_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_question_{{ $question->id }}">
-            <i class="mdi mdi-delete"></i>
+            <span class="material-symbols-outlined">delete</span>
         </button>
         @include('modals.questions.delete_confirmation', [
             'title' => 'Confirmation request', 
@@ -20,7 +20,7 @@
     
     @if($showEdit)
         <button type="button" id="edit_question_button" class="btn btn-sm btn-warning ms-1" data-bs-toggle="modal" data-bs-target="#edit_question_{{ $question->id }}">
-            <i class="mdi mdi-pencil"></i>
+            <span class="material-symbols-outlined">edit</span>
         </button>
         @include('modals.questions.edit', [
             'button_target_id' => "edit_question_$question->id", 

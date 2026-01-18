@@ -58,7 +58,7 @@
                         </td>
                         <td class="text-center">
                             <div class="btn rounded-cirlce btn-link">
-                                <i class="mdi mdi-chevron-right"></i>
+                                <span class="material-symbols-outlined">chevron_right</span>
                             </div>
                         </td>
                 </tr>

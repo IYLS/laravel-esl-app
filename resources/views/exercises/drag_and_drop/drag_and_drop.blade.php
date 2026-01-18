@@ -4,7 +4,7 @@
         <p class="text-secondary">{{ $e->description }}</p>
         @isset($e->instructions) <div class="text-dark">{!! $e->instructions !!}</div> @endisset
         @isset($e->translated_instructions) <div class="text-secondary">{!! $e->translated_instructions !!}</div> @endisset
-        @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
+        @isset($e->extra_info) <p class="text-info"><span class="material-symbols-outlined text-info">info</span> &nbsp; {{ $e->extra_info }}</p> @endisset
         @php
             $words = array();
             $definitions = array();

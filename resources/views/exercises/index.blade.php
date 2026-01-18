@@ -24,7 +24,7 @@
                             </div>
                             <div class="m-1">
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#positions_modal_{{ $section->id }}">
-                                    Positions  <i class="mdi mdi-sort-ascending"></i>
+                                    Positions  <span class="material-symbols-outlined">sort</span>
                                 </button>
                                 @include('modals.exercises.set_positions', ["modal_id" => "positions_modal_$section->id"])
                             </div>
@@ -58,10 +58,10 @@
                                     <form action="{{ route("exercises.destroy", [$exercise->section->unit_id, $exercise->exercise_type_id, $exercise->id]) }}" method="POST">
                                         @method('DELETE')
                                         @csrf
-                                        <button type="submit" class="btn-sm btn btn-danger"><i class="mdi mdi-delete" aria-hidden="true"></i></button>
+                                        <button type="submit" class="btn-sm btn btn-danger"><span class="material-symbols-outlined" aria-hidden="true">delete</span></button>
                                     </form>
         
-                                    <a href="{{ route("exercises.show", $exercise->id) }}" class="btn-sm btn btn-success me-1 ms-1"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>
+                                    <a href="{{ route("exercises.show", $exercise->id) }}" class="btn-sm btn btn-success me-1 ms-1"><span class="material-symbols-outlined" aria-hidden="true">search</span></a>
                                 </div>
                             </td>
                         </tr>
@@ -77,11 +77,11 @@
 
             <div class="row">
                 <div class="col-6 d-flex justify-content-center">
-                    <button class="btn btn-primary btn-sm col-12 col-md-4 mt-2" data-bs-toggle="collapse" href="#collapsableAddExercise{{ $section->id }}" role="button" aria-expanded="false" aria-controls="collapsableAddExercise{{ $section->id }}">Add exercise <i class="mdi mdi-arrow-down"></i></button>
+                    <button class="btn btn-primary btn-sm col-12 col-md-4 mt-2" data-bs-toggle="collapse" href="#collapsableAddExercise{{ $section->id }}" role="button" aria-expanded="false" aria-controls="collapsableAddExercise{{ $section->id }}">Add exercise <span class="material-symbols-outlined">arrow_downward</span></button>
                 </div>
 
                 <div class="col-6 d-flex justify-content-center">
-                    <button class="btn btn-success btn-sm col-12 col-md-4 mt-2" data-bs-toggle="collapse" href="#collapsableAddMetacognition{{ $section->id }}" role="button" aria-expanded="false" aria-controls="collapsableAddMetacognition{{ $section->id }}">Add metacognition  <i class="mdi mdi-arrow-down"></i></button>
+                    <button class="btn btn-success btn-sm col-12 col-md-4 mt-2" data-bs-toggle="collapse" href="#collapsableAddMetacognition{{ $section->id }}" role="button" aria-expanded="false" aria-controls="collapsableAddMetacognition{{ $section->id }}">Add metacognition  <span class="material-symbols-outlined">arrow_downward</span></button>
                 </div>
 
                 <div class="col-6 d-flex justify-content-center">

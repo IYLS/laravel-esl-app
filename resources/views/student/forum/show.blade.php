@@ -50,7 +50,7 @@
         </div>
         <div class="col-6 d-flex align-items-center justify-content-end">
             <div class="d-flex me-1">
-                <i class="mdi mdi-18px mdi-comment-multiple-outline me-1 text-primary"></i><p class="text-primary"><small>{{ $replies_number }} replies</small></p>
+                <span class="material-symbols-outlined me-1 text-primary" style="font-size: 18px;">comment</span><p class="text-primary"><small>{{ $replies_number }} replies</small></p>
             </div>
             @if ($comment->user_id == $current_user->id)
                 <div class="d-flex me-1">
@@ -58,7 +58,7 @@
                         @csrf
                         @method('DELETE')
                         <button class="btn d-flex" type="submit">
-                            <i class="mdi mdi-delete text-danger"></i><p class="text-danger"><small>delete</small></p>
+                            <span class="material-symbols-outlined text-danger">delete</span><p class="text-danger"><small>delete</small></p>
                         </button>
                     </form>
                 </div>
@@ -92,7 +92,7 @@
             <textarea class="form-control" name="content" type="text" placeholder="Type here your reply"></textarea>
         </div>
         <button class="col-1 text-center btn btn-primary" type="submit">
-            <i class="mdi mdi-24px mdi-send"></i>
+            <span class="material-symbols-outlined" style="font-size: 24px;">send</span>
         </button>
     </form>
 </div>

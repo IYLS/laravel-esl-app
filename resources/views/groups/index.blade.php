@@ -32,7 +32,7 @@
 							@csrf
 							@method('DELETE')
 							<button class="btn btn-danger" type="submit">
-								<i class="mdi mdi-delete"></i>
+								<span class="material-symbols-outlined">delete</span>
 							</button>
 						</form>					
 					</div>

@@ -35,7 +35,7 @@
                                         </div>
                                         <div class="col-1">
                                             <button class="btn btn-sm btn-danger" type="button" onclick="removeAlternative({{ json_encode($question->id) }}, {{ json_encode($loop->index) }})">
-                                                <i class="mdi mdi-delete"></i>
+                                                <span class="material-symbols-outlined">delete</span>
                                             </button>
                                         </div>
                                     </div>
@@ -67,7 +67,7 @@
                                         </div>
                                         <div class="col-1">
                                             <button class="btn btn-sm btn-danger" type="button" onclick="removeAlternative({{ json_encode($question->id) }}, {{ json_encode($loop->index) }})">
-                                                <i class="mdi mdi-delete"></i>
+                                                <span class="material-symbols-outlined">delete</span>
                                             </button>
                                         </div>
                                     </div>
@@ -174,7 +174,7 @@
                                             <input type="text" class="form-control" name="alternatives[]" placeholder="Statement" value="{{ $alt->title }}">
                                         </div>
                                         <div class="col-1">
-                                            <button type="button" class="btn btn-danger" onclick="deleteFormQuestion(`form-question-{{ $id }}`)"><i class="mdi mdi-delete"></i></button>
+                                            <button type="button" class="btn btn-danger" onclick="deleteFormQuestion(`form-question-{{ $id }}`)"><span class="material-symbols-outlined">delete</span></button>
                                         </div>
                                     </div>
                                 @endforeach 

@@ -11,7 +11,7 @@
         <h6>Description: {!! $exercise->description == "" ? "<small class='text-secondary'>empty</small>" : $exercise->description !!}</h6>
     </div>
     <div class="card m-2">
-        <p class="text-info text-center"><i class="mdi mdi-information-outline"></i><small>Use blue buttons to get more info about the input to provide.</small></p>
+        <p class="text-info text-center"><span class="material-symbols-outlined">info</span><small>Use blue buttons to get more info about the input to provide.</small></p>
     </div>
     <div class="p-2 ps-2 pe-2 col-12 col-md-12">
 
@@ -28,7 +28,7 @@
                             <div class="col-12 col-md-8 d-flex justify-content-center">
                                 <input type="text" class="form-control me-1" name="data[exercise][{{ $type->id }}][message]" required placeholder="{{ $type->name }}">
                                 <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#feedback_description_{{ $type->id }}_modal">
-                                    <i class="mdi mdi-information-outline" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $type->description }}"></i>
+                                    <span class="material-symbols-outlined" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $type->description }}">info</span>
                                 </button>
                                 @include('modals.exercises.feedback_description', ['type' => "$type->name", 'description' => "$type->description", 'id' => "$type->id"])
                             </div>
@@ -78,7 +78,7 @@
                                             <p class="me-1">{{ $loop->index + 1 . ". " }}</p>
                                             <input type="text" class="form-control me-1" name="data[question][{{ $type->id }}][{{ $question->id }}][{{ $alternative->id }}][message]" required placeholder="{{ $type->name }} alternative {{ $loop->index + 1 }}">
                                             <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#feedback_description_{{ $type->id }}_modal">
-                                                <i class="mdi mdi-information-outline" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $type->description }}"></i>
+                                                <span class="material-symbols-outlined" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $type->description }}">info</span>
                                             </button>
                                             @include('modals.exercises.feedback_description', ['type' => "$type->name", 'description' => "$type->description", 'id' => "$type->id"])
                                         </div>
@@ -97,7 +97,7 @@
                                 <div class="col-12 col-md-8 d-flex justify-content-center">
                                     <input type="text" class="form-control me-1" name="data[question][{{ $type->id }}][{{ $question->id }}][message]" required placeholder="{{ $type->name }}">
                                     <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#feedback_description_{{ $type->id }}_modal">
-                                        <i class="mdi mdi-information-outline" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $type->description }}"></i>
+                                        <span class="material-symbols-outlined" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $type->description }}">info</span>
                                     </button>
                                     @include('modals.exercises.feedback_description', ['type' => "$type->name", 'description' => "$type->description", 'id' => "$type->id"])
                                 </div>
@@ -111,7 +111,7 @@
                                 <div class="col-12 col-md-8">
                                     <input class="form-control" type="file" id="audio" accept="audio/*" name="data[question][{{ $type->id }}][{{ $question->id }}][audio]" required>
                                     <button class="btn btn-primary ms-1" type="button" data-bs-toggle="modal" data-bs-target="#feedback_description_{{ $type->id }}_modal">
-                                        <i class="mdi mdi-information-outline" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $type->description }}"></i>
+                                        <span class="material-symbols-outlined" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $type->description }}">info</span>
                                     </button>
                                     @include('modals.exercises.feedback_description', ['type' => "$type->name", 'description' => "$type->description", 'id' => "$type->id"])
                                 </div>
