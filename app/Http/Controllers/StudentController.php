@@ -55,6 +55,12 @@ class StudentController extends Controller
         }
     }
 
+    public function welcome()
+    {
+        $user = Auth::user();
+        return view('student.welcome', compact(['user']));
+    }
+
     public function level_selection() 
     {
         $user = Auth::user();

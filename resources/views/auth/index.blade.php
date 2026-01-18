@@ -60,7 +60,7 @@
           <h3>Welcome, {{ Auth::user()->name }}!</h3>
           <br>
           <h5>We are glad to have you here 🥳</h5>
-          <h5>Start <a href="{{ route('student.level_selection') }}">here</a> selecting a unit to work on.</h5>
+          <h5>Start <a href="{{ route('student.welcome') }}">here</a> to begin your learning journey.</h5>
         </div>
     @endif
 </div>

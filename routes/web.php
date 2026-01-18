@@ -51,6 +51,7 @@ Route::get('/units/show/{unit}', [UnitController::class, 'show'])->name('units.s
 Route::delete('/units/delete/{unit}', [UnitController::class, 'destroy'])->name('units.destroy');
 
 // Student module Routes
+Route::get('/student/welcome', [StudentController::class, 'welcome'])->name('student.welcome');
 Route::get('/student/level_selection', [StudentController::class, 'level_selection'])->name('student.level_selection');
 Route::post('/student/select/unit', [StudentController::class, 'select'])->name('student.select');
 Route::get('/student/dashboard/{unit}', [StudentController::class, 'show'])->name('student.show');
