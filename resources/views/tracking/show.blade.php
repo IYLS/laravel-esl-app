@@ -10,9 +10,7 @@
     <h5>Exercise completion data</h5>
     <table class="table table-bordered">
         <tbody>
-            <tr>
-                <td colspan=3><small class="text-secondary">Student info:</small></td>
-            </tr>
+            @include('components.table-section-header', ['title' => 'Student info'])
             <tr>
                 <td><strong>Student ID</strong></td>
                 <td colspan=2>{{ $tracking->user->user_id }}</td>
@@ -21,9 +19,7 @@
                 <td><strong>Group</strong></td>
                 <td colspan=2>{{ $tracking->user->group->name }}</td>
             </tr>
-            <tr>
-                <td colspan=3><small class="text-secondary">Activity info:</small></td>
-            </tr>
+            @include('components.table-section-header', ['title' => 'Activity info'])
             <tr>
                 <td><strong>Activity title</strong></td>
                 <td colspan=2>{{ $tracking->exercise->title }}</td>
@@ -36,9 +32,7 @@
                 <td><strong>Section</strong></td>
                 <td colspan=2>{{ $tracking->exercise->section->name }}</td>
             </tr>
-            <tr>
-                <td colspan=3><small class="text-secondary">Response info:</small></td>
-            </tr>
+            @include('components.table-section-header', ['title' => 'Response info'])
             <tr>
                 <td><strong>Time spent</strong></td>
                 <td colspan=2>{{ $tracking->formatted_time }}</td>
@@ -59,9 +53,7 @@
                 <td><strong>Date</strong></td>
                 <td colspan=2>{{ date('d/m/Y - h:i:s', strtotime($tracking->created_at)); }}</td>
             </tr>
-            <tr>
-                <td colspan=3><small class="text-secondary">Help Options Interactions:</small></td>
-            </tr>
+            @include('components.table-section-header', ['title' => 'Help Options Interactions'])
             @if($tracking->helpUsage->count() > 0)
                 <th>Name</th>
                 <th>Interactions count</th>
@@ -74,9 +66,7 @@
                     </tr>
                 @endforeach
             @endif
-            <tr>
-                <td colspan=3><small class="text-secondary">Question responses:</small></td>
-            </tr>
+            @include('components.table-section-header', ['title' => 'Question responses'])
             @php $type = $tracking->exercise->exerciseType->underscore_name; @endphp
             @if($type == 'form')
                 @foreach($tracking->exercise->questions as $question)
@@ -92,19 +82,7 @@
                             </ul>
                         </td>
                     </tr>
-                    @if($tracking->feedbackUsage->count() > 0)
-                        <tr>
-                            <td colspan="3"><small class="text-secondary">Feedback Interactions:</small></td>
-                        </tr>
-                        <th>Name</th>
-                        <th colspan=2>Interactions count</th>
-                        @foreach($tracking->feedbackUsage as $feedbackUsage)
-                            <tr>
-                                <td>{{ $feedbackUsage->feedback_type }}</td>
-                                <td colspan=2>{{ $feedbackUsage->open_count }}</td>
-                            </tr>
-                        @endforeach
-                    @endif
+                    @include('components.feedback-interactions-table', ['feedbackUsage' => $tracking->feedbackUsage])
                 @endforeach
             @elseif($type == 'multiple_choice')
                 @forelse($tracking->userResponses as $response)
@@ -114,19 +92,7 @@
                         <td><strong>Response</strong></td>
                         <td colspan=2>{{ $response->response }}</td>
                     </tr>
-                    @if($tracking->feedbackUsage->count() > 0)
-                        <tr>
-                            <td colspan="3"><small class="text-secondary">Feedback Interactions:</small></td>
-                        </tr>
-                        <th>Name</th>
-                        <th colspan=2>Interactions count</th>
-                        @foreach($tracking->feedbackUsage as $feedbackUsage)
-                            <tr>
-                                <td>{{ $feedbackUsage->feedback_type }}</td>
-                                <td colspan=2>{{ $feedbackUsage->open_count }}</td>
-                            </tr>
-                        @endforeach
-                    @endif
+                    @include('components.feedback-interactions-table', ['feedbackUsage' => $tracking->feedbackUsage])
                 @empty
                     <p class="text-secondary text-center"><small>Empty</small></p>
                 @endforelse
@@ -138,19 +104,7 @@
                         <td><strong>Response</strong></td>
                         <td colspan=2>{{ $response->response }}</td>
                     </tr>
-                    @if($tracking->feedbackUsage->count() > 0)
-                        <tr>
-                            <td colspan="3"><small class="text-secondary">Feedback Interactions:</small></td>
-                        </tr>
-                        <th>Name</th>
-                        <th colspan=2>Interactions count</th>
-                        @foreach($tracking->feedbackUsage as $feedbackUsage)
-                            <tr>
-                                <td>{{ $feedbackUsage->feedback_type }}</td>
-                                <td colspan=2>{{ $feedbackUsage->open_count }}</td>
-                            </tr>
-                        @endforeach
-                    @endif
+                    @include('components.feedback-interactions-table', ['feedbackUsage' => $tracking->feedbackUsage])
                 @empty
                     <p class="text-secondary text-center"><small>Empty</small></p>
                 @endforelse
@@ -162,19 +116,7 @@
                         <td><strong>Response</strong></td>
                         <td colspan=2>{{ $response->response }}</td>
                     </tr>
-                    @if($tracking->feedbackUsage->count() > 0)
-                        <tr>
-                            <td colspan="3"><small class="text-secondary">Feedback Interactions:</small></td>
-                        </tr>
-                        <th>Name</th>
-                        <th colspan=2>Interactions count</th>
-                        @foreach($tracking->feedbackUsage as $feedbackUsage)
-                            <tr>
-                                <td>{{ $feedbackUsage->feedback_type }}</td>
-                                <td colspan=2>{{ $feedbackUsage->open_count }}</td>
-                            </tr>
-                        @endforeach
-                    @endif
+                    @include('components.feedback-interactions-table', ['feedbackUsage' => $tracking->feedbackUsage])
                 @empty
                     <p class="text-secondary text-center"><small>Empty</small></p>
                 @endforelse
