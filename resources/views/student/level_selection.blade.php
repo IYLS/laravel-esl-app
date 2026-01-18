@@ -20,9 +20,9 @@
                                 @endforelse
                             </select>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 d-flex gap-2">
                             <button class="btn btn-primary" type="submit">Enter</button>
-                            <a class="btn btn-secondary" type="submit">Cancel</a>
+                            <a href="{{ route('auth.index') }}" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>
                 @else
