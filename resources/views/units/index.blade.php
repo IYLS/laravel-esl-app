@@ -17,6 +17,12 @@
                     <td>{{ $unit->author }}</td>
                     <td class="d-flex">
                         <a id="details" class="btn btn-success" href="{{ route('units.show', $unit->id) }}">Details</a>
+                        <form action="{{ route('units.duplicate', $unit->id) }}" method="POST" class="ms-1">
+							@csrf
+							<button class="btn btn-info" type="submit" title="Duplicate unit">
+								<i class="mdi mdi-content-copy"></i>
+							</button>
+						</form>
                         <form action="{{ route('units.destroy', $unit->id) }}" method="POST" class="ms-1">
 							@csrf
 							@method('DELETE')

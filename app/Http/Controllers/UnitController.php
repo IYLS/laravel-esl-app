@@ -6,6 +6,11 @@ use App\Models\Unit;
 use Illuminate\Http\Request;
 use App\Models\Keyword;
 use App\Models\Section;
+use App\Models\Exercise;
+use App\Models\Question;
+use App\Models\Alternative;
+use App\Models\Feedback;
+use App\Models\GlossedWord;
 use App\Http\Requests\StoreUnitRequest;
 
 class UnitController extends Controller
@@ -165,6 +170,102 @@ class UnitController extends Controller
     {
         Unit::find($id)->delete();
         return redirect()->route('units.index');
+    }
+
+    public function duplicate($id)
+    {
+        $originalUnit = Unit::with([
+            'sections.exercises.questions.alternatives.feedback',
+            'sections.exercises.questions.feedbacks',
+            'sections.exercises.feedbacks',
+            'keywords',
+            'glossedWords'
+        ])->findOrFail($id);
+
+        // Crear nueva unidad
+        $newUnit = $originalUnit->replicate();
+        $newUnit->title = $originalUnit->title . ' (Copy)';
+        $newUnit->save();
+
+        // Duplicar keywords
+        foreach ($originalUnit->keywords as $keyword) {
+            $newKeyword = $keyword->replicate();
+            $newKeyword->unit_id = $newUnit->id;
+            $newKeyword->save();
+        }
+
+        // Duplicar glossed words
+        foreach ($originalUnit->glossedWords as $glossedWord) {
+            $newGlossedWord = $glossedWord->replicate();
+            $newGlossedWord->unit_id = $newUnit->id;
+            $newGlossedWord->save();
+        }
+
+        // Duplicar secciones y sus relaciones
+        foreach ($originalUnit->sections as $section) {
+            $newSection = $section->replicate();
+            $newSection->unit_id = $newUnit->id;
+            $newSection->save();
+
+            // Duplicar ejercicios de la sección
+            foreach ($section->exercises as $exercise) {
+                $newExercise = $exercise->replicate();
+                $newExercise->section_id = $newSection->id;
+                $newExercise->save();
+
+                // Duplicar feedbacks del ejercicio
+                foreach ($exercise->feedbacks as $feedback) {
+                    $newFeedback = $feedback->replicate();
+                    $newFeedback->exercise_id = $newExercise->id;
+                    $newFeedback->question_id = null;
+                    $newFeedback->alternative_id = null;
+                    if ($feedback->feedback_type_id) {
+                        $newFeedback->feedback_type_id = $feedback->feedback_type_id;
+                    }
+                    $newFeedback->save();
+                }
+
+                // Duplicar preguntas del ejercicio
+                foreach ($exercise->questions as $question) {
+                    $newQuestion = $question->replicate();
+                    $newQuestion->exercise_id = $newExercise->id;
+                    $newQuestion->save();
+
+                    // Duplicar alternativas de la pregunta
+                    foreach ($question->alternatives as $alternative) {
+                        $newAlternative = $alternative->replicate();
+                        $newAlternative->question_id = $newQuestion->id;
+                        $newAlternative->save();
+
+                        // Duplicar feedback de la alternativa si existe
+                        if ($alternative->feedback) {
+                            $newAltFeedback = $alternative->feedback->replicate();
+                            $newAltFeedback->alternative_id = $newAlternative->id;
+                            $newAltFeedback->exercise_id = null;
+                            $newAltFeedback->question_id = null;
+                            if ($alternative->feedback->feedback_type_id) {
+                                $newAltFeedback->feedback_type_id = $alternative->feedback->feedback_type_id;
+                            }
+                            $newAltFeedback->save();
+                        }
+                    }
+
+                    // Duplicar feedbacks de la pregunta
+                    foreach ($question->feedbacks as $feedback) {
+                        $newFeedback = $feedback->replicate();
+                        $newFeedback->question_id = $newQuestion->id;
+                        $newFeedback->exercise_id = null;
+                        $newFeedback->alternative_id = null;
+                        if ($feedback->feedback_type_id) {
+                            $newFeedback->feedback_type_id = $feedback->feedback_type_id;
+                        }
+                        $newFeedback->save();
+                    }
+                }
+            }
+        }
+
+        return redirect()->route('units.index')->with('success', 'Unit duplicated successfully!');
     }
 
     private function getVideoFrom(Request $request)

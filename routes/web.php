@@ -48,6 +48,7 @@ Route::get('/units/create', [UnitController::class, 'create'])->name('units.crea
 Route::post('/units/store', [UnitController::class, 'store'])->name('units.store');
 Route::put('/units/update/{unit}', [UnitController::class, 'update'])->name('units.update');
 Route::get('/units/show/{unit}', [UnitController::class, 'show'])->name('units.show');
+Route::post('/units/duplicate/{unit}', [UnitController::class, 'duplicate'])->name('units.duplicate');
 Route::delete('/units/delete/{unit}', [UnitController::class, 'destroy'])->name('units.destroy');
 
 // Student module Routes
