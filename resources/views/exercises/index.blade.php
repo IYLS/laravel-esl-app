@@ -42,7 +42,7 @@
                 </thead>
                 <tbody>
                     @forelse($section->exercises->sortBy('position') as $exercise)
-                        <tr @if($exercise->subtype == 99 or $exercise->subtype == 991) style="background-color: #5fde72;" @endif>
+                        <tr @if($exercise->subtype == 99 or $exercise->subtype == 991) style="background-color: #D1FAE5;" @endif>
 
                             <td class="col-1">
                                 {{ $exercise->title }}

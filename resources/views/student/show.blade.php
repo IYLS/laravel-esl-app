@@ -3,10 +3,10 @@
 
 @section('title', 'Student Module')
 
-<div class="p-4 row w-100 h-100 col-12">
+<div class="p-4 row w-100 h-100 col-12 student-module">
     <h5 class="pl-2">{{ $unit->title }}</h5>
     <div class="row sticky-top p-1" id="sticky-bar" style="background-color: white;">
-        <div class="col-12 col-xl-4">
+        <div class="col-12 col-lg-4 col-xl-4">
             @forelse($keywords as $keyword)
                 @php $modal_id = "keyword_modal-$keyword->id"; @endphp
                 <button type="button" id="{{ $modal_id . "_button" }}" class="mt-1 btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#{{ $modal_id }}" onclick="unstick()">{{ $keyword->keyword }}</button>
@@ -15,7 +15,7 @@
                 <p class="text-center text-secondary"><small>No keywords added for this unit.</small></p>
             @endforelse
         </div>
-        <div class="col-12 col-xl-8">
+        <div class="col-12 col-lg-8 col-xl-8">
             @include('exercises.help_options', ['unit' => $unit])
         </div>
     </div>

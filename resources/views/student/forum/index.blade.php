@@ -6,10 +6,10 @@
 <style>
     #forum-content-container { height: 60vh; }
     #forum-comment-container { height: 20%; }
-    .forum-self-comment { background-color: #f0f5fc !important; }
+    .forum-self-comment { background-color: #D1FAE5 !important; }
 </style>
 
-<div class="container">
+<div class="container student-module student-forum">
     <h3 class="m-3">Students Forum</h3>
     <div class="overflow-auto border mt-4 mb-4" id="forum-content-container">
         @if(isset($comments) and $comments != null)
