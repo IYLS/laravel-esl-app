@@ -247,11 +247,35 @@ class TrackingController extends Controller
 
     public function exportData(Request $request)
     {
+        $groupId = $request->group;
         $userId = $request->student;
-        $user = User::find($userId);
-        $userName = $user->name;
         $currentDate = Carbon::now()->format('d-m-Y H:i');
-        return Excel::download(new ExportTracking($userId), "$userName - $currentDate.xlsx");
+        
+        // Si se seleccionó un estudiante específico, exportar solo ese estudiante
+        if ($userId && $userId != "") {
+            $user = User::findOrFail($userId);
+            $fileName = "{$user->name} - {$currentDate}.xlsx";
+            return Excel::download(new ExportTracking($userId, 'student'), $fileName);
+        }
+        
+        // Si se seleccionó un grupo (sin estudiante específico), exportar todo el grupo
+        if ($groupId && $groupId != "") {
+            $group = Group::findOrFail($groupId);
+            $users = User::where('group_id', $groupId)->where('role', 'student')->get();
+            
+            if ($users->isEmpty()) {
+                return redirect()->route('tracking.index')
+                    ->with('error', 'El grupo seleccionado no tiene estudiantes.');
+            }
+            
+            $userIds = $users->pluck('id')->toArray();
+            $fileName = "{$group->name} - {$currentDate}.xlsx";
+            return Excel::download(new ExportTracking($userIds, 'group'), $fileName);
+        }
+        
+        // Si no se seleccionó ni grupo ni estudiante, retornar error
+        return redirect()->route('tracking.index')
+            ->with('error', 'Por favor seleccione un grupo o un estudiante para exportar.');
     }
 
     private function sectionStatus($exercise, $user_id) {

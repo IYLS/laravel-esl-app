@@ -11,15 +11,17 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 
 class ExportTracking implements FromCollection, WithHeadings, WithMapping
 {
-    protected string $userId;
+    protected $userIds; // Puede ser un string (un usuario) o un array (múltiples usuarios)
+    protected $exportType; // 'student' o 'group'
 
-    function __construct(string $userId) {
-        $this->userId = $userId;
+    function __construct($userIds, string $exportType = 'student') {
+        $this->userIds = is_array($userIds) ? $userIds : [$userIds];
+        $this->exportType = $exportType;
     }
 
     public function collection()
     {
-        return User::where('id', $this->userId)->get();
+        return User::whereIn('id', $this->userIds)->get();
     }
 
     public function map($user): array
@@ -102,7 +104,18 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
         }
 
         $totalTimeSpentOnPlatform = $this->formatSecondsToTime($totalSecondsOnPlatform);
-        $completedUnitsCount = $units->count();
+        
+        // Contar unidades completadas por este usuario específico
+        $completedUnitsCount = 0;
+        foreach($units as $unit) {
+            $hasTracking = Tracking::whereHas('exercise.section.unit', function ($query) use ($unit) {
+                $query->where('units.id', $unit->id);
+            })->where('user_id', $user->id)->exists();
+            
+            if ($hasTracking) {
+                $completedUnitsCount++;
+            }
+        }
 
         return [
             $completedUnitsCount,
@@ -114,7 +127,7 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
     private function processUnits($user): array
     {
         $units = $this->getUserUnits();
-        $userId = $this->userId;
+        $userId = $user->id;
         $unitsIndicators = array();
 
         foreach($units as $unit)
@@ -229,12 +242,17 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
 
     private function getUserUnits()
     {
+        // Obtener unidades del primer usuario (todos los usuarios del grupo deberían tener las mismas unidades)
         $user = $this->currentUser();
-        return $user->group->units()->orderBy('title', 'asc')->get();
+        if ($user && $user->group) {
+            return $user->group->units()->orderBy('title', 'asc')->get();
+        }
+        // Si no hay grupo, obtener todas las unidades
+        return Unit::orderBy('title', 'asc')->get();
     }
 
     private function currentUser()
     {
-        return User::where('id', $this->userId)->get()->first();
+        return User::whereIn('id', $this->userIds)->first();
     }
 }
