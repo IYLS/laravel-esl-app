@@ -12,6 +12,7 @@ use App\Models\Alternative;
 use App\Models\Feedback;
 use App\Models\GlossedWord;
 use App\Http\Requests\StoreUnitRequest;
+use Illuminate\Support\Facades\DB;
 
 class UnitController extends Controller
 {
@@ -168,8 +169,21 @@ class UnitController extends Controller
 
     public function destroy($id)
     {
-        Unit::find($id)->delete();
-        return redirect()->route('units.index');
+        $unit = Unit::findOrFail($id);
+        
+        // Validar que no haya tracking activo (opcional pero recomendado)
+        // Esto previene pérdida de datos históricos importantes
+        $hasActiveTracking = \App\Models\Tracking::whereHas('exercise.section', function($query) use ($unit) {
+            $query->where('unit_id', $unit->id);
+        })->exists();
+        
+        if ($hasActiveTracking) {
+            return redirect()->route('units.index')
+                ->with('error', 'Cannot delete unit with active tracking data. Please contact administrator.');
+        }
+        
+        $unit->delete();
+        return redirect()->route('units.index')->with('success', 'Unit deleted successfully!');
     }
 
     public function duplicate($id)
@@ -182,10 +196,12 @@ class UnitController extends Controller
             'glossedWords'
         ])->findOrFail($id);
 
-        // Crear nueva unidad
-        $newUnit = $originalUnit->replicate();
-        $newUnit->title = $originalUnit->title . ' (Copy)';
-        $newUnit->save();
+        // Usar transacción para asegurar integridad de datos
+        return DB::transaction(function() use ($originalUnit) {
+            // Crear nueva unidad
+            $newUnit = $originalUnit->replicate();
+            $newUnit->title = $originalUnit->title . ' (Copy)';
+            $newUnit->save();
 
         // Duplicar keywords
         foreach ($originalUnit->keywords as $keyword) {
@@ -265,7 +281,8 @@ class UnitController extends Controller
             }
         }
 
-        return redirect()->route('units.index')->with('success', 'Unit duplicated successfully!');
+            return redirect()->route('units.index')->with('success', 'Unit duplicated successfully!');
+        });
     }
 
     private function getVideoFrom(Request $request)

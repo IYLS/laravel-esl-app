@@ -28,7 +28,7 @@ class User extends Authenticable
         'role', 
         'activated'
     ];
-    public $timestamps = false;
+    public $timestamps = true;
     public $incrementing = true;
 
     public function group() { return $this->belongsTo(Group::class); }

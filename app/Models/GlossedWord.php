@@ -15,7 +15,7 @@ class GlossedWord extends Model
         'word',
         'description',
     ];
-    public $timestamps = false;
+    public $timestamps = true;
     public $incrementing = true;
 
     public function unit() { return $this->belongsTo(Unit::class); }

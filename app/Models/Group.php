@@ -18,7 +18,7 @@ class Group extends Model
         'name'
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
     public $incrementing = true;
 
     public function units() { return $this->belongsToMany(Unit::class, 'unit_group'); }

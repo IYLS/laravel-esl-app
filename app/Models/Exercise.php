@@ -29,7 +29,7 @@ class Exercise extends Model
         'heading_title'
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
     public $incrementing = true;
 
     public function questions() { return $this->hasMany(Question::class, 'exercise_id'); }

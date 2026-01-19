@@ -20,7 +20,7 @@ class Section extends Model
         'position'
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
     public $incrementing = true;
 
     public function exercises() { return $this->hasMany(Exercise::class); }

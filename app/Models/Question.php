@@ -26,7 +26,7 @@ class Question extends Model
         'position'
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
     public $incrementing = true;
 
     public function feedbacks() { return $this->hasMany(Feedback::class, 'question_id'); }

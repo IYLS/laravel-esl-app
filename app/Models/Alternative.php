@@ -17,7 +17,7 @@ class Alternative extends Model
         'correct_alt',
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
     public $incrementing = true;
     
     public function question() { return $this->belongsTo(Question::class); }

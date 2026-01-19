@@ -19,7 +19,7 @@ class Feedback extends Model
         'message',
         'audio_name'
     ];
-    public $timestamps = false;
+    public $timestamps = true;
     public $incrementing = true;
 
     public function alternative() { return $this->belongsTo(Alternative::class); }
