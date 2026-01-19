@@ -17,19 +17,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Password</td>
-                        <td>
-                            <div class="input-group">
-                                <input id="password" name="password" type="password" class="form-control" disabled placeholder="*********">
-                                <span class="input-group-btn">
-                                  <a class="btn btn-primary" onclick="revealPassword()">
-                                      <span class="material-symbols-outlined">visibility</span>
-                                  </a>
-                                </span>
-                            </div>
-                        <td>
-                    </tr>
-                    <tr>
                         <td>Name</td>
                         <td>
                             <input id="name" name="name" class="form-control" type="text" disabled value="{{ $user->name }}">
@@ -97,9 +84,51 @@
         <div>
             <a class="btn btn-success" onClick="enableFields()">Edit</a>
             <button class="btn btn-primary" type="submit">Save</button>
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updatePasswordModal">
+                <span class="material-symbols-outlined">lock_reset</span> Actualizar contraseña
+            </button>
             <a class="btn btn-secondary" href="{{ route('users.index') }}">Cancel</a>
         </div>
     </form>
+    </div>
+</div>
+
+<!-- Modal para actualizar contraseña -->
+<div class="modal fade" id="updatePasswordModal" tabindex="-1" aria-labelledby="updatePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updatePasswordModalLabel">Actualizar contraseña de {{ $user->name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('users.update_password', $user->id) }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="new_password" class="form-label">Nueva contraseña</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="new_password" name="password" required minlength="6" placeholder="Mínimo 6 caracteres">
+                            <button class="btn btn-outline-secondary" type="button" id="toggleNewPassword" aria-label="Mostrar contraseña">
+                                <span class="material-symbols-outlined" id="toggleNewPasswordIcon">visibility</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password_confirmation" class="form-label">Confirmar contraseña</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required minlength="6" placeholder="Repite la contraseña">
+                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword" aria-label="Mostrar contraseña">
+                                <span class="material-symbols-outlined" id="toggleConfirmPasswordIcon">visibility</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Actualizar contraseña</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -117,15 +146,43 @@
         }
     };
 
-    function revealPassword() {
-        const passwordField = document.getElementById('password');;
-
-        if (passwordField.type == 'text') {
-            passwordField.type = 'password'
-        } else {
-            passwordField.type = 'text'
+    // Toggle para nueva contraseña en el modal
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleNewPassword = document.getElementById('toggleNewPassword');
+        const newPasswordInput = document.getElementById('new_password');
+        const toggleNewPasswordIcon = document.getElementById('toggleNewPasswordIcon');
+        
+        if (toggleNewPassword && newPasswordInput && toggleNewPasswordIcon) {
+            toggleNewPassword.addEventListener('click', function() {
+                const type = newPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                newPasswordInput.setAttribute('type', type);
+                
+                if (type === 'text') {
+                    toggleNewPasswordIcon.textContent = 'visibility_off';
+                } else {
+                    toggleNewPasswordIcon.textContent = 'visibility';
+                }
+            });
         }
-    }
+
+        // Toggle para confirmar contraseña en el modal
+        const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+        const confirmPasswordInput = document.getElementById('password_confirmation');
+        const toggleConfirmPasswordIcon = document.getElementById('toggleConfirmPasswordIcon');
+        
+        if (toggleConfirmPassword && confirmPasswordInput && toggleConfirmPasswordIcon) {
+            toggleConfirmPassword.addEventListener('click', function() {
+                const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                confirmPasswordInput.setAttribute('type', type);
+                
+                if (type === 'text') {
+                    toggleConfirmPasswordIcon.textContent = 'visibility_off';
+                } else {
+                    toggleConfirmPasswordIcon.textContent = 'visibility';
+                }
+            });
+        }
+    });
 </script>
 
 @endsection
