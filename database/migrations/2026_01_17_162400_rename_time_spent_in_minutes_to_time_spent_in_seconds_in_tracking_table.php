@@ -48,9 +48,14 @@ return new class extends Migration
             $table->renameColumn('time_spent_in_minutes', 'time_spent_in_seconds');
         });
 
-        Schema::table('tracking', function (Blueprint $table) {
-            $table->integer('time_spent_in_seconds')->change();
-        });
+        // Para PostgreSQL, necesitamos usar USING para convertir el tipo
+        if ($driver === 'pgsql') {
+            DB::statement('ALTER TABLE tracking ALTER COLUMN time_spent_in_seconds TYPE INTEGER USING time_spent_in_seconds::integer');
+        } else {
+            Schema::table('tracking', function (Blueprint $table) {
+                $table->integer('time_spent_in_seconds')->change();
+            });
+        }
     }
 
     /**
