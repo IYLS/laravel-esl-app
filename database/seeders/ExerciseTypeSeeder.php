@@ -11,42 +11,42 @@ class ExerciseTypeSeeder extends Seeder
     public function run()
     {
         DB::table('exercise_types')->insert([
-            [            
+            [
                 'id' => 1,
                 'name' => 'Drag and Drop',
                 'underscore_name' => 'drag_and_drop',
-                'description' => '',
+                'description' => null,
             ],
-            [            
+            [
                 'id' => 2,
                 'name' => 'Multiple choice',
                 'underscore_name' => 'multiple_choice',
-                'description' => '',
+                'description' => null,
             ],
-            [            
+            [
                 'id' => 3,
                 'name' => 'Fill in the gaps',
                 'underscore_name' => 'fill_in_the_gaps',
-                'description' => '',
+                'description' => null,
             ],
-            [            
+            [
                 'id' => 4,
                 'name' => 'Open ended',
                 'underscore_name' => 'open_ended',
-                'description' => '',
+                'description' => null,
             ],
-            [            
+            [
                 'id' => 5,
                 'name' => 'Voice Recognition',
                 'underscore_name' => 'voice_recognition',
-                'description' => '',
+                'description' => null,
             ],
             [
                 'id' => 6,
                 'name' => 'Form',
                 'underscore_name' => 'form',
-                'description' => '',
-            ]
+                'description' => null,
+            ],
         ]);
     }
 }
