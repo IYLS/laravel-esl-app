@@ -10,6 +10,7 @@ class ExerciseTypeSeeder extends Seeder
 {
     public function run()
     {
+        DB::table('exercise_types')->truncate();
         DB::table('exercise_types')->insert([
             [
                 'id' => 1,
@@ -46,7 +47,7 @@ class ExerciseTypeSeeder extends Seeder
                 'name' => 'Form',
                 'underscore_name' => 'form',
                 'description' => null,
-            ],
+            ]
         ]);
     }
 }

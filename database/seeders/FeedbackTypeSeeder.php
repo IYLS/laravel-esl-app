@@ -10,6 +10,7 @@ class FeedbackTypeSeeder extends Seeder
 {
     public function run()
     {
+        DB::table('feedback_types')->truncate();
         DB::table('feedback_types')->insert([
             [
                 'id' => 1,
@@ -41,7 +42,7 @@ class FeedbackTypeSeeder extends Seeder
             [
                 'id' => 4,
                 'name' => 'Short Message C',
-                'description' => 'únicamente para cuando un ejercicio tiene respuestas incorrectas. Mensajes como "Try again", Don\'t give up", "oops" mas un mensaje personalizado de lo que podría hacer el estudiante para hallar la respuesta correcta dependiendo del ejercicio. Aparece al final cuando el estudiante le de click a "check".',
+                'description' => "Únicamente para cuando un ejercicio tiene respuestas incorrectas. Mensajes como 'Try again', 'Don't give up', 'oops' mas un mensaje personalizado de lo que podría hacer el estudiante para hallar la respuesta correcta dependiendo del ejercicio. Aparece al final cuando el estudiante le de click a 'check'.",
                 'short_description' => null,
                 'level' => 'exercise',
                 'text_based' => true,
@@ -73,7 +74,7 @@ class FeedbackTypeSeeder extends Seeder
                 'level' => 'question',
                 'text_based' => true,
                 'deleted_at' => null,
-            ],
+            ]
         ]);
     }
 }
