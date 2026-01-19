@@ -27,6 +27,7 @@ Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
 Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
 Route::put('/users/update/{user}', [UserController::class, 'update'])->name('users.update');
+Route::post('/users/update-password/{user}', [UserController::class, 'updatePassword'])->name('users.update_password');
 Route::get('/users/show/{user}', [UserController::class, 'show'])->name('users.show');
 Route::delete('/users/delete/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 Route::post('/users/filter', [UserController::class, 'executeFilter'])->name('users.execute_filter');
