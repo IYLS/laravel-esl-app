@@ -4,7 +4,20 @@
 <div class="container mt-3">
     <div class="border rounded mb-3 p-3 d-flex justify-content-between">
         <h4>@if(isset($tracking->exercise->exerciseType->name)) {{ $tracking->exercise->exerciseType->name }} exercise tracking information @else Tracking Information @endif </h4>
-        <a href="{{ route('tracking.index') }}" class="btn btn-link">Go back</a>
+        @php
+            $backUrl = route('tracking.index');
+            $queryParams = [];
+            if (isset($group_id) && $group_id && $group_id != 'any') {
+                $queryParams['group'] = $group_id;
+            }
+            if (isset($user_id) && $user_id && $user_id != 'any') {
+                $queryParams['student'] = $user_id;
+            }
+            if (!empty($queryParams)) {
+                $backUrl .= '?' . http_build_query($queryParams);
+            }
+        @endphp
+        <a href="{{ $backUrl }}" class="btn btn-link">Go back</a>
     </div>
     
     <h5>Exercise completion data</h5>

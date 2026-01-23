@@ -17,18 +17,34 @@ use Carbon\Carbon;
 
 class TrackingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $groups = Group::all();
         $students = User::where('role', 'student')->get();
-        $tracking = Tracking::all()->sortByDesc('created_at')->take(50);
-
-        if ($tracking != null)  {
-            return view('tracking.index', compact('tracking', 'groups', 'students'));
-        } else if($tracking == null) {
-            $tracking = array();
-            return view('tracking.index', compact('tracking', 'groups', 'students'));
+        
+        // Obtener parámetros de query string
+        $group_id = $request->query('group');
+        $user_id = $request->query('student');
+        
+        // Aplicar filtros si existen
+        if ($user_id != null && $user_id != "any") {
+            $tracking = Tracking::where('user_id', $user_id)->orderBy('created_at', 'desc')->get();
+        } else if ($group_id != "any" && $group_id != null) {
+            $users = User::where('group_id', $group_id)->get();
+            $track = collect(new Tracking);
+            foreach($users as $user) { 
+                $track = $track->merge(Tracking::where('user_id', $user->id)->get()); 
+            }
+            $tracking = $track->sortByDesc('created_at');
+        } else {
+            $tracking = Tracking::all()->sortByDesc('created_at')->take(50);
         }
+
+        // Pasar filtros actuales a la vista
+        $currentGroup = $group_id ?? 'any';
+        $currentStudent = $user_id ?? 'any';
+
+        return view('tracking.index', compact('tracking', 'groups', 'students', 'currentGroup', 'currentStudent'));
     }
 
     public function executeFilter(Request $request)
@@ -37,21 +53,16 @@ class TrackingController extends Controller
         $month_number = $request->month;
         $user_id = $request->student;
 
-        if ($user_id != null and $user_id != "any") {
-            $tracking = Tracking::where('user_id', $user_id)->orderBy('created_at', 'desc')->get();
-        } else if ($group_id != "any" and $group_id != null) {
-            $users = User::where('group_id', $group_id)->get();
-            $track = collect(new Tracking);
-            foreach($users as $user) { $track = $track->merge(Tracking::where('user_id', $user->id)->get()); }
-            $tracking = $track->sortByDesc('created_at');
-        } else {
-            $tracking = Tracking::orderBy('created_at', 'desc')->get();
+        // Redirigir con query strings para preservar los filtros
+        $queryParams = [];
+        if ($group_id && $group_id != "any") {
+            $queryParams['group'] = $group_id;
+        }
+        if ($user_id && $user_id != "any") {
+            $queryParams['student'] = $user_id;
         }
 
-        $groups = Group::all();
-        $students = User::where('role', 'student')->get();
-
-        return view('tracking.index', compact('tracking', 'groups', 'students'));
+        return redirect()->route('tracking.index', $queryParams);
     }
 
     public function store(Request $request, $exercise_id, $user_id)
@@ -241,10 +252,15 @@ class TrackingController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $tracking = Tracking::with(['helpUsage', 'feedbackUsage'])->find($id);
-        return view('tracking.show', compact('tracking'));
+        
+        // Obtener parámetros de filtro de la query string para pasarlos a la vista
+        $group_id = $request->query('group');
+        $user_id = $request->query('student');
+        
+        return view('tracking.show', compact('tracking', 'group_id', 'user_id'));
     }
 
     public function exportData(Request $request)

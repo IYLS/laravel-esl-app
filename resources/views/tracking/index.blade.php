@@ -36,7 +36,20 @@
 
             <tbody>
                 @forelse($tracking as $t)
-                <tr class="clickable-table-row" onclick="navigateTo({{ json_encode(route('tracking.show', $t->id)) }})">
+                @php
+                    $showUrl = route('tracking.show', $t->id);
+                    $queryParams = [];
+                    if (isset($currentGroup) && $currentGroup != 'any') {
+                        $queryParams['group'] = $currentGroup;
+                    }
+                    if (isset($currentStudent) && $currentStudent != 'any') {
+                        $queryParams['student'] = $currentStudent;
+                    }
+                    if (!empty($queryParams)) {
+                        $showUrl .= '?' . http_build_query($queryParams);
+                    }
+                @endphp
+                <tr class="clickable-table-row" onclick="navigateTo({{ json_encode($showUrl) }})">
                         <td class="text-center">
                         @if(is_null($t->user))
                             -
@@ -77,20 +90,20 @@
 			</div>
 			<div class="ms-2 me-2 row">
 				<select name="group" id="" class="form-select form-select-sm">
-					<option value="any">Any</option>
+					<option value="any" {{ (!isset($currentGroup) || $currentGroup == 'any') ? 'selected' : '' }}>Any</option>
                     @foreach($groups as $group)
-                        <option value="{{ $group->id }}">{{ $group->name }}</option>
+                        <option value="{{ $group->id }}" {{ (isset($currentGroup) && $currentGroup == $group->id) ? 'selected' : '' }}>{{ $group->name }}</option>
                     @endforeach
 				</select>
 			</div>
 			<div class="ms-2 me-2 row">
 				<select name="student" id="" class="form-select form-select-sm">
-					<option value="any">Any</option>
+					<option value="any" {{ (!isset($currentStudent) || $currentStudent == 'any') ? 'selected' : '' }}>Any</option>
 					@foreach($groups as $group)
                         <optgroup label="{{ $group->name }}">
                             @foreach($students as $student)
                                 @if($student->group_id == $group->id)
-                                    <option value="{{ $student->id }}">{{ $student->user_id }}</option>
+                                    <option value="{{ $student->id }}" {{ (isset($currentStudent) && $currentStudent == $student->id) ? 'selected' : '' }}>{{ $student->user_id }}</option>
                                 @endif
                             @endforeach
                         </optgroup>
