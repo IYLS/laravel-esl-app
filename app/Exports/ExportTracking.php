@@ -106,13 +106,11 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
         $totalTimeSpentOnPlatform = $this->formatSecondsToTime($totalSecondsOnPlatform);
         
         // Contar unidades completadas por este usuario específico
+        // Una unidad está completa solo si todas sus secciones están completas
+        // Una sección está completa solo si todos sus ejercicios (excepto tipo 5) tienen tracking
         $completedUnitsCount = 0;
         foreach($units as $unit) {
-            $hasTracking = Tracking::whereHas('exercise.section.unit', function ($query) use ($unit) {
-                $query->where('units.id', $unit->id);
-            })->where('user_id', $user->id)->exists();
-            
-            if ($hasTracking) {
+            if ($this->isUnitCompleted($unit, $user->id)) {
                 $completedUnitsCount++;
             }
         }
@@ -254,5 +252,43 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
     private function currentUser()
     {
         return User::whereIn('id', $this->userIds)->first();
+    }
+
+    /**
+     * Verifica si una unidad está completamente completada por un usuario
+     * Una unidad está completa solo si todas sus secciones están completas
+     * Una sección está completa solo si todos sus ejercicios (excepto tipo 5) tienen al menos un tracking
+     */
+    private function isUnitCompleted($unit, $userId): bool
+    {
+        // Si la unidad no tiene secciones, no está completa
+        if ($unit->sections->isEmpty()) {
+            return false;
+        }
+
+        // Verificar que todas las secciones estén completas
+        foreach($unit->sections as $section) {
+            $exercises = $section->exercises->where('exercise_type_id', '!=', 5);
+            
+            // Si la sección no tiene ejercicios (o solo tiene tipo 5), considerar incompleta
+            if ($exercises->isEmpty()) {
+                return false;
+            }
+
+            // Verificar que todos los ejercicios tengan al menos un tracking
+            foreach($exercises as $exercise) {
+                $trackingCount = Tracking::where('user_id', $userId)
+                    ->where('exercise_id', $exercise->id)
+                    ->count();
+                
+                // Si algún ejercicio no tiene tracking, la unidad no está completa
+                if ($trackingCount == 0) {
+                    return false;
+                }
+            }
+        }
+
+        // Si llegamos aquí, todas las secciones están completas
+        return true;
     }
 }
