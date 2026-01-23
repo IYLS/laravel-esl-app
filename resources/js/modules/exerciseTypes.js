@@ -30,6 +30,10 @@ const ExerciseTypes = {
                 if (alternative.checked) {
                     questionAnswered = true;
                     const isCorrect = question.correct_answer == alternative.value;
+                    const responseText = alternative.value || alternative.parentNode.children[1]?.innerHTML?.trim() || '';
+                    const isNotSure = responseText.toLowerCase().includes("i'm not sure") || 
+                                     responseText.toLowerCase().includes("im not sure") ||
+                                     responseText.toLowerCase().includes("not sure");
 
                     if (isCorrect) {
                         responses.push({
@@ -41,8 +45,20 @@ const ExerciseTypes = {
                             Feedback.showCorrect(question.id);
                         }
                         correctQuestions++;
+                    } else if (isNotSure && exercise.subtype === 3) {
+                        // Evaluating statements: mostrar emoji pensativo para "I'm not sure"
+                        responses.push({
+                            id: String(question.id),
+                            response: responseText
+                        });
+
+                        if (shouldShowFeedback) {
+                            Feedback.showNotSure(question.id);
+                            if (explanatory) {
+                                explanatory.hidden = false;
+                            }
+                        }
                     } else {
-                        const responseText = alternative.parentNode.children[1]?.innerHTML?.trim() || '';
                         responses.push({
                             id: String(question.id),
                             response: responseText

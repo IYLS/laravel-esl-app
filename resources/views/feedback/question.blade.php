@@ -2,6 +2,7 @@
     <div class="row">
         <p class="p-3 text-success" id="question-{{ $question->id }}-feedback-correct" hidden>✅</p>
         <p class="p-3 text-danger" id="question-{{ $question->id }}-feedback-wrong" hidden>❌</p>
+        <p class="p-3 text-warning" id="question-{{ $question->id }}-feedback-not-sure" hidden>🤔</p>
     </div>
 
     @php

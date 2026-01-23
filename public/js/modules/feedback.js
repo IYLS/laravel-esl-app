@@ -32,6 +32,7 @@ const Feedback = {
     showCorrect(questionId) {
         Utils.setElementVisibility(`question-${questionId}-feedback-correct`, false);
         Utils.setElementVisibility(`question-${questionId}-feedback-wrong`, true);
+        Utils.setElementVisibility(`question-${questionId}-feedback-not-sure`, true);
     },
 
     /**
@@ -41,6 +42,17 @@ const Feedback = {
     showWrong(questionId) {
         Utils.setElementVisibility(`question-${questionId}-feedback-correct`, true);
         Utils.setElementVisibility(`question-${questionId}-feedback-wrong`, false);
+        Utils.setElementVisibility(`question-${questionId}-feedback-not-sure`, true);
+    },
+
+    /**
+     * Muestra el feedback cuando el estudiante selecciona "I'm not sure"
+     * @param {number} questionId - ID de la pregunta
+     */
+    showNotSure(questionId) {
+        Utils.setElementVisibility(`question-${questionId}-feedback-correct`, true);
+        Utils.setElementVisibility(`question-${questionId}-feedback-wrong`, true);
+        Utils.setElementVisibility(`question-${questionId}-feedback-not-sure`, false);
     },
 
     /**
