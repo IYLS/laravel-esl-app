@@ -16,6 +16,7 @@ use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\GlossedWordsController;
+use App\Http\Controllers\FAQController;
 
 // Home
 Route::get('/', [AuthController::class, 'index'])->name('auth.index');
@@ -111,6 +112,10 @@ Route::post('/tracking/exportData', [TrackingController::class, 'exportData'])->
 Route::post('/exercises/{unit}/set_positions', [ExerciseController::class, 'setPositions'])->name('exercises.positions');
 Route::post('/sections/{unit}/set_positions', [SectionController::class, 'setPositions'])->name('sections.positions');
 Route::post('/questions/set_positions', [QuestionController::class, 'setPositions'])->name('questions.positions');
+
+// FAQ Routes
+Route::get('/faq/student', [FAQController::class, 'student'])->name('faq.student');
+Route::get('/faq/teacher', [FAQController::class, 'teacher'])->name('faq.teacher');
 Route::post('/units/set_positions', [UnitController::class, 'setPositions'])->name('units.positions');
 
 // GlossedWords Routes
