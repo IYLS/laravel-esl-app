@@ -34,5 +34,28 @@
 
     @endforeach
     <br>
+    
+    {{-- Feedback del ejercicio: Knowledge of correct response (imagen) después de 3 intentos --}}
+    @php
+        $attempts_count = \App\Models\Tracking::where('exercise_id', $e->id)->where('user_id', $user->id)->count();
+        $knowledge_feedback = $e->feedbacks->where('feedback_type_id', 7)->where('exercise_id', $e->id)->whereNull('question_id')->first();
+    @endphp
+    
+    @if($knowledge_feedback && $knowledge_feedback->image_name && $attempts_count >= 3)
+        <div class="border rounded p-4 mt-3 mb-3" id="dictation-cloze-knowledge-feedback-{{ $e->id }}">
+            <h5 class="mb-3">📝 Respuestas correctas</h5>
+            <div class="text-center">
+                <img src="{{ asset('storage/files/'.$knowledge_feedback->image_name) }}" class="img-fluid" alt="Respuestas correctas" style="max-width: 100%; height: auto;">
+            </div>
+        </div>
+    @elseif($knowledge_feedback && $knowledge_feedback->image_name)
+        <div class="border rounded p-4 mt-3 mb-3" id="dictation-cloze-knowledge-feedback-{{ $e->id }}" style="display: none;">
+            <h5 class="mb-3">📝 Respuestas correctas</h5>
+            <div class="text-center">
+                <img src="{{ asset('storage/files/'.$knowledge_feedback->image_name) }}" class="img-fluid" alt="Respuestas correctas" style="max-width: 100%; height: auto;">
+            </div>
+        </div>
+    @endif
+    
     @include('layouts.tracking.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
 </form>

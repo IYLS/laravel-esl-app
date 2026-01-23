@@ -227,6 +227,9 @@ class TrackingController extends Controller
         }
 
         $status = $this->exerciseStatus($exercise, $user_id);
+        
+        // Obtener número de intentos actual (después de guardar)
+        $attempts_count = Tracking::where('exercise_id', $exercise->id)->where('user_id', $user_id)->count();
 
         return response()->json([
             'result' => 'success',
@@ -234,9 +237,8 @@ class TrackingController extends Controller
             'status_message' => $status['message'],
             'navigation_url' => $status['url'],
             'navigation_type' => $status['type'],
+            'attempts_count' => $attempts_count,
         ]);
-
-        return response()->json($request);
     }
 
     public function show($id)

@@ -39,6 +39,28 @@
                         <p class="text-secondary text-center"><small>Empty</small></p>
                     </div>
                 @endforelse
+                
+                {{-- Knowledge of correct response a nivel de ejercicio (para dictation cloze) --}}
+                @if($exercise->exercise_type_id == 3 and $exercise->subtype == 1)
+                    @php
+                        $knowledge_type = $feedback_types->where('id', 7)->first();
+                    @endphp
+                    @if($knowledge_type)
+                        <br>
+                        <div class="mb-2 p-2">
+                            <h5>{{ $knowledge_type->name }} (Exercise level - Image)</h5>
+                            <p class="text-info"><small>Para ejercicios de Dictation Cloze: Sube una imagen con todas las respuestas correctas. Se mostrará después de 3 intentos.</small></p>
+                            <div class="col-12 col-md-8">
+                                <label for="knowledge_image" class="form-label">Select image file</label>
+                                <input class="form-control" type="file" id="knowledge_image" accept="image/*" name="data[exercise][7][image]">
+                                <button class="btn btn-primary mt-1" type="button" data-bs-toggle="modal" data-bs-target="#feedback_description_7_modal">
+                                    <span class="material-symbols-outlined" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $knowledge_type->description }}">info</span>
+                                </button>
+                                @include('modals.exercises.feedback_description', ['type' => "$knowledge_type->name", 'description' => "$knowledge_type->description", 'id' => "7"])
+                            </div>
+                        </div>
+                    @endif
+                @endif
             </div>
             
             <div class="card p-2 mt-2 mb-2">

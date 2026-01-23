@@ -108,6 +108,14 @@ const ExerciseHandler = {
                     response.navigation_type,
                     currentExerciseUrl
                 );
+                
+                // Para dictation cloze: mostrar feedback con imagen después de 3 intentos
+                if (type === 'fill_in_the_gaps' && exercise.subtype == 1 && response.attempts_count && response.attempts_count >= 3) {
+                    const knowledgeFeedback = document.getElementById(`dictation-cloze-knowledge-feedback-${exerciseId}`);
+                    if (knowledgeFeedback) {
+                        knowledgeFeedback.style.display = 'block';
+                    }
+                }
             },
             error: (response) => {
                 console.error('Error submitting exercise:', response);

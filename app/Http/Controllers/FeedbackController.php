@@ -83,6 +83,14 @@ class FeedbackController extends Controller
                         $feedback->exercise_id = $exercise->id;        
                         $feedback->save();
                         break;
+                    } elseif($key == 'image')
+                    {
+                        $feedback = new Feedback;
+                        $feedback->feedback_type_id = $feedback_type_id;
+                        $feedback->image_name = $this->getImageFrom($request, $feedback_type_id);
+                        $feedback->exercise_id = $exercise->id;        
+                        $feedback->save();
+                        break;
                     }
                 }
             }
@@ -109,6 +117,21 @@ class FeedbackController extends Controller
             $audio_file_path = $audio_file->storeAs('files', $audio_file_name, 'public');
             
             return $audio_file_name;
+        } else {
+            return null;
+        }
+    }
+
+    private function getImageFrom(Request $request, $feedback_type_id)
+    {
+        $image_file = $request->file('data.exercise.'.$feedback_type_id.'.image');
+        
+        if($image_file != null) 
+        {
+            $image_file_name = $image_file->getClientOriginalName();
+            $image_file->storeAs('files', $image_file_name, 'public');
+            
+            return $image_file_name;
         } else {
             return null;
         }
