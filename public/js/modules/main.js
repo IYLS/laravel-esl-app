@@ -87,6 +87,33 @@ window.appendTrackingValues = function (exerciseId, type) {
 };
 
 window.resetExercise = function (exerciseId, questions, exerciseType) {
+    // Verificar límite de resets (máximo 3)
+    const resetKey = `reset_count_${exerciseId}`;
+    let resetCount = parseInt(localStorage.getItem(resetKey) || '0', 10);
+    
+    // Si ya se usaron 3 resets, mostrar mensaje y no permitir más
+    if (resetCount >= 3) {
+        showResetLimitMessage(exerciseId, 0);
+        return;
+    }
+    
+    // Incrementar contador
+    resetCount++;
+    localStorage.setItem(resetKey, resetCount.toString());
+    
+    // Mostrar mensaje según el número de resets restantes
+    const remainingTries = 3 - resetCount;
+    showResetLimitMessage(exerciseId, remainingTries);
+    
+    // Deshabilitar botón si se alcanzó el límite
+    if (resetCount >= 3) {
+        const resetButton = document.getElementById(`reset-button-${exerciseId}`);
+        if (resetButton) {
+            resetButton.disabled = true;
+            resetButton.classList.add('disabled');
+        }
+    }
+    
     // Si no se proporciona el tipo, intentar detectarlo o usar múltiple choice por defecto
     if (!exerciseType) {
         // Intentar detectar por elementos presentes
@@ -231,5 +258,98 @@ window.unstick = function () {
     const stickyBar = document.getElementById('sticky-bar');
     if (stickyBar) {
         stickyBar.classList.remove('sticky-top');
+    }
+};
+
+/**
+ * Muestra un mensaje emergente sobre el límite de resets
+ * @param {number} exerciseId - ID del ejercicio
+ * @param {number} remainingTries - Número de intentos restantes
+ */
+function showResetLimitMessage(exerciseId, remainingTries) {
+    let message = '';
+    let messageClass = 'text-info';
+    
+    if (remainingTries === 0) {
+        message = "Sorry! You don't have any more tries.";
+        messageClass = 'text-danger';
+    } else if (remainingTries === 1) {
+        message = "You have 1 more try.";
+    } else {
+        message = `You have ${remainingTries} more tries.`;
+    }
+    
+    // Remover modal existente si existe
+    const existingModal = document.getElementById('reset-limit-modal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Crear estructura del modal
+    const modalContainer = Utils.createElement('div', {
+        'class': 'modal fade',
+        'id': 'reset-limit-modal',
+        'tabindex': '-1',
+        'aria-labelledby': 'reset-limit-modal',
+        'aria-hidden': 'true'
+    });
+    
+    const modalDialog = Utils.createElement('div', {
+        'class': 'modal-dialog modal-dialog-centered modal-sm'
+    });
+    
+    const modalContent = Utils.createElement('div', {
+        'class': 'modal-content'
+    });
+    
+    const modalBody = Utils.createElement('div', {
+        'class': 'modal-body text-center p-4'
+    });
+    
+    const messageText = Utils.createElement('p', {
+        'class': `${messageClass} mb-0`,
+        'style': 'font-size: 1.1rem;'
+    }, message);
+    
+    const closeButton = Utils.createElement('button', {
+        'class': 'btn btn-primary btn-sm mt-3',
+        'type': 'button',
+        'data-bs-dismiss': 'modal'
+    }, 'OK');
+    
+    // Construir estructura
+    modalBody.appendChild(messageText);
+    modalBody.appendChild(closeButton);
+    modalContent.appendChild(modalBody);
+    modalDialog.appendChild(modalContent);
+    modalContainer.appendChild(modalDialog);
+    
+    // Agregar al body y mostrar
+    document.body.appendChild(modalContainer);
+    
+    // Mostrar el modal usando Bootstrap
+    const modal = new bootstrap.Modal(modalContainer);
+    modal.show();
+    
+    // Remover el modal del DOM después de cerrarse
+    modalContainer.addEventListener('hidden.bs.modal', function() {
+        modalContainer.remove();
+    });
+}
+
+/**
+ * Inicializa el estado del botón reset al cargar la página
+ * Verifica si ya se alcanzó el límite de resets y deshabilita el botón si es necesario
+ */
+window.initResetButton = function (exerciseId) {
+    const resetKey = `reset_count_${exerciseId}`;
+    const resetCount = parseInt(localStorage.getItem(resetKey) || '0', 10);
+    
+    if (resetCount >= 3) {
+        const resetButton = document.getElementById(`reset-button-${exerciseId}`);
+        if (resetButton) {
+            resetButton.disabled = true;
+            resetButton.classList.add('disabled');
+        }
     }
 };

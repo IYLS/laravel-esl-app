@@ -297,6 +297,16 @@
         if (typeof VideoHandler !== 'undefined') {
             VideoHandler.init();
         }
+        
+        // Inicializar botones reset (verificar límite de 3 resets)
+        if (typeof initResetButton === 'function') {
+            // Buscar todos los botones reset en la página
+            const resetButtons = document.querySelectorAll('[id^="reset-button-"]');
+            resetButtons.forEach(function(button) {
+                const exerciseId = button.id.replace('reset-button-', '');
+                initResetButton(exerciseId);
+            });
+        }
     });
 </script>
 
