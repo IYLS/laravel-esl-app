@@ -241,6 +241,25 @@ class TrackingController extends Controller
         
         // Obtener número de intentos actual (después de guardar)
         $attempts_count = Tracking::where('exercise_id', $exercise->id)->where('user_id', $user_id)->count();
+        
+        // Calcular progreso actualizado de la unidad
+        $unit = $exercise->section->unit;
+        $total_exercises = 0;
+        $completed_count = 0;
+        
+        foreach($unit->sections as $section) {
+            $section_exercises = $section->exercises->where('exercise_type_id', '!=', 5);
+            $total_exercises += $section_exercises->count();
+            
+            foreach($section_exercises as $ex) {
+                $tracking_count = Tracking::where('exercise_id', $ex->id)->where('user_id', $user_id)->count();
+                if($tracking_count >= 1) {
+                    $completed_count++;
+                }
+            }
+        }
+        
+        $unit_progress = $total_exercises > 0 ? round(($completed_count / $total_exercises) * 100) : 0;
 
         return response()->json([
             'result' => 'success',
@@ -249,6 +268,9 @@ class TrackingController extends Controller
             'navigation_url' => $status['url'],
             'navigation_type' => $status['type'],
             'attempts_count' => $attempts_count,
+            'unit_progress' => $unit_progress,
+            'completed_count' => $completed_count,
+            'total_exercises' => $total_exercises,
         ]);
     }
 

@@ -4,7 +4,24 @@
 @section('title', 'Student Module')
 
 <div class="p-4 row w-100 h-100 col-12 student-module">
-    <h5 class="pl-2">{{ $unit->title }}</h5>
+    <div class="col-12 mb-2">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+            <h5 class="pl-2 mb-0">{{ $unit->title }}</h5>
+            <small class="text-muted" id="progress-text">{{ $completed_count ?? 0 }}/{{ $total_exercises ?? 0 }}</small>
+        </div>
+        {{-- Barra de progreso sutil --}}
+        <div class="progress" style="height: 4px; background-color: #e9ecef; border-radius: 2px; overflow: hidden;">
+            <div 
+                class="progress-bar" 
+                id="unit-progress-bar"
+                role="progressbar" 
+                style="width: {{ $unit_progress ?? 0 }}%; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); transition: width 0.6s ease;"
+                aria-valuenow="{{ $unit_progress ?? 0 }}" 
+                aria-valuemin="0" 
+                aria-valuemax="100"
+            ></div>
+        </div>
+    </div>
     <div class="row sticky-top p-1" id="sticky-bar" style="background-color: white;">
         <div class="col-12 col-lg-4 col-xl-4">
             @forelse($keywords as $keyword)
@@ -291,6 +308,24 @@
     if (typeof startTimer === 'function') {
         startTimer();
     }
+    
+    // Función para actualizar la barra de progreso de la unidad
+    function updateUnitProgress(progress, completed, total) {
+        const progressBar = document.getElementById('unit-progress-bar');
+        const progressText = document.getElementById('progress-text');
+        
+        if (progressBar) {
+            progressBar.style.width = progress + '%';
+            progressBar.setAttribute('aria-valuenow', progress);
+        }
+        
+        if (progressText) {
+            progressText.textContent = completed + '/' + total;
+        }
+    }
+    
+    // Hacer la función disponible globalmente
+    window.updateUnitProgress = updateUnitProgress;
     
     // Inicializar manejo de eventos de video
     document.addEventListener('DOMContentLoaded', function() {

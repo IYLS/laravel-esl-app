@@ -116,6 +116,11 @@ const ExerciseHandler = {
                         knowledgeFeedback.style.display = 'block';
                     }
                 }
+                
+                // Actualizar barra de progreso de la unidad
+                if (response.unit_progress !== undefined) {
+                    updateUnitProgress(response.unit_progress, response.completed_count, response.total_exercises);
+                }
             },
             error: (response) => {
                 console.error('Error submitting exercise:', response);
