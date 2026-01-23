@@ -320,49 +320,81 @@ class TrackingController extends Controller
     }
 
     private function getNextExercise($exercise, $user_id) {
-        // Buscar primer ejercicio sin respuesta registrado que no sea de tipo Voice Recognition
-
+        // Buscar siguiente ejercicio sin completar después del ejercicio actual, ordenado por posición
+        
         $section = $exercise->section;
-        $exercises = $section->exercises->where('exercise_type_id', '!=', 5);
-        $next_exercise = "";
+        // Ordenar ejercicios por posición y filtrar tipo Voice Recognition
+        $exercises = $section->exercises->where('exercise_type_id', '!=', 5)->sortBy('position');
+        $next_exercise = null;
+        $found_current = false;
 
-        foreach($exercises as $exercise)
-        {
-            $exercise_tracking_count = Tracking::where('exercise_id', $exercise->id)->where('user_id', $user_id)->count();
-            if($exercise_tracking_count == 0) {
-                $next_exercise = $exercise;
-                break;
+        foreach($exercises as $ex) {
+            // Primero encontrar el ejercicio actual
+            if ($ex->id == $exercise->id) {
+                $found_current = true;
+                continue; // Continuar al siguiente después del actual
             }
-        }
-
-        $url = $next_exercise->exerciseType->underscore_name . $next_exercise->id;
-
-        return $url;
-    }
-
-    private function getNextSection($exercise, $user_id) {
-        // Buscar primer ejercicio sin respuesta registrado que no sea de tipo Voice Recognition
-
-        $section = $exercise->section;
-        $unit = $section->unit;
-        $next_section;
-
-        foreach($unit->sections as $section) {
-            $exercises = $section->exercises->where('exercise_type_id', '!=', 5);
-            foreach($exercises as $exercise)
-            {
-                $exercise_tracking_count = Tracking::where('exercise_id', $exercise->id)->where('user_id', $user_id)->count();
+            
+            // Si ya encontramos el ejercicio actual, buscar el siguiente sin completar
+            if ($found_current) {
+                $exercise_tracking_count = Tracking::where('exercise_id', $ex->id)->where('user_id', $user_id)->count();
                 if($exercise_tracking_count == 0) {
-                    $next_section = $exercise->section;
+                    $next_exercise = $ex;
                     break;
                 }
             }
         }
 
-        if(isset($next_section)) {
+        // Si no hay siguiente ejercicio en la sección actual, retornar null
+        if ($next_exercise == null) {
+            return null;
+        }
+
+        $url = $next_exercise->exerciseType->underscore_name . $next_exercise->id;
+        return $url;
+    }
+
+    private function getNextSection($exercise, $user_id) {
+        // Buscar siguiente sección con ejercicios sin completar, ordenada por posición
+        
+        $current_section = $exercise->section;
+        $unit = $current_section->unit;
+        // Ordenar secciones por posición
+        $sections = $unit->sections->sortBy('position');
+        $next_section = null;
+        $found_current_section = false;
+
+        foreach($sections as $section) {
+            // Primero encontrar la sección actual
+            if ($section->id == $current_section->id) {
+                $found_current_section = true;
+                continue; // Continuar a la siguiente sección
+            }
+            
+            // Si ya encontramos la sección actual, buscar la siguiente con ejercicios sin completar
+            if ($found_current_section) {
+                $exercises = $section->exercises->where('exercise_type_id', '!=', 5)->sortBy('position');
+                $has_incomplete = false;
+                
+                foreach($exercises as $ex) {
+                    $exercise_tracking_count = Tracking::where('exercise_id', $ex->id)->where('user_id', $user_id)->count();
+                    if($exercise_tracking_count == 0) {
+                        $has_incomplete = true;
+                        break;
+                    }
+                }
+                
+                if ($has_incomplete) {
+                    $next_section = $section;
+                    break;
+                }
+            }
+        }
+
+        if($next_section != null) {
             $url = $next_section->underscore_name;
         } else {
-            $url = "";
+            $url = null;
         }
 
         return $url;
@@ -405,18 +437,31 @@ class TrackingController extends Controller
     }
 
     private function exerciseStatus($exercise, $user_id) {
-        $section_completed = $this->sectionStatus($exercise, $user_id);
-        $unit_completed = $this->unitStatus($exercise, $user_id);
-
-        if ($unit_completed) {
-            $next_unit_url = $this->getNextUnit($exercise, $user_id);
-            return ["message" => "You completed this unit, now you can move to the next unit", "url" => "$next_unit_url", 'type' => 'unit'];
-        } else if ($section_completed) {
-            $next_section_url = $this->getNextSection($exercise, $user_id);
-            return ["message" => "You completed this stage, now you can continue with the next one", "url" => "$next_section_url", 'type' => 'section'];
-        } else {
-            $next_exercise_url = $this->getNextExercise($exercise, $user_id);
+        // Primero verificar si hay siguiente ejercicio en la sección actual
+        $next_exercise_url = $this->getNextExercise($exercise, $user_id);
+        
+        if ($next_exercise_url != null) {
             return ["message" => "You completed this exercise, now you can continue with the next one", "url" => "$next_exercise_url", 'type' => 'exercise'];
         }
+        
+        // Si no hay siguiente ejercicio, verificar si hay siguiente sección
+        $next_section_url = $this->getNextSection($exercise, $user_id);
+        
+        if ($next_section_url != null) {
+            return ["message" => "You completed this stage, now you can continue with the next one", "url" => "$next_section_url", 'type' => 'section'];
+        }
+        
+        // Si no hay siguiente sección, verificar si hay siguiente unidad
+        $unit_completed = $this->unitStatus($exercise, $user_id);
+        
+        if ($unit_completed) {
+            $next_unit_url = $this->getNextUnit($exercise, $user_id);
+            if ($next_unit_url != null && $next_unit_url != "") {
+                return ["message" => "You completed this unit, now you can move to the next unit", "url" => "$next_unit_url", 'type' => 'unit'];
+            }
+        }
+        
+        // Si no hay nada más, retornar mensaje indicando que está completo
+        return ["message" => "You have completed all exercises", "url" => "", 'type' => 'exercise'];
     }
 }
