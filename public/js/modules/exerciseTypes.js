@@ -29,7 +29,8 @@ const ExerciseTypes = {
 
                 if (alternative.checked) {
                     questionAnswered = true;
-                    const isCorrect = question.correct_answer == alternative.value;
+                    // Normalizar ambas cadenas antes de comparar para manejar entidades HTML
+                    const isCorrect = Utils.compareNormalized(question.correct_answer, alternative.value);
                     const responseText = alternative.value || alternative.parentNode.children[1]?.innerHTML?.trim() || '';
                     const isNotSure = responseText.toLowerCase().includes("i'm not sure") || 
                                      responseText.toLowerCase().includes("im not sure") ||
