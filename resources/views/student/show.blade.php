@@ -24,7 +24,7 @@
     <div class="col-12 col-xl-4">
         @if(isset($unit->video_name) and $unit->video_name != null and $unit->video_name != '')
             <div class="ratio ratio-16x9 mt-3">
-                <video title="Video" allowfullscreen controls>
+                <video id="unit-video-{{ $unit->id }}" title="Video" allowfullscreen controls>
                     <source src="{{ asset('storage/files') . "/" . $unit->video_name }}">
                 </video>
             </div>
@@ -197,7 +197,7 @@
                                         @include('layouts.tracking.tracking_complete')
 
                                         @if(isset($e->video_name) and $e->video_name != null and $e->video_name != '')
-                                            <video title="Video" allowfullscreen controls class="ratio ratio-16x9 mt-3 w-75">
+                                            <video id="exercise-video-{{ $e->id }}" title="Video" allowfullscreen controls class="ratio ratio-16x9 mt-3 w-75">
                                                 <source src="{{ asset('storage/files') . "/" . $e->video_name }}">
                                             </video>
                                         @endif
@@ -281,6 +281,7 @@
 
 {{-- JavaScript modularizado y organizado --}}
 <script src="{{ asset('js/student-exercises.js') }}"></script>
+<script src="{{ asset('js/modules/videoHandler.js') }}"></script>
 
 <script>
     // Inicializar variables necesarias desde PHP
@@ -290,19 +291,13 @@
     if (typeof startTimer === 'function') {
         startTimer();
     }
-</script>
-
-{{-- Cargar JavaScript modularizado --}}
-<script src="{{ asset('js/student-exercises.js') }}"></script>
-
-<script>
-    // Inicializar variables necesarias desde PHP
-    window.current_exercise_id = {{ json_encode($first_exercise_id) }};
     
-    // Inicializar timer al cargar la página
-    if (typeof startTimer === 'function') {
-        startTimer();
-    }
+    // Inicializar manejo de eventos de video
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof VideoHandler !== 'undefined') {
+            VideoHandler.init();
+        }
+    });
 </script>
 
 @endsection

@@ -24,6 +24,7 @@ window.Navigation = Navigation || {};
 window.ModalManager = ModalManager || {};
 window.Utils = Utils || {};
 window.DragAndDrop = DragAndDrop || {};
+window.VideoHandler = VideoHandler || {};
 
 // Funciones de compatibilidad global
 window.millisToHms = function(ms) {
