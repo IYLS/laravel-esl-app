@@ -103,7 +103,19 @@
         align-items: center;
         justify-content: center;
         border-radius: 8px;
-        font-size: 1.25rem;
+        flex-shrink: 0;
+        background-color: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(4px);
+    }
+    .section-icon .material-symbols-outlined {
+        font-size: 24px;
+        color: white !important;
+        font-weight: normal;
+        font-style: normal;
+        line-height: 1;
+        display: inline-block;
+        width: 24px;
+        height: 24px;
     }
 </style>
 
@@ -117,8 +129,8 @@
         <!-- Sección de Preguntas Generales -->
         <div class="faq-section">
             <div class="faq-section-header text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                <div class="section-icon bg-white bg-opacity-25">
-                    <i class="material-symbols-outlined">help</i>
+                <div class="section-icon">
+                    <span class="material-symbols-outlined">help</span>
                 </div>
                 <span>Preguntas Generales</span>
             </div>
@@ -167,8 +179,8 @@
         <!-- Sección de Ejemplos de Ejercicios -->
         <div class="faq-section">
             <div class="faq-section-header text-white" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
-                <div class="section-icon bg-white bg-opacity-25">
-                    <i class="material-symbols-outlined">school</i>
+                <div class="section-icon">
+                    <span class="material-symbols-outlined">school</span>
                 </div>
                 <span>Ejemplos de Cómo Completar Ejercicios</span>
             </div>
@@ -276,8 +288,8 @@
         <!-- Sección de Opciones de Ayuda -->
         <div class="faq-section">
             <div class="faq-section-header text-white" style="background: linear-gradient(135deg, #0dcaf0 0%, #0d6efd 100%);">
-                <div class="section-icon bg-white bg-opacity-25">
-                    <i class="material-symbols-outlined">support</i>
+                <div class="section-icon">
+                    <span class="material-symbols-outlined">support</span>
                 </div>
                 <span>Uso de Opciones de Ayuda</span>
             </div>
@@ -348,8 +360,8 @@
         <!-- Sección de Navegación -->
         <div class="faq-section">
             <div class="faq-section-header text-white" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%);">
-                <div class="section-icon bg-white bg-opacity-25">
-                    <i class="material-symbols-outlined">navigation</i>
+                <div class="section-icon">
+                    <span class="material-symbols-outlined">navigation</span>
                 </div>
                 <span>Navegación y Progreso</span>
             </div>

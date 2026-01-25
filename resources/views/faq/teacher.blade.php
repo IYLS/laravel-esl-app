@@ -107,7 +107,19 @@
         align-items: center;
         justify-content: center;
         border-radius: 8px;
-        font-size: 1.25rem;
+        flex-shrink: 0;
+        background-color: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(4px);
+    }
+    .section-icon .material-symbols-outlined {
+        font-size: 24px;
+        color: white !important;
+        font-weight: normal;
+        font-style: normal;
+        line-height: 1;
+        display: inline-block;
+        width: 24px;
+        height: 24px;
     }
 </style>
 
@@ -121,8 +133,8 @@
         <!-- Sección de Preguntas Generales -->
         <div class="faq-section">
             <div class="faq-section-header text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                <div class="section-icon bg-white bg-opacity-25">
-                    <i class="material-symbols-outlined">help</i>
+                <div class="section-icon">
+                    <span class="material-symbols-outlined">help</span>
                 </div>
                 <span>Preguntas Generales</span>
             </div>
@@ -165,8 +177,8 @@
         <!-- Sección de Ejemplos: Cómo Cargar Unidades -->
         <div class="faq-section">
             <div class="faq-section-header text-white" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
-                <div class="section-icon bg-white bg-opacity-25">
-                    <i class="material-symbols-outlined">book</i>
+                <div class="section-icon">
+                    <span class="material-symbols-outlined">book</span>
                 </div>
                 <span>Ejemplos: Cómo Cargar y Configurar Unidades</span>
             </div>
@@ -353,8 +365,8 @@
         <!-- Sección de Configuración de la Plataforma -->
         <div class="faq-section">
             <div class="faq-section-header text-white" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                <div class="section-icon bg-white bg-opacity-25">
-                    <i class="material-symbols-outlined">settings</i>
+                <div class="section-icon">
+                    <span class="material-symbols-outlined">settings</span>
                 </div>
                 <span>Configuración de la Plataforma</span>
             </div>
@@ -437,8 +449,8 @@
         <!-- Sección de Mejores Prácticas -->
         <div class="faq-section">
             <div class="faq-section-header text-white" style="background: linear-gradient(135deg, #0dcaf0 0%, #0d6efd 100%);">
-                <div class="section-icon bg-white bg-opacity-25">
-                    <i class="material-symbols-outlined">star</i>
+                <div class="section-icon">
+                    <span class="material-symbols-outlined">star</span>
                 </div>
                 <span>Mejores Prácticas</span>
             </div>
