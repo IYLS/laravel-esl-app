@@ -30,6 +30,9 @@
                         <a class="nav-link" onclick="this.classList.add('active');" href="{{ route('faq.teacher') }}">FAQ</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" onclick="this.classList.add('active');" href="{{ route('profile.show') }}">Profile</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" onclick="this.classList.add('active');" href="{{ route('auth.logout') }}">Log out</a>
                     </li>
                 </ul>
@@ -56,6 +59,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" onclick="this.classList.add('active');" href="{{ route('faq.student') }}">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="this.classList.add('active');" href="{{ route('profile.show') }}">Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" onclick="this.classList.add('active');" href="{{ route('auth.logout') }}">Log out</a>

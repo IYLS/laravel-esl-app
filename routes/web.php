@@ -17,6 +17,7 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\GlossedWordsController;
 use App\Http\Controllers\FAQController;
+use App\Http\Controllers\ProfileController;
 
 // Home
 Route::get('/', [AuthController::class, 'index'])->name('auth.index');
@@ -35,6 +36,11 @@ Route::post('/users/filter', [UserController::class, 'executeFilter'])->name('us
 
 // Auth Router
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
+
+// Profile Routes
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
 // Groups Routes
 Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');

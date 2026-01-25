@@ -26,7 +26,8 @@ class User extends Authenticable
         'language', 
         'email', 
         'role', 
-        'activated'
+        'activated',
+        'avatar'
     ];
     public $timestamps = true;
     public $incrementing = true;
