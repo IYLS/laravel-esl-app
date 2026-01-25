@@ -1756,3 +1756,21 @@ a i {
         font-size: 13px !important;
     }
 }
+
+/* ============================================
+   COMPONENTE USER MENTION
+   ============================================ */
+.user-mention-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+.user-mention-link:hover {
+    color: var(--color-hover-primary);
+    text-decoration: underline;
+}
+.user-mention {
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
