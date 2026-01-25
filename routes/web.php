@@ -18,6 +18,7 @@ use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\GlossedWordsController;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LeaderboardController;
 
 // Home
 Route::get('/', [AuthController::class, 'index'])->name('auth.index');
@@ -64,6 +65,9 @@ Route::get('/student/welcome', [StudentController::class, 'welcome'])->name('stu
 Route::get('/student/level_selection', [StudentController::class, 'level_selection'])->name('student.level_selection');
 Route::post('/student/select/unit', [StudentController::class, 'select'])->name('student.select');
 Route::get('/student/dashboard/{unit}', [StudentController::class, 'show'])->name('student.show');
+
+// Leaderboard Routes
+Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard.index');
 
 // Keywords Routes
 Route::get('/units/{unit}/keywords', [KeywordController::class, 'index'])->name('keywords.index');
