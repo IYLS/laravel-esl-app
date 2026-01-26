@@ -102,6 +102,13 @@
             </table>
         </div>
     @endforeach
+    
+    @if($e->subtype == 99 || $e->subtype == 991)
+        <div class="mt-3 mb-3">
+            <x-forum-link class="btn-sm" />
+        </div>
+    @endif
+    
         <br>
     @include('layouts.tracking.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
 </form>

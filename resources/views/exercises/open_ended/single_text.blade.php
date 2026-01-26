@@ -11,3 +11,9 @@
         <p class="text-secondary">Empty</p>
     </div>
 @endforelse
+
+@if($e->subtype == 99 || $e->subtype == 991)
+    <div class="mt-3 mb-3">
+        <x-forum-link class="btn-sm" />
+    </div>
+@endif
