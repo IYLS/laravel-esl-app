@@ -138,8 +138,22 @@
         showWrong(questionId) {
             const correct = document.getElementById(`question-${questionId}-feedback-correct`);
             const wrong = document.getElementById(`question-${questionId}-feedback-wrong`);
+            const notSure = document.getElementById(`question-${questionId}-feedback-not-sure`);
             if (correct) correct.hidden = true;
             if (wrong) wrong.hidden = false;
+            if (notSure) notSure.hidden = true;
+        },
+
+        /**
+         * Muestra feedback para "I'm not sure" (Evaluating statements)
+         */
+        showNotSure(questionId) {
+            const correct = document.getElementById(`question-${questionId}-feedback-correct`);
+            const wrong = document.getElementById(`question-${questionId}-feedback-wrong`);
+            const notSure = document.getElementById(`question-${questionId}-feedback-not-sure`);
+            if (correct) correct.hidden = true;
+            if (wrong) wrong.hidden = true;
+            if (notSure) notSure.hidden = false;
         },
 
         /**
@@ -264,12 +278,17 @@
 
             Object.keys(mappings).forEach(type => {
                 const mapping = mappings[type];
-                const data = this.helpOptions[type];
+                const data = this.data[type];
+
+                if (!data) {
+                    console.warn(`Help option data not found for type: ${type}`);
+                    return;
+                }
 
                 // Count input
                 const countInput = StudentUtils.createElement('input', {
                     'name': mapping.count,
-                    'value': data.count,
+                    'value': data.count || 0,
                     'hidden': true
                 });
                 form.appendChild(countInput);
@@ -277,7 +296,7 @@
                 // Time input (convertido a formato legible)
                 const timeInput = StudentUtils.createElement('input', {
                     'name': mapping.time,
-                    'value': StudentUtils.millisToHms(data.totalTime),
+                    'value': StudentUtils.millisToHms(data.totalTime || 0),
                     'hidden': true
                 });
                 form.appendChild(timeInput);
@@ -311,6 +330,10 @@
                 Array.from(alternatives).forEach(alternative => {
                     if (alternative.checked) {
                         const isCorrect = question.correct_answer == alternative.value;
+                        const responseText = alternative.value || alternative.parentNode.children[1]?.innerHTML?.trim() || '';
+                        const isNotSure = responseText.toLowerCase().includes("i'm not sure") || 
+                                         responseText.toLowerCase().includes("not sure") ||
+                                         responseText.toLowerCase().includes("im not sure");
 
                         if (isCorrect) {
                             responses.push({
@@ -321,8 +344,18 @@
                                 FeedbackManager.showCorrect(question.id);
                             }
                             correctQuestions++;
+                        } else if (isNotSure && exercise.subtype === 3) {
+                            // Evaluating statements: mostrar emoji pensativo para "I'm not sure"
+                            responses.push({
+                                id: String(question.id),
+                                response: responseText
+                            });
+                            if (shouldShowFeedback) {
+                                FeedbackManager.showNotSure(question.id);
+                                const explanatory = document.getElementById(`${alternative.value}-explanatory`);
+                                if (explanatory) explanatory.hidden = false;
+                            }
                         } else {
-                            const responseText = alternative.parentNode.children[1]?.innerHTML?.trim() || '';
                             responses.push({
                                 id: String(question.id),
                                 response: responseText
