@@ -16,39 +16,24 @@ return new class extends Migration
     {
         $driver = DB::connection()->getDriverName();
         
-        if ($driver === 'pgsql') {
-            // PostgreSQL: convertir datos existentes de "HH:MM:SS" o "MM:SS" a segundos
-            // Primero convertir a texto para poder usar LIKE
-            DB::statement("UPDATE tracking SET time_spent_in_minutes = CASE 
-                WHEN time_spent_in_minutes::text LIKE '%:%:%' THEN 
-                    (CAST(SPLIT_PART(time_spent_in_minutes::text, ':', 1) AS INTEGER) * 3600 + 
-                     CAST(SPLIT_PART(time_spent_in_minutes::text, ':', 2) AS INTEGER) * 60 + 
-                     CAST(SPLIT_PART(time_spent_in_minutes::text, ':', 3) AS INTEGER))
-                WHEN time_spent_in_minutes::text LIKE '%:%' THEN 
-                    (CAST(SPLIT_PART(time_spent_in_minutes::text, ':', 1) AS INTEGER) * 60 + 
-                     CAST(SPLIT_PART(time_spent_in_minutes::text, ':', 2) AS INTEGER))
-                ELSE CAST(time_spent_in_minutes AS INTEGER)
-            END");
-        } else {
-            // MySQL: convertir datos existentes de "HH:MM:SS" o "MM:SS" a segundos
-            DB::statement('UPDATE tracking SET time_spent_in_minutes = CASE 
-                WHEN time_spent_in_minutes LIKE "%:%:%" THEN 
-                    (CAST(SUBSTRING_INDEX(time_spent_in_minutes, ":", 1) AS UNSIGNED) * 3600 + 
-                     CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(time_spent_in_minutes, ":", 2), ":", -1) AS UNSIGNED) * 60 + 
-                     CAST(SUBSTRING_INDEX(time_spent_in_minutes, ":", -1) AS UNSIGNED))
-                WHEN time_spent_in_minutes LIKE "%:%" THEN 
-                    (CAST(SUBSTRING_INDEX(time_spent_in_minutes, ":", 1) AS UNSIGNED) * 60 + 
-                     CAST(SUBSTRING_INDEX(time_spent_in_minutes, ":", -1) AS UNSIGNED))
-                ELSE CAST(time_spent_in_minutes AS UNSIGNED)
-            END');
+        // Verificar que la columna existe
+        if (!Schema::hasColumn('tracking', 'time_spent_in_minutes')) {
+            return; // La columna ya fue renombrada o no existe
         }
 
+        // Convertir datos existentes de forma segura
+        if ($driver === 'pgsql') {
+            $this->convertTimePostgreSQL();
+        } else {
+            $this->convertTimeMySQL();
+        }
+
+        // Renombrar columna
         Schema::table('tracking', function (Blueprint $table) {
-            // Renombrar columna y cambiar tipo a integer
             $table->renameColumn('time_spent_in_minutes', 'time_spent_in_seconds');
         });
 
-        // Para PostgreSQL, necesitamos usar USING para convertir el tipo
+        // Cambiar tipo de dato
         if ($driver === 'pgsql') {
             DB::statement('ALTER TABLE tracking ALTER COLUMN time_spent_in_seconds TYPE INTEGER USING time_spent_in_seconds::integer');
         } else {
@@ -59,33 +44,119 @@ return new class extends Migration
     }
 
     /**
+     * Convierte tiempo en PostgreSQL de forma segura
+     */
+    private function convertTimePostgreSQL(): void
+    {
+        // Actualizar registros con formato "HH:MM:SS"
+        DB::statement("UPDATE tracking 
+            SET time_spent_in_minutes = (
+                CAST(SPLIT_PART(time_spent_in_minutes::text, ':', 1) AS INTEGER) * 3600 + 
+                CAST(SPLIT_PART(time_spent_in_minutes::text, ':', 2) AS INTEGER) * 60 + 
+                CAST(SPLIT_PART(time_spent_in_minutes::text, ':', 3) AS INTEGER)
+            )
+            WHERE time_spent_in_minutes::text LIKE '%:%:%'
+            AND time_spent_in_minutes IS NOT NULL");
+
+        // Actualizar registros con formato "MM:SS"
+        DB::statement("UPDATE tracking 
+            SET time_spent_in_minutes = (
+                CAST(SPLIT_PART(time_spent_in_minutes::text, ':', 1) AS INTEGER) * 60 + 
+                CAST(SPLIT_PART(time_spent_in_minutes::text, ':', 2) AS INTEGER)
+            )
+            WHERE time_spent_in_minutes::text LIKE '%:%'
+            AND time_spent_in_minutes::text NOT LIKE '%:%:%'
+            AND time_spent_in_minutes IS NOT NULL");
+
+        // Si son muy grandes (> 100000), probablemente son milisegundos
+        DB::statement("UPDATE tracking 
+            SET time_spent_in_minutes = CAST(time_spent_in_minutes AS INTEGER) / 1000
+            WHERE time_spent_in_minutes::text NOT LIKE '%:%'
+            AND CAST(time_spent_in_minutes AS INTEGER) > 100000
+            AND time_spent_in_minutes IS NOT NULL");
+
+        // Los valores numéricos pequeños ya están en segundos, no hacer conversión
+    }
+
+    /**
+     * Convierte tiempo en MySQL de forma segura
+     */
+    private function convertTimeMySQL(): void
+    {
+        // Actualizar registros con formato "HH:MM:SS"
+        DB::statement("UPDATE tracking 
+            SET time_spent_in_minutes = (
+                CAST(SUBSTRING_INDEX(time_spent_in_minutes, ':', 1) AS UNSIGNED) * 3600 + 
+                CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(time_spent_in_minutes, ':', 2), ':', -1) AS UNSIGNED) * 60 + 
+                CAST(SUBSTRING_INDEX(time_spent_in_minutes, ':', -1) AS UNSIGNED)
+            )
+            WHERE time_spent_in_minutes LIKE '%:%:%'
+            AND time_spent_in_minutes IS NOT NULL");
+
+        // Actualizar registros con formato "MM:SS"
+        DB::statement("UPDATE tracking 
+            SET time_spent_in_minutes = (
+                CAST(SUBSTRING_INDEX(time_spent_in_minutes, ':', 1) AS UNSIGNED) * 60 + 
+                CAST(SUBSTRING_INDEX(time_spent_in_minutes, ':', -1) AS UNSIGNED)
+            )
+            WHERE time_spent_in_minutes LIKE '%:%'
+            AND time_spent_in_minutes NOT LIKE '%:%:%'
+            AND time_spent_in_minutes IS NOT NULL");
+
+        // Si son muy grandes (> 100000), probablemente son milisegundos
+        DB::statement("UPDATE tracking 
+            SET time_spent_in_minutes = CAST(time_spent_in_minutes AS UNSIGNED) / 1000
+            WHERE time_spent_in_minutes NOT LIKE '%:%'
+            AND CAST(time_spent_in_minutes AS UNSIGNED) > 100000
+            AND time_spent_in_minutes IS NOT NULL");
+    }
+
+    /**
      * Reverse the migrations.
      *
      * @return void
      */
     public function down()
     {
+        $driver = DB::connection()->getDriverName();
+        
         Schema::table('tracking', function (Blueprint $table) {
             $table->string('time_spent_in_seconds')->change();
         });
 
         // Convertir segundos de vuelta a formato "HH:MM:SS" o "MM:SS"
-        DB::statement('UPDATE tracking SET time_spent_in_seconds = CASE 
-            WHEN time_spent_in_seconds >= 3600 THEN 
-                CONCAT(
-                    LPAD(FLOOR(time_spent_in_seconds / 3600), 2, "0"), 
-                    ":",
-                    LPAD(FLOOR((time_spent_in_seconds % 3600) / 60), 2, "0"), 
-                    ":",
-                    LPAD(time_spent_in_seconds % 60, 2, "0")
-                )
-            ELSE 
-                CONCAT(
-                    LPAD(FLOOR(time_spent_in_seconds / 60), 2, "0"), 
-                    ":",
-                    LPAD(time_spent_in_seconds % 60, 2, "0")
-                )
-        END');
+        if ($driver === 'pgsql') {
+            DB::statement("UPDATE tracking 
+                SET time_spent_in_seconds = CASE 
+                    WHEN CAST(time_spent_in_seconds AS INTEGER) >= 3600 THEN 
+                        LPAD(FLOOR(CAST(time_spent_in_seconds AS INTEGER) / 3600)::text, 2, '0') || ':' ||
+                        LPAD(FLOOR((CAST(time_spent_in_seconds AS INTEGER) % 3600) / 60)::text, 2, '0') || ':' ||
+                        LPAD((CAST(time_spent_in_seconds AS INTEGER) % 60)::text, 2, '0')
+                    ELSE 
+                        LPAD(FLOOR(CAST(time_spent_in_seconds AS INTEGER) / 60)::text, 2, '0') || ':' ||
+                        LPAD((CAST(time_spent_in_seconds AS INTEGER) % 60)::text, 2, '0')
+                END
+                WHERE time_spent_in_seconds IS NOT NULL");
+        } else {
+            DB::statement("UPDATE tracking 
+                SET time_spent_in_seconds = CASE 
+                    WHEN CAST(time_spent_in_seconds AS UNSIGNED) >= 3600 THEN 
+                        CONCAT(
+                            LPAD(FLOOR(CAST(time_spent_in_seconds AS UNSIGNED) / 3600), 2, '0'), 
+                            ':',
+                            LPAD(FLOOR((CAST(time_spent_in_seconds AS UNSIGNED) % 3600) / 60), 2, '0'), 
+                            ':',
+                            LPAD(CAST(time_spent_in_seconds AS UNSIGNED) % 60, 2, '0')
+                        )
+                    ELSE 
+                        CONCAT(
+                            LPAD(FLOOR(CAST(time_spent_in_seconds AS UNSIGNED) / 60), 2, '0'), 
+                            ':',
+                            LPAD(CAST(time_spent_in_seconds AS UNSIGNED) % 60, 2, '0')
+                        )
+                END
+                WHERE time_spent_in_seconds IS NOT NULL");
+        }
 
         Schema::table('tracking', function (Blueprint $table) {
             $table->renameColumn('time_spent_in_seconds', 'time_spent_in_minutes');
