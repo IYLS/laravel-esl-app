@@ -33,6 +33,28 @@ return new class extends Migration
             $table->renameColumn('time_spent_in_minutes', 'time_spent_in_seconds');
         });
 
+        // Limpieza final antes de cambiar el tipo: limpiar cualquier valor inválido restante
+        if ($driver === 'pgsql') {
+            // Limpiar cualquier valor que no pueda convertirse a integer
+            DB::statement("UPDATE tracking 
+                SET time_spent_in_seconds = '0'
+                WHERE time_spent_in_seconds IS NOT NULL
+                AND (
+                    UPPER(time_spent_in_seconds::text) LIKE '%NAN%'
+                    OR time_spent_in_seconds::text !~ '^[0-9]+$'
+                    OR time_spent_in_seconds::text LIKE '%:%'
+                )");
+        } else {
+            DB::statement("UPDATE tracking 
+                SET time_spent_in_seconds = '0'
+                WHERE time_spent_in_seconds IS NOT NULL
+                AND (
+                    UPPER(time_spent_in_seconds) LIKE '%NAN%'
+                    OR time_spent_in_seconds NOT REGEXP '^[0-9]+$'
+                    OR time_spent_in_seconds LIKE '%:%'
+                )");
+        }
+
         // Cambiar tipo de dato
         if ($driver === 'pgsql') {
             DB::statement('ALTER TABLE tracking ALTER COLUMN time_spent_in_seconds TYPE INTEGER USING time_spent_in_seconds::integer');
@@ -49,6 +71,7 @@ return new class extends Migration
     private function convertTimePostgreSQL(): void
     {
         // Primero, limpiar valores inválidos (NaN, null, vacíos, etc.)
+        // Incluir cualquier valor que contenga "NaN" en cualquier parte
         DB::statement("UPDATE tracking 
             SET time_spent_in_minutes = '0'
             WHERE time_spent_in_minutes IS NULL 
@@ -56,7 +79,8 @@ return new class extends Migration
             OR time_spent_in_minutes::text = 'NaN'
             OR time_spent_in_minutes::text = 'null'
             OR time_spent_in_minutes::text = 'NULL'
-            OR LOWER(time_spent_in_minutes::text) = 'nan'");
+            OR LOWER(time_spent_in_minutes::text) = 'nan'
+            OR UPPER(time_spent_in_minutes::text) LIKE '%NAN%'");
 
         // Actualizar registros con formato "HH:MM:SS"
         // Verificar que todas las partes sean numéricas válidas
@@ -100,6 +124,16 @@ return new class extends Migration
             WHERE time_spent_in_minutes::text NOT LIKE '%:%'
             AND time_spent_in_minutes::text !~ '^[0-9]+$'
             AND time_spent_in_minutes IS NOT NULL");
+
+        // Limpiar valores con formato inválido que contengan NaN (ej: "NaN:NaN", "NaN:00", etc.)
+        DB::statement("UPDATE tracking 
+            SET time_spent_in_minutes = '0'
+            WHERE time_spent_in_minutes::text LIKE '%:%'
+            AND (
+                UPPER(SPLIT_PART(time_spent_in_minutes::text, ':', 1)) LIKE '%NAN%'
+                OR UPPER(SPLIT_PART(time_spent_in_minutes::text, ':', 2)) LIKE '%NAN%'
+                OR (time_spent_in_minutes::text LIKE '%:%:%' AND UPPER(SPLIT_PART(time_spent_in_minutes::text, ':', 3)) LIKE '%NAN%')
+            )");
     }
 
     /**
