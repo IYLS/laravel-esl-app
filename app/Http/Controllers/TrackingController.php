@@ -276,7 +276,7 @@ class TrackingController extends Controller
 
     public function show(Request $request, $id)
     {
-        $tracking = Tracking::with(['helpUsage', 'feedbackUsage'])->find($id);
+        $tracking = Tracking::with(['helpUsage', 'feedbackUsage', 'userResponses.question'])->find($id);
         
         // Obtener parámetros de filtro de la query string para pasarlos a la vista
         $group_id = $request->query('group');
