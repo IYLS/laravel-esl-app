@@ -10,6 +10,9 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
+        // Asegurar que la conexión use UTF-8
+        DB::statement('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci');
+        
         $this->call(ExerciseTypeSeeder::class);
         $this->call(GroupSeeder::class);
         $this->call(UserSeeder::class);
