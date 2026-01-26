@@ -18,13 +18,27 @@ class StudentController extends Controller
     public function show($unit_id)
     {
         $unit = Unit::find($unit_id);
+        
+        if (!$unit) {
+            return redirect()->route('student.level_selection')
+                ->with('error', 'La unidad solicitada no existe.');
+        }
+        
         $keywords = $unit->keywords;
         $user = Auth::user();
 
-        if (isset($unit->sections->first()->exercises)) {
-            $first_exercise_id = $unit->sections->first()->exercises->first()->id;
-        } else {
-            $first_exercise_id = 0;
+        // Verificar si hay ejercicios válidos en alguna sección
+        $has_exercises = false;
+        $first_exercise_id = 0;
+        
+        foreach($unit->sections as $section) {
+            $section_exercises = $section->exercises->where('exercise_type_id', '!=', 5);
+            if ($section_exercises->count() > 0) {
+                $has_exercises = true;
+                if ($first_exercise_id == 0) {
+                    $first_exercise_id = $section_exercises->first()->id;
+                }
+            }
         }
 
         $completed_exercises = Tracking::where('user_id', $user->id)->get()->map(function ($tracking) {
@@ -56,7 +70,7 @@ class StudentController extends Controller
         if ($unit->translation_enabled) array_push($help_options, $unit->translation);
         if ($unit->dictionary_enabled) array_push($help_options, $unit->dictionary);
 
-        return view('student.show', compact(['unit', 'keywords', 'help_options', 'user', 'completed_exercises', 'first_exercise_id', 'unit_progress', 'completed_count', 'total_exercises']));
+        return view('student.show', compact(['unit', 'keywords', 'help_options', 'user', 'completed_exercises', 'first_exercise_id', 'unit_progress', 'completed_count', 'total_exercises', 'has_exercises']));
     }
 
     public function select(Request $request)

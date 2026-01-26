@@ -55,16 +55,32 @@
 
     {{-- Exercises and content section --}}
     <div class="col-12 col-xl-8 bg-light mt-2 p-3 rounded shadow overflow-auto" id="top_student_area" style="max-height: calc(100vh - 120px);">
+        @if(!isset($has_exercises) || !$has_exercises)
+            {{-- Mensaje cuando no hay ejercicios --}}
+            <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px;">
+                <span class="material-symbols-outlined" style="font-size: 80px; color: #6c757d; margin-bottom: 20px;">assignment</span>
+                <h4 class="text-secondary mb-3">No hay ejercicios disponibles</h4>
+                <p class="text-muted text-center mb-4" style="max-width: 500px;">
+                    Esta unidad aún no tiene ejercicios creados en sus secciones. Por favor, contacta a tu profesor para más información.
+                </p>
+                <a href="{{ route('student.level_selection') }}" class="btn btn-primary">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    Volver a selección de unidades
+                </a>
+            </div>
+        @else
         <ul class="nav nav-tabs" id="sectionsTabs" role="tablist">
             @foreach($unit->sections->sortBy('position') as $section)
                 @php 
                     $index = $loop->index + 1;
-                    if(isset($section_first_exercise_id)) {
-                        $section_first_exercise_id = $section->exercises->first()->id;
+                    $section_exercises = $section->exercises->where('exercise_type_id', '!=', 5);
+                    if($section_exercises->count() > 0) {
+                        $section_first_exercise_id = $section_exercises->first()->id;
                     } else {
                         $section_first_exercise_id = 0;
                     }
                 @endphp
+                @if($section_exercises->count() > 0)
                 <li class="nav-item" role="presentation">
                     @if($index-1 == 0)
                         <button 
@@ -96,16 +112,21 @@
                         </button>
                     @endif
                 </li>
+                @endif
             @endforeach
         </ul>
         <div class="tab-content" id="myTabContent">
             @foreach($unit->sections->sortBy('position') as $section)
-                @if($loop->index == 0)
-                    <div class="tab-pane fade show section-pane active m-2" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
-                @else
-                    <div class="tab-pane fade section-pane m-2" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
-                @endif
-                <div class="d-flex align-items-start row mt-2">
+                @php
+                    $section_exercises = $section->exercises->where('exercise_type_id', '!=', 5);
+                @endphp
+                @if($section_exercises->count() > 0)
+                    @if($loop->index == 0)
+                        <div class="tab-pane fade show section-pane active m-2" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
+                    @else
+                        <div class="tab-pane fade section-pane m-2" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
+                    @endif
+                    <div class="d-flex align-items-start row mt-2">
 
                     {{-- (Optional) Additional Information --}}
                     @if(isset($section->instructions) and $section->instructions != '')
@@ -114,7 +135,7 @@
                     </div>
                     @endif
                     <div class="nav flex-column mt-2 nav-pills col-12 col-xl-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        @forelse($section->exercises->sortBy('position') as $e)
+                        @forelse($section->exercises->where('exercise_type_id', '!=', 5)->sortBy('position') as $e)
                             @php $index = $loop->index; @endphp
                             <button 
                                 class="nav-link exercise-btn @if($e->subtype == 99 || $e->subtype == 991) meta @endif @if($index == 0) active @endif"
@@ -156,7 +177,7 @@
                         @endforelse
                     </div>
                     <div class="tab-content container-fluid col-12 col-xl-10" id="v-pills-tabContent">
-                        @foreach($section->exercises->sortBy('position') as $e)
+                        @foreach($section->exercises->where('exercise_type_id', '!=', 5)->sortBy('position') as $e)
                             @php
                                 $feedback_content = array(
                                     'ids' => [],
@@ -290,9 +311,10 @@
                         @endforeach
                     </div>
                     </div>
-                </div>
+                @endif
             @endforeach
         </div>
+        @endif
     </div>
 </div>
 
@@ -302,12 +324,14 @@
 
 <script>
     // Inicializar variables necesarias desde PHP
+    @if(isset($has_exercises) && $has_exercises)
     window.current_exercise_id = {{ json_encode($first_exercise_id) }};
     
     // Inicializar timer al cargar la página
     if (typeof startTimer === 'function') {
         startTimer();
     }
+    @endif
     
     // Función para actualizar la barra de progreso de la unidad
     function updateUnitProgress(progress, completed, total) {
