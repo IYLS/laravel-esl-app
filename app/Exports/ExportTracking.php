@@ -77,8 +77,8 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
             array_push($array, "U$key: Transcript Time Spent");
             array_push($array, "U$key: Tips Interactions");
             array_push($array, "U$key: Tips Time Spent");
-            array_push($array, "U$key: Cultural Notes Interactions");
-            array_push($array, "U$key: Cultural Notes Time Spent");
+            array_push($array, "U$key: Culture Notes Interactions");
+            array_push($array, "U$key: Culture Notes Time Spent");
             array_push($array, "U$key: Glossary Interactions");
             array_push($array, "U$key: Glossary Time Spent");
             array_push($array, "U$key: Translation Interactions");
@@ -169,7 +169,7 @@ class ExportTracking implements FromCollection, WithHeadings, WithMapping
                             $tipsTimesUnit += (int)$time;
                             $tipsInteractionsUnit += $count;
                             break;
-                        case 'Cultural notes':
+                        case 'Culture notes':
                             $culturalNotesTimesUnit += (int)$time;
                             $culturalNotesInteractionsUnit += $count;
                             break;

@@ -212,7 +212,7 @@ class TrackingController extends Controller
             $help_options = [
                 'Transcript' => ['count' => $request->transcript_count ?? 0, 'time' => $request->transcript_total_time ?? 0],
                 'Listening tips' => ['count' => $request->listening_tips_count ?? 0, 'time' => $request->listening_tips_total_time ?? 0],
-                'Cultural notes' => ['count' => $request->cultural_notes_count ?? 0, 'time' => $request->cultural_notes_total_time ?? 0],
+                'Culture notes' => ['count' => $request->cultural_notes_count ?? 0, 'time' => $request->cultural_notes_total_time ?? 0],
                 'Glossary' => ['count' => $request->glossary_count ?? 0, 'time' => $request->glossary_total_time ?? 0],
                 'Translation' => ['count' => $request->translation_count ?? 0, 'time' => $request->translation_total_time ?? 0],
                 'Dictionary' => ['count' => $request->dictionary_count ?? 0, 'time' => $request->dictionary_total_time ?? 0]

@@ -6,8 +6,8 @@
 
 @if($unit->cultural_notes_enabled)
     @php $modal_id = "culturalNotesModal"; @endphp
-    <button type="button" id="{{ $modal_id . "Button" }}" class="mt-1 btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#{{ $modal_id }}" onclick="onHelpOptionClicked('cultural_notes');">Cultural Notes</button>
-    @include('modals.keywords.show', ['modal_id' => $modal_id, 'description' => $unit->cultural_notes, 'modal_title' => 'Cultural Notes', 'type' => 'cultural_notes'])
+    <button type="button" id="{{ $modal_id . "Button" }}" class="mt-1 btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#{{ $modal_id }}" onclick="onHelpOptionClicked('cultural_notes');">Culture Notes</button>
+    @include('modals.keywords.show', ['modal_id' => $modal_id, 'description' => $unit->cultural_notes, 'modal_title' => 'Culture Notes', 'type' => 'cultural_notes'])
 @endif
 
 @if($unit->transcript_enabled)

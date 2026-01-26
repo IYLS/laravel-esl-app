@@ -323,7 +323,7 @@
                             <div class="col-12 col-md-6 mb-3">
                                 <div class="help-option-item">
                                     <div class="help-option-header">
-                                        <h6>Cultural Notes</h6>
+                                        <h6>Culture Notes</h6>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" @if($unit->cultural_notes_enabled) checked @endif name="cultural_notes_enabled" value="true" id="cultural_notes_enabled" disabled>
                                             <label class="form-check-label" for="cultural_notes_enabled">Enabled</label>

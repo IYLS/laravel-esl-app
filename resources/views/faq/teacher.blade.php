@@ -317,7 +317,7 @@
                                         <ul>
                                             <li><strong>Transcript:</strong> Muestra el texto completo del audio</li>
                                             <li><strong>Listening Tips:</strong> Consejos para mejorar la comprensión</li>
-                                            <li><strong>Cultural Notes:</strong> Notas culturales</li>
+                                            <li><strong>Culture Notes:</strong> Notas culturales</li>
                                             <li><strong>Glossary:</strong> Glosario de palabras clave</li>
                                             <li><strong>Translation:</strong> Traducción del contenido</li>
                                             <li><strong>Dictionary:</strong> Acceso a diccionario</li>

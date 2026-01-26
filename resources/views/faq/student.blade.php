@@ -318,7 +318,7 @@
                         <div class="d-flex align-items-start gap-2">
                             <span class="fs-4">🌍</span>
                             <div>
-                                <strong>Cultural Notes</strong>
+                                <strong>Culture Notes</strong>
                                 <p class="mb-0 small text-muted">Explica aspectos culturales relevantes al contenido.</p>
                             </div>
                         </div>
