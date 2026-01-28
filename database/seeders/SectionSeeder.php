@@ -160,7 +160,7 @@ class SectionSeeder extends Seeder
                 'id' => 4013,
                 'name' => 'Verification stage',
                 'underscore_name' => 'verification_stage',
-                'instructions' => 'In this stage, you will watch a video about  Alex Fletcher, a former pop star, who is offered a surprising opportunity to write a song for a young pop sensation, Cora. He and his manager, Chris, meet with Cora's team to discuss the collaboration.. Listen carefully and complete the exercises below.',
+                'instructions' => 'In this stage, you will watch a video about  Alex Fletcher, a former pop star, who is offered a surprising opportunity to write a song for a young pop sensation, Cora. He and his manager, Chris, meet with Cora\'s team to discuss the collaboration.. Listen carefully and complete the exercises below.',
                 'unit_id' => 4004,
                 'deleted_at' => null,
                 'position' => null,

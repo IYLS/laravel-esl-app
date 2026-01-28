@@ -143,7 +143,7 @@ class ExerciseSeeder extends Seeder
             [
                 'id' => 14,
                 'title' => 'Evaluating Statement',
-                'description' => 'Read each statement carefully. Decide whether the statements are TRUE/FALSE or mark I'M NOT SURE if you do not know the answer',
+                'description' => 'Read each statement carefully. Decide whether the statements are TRUE/FALSE or mark I\'M NOT SURE if you do not know the answer',
                 'instructions' => null,
                 'subtype' => 3,
                 'image_name' => null,

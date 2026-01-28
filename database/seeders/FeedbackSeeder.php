@@ -94,7 +94,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4003,
-                'message' => 'Don't give up! Read the definitions from the previous exercise again.',
+                'message' => 'Don\'t give up! Read the definitions from the previous exercise again.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 4,
@@ -144,7 +144,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4008,
-                'message' => 'Read the definition for the word "Rosé" in the cultural notes. Then, check the definitions in the "Vocabulary activation" exercise. What word does Cole use to describe Sophie's drink?',
+                'message' => 'Read the definition for the word "Rosé" in the cultural notes. Then, check the definitions in the "Vocabulary activation" exercise. What word does Cole use to describe Sophie\'s drink?',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 6,
@@ -184,7 +184,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4012,
-                'message' => 'What is Cole's focus when using the baseline controls or playing music at 120 BPM? Check the transcript.',
+                'message' => 'What is Cole\'s focus when using the baseline controls or playing music at 120 BPM? Check the transcript.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 6,
@@ -204,7 +204,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4014,
-                'message' => 'Is Cole talking about people's walking speed? Check the "Vocabulary activation" exercise.',
+                'message' => 'Is Cole talking about people\'s walking speed? Check the "Vocabulary activation" exercise.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 6,
@@ -214,7 +214,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4015,
-                'message' => 'The correct answer is TRUE because the appearance of the drink makes it seem like a Rosé, but she's actually drinking a non-alcoholic beverage.',
+                'message' => 'The correct answer is TRUE because the appearance of the drink makes it seem like a Rosé, but she\'s actually drinking a non-alcoholic beverage.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -224,7 +224,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4016,
-                'message' => 'The correct answer is FALSE because Sophie says the party doesn't look relaxed, but rather stiff, which is not the same as being "self-conscious".',
+                'message' => 'The correct answer is FALSE because Sophie says the party doesn\'t look relaxed, but rather stiff, which is not the same as being "self-conscious".',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -234,7 +234,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4017,
-                'message' => 'The correct answer is FALSE because Sophie says that the crowd doesn't dance until midnight, and Cole says that it's the DJs job to get people dancing.',
+                'message' => 'The correct answer is FALSE because Sophie says that the crowd doesn\'t dance until midnight, and Cole says that it\'s the DJs job to get people dancing.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -254,7 +254,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4019,
-                'message' => 'The correct answer is TRUE because Cole is treating listeners' physical signals (like their heartbeats) as feedback to adapt his music.',
+                'message' => 'The correct answer is TRUE because Cole is treating listeners\' physical signals (like their heartbeats) as feedback to adapt his music.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -354,7 +354,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4029,
-                'message' => 'Don't give up! Read the definitions from the previous exercise again.',
+                'message' => 'Don\'t give up! Read the definitions from the previous exercise again.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 4,
@@ -1024,7 +1024,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4098,
-                'message' => 'Don't give up! Read the definitions from the previous exercise again.',
+                'message' => 'Don\'t give up! Read the definitions from the previous exercise again.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 4,
@@ -1954,7 +1954,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4191,
-                'message' => 'Don't give up! Read the definitions from the previous exercise again.',
+                'message' => 'Don\'t give up! Read the definitions from the previous exercise again.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 4,

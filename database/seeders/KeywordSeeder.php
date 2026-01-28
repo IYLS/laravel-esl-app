@@ -43,14 +43,14 @@ class KeywordSeeder extends Seeder
             [
                 'id' => 4017,
                 'keyword' => 'improvisation',
-                'description' => '(noun) the act of creating and performing music spontaneously without preparation. e.g. The guitarist's brilliant improvisation kept the audience amazed.',
+                'description' => '(noun) the act of creating and performing music spontaneously without preparation. e.g. The guitarist\'s brilliant improvisation kept the audience amazed.',
                 'unit_id' => 4002,
                 'deleted_at' => null,
             ],
             [
                 'id' => 4019,
                 'keyword' => 'conflict',
-                'description' => '(noun) a clash between different forces, ideas, or people. e.g. The conflict between traditional and modern styles made the band's sound more exciting.',
+                'description' => '(noun) a clash between different forces, ideas, or people. e.g. The conflict between traditional and modern styles made the band\'s sound more exciting.',
                 'unit_id' => 4002,
                 'deleted_at' => null,
             ],
@@ -85,7 +85,7 @@ class KeywordSeeder extends Seeder
             [
                 'id' => 4028,
                 'keyword' => 'Discourage',
-                'description' => '(verb) e.g. The negative reviews didn't discourage her from publishing her book',
+                'description' => '(verb) e.g. The negative reviews didn\'t discourage her from publishing her book',
                 'unit_id' => 4005,
                 'deleted_at' => null,
             ],
@@ -99,7 +99,7 @@ class KeywordSeeder extends Seeder
             [
                 'id' => 4021,
                 'keyword' => 'manager',
-                'description' => '(noun) A person whose job is to arrange or find work for a singer or actor, etc.  e.g. The band's manager arranged all their concerts and made sure they arrived on time for every show.',
+                'description' => '(noun) A person whose job is to arrange or find work for a singer or actor, etc.  e.g. The band\'s manager arranged all their concerts and made sure they arrived on time for every show.',
                 'unit_id' => 4004,
                 'deleted_at' => null,
             ],
@@ -190,7 +190,7 @@ class KeywordSeeder extends Seeder
             [
                 'id' => 4006,
                 'keyword' => 'to give up',
-                'description' => '(phrasal verb) e.g. She didn't win the race, but she's not giving up.',
+                'description' => '(phrasal verb) e.g. She didn\'t win the race, but she\'s not giving up.',
                 'unit_id' => 4001,
                 'deleted_at' => null,
             ],
