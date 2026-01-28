@@ -366,6 +366,30 @@
                 initResetButton(exerciseId);
             });
         }
+        
+        // Asegurar que solo un tab-pane de sección esté visible a la vez
+        const sectionTabs = document.querySelectorAll('#sectionsTabs button[data-bs-toggle="tab"]');
+        sectionTabs.forEach(function(tab) {
+            tab.addEventListener('show.bs.tab', function(event) {
+                // Ocultar todos los panes de sección ANTES de mostrar el nuevo
+                const allSectionPanes = document.querySelectorAll('.section-pane');
+                allSectionPanes.forEach(function(pane) {
+                    pane.classList.remove('show', 'active');
+                });
+            });
+        });
+        
+        // También asegurar cuando se hace click directamente (por si acaso)
+        const sectionButtons = document.querySelectorAll('.section-btn');
+        sectionButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                // Ocultar todos los panes primero
+                const allSectionPanes = document.querySelectorAll('.section-pane');
+                allSectionPanes.forEach(function(pane) {
+                    pane.classList.remove('show', 'active');
+                });
+            });
+        });
     });
 </script>
 
