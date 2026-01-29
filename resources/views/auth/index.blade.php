@@ -184,8 +184,13 @@
 <div class="dashboard-container">
     @if (Auth::user() != null and Auth::user()->role == 'teacher') 
         <div class="dashboard-header">
-            <h1>Welcome back, {{ $user->name }}! 👋</h1>
-            <p>Manage your platform and track student progress from here</p>
+            <div class="d-flex align-items-center mb-3">
+                <img src="{{ asset('logo.png') }}" alt="Ideas for Listening Logo" style="max-width: 60px; height: auto; margin-right: 1rem;">
+                <div>
+                    <h1 class="mb-0">Welcome back, {{ $user->name }}! 👋</h1>
+                    <p class="mb-0">Manage your platform and track student progress from here</p>
+                </div>
+            </div>
         </div>
         
         <div class="dashboard-grid">
@@ -287,8 +292,12 @@
         </div>
     @elseif(Auth::user() != null and Auth::user()->role == 'student')
         <div class="p-5">
-          <h3>Welcome, {{ Auth::user()->name }}!</h3>
-          <br>
+          <div class="d-flex align-items-center mb-4">
+            <img src="{{ asset('logo.png') }}" alt="Ideas for Listening Logo" style="max-width: 60px; height: auto; margin-right: 1rem;">
+            <div>
+              <h3 class="mb-0">Welcome, {{ Auth::user()->name }}!</h3>
+            </div>
+          </div>
           <h5>We are glad to have you here 🥳</h5>
           <h5>Start <a href="{{ route('student.welcome') }}">here</a> to begin your learning journey.</h5>
         </div>

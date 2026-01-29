@@ -394,7 +394,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4047,
-                'message' => 'A is incorrect because Sebastian is not confused. He disagrees with it because it lacks context, not because it's unclear.',
+                'message' => 'A is incorrect because Sebastian is not confused. He disagrees with it because it lacks context, not because it\'s unclear.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -444,7 +444,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4052,
-                'message' => 'D is incorrect because he says jazz began in New Orleans, but he doesn't say it's only played there. He's talking about where it started, not its current geographical limits.',
+                'message' => 'D is incorrect because he says jazz began in New Orleans, but he doesn\'t say it\'s only played there. He\'s talking about where it started, not its current geographical limits.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -474,7 +474,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4055,
-                'message' => 'D is incorrect because he doesn't mention technology or sound systems at all.',
+                'message' => 'D is incorrect because he doesn\'t mention technology or sound systems at all.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -574,7 +574,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4041,
-                'message' => 'The correct answer is false. Mr. Holland says music is about heart, feelings and moving people. He implies Miss Lang's music is failing at that.',
+                'message' => 'The correct answer is false. Mr. Holland says music is about heart, feelings and moving people. He implies Miss Lang\'s music is failing at that.',
                 'audio_name' => null,
                 'deleted_at' => '2025-10-05 17:19:02',
                 'feedback_type_id' => 7,
@@ -604,7 +604,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4056,
-                'message' => 'A is incorrect because he criticizes how it's played, not where.',
+                'message' => 'A is incorrect because he criticizes how it\'s played, not where.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -624,7 +624,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4058,
-                'message' => 'C is incorrect because he's focused on people misunderstanding jazz, not on party culture itself.',
+                'message' => 'C is incorrect because he\'s focused on people misunderstanding jazz, not on party culture itself.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -644,7 +644,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4060,
-                'message' => 'C is incorrect because he sees jazz's improvisation as a strength—something that can't be captured in a recorded track played on the radio at a party.',
+                'message' => 'C is incorrect because he sees jazz\'s improvisation as a strength—something that can\'t be captured in a recorded track played on the radio at a party.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -694,7 +694,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4065,
-                'message' => 'B is incorrect because from the conversation we only know that his focus is on owning a club. He doesn't mention cafés.',
+                'message' => 'B is incorrect because from the conversation we only know that his focus is on owning a club. He doesn\'t mention cafés.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -704,7 +704,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4066,
-                'message' => 'C is incorrect because he doesn't talk about composing. He focuses on collective improvisation instead.',
+                'message' => 'C is incorrect because he doesn\'t talk about composing. He focuses on collective improvisation instead.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -724,7 +724,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4068,
-                'message' => 'A is incorrect because he says he wants his own club, but he doesn't explain how or when he'll make it happen.',
+                'message' => 'A is incorrect because he says he wants his own club, but he doesn\'t explain how or when he\'ll make it happen.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -744,7 +744,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4070,
-                'message' => 'D is incorrect because he clearly values musicians' collaboration and creativity.',
+                'message' => 'D is incorrect because he clearly values musicians\' collaboration and creativity.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -754,7 +754,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4071,
-                'message' => 'A is incorrect because the only mention of crime is the Sidney Bechet story, and it's just a side anecdote—not the main point.',
+                'message' => 'A is incorrect because the only mention of crime is the Sidney Bechet story, and it\'s just a side anecdote—not the main point.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -764,7 +764,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4072,
-                'message' => 'B is incorrect because Sebastian says jazz is exciting, and Mia says it's relaxing. There's no mention or hint that jazz is dangerous.',
+                'message' => 'B is incorrect because Sebastian says jazz is exciting, and Mia says it\'s relaxing. There\'s no mention or hint that jazz is dangerous.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -774,7 +774,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4073,
-                'message' => 'C is incorrect because the dialogue clearly shows jazz can express different emotions—relaxing for Mia, exciting for Sebastian—so this idea isn't a hidden or deeper theme.',
+                'message' => 'C is incorrect because the dialogue clearly shows jazz can express different emotions—relaxing for Mia, exciting for Sebastian—so this idea isn\'t a hidden or deeper theme.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -784,7 +784,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4074,
-                'message' => 'B is correct because Sebastian reveals that Mia is still unfamiliar with jazz music by using "blank statement". He means that "hating" Jazz doesn\'t really say much. That's why he uses the word "blank" which means empty or clear.',
+                'message' => 'B is correct because Sebastian reveals that Mia is still unfamiliar with jazz music by using "blank statement". He means that "hating" Jazz doesn\'t really say much. That\'s why he uses the word "blank" which means empty or clear.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -824,7 +824,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4078,
-                'message' => 'A is correct because "hijack" means taking control of something for your own use. In jazz, that's what improvisation is—a musician jumps into a song and changes the melody or rhythm with their own ideas.',
+                'message' => 'A is correct because "hijack" means taking control of something for your own use. In jazz, that\'s what improvisation is—a musician jumps into a song and changes the melody or rhythm with their own ideas.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -834,7 +834,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4079,
-                'message' => 'B is correct because Sebastian warns that jazz "it's dying on the vine." This means jazz isn't getting the chance to grow or reach people, it's fading away before it can succeed.',
+                'message' => 'B is correct because Sebastian warns that jazz "it\'s dying on the vine." This means jazz isn\'t getting the chance to grow or reach people, it\'s fading away before it can succeed.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -844,7 +844,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4080,
-                'message' => 'A is correct because Sebastian says in his club they'll play whatever they want, whenever and however they want—but only if it's pure jazz.',
+                'message' => 'A is correct because Sebastian says in his club they\'ll play whatever they want, whenever and however they want—but only if it\'s pure jazz.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -864,7 +864,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4082,
-                'message' => 'The correct answer is D because in the conversation Mia's view of jazz is shaped by commercial radio and parties. Sebastian argues for authentic, expressive jazz that's being lost.',
+                'message' => 'The correct answer is D because in the conversation Mia\'s view of jazz is shaped by commercial radio and parties. Sebastian argues for authentic, expressive jazz that\'s being lost.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -1034,7 +1034,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4099,
-                'message' => 'A is incorrect because the family already knows that Rebecca cleans Mr. DeGarmo's house. In fact, David had cleaned his toilet as part of the family's side business.',
+                'message' => 'A is incorrect because the family already knows that Rebecca cleans Mr. DeGarmo\'s house. In fact, David had cleaned his toilet as part of the family\'s side business.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1054,7 +1054,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4101,
-                'message' => 'D is incorrect because she's not excited about a fan moment. Her intention is professional, not personal.',
+                'message' => 'D is incorrect because she\'s not excited about a fan moment. Her intention is professional, not personal.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1064,7 +1064,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4102,
-                'message' => 'A is incorrect because David never questions the family's talents. His hesitation isn't about whether they're good enough—it's about choosing the right opportunity.',
+                'message' => 'A is incorrect because David never questions the family\'s talents. His hesitation isn\'t about whether they\'re good enough—it\'s about choosing the right opportunity.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1074,7 +1074,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4103,
-                'message' => 'B is incorrect because David isn't sure Mr. DeGarmo will say no. He's just unsure if it's the right choice.',
+                'message' => 'B is incorrect because David isn\'t sure Mr. DeGarmo will say no. He\'s just unsure if it\'s the right choice.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1084,7 +1084,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4104,
-                'message' => 'D is incorrect because even though David is frustrated, he doesn't suggest giving up on music entirely. His comment is more about being cautious.',
+                'message' => 'D is incorrect because even though David is frustrated, he doesn\'t suggest giving up on music entirely. His comment is more about being cautious.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1114,7 +1114,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4107,
-                'message' => 'C is incorrect because "begging" isn't meant literally. It just means they should take what they're given, not ask for more.',
+                'message' => 'C is incorrect because "begging" isn\'t meant literally. It just means they should take what they\'re given, not ask for more.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1134,7 +1134,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4109,
-                'message' => 'C is incorrect because David isn't being protective. His comment sounds more discouraging than supportive.',
+                'message' => 'C is incorrect because David isn\'t being protective. His comment sounds more discouraging than supportive.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1144,7 +1144,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4110,
-                'message' => 'D is incorrect because he's expressing skepticism and doubt, but not directly trying to make Rebecca give up.',
+                'message' => 'D is incorrect because he\'s expressing skepticism and doubt, but not directly trying to make Rebecca give up.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1154,7 +1154,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4111,
-                'message' => 'B is incorrect because David isn't literally yelling. Helen is reacting to his tone and attitude.',
+                'message' => 'B is incorrect because David isn\'t literally yelling. Helen is reacting to his tone and attitude.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1164,7 +1164,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4112,
-                'message' => 'C is incorrect because this is the opposite of what's happening. David isn't supporting Rebecca at all.',
+                'message' => 'C is incorrect because this is the opposite of what\'s happening. David isn\'t supporting Rebecca at all.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1174,7 +1174,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4113,
-                'message' => 'D is incorrect because while David may have doubts, Helen's comment isn't about his opinion of Rebecca's future or talent.',
+                'message' => 'D is incorrect because while David may have doubts, Helen\'s comment isn\'t about his opinion of Rebecca\'s future or talent.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1184,7 +1184,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4114,
-                'message' => 'A is incorrect because Helen isn't focused on David's future in music—she's addressing his past experiences.',
+                'message' => 'A is incorrect because Helen isn\'t focused on David\'s future in music—she\'s addressing his past experiences.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1194,7 +1194,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4115,
-                'message' => 'B is incorrect because Helen isn't encouraging him to reflect positively on the past. Instead, she's challenging him to not project his discouragement onto others.',
+                'message' => 'B is incorrect because Helen isn\'t encouraging him to reflect positively on the past. Instead, she\'s challenging him to not project his discouragement onto others.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1204,7 +1204,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4116,
-                'message' => 'D is incorrect because Helen isn't calling David a failure—she's trying to stop him from becoming a barrier to their children's dreams.',
+                'message' => 'D is incorrect because Helen isn\'t calling David a failure—she\'s trying to stop him from becoming a barrier to their children\'s dreams.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1214,7 +1214,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4117,
-                'message' => 'B is incorrect because it's not about David ignoring Helen or being selfish. The real issue is that his personal feelings are affecting how he sees things.',
+                'message' => 'B is incorrect because it\'s not about David ignoring Helen or being selfish. The real issue is that his personal feelings are affecting how he sees things.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1224,7 +1224,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4118,
-                'message' => 'C is incorrect because this option focuses on David's own career decisions, but Helen isn't accusing him of quitting music.',
+                'message' => 'C is incorrect because this option focuses on David\'s own career decisions, but Helen isn\'t accusing him of quitting music.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1234,7 +1234,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4119,
-                'message' => 'D is incorrect because David isn't too open—he's actually resisting. Helen is reacting to his unwillingness to try.',
+                'message' => 'D is incorrect because David isn\'t too open—he\'s actually resisting. Helen is reacting to his unwillingness to try.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1244,7 +1244,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4120,
-                'message' => 'A is incorrect because this choice presents an idealistic view of support and hard work, but David isn't offering encouragement.',
+                'message' => 'A is incorrect because this choice presents an idealistic view of support and hard work, but David isn\'t offering encouragement.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1264,7 +1264,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4122,
-                'message' => 'C is incorrect because David never suggests that success comes easily or without talent. He's highlighting how difficult it is to succeed.',
+                'message' => 'C is incorrect because David never suggests that success comes easily or without talent. He\'s highlighting how difficult it is to succeed.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1274,7 +1274,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4123,
-                'message' => 'A is incorrect because it doesn't fully capture the intensity of his words. His words show strong emotion, not just worry about the audition.',
+                'message' => 'A is incorrect because it doesn\'t fully capture the intensity of his words. His words show strong emotion, not just worry about the audition.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1284,7 +1284,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4124,
-                'message' => 'C is incorrect because his comment isn't jealous— It's more about his own painful experience.',
+                'message' => 'C is incorrect because his comment isn\'t jealous— It\'s more about his own painful experience.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1294,7 +1294,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4125,
-                'message' => 'D is incorrect because his words aren't just about quiet disappointment—they show a much stronger emotional outburst.',
+                'message' => 'D is incorrect because his words aren\'t just about quiet disappointment—they show a much stronger emotional outburst.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1324,7 +1324,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4128,
-                'message' => 'The correct answer is D. Helen is saying that they can\'t be selective. Since opportunities are limited, they need to accept whatever chances they get, even if they aren't perfect.',
+                'message' => 'The correct answer is D. Helen is saying that they can\'t be selective. Since opportunities are limited, they need to accept whatever chances they get, even if they aren\'t perfect.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -1334,7 +1334,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4129,
-                'message' => 'The correct answer is B. David says Mr. DeGarmo only sees Rebecca as a maid, not as someone with musical talent. He's worried Mr. DeGarmo won't take her seriously.',
+                'message' => 'The correct answer is B. David says Mr. DeGarmo only sees Rebecca as a maid, not as someone with musical talent. He\'s worried Mr. DeGarmo won\'t take her seriously.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -1344,7 +1344,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4130,
-                'message' => 'The correct answer is A. Helen sees David being too harsh with Rebecca. Instead of supporting her, he shuts her down, and Helen thinks he's being unnecessarily unfair.',
+                'message' => 'The correct answer is A. Helen sees David being too harsh with Rebecca. Instead of supporting her, he shuts her down, and Helen thinks he\'s being unnecessarily unfair.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -1354,7 +1354,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4131,
-                'message' => 'The correct answer is C. Helen is pointing out that David's personal disappointment should not affect the hopes and dreams of their children.',
+                'message' => 'The correct answer is C. Helen is pointing out that David\'s personal disappointment should not affect the hopes and dreams of their children.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -1364,7 +1364,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4132,
-                'message' => 'The correct answer is A. Helen says David's past failures are stopping him from supporting their kids. He holds back out of pride or fear they'll fail like he did.',
+                'message' => 'The correct answer is A. Helen says David\'s past failures are stopping him from supporting their kids. He holds back out of pride or fear they\'ll fail like he did.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -1374,7 +1374,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4133,
-                'message' => 'The correct answer is D. David wants Rebecca to know the music world can be selfish. He's warning her that talent and hard work aren't always enough—people often just care about what helps them.',
+                'message' => 'The correct answer is D. David wants Rebecca to know the music world can be selfish. He\'s warning her that talent and hard work aren\'t always enough—people often just care about what helps them.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -1384,7 +1384,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4134,
-                'message' => 'The correct answer is B. David's words show deep frustration and bitterness from years of struggle. His anger isn't just about Rebecca—it's about everything he's been through.',
+                'message' => 'The correct answer is B. David\'s words show deep frustration and bitterness from years of struggle. His anger isn\'t just about Rebecca—it\'s about everything he\'s been through.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -1494,7 +1494,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4145,
-                'message' => 'Don't give up. Try again!',
+                'message' => 'Don\'t give up. Try again!',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 4,
@@ -1514,7 +1514,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4147,
-                'message' => 'A is incorrect because Cora doesn't mention a stage in her life, but a situation caused by her parents.',
+                'message' => 'A is incorrect because Cora doesn\'t mention a stage in her life, but a situation caused by her parents.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1524,7 +1524,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4148,
-                'message' => 'C is incorrect because Cora hasn't performed any of his songs yet.',
+                'message' => 'C is incorrect because Cora hasn\'t performed any of his songs yet.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1564,7 +1564,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4152,
-                'message' => 'D is incorrect because despite her mentioning her past relationship, it wasn't long-lasting; it lasted only 2 months.',
+                'message' => 'D is incorrect because despite her mentioning her past relationship, it wasn\'t long-lasting; it lasted only 2 months.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1574,7 +1574,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4153,
-                'message' => 'A is incorrect because Alex's attitude is the opposite of excitement.',
+                'message' => 'A is incorrect because Alex\'s attitude is the opposite of excitement.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1624,7 +1624,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4158,
-                'message' => 'D is incorrect because Alex doesn't say anything about rehearsing with Cora.',
+                'message' => 'D is incorrect because Alex doesn\'t say anything about rehearsing with Cora.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1664,7 +1664,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4162,
-                'message' => 'A is incorrect because Chris wants to help Alex's career, not write a song with him.',
+                'message' => 'A is incorrect because Chris wants to help Alex\'s career, not write a song with him.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1684,7 +1684,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4164,
-                'message' => 'C is incorrect because there is no evidence in the conversation that the team's motivation is to explore a new musical genre.',
+                'message' => 'C is incorrect because there is no evidence in the conversation that the team\'s motivation is to explore a new musical genre.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1714,7 +1714,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4167,
-                'message' => 'D is incorrect because Alex's reaction is based on the event's certainty, not emotional or personal motivation.',
+                'message' => 'D is incorrect because Alex\'s reaction is based on the event\'s certainty, not emotional or personal motivation.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1754,7 +1754,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4171,
-                'message' => 'A is incorrect because Alex is not seriously considering a new career path; he's expressing frustration and disappointment.',
+                'message' => 'A is incorrect because Alex is not seriously considering a new career path; he\'s expressing frustration and disappointment.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1764,7 +1764,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4172,
-                'message' => 'B is incorrect because the comment doesn't reflect optimism; it reflects pessimism about his future.',
+                'message' => 'B is incorrect because the comment doesn\'t reflect optimism; it reflects pessimism about his future.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1774,7 +1774,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4173,
-                'message' => 'C is incorrect because the reference to bar mitzvahs is not about religion; it's used humorously to reflect low-status gigs.',
+                'message' => 'C is incorrect because the reference to bar mitzvahs is not about religion; it\'s used humorously to reflect low-status gigs.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1784,7 +1784,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4174,
-                'message' => 'A is incorrect because Chris never mentions a long-term position or joining Cora's writing team permanently.',
+                'message' => 'A is incorrect because Chris never mentions a long-term position or joining Cora\'s writing team permanently.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1794,7 +1794,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4175,
-                'message' => 'B is incorrect because Chris talks about boosting Alex's popularity, not collaborating with retro artists.',
+                'message' => 'B is incorrect because Chris talks about boosting Alex\'s popularity, not collaborating with retro artists.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -1864,7 +1864,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4182,
-                'message' => 'D is correct because Chris recognizes that this opportunity is critical for Alex's career, and he expresses urgency by saying that.',
+                'message' => 'D is correct because Chris recognizes that this opportunity is critical for Alex\'s career, and he expresses urgency by saying that.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -1874,7 +1874,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4183,
-                'message' => 'B is correct because Alex's surprise reveals that he assumed the show was firmly set, making its cancellation unexpected.',
+                'message' => 'B is correct because Alex\'s surprise reveals that he assumed the show was firmly set, making its cancellation unexpected.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -1894,7 +1894,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4185,
-                'message' => 'D is correct because Alex's comment implies he uses humor to imply his career prospects are diminishing, and doing Bar Mitzvahs is the lowest he can get.',
+                'message' => 'D is correct because Alex\'s comment implies he uses humor to imply his career prospects are diminishing, and doing Bar Mitzvahs is the lowest he can get.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -1904,7 +1904,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4186,
-                'message' => 'C is correct because Chris implies that writing the song for Cora could revive Alex's career and help him regain popularity.',
+                'message' => 'C is correct because Chris implies that writing the song for Cora could revive Alex\'s career and help him regain popularity.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -2024,7 +2024,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4198,
-                'message' => 'A is incorrect because he wasn't popular. On the contrary, he is saying that he upset some people.',
+                'message' => 'A is incorrect because he wasn\'t popular. On the contrary, he is saying that he upset some people.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -2094,7 +2094,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4205,
-                'message' => 'B is incorrect because he never implied he wasn't qualified.',
+                'message' => 'B is incorrect because he never implied he wasn\'t qualified.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -2154,7 +2154,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4211,
-                'message' => 'C is incorrect because he wasn't told to stop. He stopped because he was embarrassed.',
+                'message' => 'C is incorrect because he wasn\'t told to stop. He stopped because he was embarrassed.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -2174,7 +2174,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4213,
-                'message' => 'A is incorrect because he isn't against encouragement, but thinks it can stop artists from improving.',
+                'message' => 'A is incorrect because he isn\'t against encouragement, but thinks it can stop artists from improving.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -2194,7 +2194,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4215,
-                'message' => 'D is incorrect because he doesn't mention formality.',
+                'message' => 'D is incorrect because he doesn\'t mention formality.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -2214,7 +2214,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4217,
-                'message' => 'C is incorrect because he says that after Jo Jones threw a cymbal at Charlie Parker's head, he went home and kept practicing.',
+                'message' => 'C is incorrect because he says that after Jo Jones threw a cymbal at Charlie Parker\'s head, he went home and kept practicing.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 5,
@@ -2264,7 +2264,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4222,
-                'message' => 'A is correct because Mr. Fletcher says that some parents got some kid in Sean Cassey's year to say some things about him.',
+                'message' => 'A is correct because Mr. Fletcher says that some parents got some kid in Sean Cassey\'s year to say some things about him.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -2314,7 +2314,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4227,
-                'message' => 'C is correct because he says he likes to push students beyond what's expected of them.',
+                'message' => 'C is correct because he says he likes to push students beyond what\'s expected of them.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -2344,7 +2344,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4230,
-                'message' => 'A is correct because the story  describes the importance of being critical of someone else's mistakes for them to grow.',
+                'message' => 'A is correct because the story  describes the importance of being critical of someone else\'s mistakes for them to grow.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
@@ -2564,7 +2564,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4250,
-                'message' => 'Play the video from second 01:40 to 01:55. Pay attention to Mr. Holland's gestures and body language.',
+                'message' => 'Play the video from second 01:40 to 01:55. Pay attention to Mr. Holland\'s gestures and body language.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 6,
@@ -2584,7 +2584,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4252,
-                'message' => 'Check the definition of sunset in the keywords. And think: why would you compare someone's hair with the sunset?',
+                'message' => 'Check the definition of sunset in the keywords. And think: why would you compare someone\'s hair with the sunset?',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 6,
@@ -2634,7 +2634,7 @@ class FeedbackSeeder extends Seeder
             ],
             [
                 'id' => 4257,
-                'message' => 'The correct answer is false. Mr. Holland says music is about heart, feelings and moving people. He implies Miss Lang's music is failing at that.',
+                'message' => 'The correct answer is false. Mr. Holland says music is about heart, feelings and moving people. He implies Miss Lang\'s music is failing at that.',
                 'audio_name' => null,
                 'deleted_at' => null,
                 'feedback_type_id' => 7,
