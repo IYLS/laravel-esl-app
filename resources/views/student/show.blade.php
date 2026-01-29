@@ -92,7 +92,7 @@
                             role="tab" 
                             aria-controls="{{ $section->underscore_name }}" 
                             aria-selected="true"
-                            onclick="setCurrentExercise({{ json_encode($section_first_exercise_id) }}); onExerciseClicked({{ json_encode($section_first_exercise_id) }});"
+                            data-first-exercise-id="{{ $section_first_exercise_id }}"
                         >
                             {{ $index . ". " . $section->name }}
                         </button>
@@ -106,7 +106,7 @@
                             role="tab" 
                             aria-controls="{{ $section->underscore_name }}" 
                             aria-selected="false"
-                            onclick="setCurrentExercise({{ json_encode($section_first_exercise_id) }}); onExerciseClicked({{ json_encode($section_first_exercise_id) }});"
+                            data-first-exercise-id="{{ $section_first_exercise_id }}"
                         >
                             {{ $index . ". " . $section->name }}
                         </button>
@@ -134,7 +134,7 @@
                         <p class="text-primary"><span class="material-symbols-outlined text-primary">info</span>&nbsp;{{ $section->instructions }}</p>
                     </div>
                     @endif
-                    <div class="nav flex-column mt-2 nav-pills col-12 col-xl-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <div class="nav flex-column mt-2 nav-pills col-12 col-xl-2" id="v-pills-tab-{{ $section->underscore_name }}" role="tablist" aria-orientation="vertical">
                         @forelse($section->exercises->where('exercise_type_id', '!=', 5)->sortBy('position') as $e)
                             @php $index = $loop->index; @endphp
                             <button 
@@ -150,7 +150,7 @@
                                 @else
                                     aria-selected="false"
                                 @endif
-                                onclick="startTimer(); onExerciseClicked({{ json_encode($e->id) }})">
+                                data-exercise-id="{{ $e->id }}">
                                     @if($e->title == '' or $e->title == null) 
                                         @if(count($completed_exercises) != 0 and in_array($e->id, $completed_exercises)) 
                                             <div class="d-flex justify-content-between">
@@ -176,7 +176,7 @@
                             <p class="text-center text-secondary"><small>No exercises added yet.</small></p>    
                         @endforelse
                     </div>
-                    <div class="tab-content container-fluid col-12 col-xl-10" id="v-pills-tabContent">
+                    <div class="tab-content container-fluid col-12 col-xl-10" id="v-pills-tabContent-{{ $section->underscore_name }}">
                         @foreach($section->exercises->where('exercise_type_id', '!=', 5)->sortBy('position') as $e)
                             @php
                                 $feedback_content = array(
@@ -309,8 +309,9 @@
                                 @default
                             @endswitch
                         @endforeach
-                    </div>
-                    </div>
+                    </div> {{-- Cierra tab-content --}}
+                    </div> {{-- Cierra d-flex align-items-start row mt-2 --}}
+                    </div> {{-- Cierra section-pane --}}
                 @endif
             @endforeach
         </div>
@@ -367,27 +368,111 @@
             });
         }
         
-        // Asegurar que solo un tab-pane de sección esté visible a la vez
+        // Inicializar manejo de tabs de Bootstrap para secciones
         const sectionTabs = document.querySelectorAll('#sectionsTabs button[data-bs-toggle="tab"]');
+        
         sectionTabs.forEach(function(tab) {
             tab.addEventListener('show.bs.tab', function(event) {
-                // Ocultar todos los panes de sección ANTES de mostrar el nuevo
+                // Ocultar TODOS los panes de sección ANTES de mostrar el nuevo
                 const allSectionPanes = document.querySelectorAll('.section-pane');
                 allSectionPanes.forEach(function(pane) {
                     pane.classList.remove('show', 'active');
                 });
+                
+                // Ocultar TODOS los panes de ejercicios de todas las secciones
+                const allExercisePanes = document.querySelectorAll('.exercise-pane');
+                allExercisePanes.forEach(function(pane) {
+                    pane.classList.remove('show', 'active');
+                });
+                
+                // Desactivar TODOS los botones de ejercicios
+                const allExerciseButtons = document.querySelectorAll('.exercise-btn');
+                allExerciseButtons.forEach(function(btn) {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-selected', 'false');
+                });
+            });
+            
+            tab.addEventListener('shown.bs.tab', function(event) {
+                // DESPUÉS de que Bootstrap haya mostrado la sección, activar el primer ejercicio
+                const targetId = event.target.getAttribute('data-bs-target');
+                const targetPane = document.querySelector(targetId);
+                const firstExerciseId = event.target.getAttribute('data-first-exercise-id');
+                
+                if (targetPane && firstExerciseId) {
+                    // Buscar el botón del primer ejercicio usando el data-exercise-id
+                    const firstExerciseButton = targetPane.querySelector(`[data-exercise-id="${firstExerciseId}"]`);
+                    
+                    if (firstExerciseButton) {
+                        // Obtener el data-bs-target del botón para encontrar el pane correspondiente
+                        const exerciseTargetId = firstExerciseButton.getAttribute('data-bs-target');
+                        const firstExercisePane = exerciseTargetId ? document.querySelector(exerciseTargetId) : null;
+                        
+                        if (firstExercisePane) {
+                            // Activar el primer ejercicio
+                            firstExerciseButton.classList.add('active');
+                            firstExerciseButton.setAttribute('aria-selected', 'true');
+                            firstExercisePane.classList.add('show', 'active');
+                            
+                            // Ejecutar funciones necesarias
+                            if (typeof setCurrentExercise === 'function') {
+                                setCurrentExercise(parseInt(firstExerciseId));
+                            }
+                            if (typeof onExerciseClicked === 'function') {
+                                onExerciseClicked(parseInt(firstExerciseId));
+                            }
+                            if (typeof startTimer === 'function') {
+                                startTimer();
+                            }
+                        } else {
+                            console.warn(`No se encontró el pane para el ejercicio ${firstExerciseId}`);
+                        }
+                    } else {
+                        // Fallback: buscar el primer ejercicio disponible en la sección
+                        const fallbackButton = targetPane.querySelector('.exercise-btn');
+                        const fallbackPane = targetPane.querySelector('.exercise-pane');
+                        
+                        if (fallbackButton && fallbackPane) {
+                            fallbackButton.classList.add('active');
+                            fallbackButton.setAttribute('aria-selected', 'true');
+                            fallbackPane.classList.add('show', 'active');
+                            
+                            const fallbackExerciseId = fallbackButton.getAttribute('data-exercise-id');
+                            if (fallbackExerciseId) {
+                                if (typeof setCurrentExercise === 'function') {
+                                    setCurrentExercise(parseInt(fallbackExerciseId));
+                                }
+                                if (typeof onExerciseClicked === 'function') {
+                                    onExerciseClicked(parseInt(fallbackExerciseId));
+                                }
+                                if (typeof startTimer === 'function') {
+                                    startTimer();
+                                }
+                            }
+                        }
+                    }
+                }
             });
         });
         
-        // También asegurar cuando se hace click directamente (por si acaso)
-        const sectionButtons = document.querySelectorAll('.section-btn');
-        sectionButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                // Ocultar todos los panes primero
-                const allSectionPanes = document.querySelectorAll('.section-pane');
-                allSectionPanes.forEach(function(pane) {
-                    pane.classList.remove('show', 'active');
-                });
+        // Inicializar manejo de tabs de Bootstrap para ejercicios (pills)
+        const exerciseTabs = document.querySelectorAll('.exercise-btn[data-bs-toggle="pill"]');
+        exerciseTabs.forEach(function(tab) {
+            tab.addEventListener('shown.bs.tab', function(event) {
+                // DESPUÉS de que Bootstrap haya activado el ejercicio, ejecutar funciones necesarias
+                const exerciseId = event.target.getAttribute('data-exercise-id');
+                if (exerciseId) {
+                    if (typeof setCurrentExercise === 'function') {
+                        setCurrentExercise(parseInt(exerciseId));
+                    }
+                    if (typeof onExerciseClicked === 'function') {
+                        onExerciseClicked(parseInt(exerciseId));
+                    }
+                    if (typeof startTimer === 'function') {
+                        startTimer();
+                    }
+                }
+>>>>>>> 09caa27 (fix: corregir tabs de Bootstrap en mÃ³dulo estudiante para evitar acumulaciÃ³n de stages)
             });
         });
     });
