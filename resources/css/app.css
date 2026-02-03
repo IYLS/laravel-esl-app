@@ -374,6 +374,9 @@ body {
     line-height: 1.6 !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
 }
 
 /* Tipografía mejorada - Jerarquía clara y moderna con Poppins */
@@ -1243,6 +1246,7 @@ textarea:not(:disabled) {
 .row {
     margin-left: -12px;
     margin-right: -12px;
+    max-width: 100%;
 }
 
 .row > * {
@@ -1289,6 +1293,9 @@ textarea:not(:disabled) {
 /* Mejorar scroll suave */
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
 }
 
 /* Mejorar selección de texto */
