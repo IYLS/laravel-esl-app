@@ -55,11 +55,9 @@
                             </td>
                             <td class="col-1">
                                 <div class="d-flex">
-                                    <form action="{{ route("exercises.destroy", [$exercise->section->unit_id, $exercise->exercise_type_id, $exercise->id]) }}" method="POST">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button type="submit" class="btn-sm btn btn-danger"><span class="material-symbols-outlined" aria-hidden="true">delete</span></button>
-                                    </form>
+                                    <button type="button" class="btn-sm btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteExerciseModal{{ $exercise->id }}" title="Delete exercise">
+                                        <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                                    </button>
         
                                     <a href="{{ route("exercises.show", $exercise->id) }}" class="btn-sm btn btn-success me-1 ms-1"><span class="material-symbols-outlined" aria-hidden="true">search</span></a>
                                 </div>
@@ -134,5 +132,17 @@
         </div>
     @endforelse
 </div>
+
+@foreach($unit->sections->sortBy('position') as $section)
+    @foreach($section->exercises->sortBy('position') as $exercise)
+        @include('components.delete-confirmation-modal', [
+            'modalId' => 'deleteExerciseModal' . $exercise->id,
+            'title' => 'Delete Exercise',
+            'itemName' => $exercise->title,
+            'route' => route('exercises.destroy', [$exercise->section->unit_id, $exercise->exercise_type_id, $exercise->id]),
+            'deleteButtonText' => 'Delete Exercise'
+        ])
+    @endforeach
+@endforeach
 
 @endsection

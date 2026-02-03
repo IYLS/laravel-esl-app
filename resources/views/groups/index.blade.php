@@ -225,14 +225,10 @@
                             <span class="material-symbols-outlined">visibility</span>
                             <span>Details</span>
                         </a>
-                        <form action="{{ route('groups.destroy', $group->id) }}" method="POST" style="flex: 1;">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger w-100" type="submit" onclick="return confirm('Are you sure you want to delete this group?');">
-                                <span class="material-symbols-outlined">delete</span>
-                                <span>Delete</span>
-                            </button>
-                        </form>
+                        <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#deleteGroupModal{{ $group->id }}">
+                            <span class="material-symbols-outlined">delete</span>
+                            <span>Delete</span>
+                        </button>
                     </div>
                 </div>
             @endforeach
@@ -245,5 +241,15 @@
         </div>
     @endif
 </div>
+
+@foreach($groups as $group)
+    @include('components.delete-confirmation-modal', [
+        'modalId' => 'deleteGroupModal' . $group->id,
+        'title' => 'Delete Group',
+        'itemName' => $group->name,
+        'route' => route('groups.destroy', $group->id),
+        'deleteButtonText' => 'Delete Group'
+    ])
+@endforeach
 
 @endsection

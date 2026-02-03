@@ -223,13 +223,9 @@
                                             <span class="material-symbols-outlined">content_copy</span>
                                         </button>
                                     </form>
-                                    <form action="{{ route('units.destroy', $unit->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure you want to delete this unit?');">
-                                            <span class="material-symbols-outlined">delete</span>
-                                        </button>
-                                    </form>
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUnitModal{{ $unit->id }}" title="Delete unit">
+                                        <span class="material-symbols-outlined">delete</span>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -269,14 +265,10 @@
                             <span>Duplicate</span>
                         </button>
                     </form>
-                    <form action="{{ route('units.destroy', $unit->id) }}" method="POST" style="flex: 1; min-width: 120px;">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger w-100" type="submit" onclick="return confirm('Are you sure you want to delete this unit?');">
-                            <span class="material-symbols-outlined">delete</span>
-                            <span>Delete</span>
-                        </button>
-                    </form>
+                    <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#deleteUnitModal{{ $unit->id }}">
+                        <span class="material-symbols-outlined">delete</span>
+                        <span>Delete</span>
+                    </button>
                 </div>
             </div>
         @empty
@@ -288,5 +280,15 @@
         @endforelse
     </div>
 </div>
+
+@foreach($units as $unit)
+    @include('components.delete-confirmation-modal', [
+        'modalId' => 'deleteUnitModal' . $unit->id,
+        'title' => 'Delete Unit',
+        'itemName' => $unit->title,
+        'route' => route('units.destroy', $unit->id),
+        'deleteButtonText' => 'Delete Unit'
+    ])
+@endforeach
 
 @endsection

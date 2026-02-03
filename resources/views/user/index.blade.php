@@ -395,13 +395,9 @@
                                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updatePasswordModal{{ $user->id }}" title="Update password">
                                         <span class="material-symbols-outlined">lock_reset</span>
                                     </button>
-                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure you want to delete this user?');">
-                                            <span class="material-symbols-outlined">delete</span>
-                                        </button>
-                                    </form>
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal{{ $user->id }}" title="Delete user">
+                                        <span class="material-symbols-outlined">delete</span>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -453,14 +449,10 @@
                         <span class="material-symbols-outlined">lock_reset</span>
                         <span>Password</span>
                     </button>
-                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="flex: 1; min-width: 100px;">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger w-100" type="submit" onclick="return confirm('Are you sure you want to delete this user?');">
-                            <span class="material-symbols-outlined">delete</span>
-                            <span>Delete</span>
-                        </button>
-                    </form>
+                    <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#deleteUserModal{{ $user->id }}">
+                        <span class="material-symbols-outlined">delete</span>
+                        <span>Delete</span>
+                    </button>
                 </div>
             </div>
         @empty
@@ -509,6 +501,35 @@
 						<button type="submit" class="btn btn-primary">Update password</button>
 					</div>
 				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal de confirmación de eliminación - {{ $user->name }} -->
+	<div class="modal fade" id="deleteUserModal{{ $user->id }}" tabindex="-1" aria-labelledby="deleteUserModalLabel{{ $user->id }}" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header border-0 pb-0">
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body text-center px-4 pb-4">
+					<div class="mb-3">
+						<span class="material-symbols-outlined text-danger" style="font-size: 64px;">warning</span>
+					</div>
+					<h5 class="modal-title mb-3" id="deleteUserModalLabel{{ $user->id }}">Delete User</h5>
+					<p class="text-muted mb-4">Are you sure you want to delete <strong>{{ $user->name }}</strong>? This action cannot be undone.</p>
+					<form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
+						@csrf
+						@method('DELETE')
+						<div class="d-flex gap-2 justify-content-center">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+							<button type="submit" class="btn btn-danger">
+								<span class="material-symbols-outlined" style="font-size: 18px; vertical-align: middle;">delete</span>
+								Delete User
+							</button>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>

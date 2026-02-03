@@ -20,13 +20,9 @@
                         <p class="text-break">{{ $word->description }}</p>
                     </td>
                     <td class="d-flex">
-                        <form action="{{ route('glossed_words.destroy', $word->id, $word) }}" method="POST" class="me-1">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger btn-sm" >
-                                <span class="material-symbols-outlined">delete</span>
-                            </button>
-                        </form>
+                        <button type="button" class="btn btn-danger btn-sm me-1" data-bs-toggle="modal" data-bs-target="#deleteGlossedWordModal{{ $word->id }}" title="Delete word">
+                            <span class="material-symbols-outlined">delete</span>
+                        </button>
                         <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editGlossedWordModal-{{ $word->id }}">
                             Edit
                         </button>
@@ -49,5 +45,15 @@
 </div>
 
 @include('modals.glossed_words.add')
+
+@foreach($glossed_words as $word)
+    @include('components.delete-confirmation-modal', [
+        'modalId' => 'deleteGlossedWordModal' . $word->id,
+        'title' => 'Delete Glossed Word',
+        'itemName' => $word->word,
+        'route' => route('glossed_words.destroy', [$word->id, $word]),
+        'deleteButtonText' => 'Delete Word'
+    ])
+@endforeach
 
 @endsection

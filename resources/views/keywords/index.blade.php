@@ -20,13 +20,9 @@
                     <p class="text-break">{{ $keyword->description }}</p>
                 </td>
                 <td class="d-flex">
-                    <form action="{{ route('keywords.destroy', $keyword->id, $keyword) }}" method="POST" class="me-1">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger btn-sm" >
-                            <span class="material-symbols-outlined">delete</span>
-                        </button>
-                    </form>
+                    <button type="button" class="btn btn-danger btn-sm me-1" data-bs-toggle="modal" data-bs-target="#deleteKeywordModal{{ $keyword->id }}" title="Delete keyword">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
                     <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editKeywordModal-{{ $keyword->id }}">
                         Edit
                     </button>
@@ -47,5 +43,15 @@
 </div>
 
 @include('modals.keywords.add')
+
+@foreach($keywords as $keyword)
+    @include('components.delete-confirmation-modal', [
+        'modalId' => 'deleteKeywordModal' . $keyword->id,
+        'title' => 'Delete Keyword',
+        'itemName' => $keyword->keyword,
+        'route' => route('keywords.destroy', [$keyword->id, $keyword]),
+        'deleteButtonText' => 'Delete Keyword'
+    ])
+@endforeach
 
 @endsection
