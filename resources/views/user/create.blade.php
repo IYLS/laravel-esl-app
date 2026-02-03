@@ -11,14 +11,14 @@
                     <tr>
                         <td>ID</td>
                         <td>
-                            <input id="user_id" name="user_id" class="form-control" type="text" placeholder="Type an ID for the new user">
+                            <input id="user_id" name="user_id" class="form-control" type="text" placeholder="Type an ID for the new user" required>
                         </td>
                     </tr>
                     <tr>
                         <td>Password</td>
                         <td>
                             <div class="input-group">
-                                <input id="password" name="password" type="password" class="form-control" placeholder="Type a password for the new user">
+                                <input id="password" name="password" type="password" class="form-control" placeholder="Type a password for the new user" required>
                                 <span class="input-group-btn">
                                   <a class="btn btn-primary" onclick="revealPassword()">
                                       <span class="material-symbols-outlined">visibility</span>
@@ -30,19 +30,19 @@
                     <tr>
                         <td>Name</td>
                         <td>
-                            <input id="name" name="name" class="form-control" type="text" placeholder="Type the full name of the new user">
+                            <input id="name" name="name" class="form-control" type="text" placeholder="Type the full name of the new user" required>
                         </td>
                     </tr>
                     <tr>
                         <td>Age</td>
                         <td>
-                            <input id="age" name="age" type="number" min="8" max="99" class="form-control" placeholder="Insert the age of the new user">
+                            <input id="age" name="age" type="number" min="8" max="99" class="form-control" placeholder="Insert the age of the new user" required>
                         </td>
                     </tr>
                     <tr>
                         <td>Gender</td>
                         <td>
-                            <select id="gender" name="gender" class="form-select">
+                            <select id="gender" name="gender" class="form-select" required>
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                                 <option value="other">Other</option>
@@ -52,19 +52,19 @@
                     <tr>
                         <td>Language</td>
                         <td>
-                            <input id="language" name="language" class="form-control" type="text" placeholder="Insert the language for the new user">
+                            <input id="language" name="language" class="form-control" type="text" placeholder="Insert the language for the new user" required>
                         </td>
                     </tr>
                     <tr>
                         <td>Email</td>
                         <td>
-                            <input id="email" name="email" class="form-control" type="text" placeholder="Insert the e-mail for the new user">
+                            <input id="email" name="email" class="form-control" type="email" placeholder="Insert the e-mail for the new user" required>
                         </td>
                     </tr>
                     <tr>
                         <td>Group</td>
                         <td>
-                            <select id="group" name="group" class="form-select">
+                            <select id="group" name="group" class="form-select" required>
                                 <option value="0">None. I'm a teacher.</option>
                                 @foreach($groups as $group)
                                     <option value="{{ $group->id }}">{{ $group->name }}</option>
@@ -75,7 +75,7 @@
                     <tr>
                         <td>Role</td>
                         <td>
-                            <select id="role" name="role" class="form-select">
+                            <select id="role" name="role" class="form-select" required>
                                 <option value="teacher" selected>Teacher</option>
                                 <option value="student">Student</option>
                             </select>
@@ -84,7 +84,7 @@
                     <tr>
                         <td>Activated</td>
                         <td>
-                            <select id="activated" name="activated" class="form-select">
+                            <select id="activated" name="activated" class="form-select" required>
                                 <option value=true selected>Yes</option>
                                 <option value=false>No</option>
                             </select>
