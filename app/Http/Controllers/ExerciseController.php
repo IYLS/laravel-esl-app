@@ -23,7 +23,31 @@ class ExerciseController extends Controller
         $unit = Unit::find($unit_id);
 
         return view('exercises.index', compact('unit', 'types'));
-     }
+    }
+
+    public function addForm(Unit $unit, ExerciseType $exercise_type, Section $section)
+    {
+        return view('modals.exercises.add_form', [
+            'type' => $exercise_type,
+            'section' => $section,
+            'section_id' => $section->id,
+        ]);
+    }
+
+    public function metacognitionForm(Unit $unit, Section $section, string $underscore_type)
+    {
+        $typeNames = [
+            'multiple_choice' => 'Multiple Choice',
+            'drag_and_drop' => 'Drag and Drop',
+            'open_ended' => 'Open Ended',
+            'form' => 'Form',
+        ];
+        return view('modals.exercises.metacognition_form', [
+            'section' => $section,
+            'underscore_type' => $underscore_type,
+            'type' => $typeNames[$underscore_type] ?? 'Activity',
+        ]);
+    }
 
      public function create(Request $request, $unit_id, $exercise_type_id, $section_id)
      {

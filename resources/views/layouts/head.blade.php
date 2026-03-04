@@ -50,7 +50,7 @@
     if (!el) return;
 
     tinymce.init({
-      selector: 'textarea.mce-editor',
+      selector: 'textarea.mce-editor:not(.mce-editor-lazy)',
       statusbar: false,
       license_key: 'gpl',
       plugins: 'advlist lists link',

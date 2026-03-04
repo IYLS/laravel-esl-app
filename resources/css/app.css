@@ -716,12 +716,38 @@ a:focus {
 }
 
 /* ============================================
+   CORRECCIÓN: Parpadeo y scroll en modales Add Exercise
+   ============================================ */
+
+/* Evitar transiciones en modal/backdrop que causan parpadeo al hacer hover o scroll */
+.modal,
+.modal *,
+.modal-backdrop {
+    transition: none !important;
+}
+
+/* Restaurar transiciones solo en elementos interactivos del modal */
+.modal .btn,
+.modal .btn-close,
+.modal .form-control,
+.modal .form-select {
+    transition-property: background-color, border-color, color, box-shadow, transform !important;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transition-duration: 150ms !important;
+}
+
+/* Prevenir que el overlay/backdrop dispare eventos de scroll al hacer hover */
+.modal-backdrop {
+    touch-action: none;
+}
+
+/* ============================================
    CORRECCIÓN: Scroll en contenedor de ejercicios cuando modal está abierto
    Los modales draggables (data-bs-backdrop="false") no deben bloquear el scroll
    ============================================ */
 
-/* Permitir scroll en body cuando modal draggable está abierto */
-body.modal-open {
+/* Permitir scroll en body solo en vistas de estudiante cuando modal draggable está abierto */
+body.student-module.modal-open {
     overflow: visible !important;
     padding-right: 0 !important;
 }
@@ -1290,7 +1316,7 @@ textarea:not(:disabled) {
     animation: fadeIn 0.3s ease-out;
 }
 
-/* Mejorar scroll suave */
+/* Mejorar scroll suave - NO usar scrollbar-gutter: puede causar parpadeo con Bootstrap 5.0 */
 html {
     scroll-behavior: smooth;
     overflow-x: hidden;

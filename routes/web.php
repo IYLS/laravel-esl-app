@@ -78,6 +78,8 @@ Route::post('/units/{unit}/keywords/{keyword}/update', [KeywordController::class
 // Exercises Routes
 Route::get('/exercises/{exercise}', [ExerciseController::class, 'show'])->name('exercises.show');
 Route::get('/units/{unit}/exercises', [ExerciseController::class, 'index'])->name('exercises.index');
+Route::get('/units/{unit}/exercises/add-form/{exercise_type}/{section}', [ExerciseController::class, 'addForm'])->name('exercises.add-form');
+Route::get('/units/{unit}/exercises/metacognition-form/{section}/{underscore_type}', [ExerciseController::class, 'metacognitionForm'])->name('exercises.metacognition-form');
 Route::post('/units/{unit}/exercises/add', [ExerciseController::class, 'add'])->name('exercises.add');
 Route::post('/units/{unit}/exercises/store/{type}/section/{section}', [ExerciseController::class, 'store'])->name('exercises.store');
 Route::get('/units/{unit}/exercises/create/{type}/section/{section}', [ExerciseController::class, 'create'])->name('exercises.create');
