@@ -35,6 +35,11 @@ class LeaderboardController extends Controller
                 ->with('error', 'Grupo no encontrado.');
         }
 
+        if (!$group->leaderboard_enabled) {
+            return redirect()->route('student.level_selection')
+                ->with('error', 'El leaderboard no está habilitado para tu grupo.');
+        }
+
         // Obtener todos los estudiantes del mismo grupo
         $students = User::where('group_id', $user->group_id)
             ->where('role', 'student')

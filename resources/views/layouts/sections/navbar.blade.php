@@ -78,9 +78,11 @@
                     <li class="nav-item">
                         <a class="nav-link" onclick="this.classList.add('active');" href="{{ route('faq.student') }}">FAQ</a>
                     </li>
+                    @if(Auth::user()->group && Auth::user()->group->leaderboard_enabled)
                     <li class="nav-item">
                         <a class="nav-link" onclick="this.classList.add('active');" href="{{ route('leaderboard.index') }}">Leaderboard</a>
                     </li>
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link" onclick="this.classList.add('active');" href="{{ route('auth.logout') }}">Log out</a>
                     </li>

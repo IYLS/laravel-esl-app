@@ -15,6 +15,15 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Leaderboard visible</td>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="leaderboard_enabled" value="1" id="leaderboard_enabled" checked>
+                            <label class="form-check-label" for="leaderboard_enabled">Mostrar Leaderboard a los estudiantes de este grupo</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
                     <td>Students</td>
                     <td>
                         <div class="card card-body">

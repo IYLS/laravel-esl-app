@@ -15,7 +15,12 @@ class Group extends Model
 
     protected $table = 'groups';
     protected $fillable = [
-        'name'
+        'name',
+        'leaderboard_enabled',
+    ];
+
+    protected $casts = [
+        'leaderboard_enabled' => 'boolean',
     ];
 
     public $timestamps = true;

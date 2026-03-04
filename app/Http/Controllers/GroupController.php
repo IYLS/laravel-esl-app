@@ -45,6 +45,7 @@ class GroupController extends Controller
     {
         $group = new Group;
         $group->name = $request->name;
+        $group->leaderboard_enabled = $request->boolean('leaderboard_enabled');
         $group->save();
 
         $unit_ids = array();
@@ -87,7 +88,10 @@ class GroupController extends Controller
     {
         $current_group = Group::find($id);
         
-        if($request->has('name') and $request->name != '') $current_group->name = $request->name;
+        if ($request->has('name') && $request->name != '') {
+            $current_group->name = $request->name;
+        }
+        $current_group->leaderboard_enabled = $request->boolean('leaderboard_enabled');
 
         $unit_ids = array();
         if($request->has('units') and $request->units != null) $unit_ids = $request->units;
