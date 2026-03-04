@@ -24,7 +24,23 @@ class Comment extends Model
     public $timestamps = true;
     public $incrementing = true;
 
-    public function user() { return $this->belongsTo(User::class); }
-    public function group() { return $this->belongsTo(Group::class); }
-    public function replies() { return $this->hasMany(Reply::class); }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(Reply::class);
+    }
+
+    public function reactions()
+    {
+        return $this->hasMany(CommentReaction::class, 'comment_id');
+    }
 }

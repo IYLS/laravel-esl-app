@@ -13,6 +13,7 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ReplyController;
+use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\GlossedWordsController;
@@ -106,6 +107,10 @@ Route::delete('/forum/comment/{comment}/delete', [ForumController::class, 'destr
 
 // Reply Routes
 Route::post('/forum/comment/{comment}/reply/store', [ReplyController::class, 'store'])->name('replies.store');
+
+// Reaction Routes (AJAX)
+Route::post('/forum/comment/{comment}/reaction', [ReactionController::class, 'comment'])->name('reactions.comment');
+Route::post('/forum/reply/{reply}/reaction', [ReactionController::class, 'reply'])->name('reactions.reply');
 
 // Sections Routes
 Route::get('/units/{unit}/sections', [SectionController::class, 'index'])->name('sections.index');

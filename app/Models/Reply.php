@@ -18,6 +18,18 @@ class Reply extends Model
     public $timestamps = true;
     public $incrementing = true;
 
-    public function comment() { return $this->belongsTo(Comment::class); }
-    public function user() { return $this->belongsTo(User::class); }
+    public function comment()
+    {
+        return $this->belongsTo(Comment::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function reactions()
+    {
+        return $this->hasMany(ReplyReaction::class, 'reply_id');
+    }
 }

@@ -17,22 +17,31 @@ class ForumController extends Controller
         $current_user = Auth::user();
         $group = Auth::user()->group;
 
-        if($group != null or Auth::user()->role == "student") {
-            $comments = Comment::where('group_id', $group->id)->orderBy('created_at', 'desc')->get();
-            return view('student.forum.index', compact('group', 'current_user', 'comments'));
+        if (Auth::user()->role == 'student' && $group) {
+            $comments = Comment::where('group_id', $group->id)
+                ->with(['user', 'reactions.user'])
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } else {
+            $comments = Comment::with(['user', 'reactions.user'])
+                ->orderBy('created_at', 'desc')
+                ->get();
         }
 
-        $comments = Comment::all();
-        return view('student.forum.index', compact('current_user', 'comments'));
+        return view('student.forum.index', compact('group', 'current_user', 'comments'));
     }
 
     public function store(Request $request)
     {
-        $comment = new Comment;
-        $comment->title = $request->title;
-        $comment->content = $request->content;
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string|max:10000',
+        ]);
 
-        $comment->user_id = Auth::user()->id;
+        $comment = new Comment;
+        $comment->title = $validated['title'];
+        $comment->content = $validated['content'];
+        $comment->user_id = Auth::id();
         $comment->group_id = Auth::user()->group_id;
 
         $comment->save();
@@ -43,8 +52,11 @@ class ForumController extends Controller
     public function show($id)
     {
         $current_user = Auth::user();
-        $comment = Comment::find($id);
-        $replies = Reply::where('comment_id', $id)->orderBy('created_at', 'desc')->get();
+        $comment = Comment::with(['user', 'reactions.user'])->findOrFail($id);
+        $replies = Reply::where('comment_id', $id)
+            ->with(['user', 'reactions.user'])
+            ->orderBy('created_at', 'asc')
+            ->get();
         $replies_number = $replies->count();
 
         return view('student.forum.show', compact('comment', 'replies', 'replies_number', 'current_user'));
@@ -52,7 +64,13 @@ class ForumController extends Controller
 
     public function destroy($id)
     {
-        Comment::find($id)->delete();
+        $comment = Comment::findOrFail($id);
+
+        if ($comment->user_id !== Auth::id() && Auth::user()->role !== 'teacher') {
+            abort(403);
+        }
+
+        $comment->delete();
 
         return redirect()->route('forum.index');
     }
