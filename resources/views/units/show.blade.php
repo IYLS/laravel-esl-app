@@ -465,11 +465,6 @@
 
 <script>
     var textarea_elements = document.getElementsByClassName('mce-editor');
-    $(document).ready(function() {
-        $('.mce-editor').each(function(i) {
-            tinymce.get(textarea_elements[i].id).mode.set("readonly");
-        });
-    });
 
     function toggleHelpOptions() {
         var collapseElement = document.getElementById('collapsableHelpOptions');
@@ -510,4 +505,16 @@
     }
 </script>
 
+@endsection
+
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        var els = document.getElementsByClassName('mce-editor');
+        for (var i = 0; i < els.length; i++) {
+            var inst = tinymce.get(els[i].id);
+            if (inst && inst.mode) inst.mode.set("readonly");
+        }
+    });
+</script>
 @endsection

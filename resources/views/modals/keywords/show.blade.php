@@ -45,12 +45,3 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-        $(".modal").each(function(i) {
-            $(this).draggable({
-                handle: ".modal-header"  
-            });
-        });
-    });
-</script>

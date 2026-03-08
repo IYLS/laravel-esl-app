@@ -1,3 +1,14 @@
+{{-- jQuery y jQuery UI al final del body (no bloquean render inicial; ~330KB fuera del critical path) --}}
+<script src="{{ asset('jquery/jquery-3.3.1.min.js') }}"></script>
+<script src="{{ asset('jquery/jquery-ui.min.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof $ !== 'undefined' && $.fn.draggable) {
+        $('.modal[data-bs-backdrop="false"]').draggable({ handle: '.modal-header' });
+    }
+});
+</script>
+
 @if (session('success') || session('error'))
   @include('modals.exercises.message', [
       'message' => session('success') ?? session('error'),
