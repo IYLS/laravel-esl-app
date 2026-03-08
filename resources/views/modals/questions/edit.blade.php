@@ -148,6 +148,12 @@
                                 @break
                         @endswitch
                         @break
+                    @case('poll')
+                        <p><small>Question statement:</small></p>
+                        <textarea id="statement" name="statement" class="form-control" rows="3" placeholder="e.g. I found this activity easy to understand">{!! $question->statement !!}</textarea>
+                        <p class="text-secondary mt-1"><small>Scale 1-7 is fixed and cannot be edited.</small></p>
+                        <br>
+                        @break
                     @case('form')
                         @php 
                             $id = "".count($exercise->questions)."-$question->id";

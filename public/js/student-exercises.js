@@ -530,6 +530,27 @@
         },
 
         /**
+         * Procesa respuestas de Poll (Likert 1-7)
+         */
+        processPoll(questions, exercise) {
+            const responses = [];
+
+            questions.forEach(question => {
+                const selected = document.querySelector(`input[name="question-${question.id}"]:checked`);
+                if (selected) {
+                    responses.push({
+                        id: String(question.id),
+                        response: String(selected.value)
+                    });
+                }
+            });
+
+            return {
+                responses: responses
+            };
+        },
+
+        /**
          * Procesa respuestas de Open Ended
          */
         processOpenEnded(questions, exercise) {
@@ -588,6 +609,9 @@
                 case 'open_ended':
                     answers = ExerciseResponseProcessor.processOpenEnded(questions, exercise);
                     break;
+                case 'poll':
+                    answers = ExerciseResponseProcessor.processPoll(questions, exercise);
+                    break;
                 default:
                     answers = { responses: [] };
             }
@@ -612,6 +636,7 @@
             // Agregar correctas e incorrectas si corresponde
             const shouldIncludeCounts = type !== 'open_ended' && 
                                        type !== 'form' && 
+                                       type !== 'poll' &&
                                        exercise.subtype !== 99 && 
                                        exercise.subtype !== 991;
 
@@ -1055,6 +1080,14 @@
                         }
                     });
                 }
+                break;
+
+            case 'poll':
+                // Desmarcar todos los radios del poll
+                const pollRadios = document.querySelectorAll(`.poll-${exerciseId}-check`);
+                Array.from(pollRadios).forEach(radio => {
+                    radio.checked = false;
+                });
                 break;
 
             case 'voice_recognition':

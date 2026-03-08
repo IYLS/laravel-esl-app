@@ -108,6 +108,11 @@
                                 @break
                         @endswitch
                         @break
+                    @case('poll')
+                        <p><small>Question statement (Likert scale 1-7 will be auto-generated):</small></p>
+                        <textarea id="statement" name="statement" class="form-control" rows="3" placeholder="e.g. I found this activity easy to understand" required></textarea>
+                        <br>
+                        @break
                     @case('form')
                         @php  $id = count($exercise->questions); @endphp
                         <div id="double-col-form" class="p-1">

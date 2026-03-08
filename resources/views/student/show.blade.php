@@ -138,7 +138,7 @@
                         @forelse($section->exercises->where('exercise_type_id', '!=', 5)->sortBy('position') as $e)
                             @php $index = $loop->index; @endphp
                             <button 
-                                class="nav-link exercise-btn @if($e->subtype == 99 || $e->subtype == 991) meta @endif @if($index == 0) active @endif"
+                                class="nav-link exercise-btn @if($e->subtype == 99 || $e->subtype == 991) meta @elseif(in_array($e->exerciseType->underscore_name, ['open_ended', 'poll', 'form'])) engagement @endif @if($index == 0) active @endif"
                                 id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" 
                                 data-bs-toggle="pill" 
                                 data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" 
@@ -303,6 +303,20 @@
                                         {{-- Form --}}
                                         @include('exercises.form.dashboard')
                                         
+                                    </div>
+                                </div>
+                                @break
+                            @case('poll')
+                                <div class="tab-pane fade exercise-pane @if($loop->index == 0) show active @endif" id="{{ $e->exerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->exerciseType->underscore_name . $e->id }}-tab">
+                                    <div class="container">
+                                        <h4>{{ $e->title }}</h4>
+                                        <p class="text-secondary">{{ $e->description }}</p>
+                                        @isset($e->instructions) <div class="text-dark">{!! $e->instructions !!}</div> @endisset
+                                        @isset($e->translated_instructions) <div class="text-secondary">{!! $e->translated_instructions !!}</div> @endisset
+                                        @isset($e->extra_info) <p class="text-info"><span class="material-symbols-outlined text-info">info</span> &nbsp; {{ $e->extra_info }}</p> @endisset
+
+                                        {{-- Poll Likert 1-7 --}}
+                                        @include('exercises.poll.likert')
                                     </div>
                                 </div>
                                 @break

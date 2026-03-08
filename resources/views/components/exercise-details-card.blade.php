@@ -23,7 +23,9 @@
             Subtype:
             @switch($exercise->subtype)
                 @case(1)
-                    @if(isset($exerciseType) && $exerciseType->underscore_name == 'fill_in_the_gaps')
+                    @if(isset($exerciseType) && $exerciseType->underscore_name == 'poll')
+                        Likert 1-7
+                    @elseif(isset($exerciseType) && $exerciseType->underscore_name == 'fill_in_the_gaps')
                         Dictation Cloze
                     @else
                         Predicting

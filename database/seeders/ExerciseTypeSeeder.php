@@ -47,6 +47,12 @@ class ExerciseTypeSeeder extends Seeder
                 'name' => 'Form',
                 'underscore_name' => 'form',
                 'description' => null,
+            ],
+            [
+                'id' => 7,
+                'name' => 'Poll',
+                'underscore_name' => 'poll',
+                'description' => 'Likert scale 1-7',
             ]
         ]);
     }

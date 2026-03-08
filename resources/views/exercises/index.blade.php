@@ -73,47 +73,60 @@
                 </tbody>
             </table>
 
+            @php
+                $exerciseTypes = $types->filter(fn($t) => !in_array($t->underscore_name, ['open_ended', 'poll', 'form']));
+                $engagementTypes = $types->filter(fn($t) => in_array($t->underscore_name, ['open_ended', 'poll', 'form']));
+            @endphp
             <div class="row">
-                <div class="col-6 d-flex justify-content-center">
-                    <button class="btn btn-primary btn-sm col-12 col-md-4 mt-2" data-bs-toggle="collapse" href="#collapsableAddExercise{{ $section->id }}" role="button" aria-expanded="false" aria-controls="collapsableAddExercise{{ $section->id }}">Add exercise <span class="material-symbols-outlined">arrow_downward</span></button>
+                <div class="col-12 col-md-4 d-flex justify-content-center mb-2">
+                    <button class="btn btn-primary btn-sm col-12" data-bs-toggle="collapse" href="#collapsableAddExercise{{ $section->id }}" role="button" aria-expanded="false" aria-controls="collapsableAddExercise{{ $section->id }}">Add exercise <span class="material-symbols-outlined">arrow_downward</span></button>
+                </div>
+                <div class="col-12 col-md-4 d-flex justify-content-center mb-2">
+                    <button class="btn btn-warning btn-sm col-12 text-dark" data-bs-toggle="collapse" href="#collapsableAddEngagement{{ $section->id }}" role="button" aria-expanded="false" aria-controls="collapsableAddEngagement{{ $section->id }}">Add engagement <span class="material-symbols-outlined">arrow_downward</span></button>
+                </div>
+                <div class="col-12 col-md-4 d-flex justify-content-center mb-2">
+                    <button class="btn btn-success btn-sm col-12" data-bs-toggle="collapse" href="#collapsableAddMetacognition{{ $section->id }}" role="button" aria-expanded="false" aria-controls="collapsableAddMetacognition{{ $section->id }}">Add metacognition <span class="material-symbols-outlined">arrow_downward</span></button>
                 </div>
 
-                <div class="col-6 d-flex justify-content-center">
-                    <button class="btn btn-success btn-sm col-12 col-md-4 mt-2" data-bs-toggle="collapse" href="#collapsableAddMetacognition{{ $section->id }}" role="button" aria-expanded="false" aria-controls="collapsableAddMetacognition{{ $section->id }}">Add metacognition  <span class="material-symbols-outlined">arrow_downward</span></button>
-                </div>
-
-                <div class="col-6 d-flex justify-content-center">
+                <div class="col-12">
                     <div class="collapse" id="collapsableAddExercise{{ $section->id }}">
-                        @forelse($types as $type)
-                            <div>
-                                <button type="button" class="btn btn-sm btn-primary mt-1 btn-add-exercise" data-unit-id="{{ $unit->id }}" data-type-id="{{ $type->id }}" data-type-name="{{ $type->name }}" data-section-id="{{ $section->id }}">
+                        <div class="d-flex flex-wrap gap-1 p-2">
+                            @forelse($exerciseTypes as $type)
+                                <button type="button" class="btn btn-sm btn-primary btn-add-exercise" data-unit-id="{{ $unit->id }}" data-type-id="{{ $type->id }}" data-type-name="{{ $type->name }}" data-section-id="{{ $section->id }}">
                                     {{ $type->name }}
                                 </button>
-                            </div>
-                        @empty
-                        @endforelse
+                            @empty
+                                <p class="text-secondary small mb-0">No exercise types</p>
+                            @endforelse
+                        </div>
                     </div>
                 </div>
-                
-                <div class="col-6 d-flex justify-content-center">
+                <div class="col-12">
+                    <div class="collapse" id="collapsableAddEngagement{{ $section->id }}">
+                        <div class="d-flex flex-wrap gap-1 p-2">
+                            @forelse($engagementTypes as $type)
+                                <button type="button" class="btn btn-sm btn-warning text-dark btn-add-exercise" data-unit-id="{{ $unit->id }}" data-type-id="{{ $type->id }}" data-type-name="{{ $type->name }}" data-section-id="{{ $section->id }}">
+                                    {{ $type->name }}
+                                </button>
+                            @empty
+                                <p class="text-secondary small mb-0">No engagement types</p>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
                     <div class="collapse" id="collapsableAddMetacognition{{ $section->id }}">
-                        <div class="ms-1 me-1">
-                            <button type="button" class="btn btn-sm btn-success mt-1 btn-add-metacognition" data-unit-id="{{ $unit->id }}" data-section-id="{{ $section->id }}" data-underscore-type="multiple_choice" data-type-name="Multiple Choice">
+                        <div class="d-flex flex-wrap gap-1 p-2">
+                            <button type="button" class="btn btn-sm btn-success btn-add-metacognition" data-unit-id="{{ $unit->id }}" data-section-id="{{ $section->id }}" data-underscore-type="multiple_choice" data-type-name="Multiple Choice">
                                 Multiple choice
                             </button>
-                        </div>
-                        <div class="ms-1 me-1">
-                            <button type="button" class="btn btn-sm btn-success mt-1 btn-add-metacognition" data-unit-id="{{ $unit->id }}" data-section-id="{{ $section->id }}" data-underscore-type="drag_and_drop" data-type-name="Drag and Drop">
+                            <button type="button" class="btn btn-sm btn-success btn-add-metacognition" data-unit-id="{{ $unit->id }}" data-section-id="{{ $section->id }}" data-underscore-type="drag_and_drop" data-type-name="Drag and Drop">
                                 Drag and Drop
                             </button>
-                        </div>
-                        <div class="ms-1 me-1">
-                            <button type="button" class="btn btn-sm btn-success mt-1 btn-add-metacognition" data-unit-id="{{ $unit->id }}" data-section-id="{{ $section->id }}" data-underscore-type="open_ended" data-type-name="Open Ended">
+                            <button type="button" class="btn btn-sm btn-success btn-add-metacognition" data-unit-id="{{ $unit->id }}" data-section-id="{{ $section->id }}" data-underscore-type="open_ended" data-type-name="Open Ended">
                                 Open-ended
                             </button>
-                        </div>
-                        <div class="ms-1 me-1">
-                            <button type="button" class="btn btn-sm btn-success mt-1 btn-add-metacognition" data-unit-id="{{ $unit->id }}" data-section-id="{{ $section->id }}" data-underscore-type="form" data-type-name="Form">
+                            <button type="button" class="btn btn-sm btn-success btn-add-metacognition" data-unit-id="{{ $unit->id }}" data-section-id="{{ $section->id }}" data-underscore-type="form" data-type-name="Form">
                                 Form
                             </button>
                         </div>

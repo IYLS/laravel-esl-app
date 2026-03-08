@@ -48,6 +48,10 @@ class QuestionController extends Controller
         {
             $this->handleForm($question, $request);
         }
+        else if($exercise_type->underscore_name == "poll")
+        {
+            $this->handlePoll($question, $request);
+        }
         else if($exercise_type->underscore_name == "open_ended" && $exercise->subtype == "991")
         {
             $this->handleOpenEndedTable($question, $request);
@@ -124,7 +128,7 @@ class QuestionController extends Controller
         } else if($request->has('title') and $request->title != '' and $request->title != null and $exercise_type->underscore_name == "open_ended" && $exercise->subtype == "991") {
             $question->correct_answer = $request->title;
         } else {
-            if($exercise_type->underscore_name != "form") $question->correct_answer = $request->correct_answer;
+            if($exercise_type->underscore_name != "form" && $exercise_type->underscore_name != "poll") $question->correct_answer = $request->correct_answer;
         }
 
         if ($request->has('exclusive_responses') and $request->exclusive_responses != null) {
@@ -241,5 +245,17 @@ class QuestionController extends Controller
         $question->correct_answer = $request->title;
         $question->image_name = $request->boxes_number;
         $question->save();
+    }
+
+    private function handlePoll($question, $request)
+    {
+        // Crear alternativas Likert 1-7
+        for ($i = 1; $i <= 7; $i++) {
+            $alternative = new Alternative;
+            $alternative->title = (string) $i;
+            $alternative->question_id = $question->id;
+            $alternative->correct_alt = false;
+            $alternative->save();
+        }
     }
 }
