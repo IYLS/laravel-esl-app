@@ -26,18 +26,26 @@ class TrackingController extends Controller
         $group_id = $request->query('group');
         $user_id = $request->query('student');
         
-        // Aplicar filtros si existen
+        // Aplicar filtros si existen (una sola query para evitar memory exhausted)
+        $limit = 500;
         if ($user_id != null && $user_id != "any") {
-            $tracking = Tracking::where('user_id', $user_id)->orderBy('created_at', 'desc')->get();
+            $tracking = Tracking::with(['user.group', 'exercise.section.unit', 'exercise.exerciseType'])
+                ->where('user_id', $user_id)
+                ->orderBy('created_at', 'desc')
+                ->limit($limit)
+                ->get();
         } else if ($group_id != "any" && $group_id != null) {
-            $users = User::where('group_id', $group_id)->get();
-            $track = collect(new Tracking);
-            foreach($users as $user) { 
-                $track = $track->merge(Tracking::where('user_id', $user->id)->get()); 
-            }
-            $tracking = $track->sortByDesc('created_at');
+            $userIds = User::where('group_id', $group_id)->pluck('id');
+            $tracking = Tracking::with(['user.group', 'exercise.section.unit', 'exercise.exerciseType'])
+                ->whereIn('user_id', $userIds)
+                ->orderBy('created_at', 'desc')
+                ->limit($limit)
+                ->get();
         } else {
-            $tracking = Tracking::all()->sortByDesc('created_at')->take(50);
+            $tracking = Tracking::with(['user.group', 'exercise.section.unit', 'exercise.exerciseType'])
+                ->orderBy('created_at', 'desc')
+                ->limit(50)
+                ->get();
         }
 
         // Pasar filtros actuales a la vista
