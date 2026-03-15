@@ -79,6 +79,27 @@
 }
 
 /* ============================================
+   NAVBAR Y FOOTER - Color original #374151
+   ============================================ */
+nav.navbar.navbar-dark.bg-dark,
+nav.navbar.landing-navbar {
+    background-color: #374151 !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+.app-footer-dark,
+.landing-footer.bg-dark,
+body .mt-auto.bg-dark {
+    background-color: #374151 !important;
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Landing footer: misma tipografía que el resto de la plataforma */
+.landing-footer {
+    font-family: "Poppins", sans-serif !important;
+}
+
+/* ============================================
    SOBRESCRITURA DE BOOTSTRAP
    ============================================ */
 /* Botones primarios - Azul académico - Estilo Duolingo */

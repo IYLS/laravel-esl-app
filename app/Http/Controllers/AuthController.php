@@ -16,16 +16,21 @@ class AuthController extends Controller
             return view('auth.index', compact('user'));
         }
 
-        return redirect()->route('auth.login');
+        return view('auth.landing');
     }
 
     public function login(Request $request) 
     {
-        if (Auth::user() == null) {
-            return view('auth.login');
-        } else {
+        if (Auth::user() != null) {
             return redirect()->route('auth.index');
         }
+
+        $role = $request->query('role', 'student');
+        if (!in_array($role, ['student', 'teacher', 'researcher'])) {
+            $role = 'student';
+        }
+
+        return view('auth.login', compact('role'));
     }
 
     public function authenticate(Request $request)
@@ -35,11 +40,17 @@ class AuthController extends Controller
             'password' => ['required'],
             'role' => ['required'],
         ]);
- 
-        // Logging para comparar contraseñas
+
+        // Researcher puede usar credenciales de teacher si no existe rol researcher
         $user = User::where('email', $credentials['email'])
             ->where('role', $credentials['role'])
             ->first();
+        if (!$user && $credentials['role'] === 'researcher') {
+            $user = User::where('email', $credentials['email'])->where('role', 'teacher')->first();
+            if ($user) {
+                $credentials['role'] = 'teacher';
+            }
+        }
         
         if ($user) {
             $passwordEntered = $credentials['password'];
@@ -83,6 +94,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('auth.login');
+        return redirect()->route('auth.index');
     }
 }

@@ -10,7 +10,7 @@ class TeacherLoggedIn
 {
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role == "teacher")
+        if (Auth::check() && in_array(Auth::user()->role, ['teacher', 'researcher']))
         {
             return $next($request);
         }
