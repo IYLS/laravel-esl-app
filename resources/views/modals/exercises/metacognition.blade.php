@@ -1,5 +1,5 @@
 <!-- Multiple choice modal -->
-<div class="modal fade" id="add_meta_{{ $underscore_type }}_exercise_modal_{{ $section->id }}" tabindex="-1" aria-labelledby="add_meta_{{ $underscore_type }}_exercise_modal_{{ $section->id }}" aria-hidden="true">
+<div class="modal fade" id="add_meta_{{ $underscore_type }}_exercise_modal_{{ $section->id }}" tabindex="-1" aria-labelledby="add_meta_{{ $underscore_type }}_exercise_modal_{{ $section->id }}" aria-hidden="true" data-bs-focus="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

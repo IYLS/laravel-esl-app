@@ -4,7 +4,7 @@
     $subtype = $exercise->subtype;
 @endphp
 
-<div class="modal fade" id="{{ $button_target_id }}" tabindex="-1" aria-labelledby="{{ $button_target_id }}" aria-hidden="true">
+<div class="modal fade" id="{{ $button_target_id }}" tabindex="-1" aria-labelledby="{{ $button_target_id }}" aria-hidden="true" data-bs-focus="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

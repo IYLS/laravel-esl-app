@@ -1,4 +1,4 @@
-<div class="modal fade" id="selectGroupForDataExportModal" tabindex="-1" aria-labelledby="selectGroupForDataExportModal" aria-hidden="true">
+<div class="modal fade" id="selectGroupForDataExportModal" tabindex="-1" aria-labelledby="selectGroupForDataExportModal" aria-hidden="true" data-bs-focus="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

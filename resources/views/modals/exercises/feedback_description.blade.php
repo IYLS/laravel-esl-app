@@ -1,5 +1,5 @@
 <!-- Multiple choice modal -->
-<div class="modal fade" id="feedback_description_{{ $id }}_modal" tabindex="-1" aria-labelledby="feedback_description_{{ $id }}_modal" aria-hidden="true">
+<div class="modal fade" id="feedback_description_{{ $id }}_modal" tabindex="-1" aria-labelledby="feedback_description_{{ $id }}_modal" aria-hidden="true" data-bs-focus="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

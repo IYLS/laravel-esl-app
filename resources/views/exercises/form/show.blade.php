@@ -86,7 +86,6 @@
             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#questions_positions_modal">
                 Positions  <span class="material-symbols-outlined">sort</span>
             </button>
-            @include('modals.questions.set_positions', ["modal_id" => "questions_positions_modal", "questions" => $exercise->questions])
         </div>
     </div>
 
@@ -96,5 +95,6 @@
 </div>
 
 @include('modals.questions.add')
+@include('modals.questions.set_positions', ["modal_id" => "questions_positions_modal", "questions" => $exercise->questions])
 
 @endsection

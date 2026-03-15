@@ -94,7 +94,7 @@
 </div>
 
 <!-- Modal para actualizar contraseña -->
-<div class="modal fade" id="updatePasswordModal" tabindex="-1" aria-labelledby="updatePasswordModalLabel" aria-hidden="true">
+<div class="modal fade" id="updatePasswordModal" tabindex="-1" aria-labelledby="updatePasswordModalLabel" aria-hidden="true" data-bs-focus="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

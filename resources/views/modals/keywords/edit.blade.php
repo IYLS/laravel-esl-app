@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="editKeywordModal-{{ $keyword->id}}" tabindex="-1" aria-labelledby="editKeywordModal-{{ $keyword->id}}" aria-hidden="true">
+<div class="modal fade" id="editKeywordModal-{{ $keyword->id}}" tabindex="-1" aria-labelledby="editKeywordModal-{{ $keyword->id}}" aria-hidden="true" data-bs-focus="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

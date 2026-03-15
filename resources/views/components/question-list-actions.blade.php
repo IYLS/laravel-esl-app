@@ -10,8 +10,4 @@
     <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#{{ $positionsModalId }}">
         Positions  <span class="material-symbols-outlined">sort</span>
     </button>
-    @include('modals.questions.set_positions', [
-        "modal_id" => $positionsModalId, 
-        "questions" => $exercise->questions
-    ])
 </div>

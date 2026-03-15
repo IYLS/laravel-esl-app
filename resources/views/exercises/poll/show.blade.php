@@ -46,5 +46,6 @@
 </div>
 
 @include('modals.questions.add')
+@include('modals.questions.set_positions', ["modal_id" => "questions_positions_modal", "questions" => $exercise->questions])
 
 @endsection

@@ -467,7 +467,7 @@
 
 @foreach($users as $user)
 	<!-- Modal para actualizar contraseña - {{ $user->name }} -->
-	<div class="modal fade" id="updatePasswordModal{{ $user->id }}" tabindex="-1" aria-labelledby="updatePasswordModalLabel{{ $user->id }}" aria-hidden="true">
+	<div class="modal fade" id="updatePasswordModal{{ $user->id }}" tabindex="-1" aria-labelledby="updatePasswordModalLabel{{ $user->id }}" aria-hidden="true" data-bs-focus="false">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -506,7 +506,7 @@
 	</div>
 
 	<!-- Modal de confirmación de eliminación - {{ $user->name }} -->
-	<div class="modal fade" id="deleteUserModal{{ $user->id }}" tabindex="-1" aria-labelledby="deleteUserModalLabel{{ $user->id }}" aria-hidden="true">
+	<div class="modal fade" id="deleteUserModal{{ $user->id }}" tabindex="-1" aria-labelledby="deleteUserModalLabel{{ $user->id }}" aria-hidden="true" data-bs-focus="false">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header border-0 pb-0">

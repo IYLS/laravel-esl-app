@@ -6,6 +6,20 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof $ !== 'undefined' && $.fn.draggable) {
         $('.modal[data-bs-backdrop="false"]').draggable({ handle: '.modal-header' });
     }
+
+    // Prevenir que wheel dispare scroll cuando modal está abierto (fix flickering)
+    document.addEventListener('wheel', function(e) {
+        var modal = document.querySelector('.modal.show');
+        if (!modal) return;
+        var target = e.target;
+        if (!target.closest('.modal') && !target.closest('.modal-backdrop')) return;
+        var body = modal.querySelector('.modal-body');
+        if (body && target.closest('.modal-body') && body.scrollHeight > body.clientHeight) {
+            return;
+        }
+        e.preventDefault();
+        e.stopPropagation();
+    }, { passive: false, capture: true });
 });
 </script>
 
