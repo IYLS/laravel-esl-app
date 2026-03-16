@@ -26,7 +26,6 @@
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#positions_modal_{{ $section->id }}">
                                     Positions  <span class="material-symbols-outlined">sort</span>
                                 </button>
-                                @include('modals.exercises.set_positions', ["modal_id" => "positions_modal_$section->id"])
                             </div>
                         </div>
                     </div>
@@ -175,6 +174,9 @@
     </div>
 </div>
 
+@foreach($unit->sections->sortBy('position') as $section)
+    @include('modals.exercises.set_positions', ["modal_id" => "positions_modal_{$section->id}", "section" => $section])
+@endforeach
 @foreach($unit->sections->sortBy('position') as $section)
     @foreach($section->exercises->sortBy('position') as $exercise)
         @include('components.delete-confirmation-modal', [

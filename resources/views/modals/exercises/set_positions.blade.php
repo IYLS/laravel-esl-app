@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <h4>Positions for {{ $section->name }} section</h4>
-                <form method="POST" action="{{ route('exercises.positions', '$section->unit_id') }}" method="POST">
+                <form method="POST" action="{{ route('exercises.positions', $section->unit_id) }}">
                     @csrf
                     @forelse($section->exercises->sortBy('position') as $exercise)
                         <div class="row">

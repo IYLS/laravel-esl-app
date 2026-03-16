@@ -1,6 +1,9 @@
 {{-- jQuery y jQuery UI al final del body (no bloquean render inicial; ~330KB fuera del critical path) --}}
 <script src="{{ asset('jquery/jquery-3.3.1.min.js') }}"></script>
 <script src="{{ asset('jquery/jquery-ui.min.js') }}"></script>
+{{-- Utils y exerciseHelpers para modales Add/Edit pregunta (alternativas en multiple choice, etc.) --}}
+<script src="{{ asset('js/modules/utils.js') }}"></script>
+<script src="{{ asset('js/modules/exerciseHelpers.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof $ !== 'undefined' && $.fn.draggable) {
