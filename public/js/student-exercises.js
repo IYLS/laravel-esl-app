@@ -293,10 +293,10 @@
                 });
                 form.appendChild(countInput);
 
-                // Time input (convertido a formato legible)
+                // Time input: backend espera segundos (integer), no formato HH:MM:SS
                 const timeInput = StudentUtils.createElement('input', {
                     'name': mapping.time,
-                    'value': StudentUtils.millisToHms(data.totalTime || 0),
+                    'value': Math.round((data.totalTime || 0) / 1000),
                     'hidden': true
                 });
                 form.appendChild(timeInput);
@@ -1146,6 +1146,18 @@
     // Inicializar timer cuando se carga la página
     document.addEventListener('DOMContentLoaded', function() {
         ExerciseTimer.start();
+
+        // Capturar cierre de help options por Escape u otros medios (no solo click en X)
+        document.querySelectorAll('.modal[data-help-type]').forEach(function(modal) {
+            const helpType = modal.getAttribute('data-help-type');
+            if (helpType) {
+                modal.addEventListener('hidden.bs.modal', function() {
+                    if (typeof window.onHelpOptionDismissed === 'function') {
+                        window.onHelpOptionDismissed(helpType);
+                    }
+                });
+            }
+        });
     });
 
 })();
