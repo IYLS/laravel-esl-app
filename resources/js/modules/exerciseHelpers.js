@@ -23,9 +23,9 @@ const ExerciseHelpers = {
         });
         inputContainer.appendChild(input);
 
-        const deleteIcon = Utils.createElement('i', {
-            'class': 'mdi mdi-delete'
-        });
+        const deleteIcon = Utils.createElement('span', {
+            'class': 'material-symbols-outlined'
+        }, 'delete');
 
         const deleteButton = Utils.createElement('a', {
             'class': 'btn btn-danger',
@@ -91,7 +91,7 @@ const ExerciseHelpers = {
             'type': 'button',
             'class': 'btn btn-danger btn-sm',
             'onclick': `removeAlternative("${id}", ${numberOfAlternatives})`
-        }, '<i class="mdi mdi-delete"></i>');
+        }, '<span class="material-symbols-outlined">delete</span>');
 
         const deleteContainer = Utils.createElement('div', {
             'class': 'col-1'
