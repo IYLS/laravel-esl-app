@@ -195,7 +195,7 @@
                                 <strong class="d-block mb-3">Pasos para crear una unidad:</strong>
                                 <ol>
                                     <li>Ve al menú <strong>"Units"</strong> desde el dashboard o la barra de navegación.</li>
-                                    <li>Haz clic en el botón <strong>"Create New Unit"</strong> o "Nueva Unidad".</li>
+                                    <li>Haz clic en el botón <strong>"Add Unit"</strong>.</li>
                                     <li>Completa el formulario con la información requerida:
                                         <ul>
                                             <li><strong>Título:</strong> Nombre descriptivo de la unidad</li>
@@ -203,7 +203,7 @@
                                             <li><strong>Copyright del video:</strong> Información de derechos de autor si aplica</li>
                                         </ul>
                                     </li>
-                                    <li>Haz clic en <strong>"Save"</strong> o "Guardar" para crear la unidad.</li>
+                                    <li>Haz clic en <strong>"Save"</strong> para crear la unidad.</li>
                                     <li>Una vez creada, serás redirigido a la página de detalles de la unidad donde podrás agregar secciones y ejercicios.</li>
                                 </ol>
                                 <div class="info-box alert-info">
@@ -222,8 +222,8 @@
                             <div class="accordion-body">
                                 <strong class="d-block mb-3">Pasos para agregar secciones:</strong>
                                 <ol>
-                                    <li>Desde la página de detalles de la unidad, busca la sección <strong>"Sections"</strong> o "Secciones".</li>
-                                    <li>Haz clic en <strong>"Add Section"</strong> o "Agregar Sección".</li>
+                                    <li>Desde la página de detalles de la unidad, haz clic en el botón <strong>"Sections"</strong>.</li>
+                                    <li>Haz clic en <strong>"Add section"</strong>.</li>
                                     <li>Completa el formulario:
                                         <ul>
                                             <li><strong>Nombre:</strong> Nombre de la sección (ej: "Pre-listening", "While-listening")</li>
@@ -249,7 +249,7 @@
                             <div class="accordion-body">
                                 <strong class="d-block mb-3">Pasos para crear ejercicios:</strong>
                                 <ol>
-                                    <li>Desde la página de detalles de la sección, haz clic en <strong>"Add Exercise"</strong> o "Agregar Ejercicio".</li>
+                                    <li>Desde la página de detalles de la unidad, haz clic en <strong>"Exercises"</strong>. Luego, en cada sección, haz clic en <strong>"Add exercise"</strong>, <strong>"Add engagement"</strong> o <strong>"Add metacognition"</strong> según el tipo que desees.</li>
                                     <li>Selecciona el tipo de ejercicio que deseas crear:
                                         <ul>
                                             <li><strong>Multiple Choice:</strong> Preguntas de opción múltiple</li>
@@ -283,7 +283,7 @@
                             <div class="accordion-body">
                                 <strong class="d-block mb-3">Pasos para agregar preguntas:</strong>
                                 <ol>
-                                    <li>Desde la página de detalles del ejercicio, haz clic en <strong>"Add Question"</strong> o "Agregar Pregunta".</li>
+                                    <li>Desde la página de detalles del ejercicio, haz clic en <strong>"Add question"</strong>.</li>
                                     <li>Completa el formulario según el tipo de ejercicio:
                                         <ul>
                                             <li><strong>Multiple Choice:</strong> Escribe el enunciado, agrega alternativas y marca cuál es la correcta</li>
@@ -342,7 +342,7 @@
                             <div class="accordion-body">
                                 <strong class="d-block mb-3">Pasos para configurar feedback:</strong>
                                 <ol>
-                                    <li>Desde la página de detalles del ejercicio, haz clic en <strong>"Feedback Settings"</strong> o "Configuración de Feedback".</li>
+                                    <li>Desde la página de detalles del ejercicio, en la sección Feedback haz clic en <strong>"Add feedback settings"</strong>.</li>
                                     <li>Selecciona los tipos de feedback que deseas habilitar:
                                         <ul>
                                             <li><strong>Correct Answer:</strong> Mensaje cuando la respuesta es correcta</li>
@@ -383,7 +383,7 @@
                                 <strong class="d-block mb-3">Crear y gestionar usuarios:</strong>
                                 <ol>
                                     <li>Ve al menú <strong>"Users"</strong> desde el dashboard.</li>
-                                    <li>Haz clic en <strong>"Create New User"</strong> para agregar un nuevo estudiante o profesor.</li>
+                                    <li>Haz clic en <strong>"Add User"</strong> para agregar un nuevo estudiante o profesor.</li>
                                     <li>Completa la información: nombre, correo, contraseña, rol y grupo.</li>
                                     <li>Asigna cada usuario a un grupo correspondiente.</li>
                                     <li>Puedes editar o eliminar usuarios desde la lista de usuarios.</li>
@@ -391,7 +391,7 @@
                                 <strong class="d-block mb-3 mt-4">Crear y gestionar grupos:</strong>
                                 <ol>
                                     <li>Ve al menú <strong>"Groups"</strong> desde el dashboard.</li>
-                                    <li>Haz clic en <strong>"Create New Group"</strong> para crear un nuevo grupo.</li>
+                                    <li>Haz clic en <strong>"New Group"</strong> para crear un nuevo grupo.</li>
                                     <li>Asigna unidades a cada grupo desde la página de detalles del grupo.</li>
                                     <li>Los estudiantes solo podrán acceder a las unidades asignadas a su grupo.</li>
                                 </ol>
@@ -409,9 +409,9 @@
                                 <strong class="d-block mb-3">Pasos para asignar unidades:</strong>
                                 <ol>
                                     <li>Ve al menú <strong>"Groups"</strong> y selecciona el grupo al que deseas asignar unidades.</li>
-                                    <li>Desde la página de detalles del grupo, busca la sección <strong>"Units"</strong> o "Unidades".</li>
-                                    <li>Haz clic en <strong>"Assign Units"</strong> o "Asignar Unidades".</li>
-                                    <li>Selecciona las unidades que deseas asignar al grupo marcando los checkboxes.</li>
+                                    <li>Desde la página de detalles del grupo, busca la sección <strong>"Units"</strong>.</li>
+                                    <li>Haz clic en <strong>"Edit"</strong> para habilitar la edición.</li>
+                                    <li>Marca las casillas de las unidades que deseas asignar al grupo y haz clic en <strong>"Save"</strong>.</li>
                                     <li>Guarda los cambios.</li>
                                     <li>Los estudiantes de ese grupo ahora podrán acceder a las unidades asignadas.</li>
                                 </ol>
