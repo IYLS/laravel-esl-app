@@ -27,16 +27,15 @@ class StudentController extends Controller
         $keywords = $unit->keywords;
         $user = Auth::user();
 
-        // Verificar si hay ejercicios válidos en alguna sección
+        // Verificar si hay ejercicios válidos en alguna sección (incluye Voice Recognition)
         $has_exercises = false;
         $first_exercise_id = 0;
         
         foreach($unit->sections as $section) {
-            $section_exercises = $section->exercises->where('exercise_type_id', '!=', 5);
-            if ($section_exercises->count() > 0) {
+            if ($section->exercises->count() > 0) {
                 $has_exercises = true;
                 if ($first_exercise_id == 0) {
-                    $first_exercise_id = $section_exercises->first()->id;
+                    $first_exercise_id = $section->exercises->sortBy('position')->first()->id;
                 }
             }
         }

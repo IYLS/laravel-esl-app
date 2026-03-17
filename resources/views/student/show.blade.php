@@ -73,7 +73,7 @@
             @foreach($unit->sections->sortBy('position') as $section)
                 @php 
                     $index = $loop->index + 1;
-                    $section_exercises = $section->exercises->where('exercise_type_id', '!=', 5);
+                    $section_exercises = $section->exercises->sortBy('position');
                     if($section_exercises->count() > 0) {
                         $section_first_exercise_id = $section_exercises->first()->id;
                     } else {
@@ -118,7 +118,7 @@
         <div class="tab-content" id="myTabContent">
             @foreach($unit->sections->sortBy('position') as $section)
                 @php
-                    $section_exercises = $section->exercises->where('exercise_type_id', '!=', 5);
+                    $section_exercises = $section->exercises->sortBy('position');
                 @endphp
                 @if($section_exercises->count() > 0)
                     @if($loop->index == 0)
@@ -135,7 +135,7 @@
                     </div>
                     @endif
                     <div class="nav flex-column mt-2 nav-pills col-12 col-xl-2" id="v-pills-tab-{{ $section->underscore_name }}" role="tablist" aria-orientation="vertical">
-                        @forelse($section->exercises->where('exercise_type_id', '!=', 5)->sortBy('position') as $e)
+                        @forelse($section->exercises->sortBy('position') as $e)
                             @php $index = $loop->index; @endphp
                             <button 
                                 class="nav-link exercise-btn @if($e->subtype == 99 || $e->subtype == 991) meta @elseif(in_array($e->exerciseType->underscore_name, ['open_ended', 'poll', 'form'])) engagement @endif @if($index == 0) active @endif"
@@ -177,7 +177,7 @@
                         @endforelse
                     </div>
                     <div class="tab-content container-fluid col-12 col-xl-10" id="v-pills-tabContent-{{ $section->underscore_name }}">
-                        @foreach($section->exercises->where('exercise_type_id', '!=', 5)->sortBy('position') as $e)
+                        @foreach($section->exercises->sortBy('position') as $e)
                             @php
                                 $feedback_content = array(
                                     'ids' => [],
