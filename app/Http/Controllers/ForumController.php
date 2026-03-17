@@ -12,6 +12,11 @@ use App\Models\Reply;
 
 class ForumController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $current_user = Auth::user();
@@ -49,11 +54,11 @@ class ForumController extends Controller
         return redirect()->route('forum.index');
     }
 
-    public function show($id)
+    public function show(Comment $comment)
     {
         $current_user = Auth::user();
-        $comment = Comment::with(['user', 'reactions.user'])->findOrFail($id);
-        $replies = Reply::where('comment_id', $id)
+        $comment->load(['user', 'reactions.user']);
+        $replies = Reply::where('comment_id', $comment->id)
             ->with(['user', 'reactions.user'])
             ->orderBy('created_at', 'asc')
             ->get();
@@ -62,9 +67,8 @@ class ForumController extends Controller
         return view('student.forum.show', compact('comment', 'replies', 'replies_number', 'current_user'));
     }
 
-    public function destroy($id)
+    public function destroy(Comment $comment)
     {
-        $comment = Comment::findOrFail($id);
 
         if ($comment->user_id !== Auth::id() && Auth::user()->role !== 'teacher') {
             abort(403);
