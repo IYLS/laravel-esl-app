@@ -35,7 +35,32 @@ if [ "$MODE" = "full" ]; then
 
     echo ""
     echo "[3/8] Migraciones..."
-    php artisan migrate --force
+    migrate_with_retry() {
+        local max_attempts=3
+        local attempt=1
+        while [ $attempt -le $max_attempts ]; do
+            local output
+            output=$(php artisan migrate --force 2>&1) && { echo "$output"; return 0; }
+            if echo "$output" | grep -qi "connection refused"; then
+                echo "$output"
+                echo "  ⚠ Conexión a BD rechazada. Intentando recuperar..."
+                php artisan config:clear 2>/dev/null || true
+                sudo systemctl start mysql 2>/dev/null || sudo systemctl start mariadb 2>/dev/null || sudo service mysql start 2>/dev/null || sudo service mariadb start 2>/dev/null || true
+                sleep 3
+                if [ $attempt -lt $max_attempts ]; then
+                    echo "  Reintento $((attempt + 1))/$max_attempts en 5s..."
+                    sleep 5
+                fi
+            else
+                echo "$output"
+                return 1
+            fi
+            attempt=$((attempt + 1))
+        done
+        echo "  ✗ No se pudo conectar a la BD tras $max_attempts intentos. Revisa .env y que MySQL esté en ejecución."
+        return 1
+    }
+    migrate_with_retry || exit 1
 
     echo ""
     echo "[4/8] Instalando dependencias npm..."
