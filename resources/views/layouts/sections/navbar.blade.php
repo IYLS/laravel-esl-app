@@ -1,5 +1,5 @@
 @auth
-@if (Auth::user()->role=='teacher')
+@if (in_array(Auth::user()->role, ['teacher', 'researcher']))
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="{{ route('profile.show') }}" style="text-decoration: none;">
@@ -37,6 +37,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" onclick="this.classList.add('active');" href="{{ route('forum.index') }}">Forum</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="this.classList.add('active');" href="{{ route('leaderboard.index') }}">Leaderboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" onclick="this.classList.add('active');" href="{{ route('faq.teacher') }}">FAQ</a>

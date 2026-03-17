@@ -74,6 +74,9 @@
     .dashboard-card.faq .dashboard-card-icon {
         background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
     }
+    .dashboard-card.leaderboard .dashboard-card-icon {
+        background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    }
     .dashboard-card-title {
         font-size: 1.25rem;
         font-weight: 600;
@@ -163,6 +166,16 @@
         background: linear-gradient(135deg, #28b8b9 0%, #2a0756 100%);
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(48, 207, 208, 0.3);
+    }
+    .dashboard-card.leaderboard .dashboard-card-action .btn {
+        background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+        border: none;
+        color: white;
+    }
+    .dashboard-card.leaderboard .dashboard-card-action .btn:hover {
+        background: linear-gradient(135deg, #e6c200 0%, #e69400 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
     }
     @media (max-width: 768px) {
         .dashboard-container {
@@ -269,6 +282,22 @@
                 <div class="dashboard-card-action">
                     <a href="{{ route('forum.index') }}" class="btn">
                         <span>Go to Forum</span>
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="dashboard-card leaderboard">
+                <div class="dashboard-card-icon">
+                    <span class="material-symbols-outlined">emoji_events</span>
+                </div>
+                <h3 class="dashboard-card-title">Leaderboard</h3>
+                <p class="dashboard-card-description">
+                    View student progress rankings by group. Track completion rates and motivate engagement with the leaderboard.
+                </p>
+                <div class="dashboard-card-action">
+                    <a href="{{ route('leaderboard.index') }}" class="btn">
+                        <span>Go to Leaderboard</span>
                         <span class="material-symbols-outlined">arrow_forward</span>
                     </a>
                 </div>

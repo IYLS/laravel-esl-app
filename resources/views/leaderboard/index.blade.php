@@ -212,16 +212,33 @@
         @endif
 
         @if($group)
+            @php
+                $leaderboardBase = route('leaderboard.index');
+                $teacherGroupParam = in_array($user->role ?? '', ['teacher', 'researcher']) ? '?group=' . $group->id : '';
+            @endphp
             <div class="filter-section">
+                @if(isset($groups) && $groups->count() > 0)
+                    <div class="mb-2">
+                        <label class="form-label small text-muted">Grupo</label>
+                        <select class="form-select" onchange="var u=document.getElementById('unitSelect')?.value||''; location.href='{{ $leaderboardBase }}?group='+this.value+(u?'&unit='+u:'');">
+                            @foreach($groups as $g)
+                                <option value="{{ $g->id }}" {{ $g->id == $group->id ? 'selected' : '' }}>{{ $g->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
                 @if($units->count() > 0)
-                    <select id="unitSelect" class="form-select" onchange="if(this.value) { window.location.href='{{ route('leaderboard.index') }}?unit=' + this.value; } else { window.location.href='{{ route('leaderboard.index') }}'; }">
-                        <option value="">Todas las unidades</option>
-                        @foreach($units as $unit)
-                            <option value="{{ $unit->id }}" {{ $selectedUnitId == $unit->id ? 'selected' : '' }}>
-                                {{ $unit->title }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <div class="{{ isset($groups) && $groups->count() > 0 ? 'mt-2' : '' }}">
+                        <label class="form-label small text-muted">Unidad</label>
+                        <select id="unitSelect" class="form-select" onchange="var u=this.value; var base='{{ $leaderboardBase }}{{ $teacherGroupParam }}'; var sep=base.includes('?')?'&':'?'; location.href=u?base+sep+'unit='+u:base;">
+                            <option value="">Todas las unidades</option>
+                            @foreach($units as $unit)
+                                <option value="{{ $unit->id }}" {{ $selectedUnitId == $unit->id ? 'selected' : '' }}>
+                                    {{ $unit->title }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                 @endif
             </div>
 

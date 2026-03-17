@@ -13,35 +13,50 @@ class LeaderboardController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('student');
+        $this->middleware('auth');
     }
 
     public function index(Request $request)
     {
         $user = Auth::user();
-        
-        // Verificar que el usuario tenga un grupo asignado
-        if (!$user->group_id) {
-            return redirect()->route('student.level_selection')
-                ->with('error', 'No tienes un grupo asignado. Contacta a tu profesor.');
-        }
 
-        $group = Group::with(['units' => function($query) {
-            $query->orderBy('position');
-        }])->find($user->group_id);
-        
-        if (!$group) {
-            return redirect()->route('student.level_selection')
-                ->with('error', 'Grupo no encontrado.');
-        }
-
-        if (!$group->leaderboard_enabled) {
-            return redirect()->route('student.level_selection')
-                ->with('error', 'El leaderboard no está habilitado para tu grupo.');
+        // Profesor: requiere parámetro group o muestra selector de grupos
+        if (in_array($user->role, ['teacher', 'researcher'])) {
+            $groupId = $request->query('group');
+            if (!$groupId) {
+                $groups = Group::where('leaderboard_enabled', true)
+                    ->orderBy('name')
+                    ->get();
+                return view('leaderboard.select_group', compact('groups'));
+            }
+            $group = Group::with(['units' => function($query) {
+                $query->orderBy('position');
+            }])->find($groupId);
+            if (!$group || !$group->leaderboard_enabled) {
+                return redirect()->route('leaderboard.index')
+                    ->with('error', 'Grupo no encontrado o leaderboard no habilitado.');
+            }
+        } else {
+            // Estudiante: usa su grupo asignado
+            if (!$user->group_id) {
+                return redirect()->route('student.level_selection')
+                    ->with('error', 'No tienes un grupo asignado. Contacta a tu profesor.');
+            }
+            $group = Group::with(['units' => function($query) {
+                $query->orderBy('position');
+            }])->find($user->group_id);
+            if (!$group) {
+                return redirect()->route('student.level_selection')
+                    ->with('error', 'Grupo no encontrado.');
+            }
+            if (!$group->leaderboard_enabled) {
+                return redirect()->route('student.level_selection')
+                    ->with('error', 'El leaderboard no está habilitado para tu grupo.');
+            }
         }
 
         // Obtener todos los estudiantes del mismo grupo
-        $students = User::where('group_id', $user->group_id)
+        $students = User::where('group_id', $group->id)
             ->where('role', 'student')
             ->where('activated', true)
             ->get();
@@ -103,13 +118,19 @@ class LeaderboardController extends Controller
             }
         }
 
+        $groups = null;
+        if (in_array($user->role, ['teacher', 'researcher'])) {
+            $groups = Group::where('leaderboard_enabled', true)->orderBy('name')->get();
+        }
+
         return view('leaderboard.index', compact([
             'leaderboard',
             'units',
             'selectedUnitId',
             'currentUserPosition',
             'user',
-            'group'
+            'group',
+            'groups'
         ]));
     }
 
