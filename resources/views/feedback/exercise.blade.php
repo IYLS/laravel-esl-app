@@ -8,7 +8,7 @@
             <p class="text-center show-on-open-submit" hidden>{{ $e->feedbacks->where('feedback_type_id', 1)->first()->message }}</p>
         @endif --}}
 
-        @if(in_array('4', $feedback_content["ids"]))
+        @if(isset($feedback_content) && in_array(4, $feedback_content["ids"]))
             <p class="text-center show-on-any-wrong-{{ $e->id }}">{{ $e->feedbacks->where('feedback_type_id', 4)->first()->message }}</p>
         @endif
 

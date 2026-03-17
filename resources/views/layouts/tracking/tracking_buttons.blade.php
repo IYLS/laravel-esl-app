@@ -1,5 +1,5 @@
 <div class="row">
-    @if(isset($subtype) && $subtype != '99' && $subtype != '991')
+    @if(!isset($subtype) || ($subtype != '99' && $subtype != '991'))
         @include('feedback.exercise')
     @endif
 </div>
