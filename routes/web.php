@@ -97,6 +97,8 @@ Route::put('/questions/update/{question}', [QuestionController::class, 'update']
 // Feedback Routes
 Route::post('/feedback/{exercise}/store/', [FeedbackController::class, 'store'])->name('feedback.store');
 Route::post('/feedback/{exercise}/create', [FeedbackController::class, 'create'])->name('feedback.create');
+Route::get('/feedback/{exercise}/edit', [FeedbackController::class, 'edit'])->name('feedback.edit');
+Route::put('/feedback/{exercise}/update', [FeedbackController::class, 'update'])->name('feedback.update');
 Route::delete('/feedback/{exercise}/destroy', [FeedbackController::class, 'destroy'])->name('feedback.destroy');
 
 // Forum Routes

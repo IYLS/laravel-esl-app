@@ -28,15 +28,16 @@
                     </li>
                 @empty
                     <p class="text-secondary text-center"><small>Nothing to show</small></p>
-                @endforelse            
+                @endforelse
             </ul>
 
         </div>
         @include('modals.questions.delete_confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete feedback settings for exercise with id $exercise->id.", 'button_target_id' => 'delete_feedback_modal', 'route' => route("feedback.destroy", $exercise->id)])
-        <div class="ms-1 me-1">
+        <div class="d-flex gap-2">
+            <a href="{{ route('feedback.edit', $exercise->id) }}" class="btn btn-sm btn-primary">Edit feedback settings <span class="material-symbols-outlined">edit</span></a>
             <button type="button" id="add_feedback_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_feedback_modal">
                 Delete feedback settings <span class="material-symbols-outlined">delete</span>
-            </button> 
+            </button>
         </div>
     @else
         <p class="text-center p-2 text-secondary"><small>No feedback added yet.</small></p>
