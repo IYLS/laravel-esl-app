@@ -20,7 +20,6 @@
         @isset($exercise->extra_info)<p class="text-info">Additional Information: {{ $exercise->extra_info }}</p>@endisset
         @isset($exercise->instructions)<p>Instructions: {!! $exercise->instructions !!}</p>@endisset
         @isset($exercise->translated_instructions)<p>Translated Instructions: {!! $exercise->translated_instructions !!}</p>@endisset
-        @include('modals.exercises.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
     </div>
 
     <div class="card p-4 m-2">
@@ -29,7 +28,7 @@
         <div class="card mt-2 p-3 mb-1">
             @php $question_number = $loop->index + 1;  @endphp
             <h6>{{ "Item " . $question_number }} - {{ $question->correct_answer }}</h6>
-            @if(isset($question->exclusive_responses) and $question->exclusive_responses) 
+            @if(isset($question->exclusive_responses) and $question->exclusive_responses)
             <p>Exclusive responses: True</p>
             @else
             <p>Exclusive responses: False</p>
@@ -46,7 +45,7 @@
                     <th>
                         <p class="text-center ms-2">{{ $question->answer }}</p>
                     </th>
-                    @endisset                        
+                    @endisset
                 </thead>
                 <tbody>
                     @foreach($question->alternatives as $alt)
@@ -99,5 +98,6 @@
 @endforeach
 @include('modals.questions.add')
 @include('modals.questions.set_positions', ["modal_id" => "questions_positions_modal", "questions" => $exercise->questions])
+@include('modals.exercises.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
 
 @endsection
