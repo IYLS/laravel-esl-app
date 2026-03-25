@@ -93,6 +93,89 @@ Abrir `http://localhost:8000`.
 
 ---
 
+## Automatización de deploy (GitHub Actions)
+
+El deploy se ejecuta automáticamente vía **GitHub Actions + SSH** en cada push a `main`.
+
+Flujo: `git push` → GitHub Actions → SSH → Droplet → `deploy.sh`
+
+### Configuración inicial (una sola vez)
+
+#### Paso 1 — Generar par de claves SSH
+
+**macOS / Linux:**
+```bash
+ssh-keygen -t ed25519 -C "github-actions-deploy" -f ~/.ssh/github_deploy_key -N ""
+```
+
+**Windows (PowerShell):**
+```powershell
+ssh-keygen -t ed25519 -C "github-actions-deploy" -f "$env:USERPROFILE\.ssh\github_deploy_key" -N '""'
+```
+
+Genera dos archivos: `github_deploy_key` (privada) y `github_deploy_key.pub` (pública).
+
+#### Paso 2 — Agregar la clave pública al droplet
+
+**macOS / Linux:**
+```bash
+ssh-copy-id -i ~/.ssh/github_deploy_key.pub TU_USUARIO@IP_DROPLET
+```
+
+**Windows (PowerShell):**
+```powershell
+$pub = Get-Content "$env:USERPROFILE\.ssh\github_deploy_key.pub"
+ssh TU_USUARIO@IP_DROPLET "echo '$pub' >> ~/.ssh/authorized_keys"
+```
+
+#### Paso 3 — Permitir reinicio de PHP-FPM sin contraseña (en el droplet)
+
+```bash
+echo "TU_USUARIO ALL=(ALL) NOPASSWD: /bin/systemctl restart php*-fpm" | sudo tee /etc/sudoers.d/deploy
+```
+
+#### Paso 4 — Agregar secrets en GitHub
+
+**Repositorio → Settings → Secrets and variables → Actions → New repository secret**
+
+| Secret | Valor |
+|---|---|
+| `DEPLOY_SSH_KEY` | Contenido completo de `github_deploy_key` (clave privada, incluyendo `-----BEGIN` y `-----END`) |
+| `DEPLOY_HOST` | IP o dominio del droplet |
+| `DEPLOY_USER` | Usuario SSH del droplet (ej. `root`) |
+
+Para obtener el contenido de la clave privada:
+
+**macOS / Linux:** `cat ~/.ssh/github_deploy_key`
+
+**Windows:** `Get-Content "$env:USERPROFILE\.ssh\github_deploy_key"`
+
+#### Paso 5 — Verificar
+
+Hacer push a `main` y revisar la ejecución en **Repositorio → Actions**.
+
+### Uso diario
+
+Desde cualquier dispositivo con acceso al repo:
+
+```bash
+git add .
+git commit -m "feat: descripción del cambio"
+git push origin main
+```
+
+No se requiere configuración adicional en el dispositivo nuevo.
+
+### Solución de problemas
+
+| Error | Causa probable | Solución |
+|---|---|---|
+| `Permission denied (publickey)` | Clave pública no está en el droplet | Repetir Paso 2 |
+| `sudo: a password is required` | sudoers no configurado | Repetir Paso 3 |
+| `403 Forbidden` al pushear | Cuenta sin permisos en el repo | Verificar en Settings → Collaborators |
+
+---
+
 ## Producción (DigitalOcean Droplet)
 
 ### Requisitos del servidor
