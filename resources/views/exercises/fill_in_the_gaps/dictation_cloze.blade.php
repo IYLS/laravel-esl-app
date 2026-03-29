@@ -56,6 +56,7 @@
             </div>
         </div>
     @endif
-    
+
+    <x-exercise-forum-link :exercise="$e" />
     @include('layouts.tracking.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
 </form>

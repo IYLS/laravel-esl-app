@@ -33,6 +33,7 @@
     @else
         <input type="text" value="1" name="subtype" hidden>
     @endif
+    @include('modals.exercises._forum_create_fields', ['suffix' => $modal_suffix])
     <input id="extra_info_{{ $modal_suffix }}" type="text" class="form-control mt-1" placeholder="(Optional) Additional Information" name="extra_info">
     <p class="text-info"><small>(Optional) Enter here any relevant information about the exercise. e.g. An example of how to complete the exercise.</small></p>
     <div class="modal-footer">

@@ -216,6 +216,7 @@
                                             @elseif($e->subtype == 991)
                                                 @include('exercises.open_ended.double_text')
                                             @endif
+                                            <x-exercise-forum-link :exercise="$e" />
                                             @include('layouts.tracking.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
                                         </form>
                                     </div>
@@ -264,7 +265,8 @@
                                             @elseif($e->subtype == 4 or $e->subtype == 99)
                                                 @include('exercises.multiple_choice.multiple_choice')
                                             @endif
-                                            
+
+                                            <x-exercise-forum-link :exercise="$e" />
                                             <br>
                                             @include('layouts.tracking.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
                                         </form>
@@ -486,7 +488,6 @@
                         startTimer();
                     }
                 }
->>>>>>> 09caa27 (fix: corregir tabs de Bootstrap en mÃ³dulo estudiante para evitar acumulaciÃ³n de stages)
             });
         });
     });

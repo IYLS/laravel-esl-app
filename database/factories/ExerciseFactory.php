@@ -20,6 +20,8 @@ class ExerciseFactory extends Factory
             'description' => $this->faker->paragraph(),
             'position' => $this->faker->numberBetween(1, 10),
             'subtype' => $this->faker->numberBetween(1, 4),
+            'show_forum_link' => false,
+            'forum_button_label' => null,
         ];
     }
 }

@@ -19,6 +19,7 @@
                 @endforeach
             </div>
         </div>
+        <x-exercise-forum-link :exercise="$e" />
         @include('layouts.tracking.tracking_buttons', ['exercise_id' => $e->id, 'type' => 'voice_recognition'])
     </form>
 </div>

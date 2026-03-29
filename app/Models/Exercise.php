@@ -21,6 +21,8 @@ class Exercise extends Model
         'description',
         'instructions',
         'subtype',
+        'show_forum_link',
+        'forum_button_label',
         'image_name',
         'video_name',
         'extra_info',
@@ -31,6 +33,10 @@ class Exercise extends Model
 
     public $timestamps = true;
     public $incrementing = true;
+
+    protected $casts = [
+        'show_forum_link' => 'boolean',
+    ];
 
     public function questions() { return $this->hasMany(Question::class, 'exercise_id'); }
     public function section() { return $this->belongsTo(Section::class); }

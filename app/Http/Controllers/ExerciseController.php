@@ -79,6 +79,11 @@ class ExerciseController extends Controller
             $exercise->subtype = '99';
         }
 
+        $exercise->show_forum_link = $request->has('show_forum_link')
+            ? $request->boolean('show_forum_link')
+            : false;
+        $exercise->forum_button_label = $this->normalizedForumButtonLabel($request->input('forum_button_label'));
+
         $exercise->save();
         
         return redirect()->route('exercises.show', $exercise->id);
@@ -103,6 +108,13 @@ class ExerciseController extends Controller
         $exercise->translated_instructions = $request->translated_instructions;
         $exercise->section_id = $request->section;
         $exercise->extra_info = $request->extra_info;
+
+        if ($request->has('show_forum_link')) {
+            $exercise->show_forum_link = $request->boolean('show_forum_link');
+        }
+        if ($request->has('forum_button_label')) {
+            $exercise->forum_button_label = $this->normalizedForumButtonLabel($request->input('forum_button_label'));
+        }
 
         if($this->getVideoFrom($request) == null) {
             $exercise->image_name = $exercise->image_name;
@@ -138,6 +150,16 @@ class ExerciseController extends Controller
         $exercise->delete();
 
         return redirect()->route('exercises.index', [$exercise->section->unit_id]);
+    }
+
+    private function normalizedForumButtonLabel(mixed $value): ?string
+    {
+        if ($value === null || ! is_string($value)) {
+            return null;
+        }
+        $trimmed = trim($value);
+
+        return $trimmed === '' ? null : $trimmed;
     }
 
     private function getVideoFrom(Request $request)
