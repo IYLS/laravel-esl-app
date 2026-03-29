@@ -16,14 +16,13 @@
         @isset($exercise->extra_info)<p class="text-info">Additional Information: {{ $exercise->extra_info }}</p>@endisset
         @isset($exercise->instructions)<p>Instructions: {!! $exercise->instructions !!}</p>@endisset
         @isset($exercise->translated_instructions)<p>Translated Instructions: {!! $exercise->translated_instructions !!}</p>@endisset
-        @include('modals.exercises.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
     </div>
 
     <div class="card p-4 m-2">
-        <h4>Activity items</h4>        
+        <h4>Activity items</h4>
         @forelse($exercise->questions->sortBy('position') as $question)
             <div class="card mt-1 mb-1 p-4">
-                <div class="d-flex row">                    
+                <div class="d-flex row">
                     @php $question_number = $loop->index + 1; @endphp
                     <div class="col-12 col-md-10">
                         <p>{{ $question_number }}. &nbsp;</p>
@@ -33,7 +32,7 @@
                         <div class="row">
                             <audio controls style="width: 350px;">
                                 <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
-                            </audio> 
+                            </audio>
                         </div>
                     </div>
                     <div class="col-12 col-md-2 d-flex justify-content-center">
@@ -77,5 +76,6 @@
 @endforeach
 @include('modals.questions.add')
 @include('modals.questions.set_positions', ["modal_id" => "questions_positions_modal", "questions" => $exercise->questions])
+@include('modals.exercises.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
 
 @endsection

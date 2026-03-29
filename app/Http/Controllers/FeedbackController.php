@@ -14,9 +14,9 @@ class FeedbackController extends Controller
     public function __construct(){
         $this->middleware('teacher');
     }
-    
+
     public function create(Request $request, $exercise_id)
-    {   
+    {
         $feedback_types = FeedbackType::findMany($request->types);
         $exercise = Exercise::find($exercise_id);
 
@@ -24,19 +24,19 @@ class FeedbackController extends Controller
     }
 
     public function store(Request $request, $exercise_id)
-    {   
+    {
         $exercise = Exercise::find($exercise_id);
         $data = $request->data;
 
         if(array_key_exists("question", $data))
         {
             foreach($data["question"] as $feedback_type_id=>$question_data)
-            {   
+            {
                 foreach($question_data as $key=>$q) {
                     $question = Question::find($key);
-                    
+
                     foreach($q as $k=>$item)
-                    {   
+                    {
                         switch($k)
                         {
                             case'message':
@@ -60,7 +60,7 @@ class FeedbackController extends Controller
                                 $feedback->feedback_type_id = $feedback_type_id;
                                 $feedback->message = $item["message"];
                                 $feedback->question_id = $question->id;
-                                $feedback->exercise_id = $exercise->id;        
+                                $feedback->exercise_id = $exercise->id;
                                 $feedback->save();
                                 break;
                         }
@@ -80,7 +80,7 @@ class FeedbackController extends Controller
                         $feedback = new Feedback;
                         $feedback->feedback_type_id = $feedback_type_id;
                         $feedback->message = $e;
-                        $feedback->exercise_id = $exercise->id;        
+                        $feedback->exercise_id = $exercise->id;
                         $feedback->save();
                         break;
                     } elseif($key == 'image')
@@ -88,7 +88,7 @@ class FeedbackController extends Controller
                         $feedback = new Feedback;
                         $feedback->feedback_type_id = $feedback_type_id;
                         $feedback->image_name = $this->getImageFrom($request, $feedback_type_id);
-                        $feedback->exercise_id = $exercise->id;        
+                        $feedback->exercise_id = $exercise->id;
                         $feedback->save();
                         break;
                     }
@@ -107,15 +107,57 @@ class FeedbackController extends Controller
         return redirect()->route('exercises.show', $exercise_id)->with("success", "Feedback settings deleted successfully.");
     }
 
+    public function edit($exercise_id)
+    {
+        $exercise = Exercise::with(['questions.alternatives', 'feedbacks.feedbackType'])->findOrFail($exercise_id);
+
+        return view('feedback.edit', compact('exercise'));
+    }
+
+    public function update(Request $request, $exercise_id)
+    {
+        $exercise = Exercise::findOrFail($exercise_id);
+
+        $feedbackById = $request->input('feedback', []);
+        $files = $request->file('feedback', []);
+
+        foreach($feedbackById as $id => $feedbackUpdates) {
+            $existing = Feedback::where('id', $id)->where('exercise_id', $exercise->id)->first();
+            if(!$existing) continue;
+
+            if(isset($feedbackUpdates['message'])) {
+                $existing->message = $feedbackUpdates['message'];
+            }
+
+            if(isset($files[$id]['audio'])) {
+                $audioFile = $files[$id]['audio'];
+                $audioFileName = $audioFile->getClientOriginalName();
+                $audioFile->storeAs('files', $audioFileName, 'public');
+                $existing->audio_name = $audioFileName;
+            }
+
+            if(isset($files[$id]['image'])) {
+                $imageFile = $files[$id]['image'];
+                $imageFileName = $imageFile->getClientOriginalName();
+                $imageFile->storeAs('files', $imageFileName, 'public');
+                $existing->image_name = $imageFileName;
+            }
+
+            $existing->save();
+        }
+
+        return redirect()->route('exercises.show', $exercise_id)->with('success', 'Feedback updated successfully.');
+    }
+
     private function getAudioFrom(Request $request, $question_id)
     {
-        if($request->file()['data']['question']['3'][$question_id]['audio'] != null) 
+        if($request->file()['data']['question']['3'][$question_id]['audio'] != null)
         {
             $audio_file = $request->file()['data']['question']['3'][$question_id]['audio'];
 
             $audio_file_name = $audio_file->getClientOriginalName();
             $audio_file_path = $audio_file->storeAs('files', $audio_file_name, 'public');
-            
+
             return $audio_file_name;
         } else {
             return null;
@@ -125,12 +167,12 @@ class FeedbackController extends Controller
     private function getImageFrom(Request $request, $feedback_type_id)
     {
         $image_file = $request->file('data.exercise.'.$feedback_type_id.'.image');
-        
-        if($image_file != null) 
+
+        if($image_file != null)
         {
             $image_file_name = $image_file->getClientOriginalName();
             $image_file->storeAs('files', $image_file_name, 'public');
-            
+
             return $image_file_name;
         } else {
             return null;
@@ -143,5 +185,5 @@ class FeedbackController extends Controller
 
 
 
-    
+
 }

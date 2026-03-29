@@ -7,19 +7,39 @@
     <div class="col-12 mb-2">
         <div class="d-flex justify-content-between align-items-center mb-1">
             <h5 class="pl-2 mb-0">{{ $unit->title }}</h5>
-            <small class="text-muted" id="progress-text">{{ $completed_count ?? 0 }}/{{ $total_exercises ?? 0 }}</small>
         </div>
-        {{-- Barra de progreso sutil --}}
-        <div class="progress" style="height: 4px; background-color: #e9ecef; border-radius: 2px; overflow: hidden;">
-            <div 
-                class="progress-bar" 
-                id="unit-progress-bar"
-                role="progressbar" 
-                style="width: {{ $unit_progress ?? 0 }}%; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); transition: width 0.6s ease;"
-                aria-valuenow="{{ $unit_progress ?? 0 }}" 
-                aria-valuemin="0" 
-                aria-valuemax="100"
-            ></div>
+        {{-- Barras de progreso: individual y grupal --}}
+        <div class="d-flex gap-4">
+            {{-- Barra de progreso individual --}}
+            <div class="d-flex align-items-center gap-2 flex-fill">
+                <small class="text-muted">👀 {{ $completed_count ?? 0 }}/{{ $total_exercises ?? 0 }}</small>
+                <div class="progress flex-fill" style="height: 20px; background-color: #e9ecef; border-radius: 3px; overflow: hidden;" data-bs-toggle="tooltip" data-bs-placement="top" title="check your progress here">
+                    <div
+                        class="progress-bar"
+                        id="unit-progress-bar"
+                        role="progressbar"
+                        style="width: {{ $unit_progress ?? 0 }}%; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); transition: width 0.6s ease;"
+                        aria-valuenow="{{ $unit_progress ?? 0 }}"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    ></div>
+                </div>
+            </div>
+            {{-- Barra de progreso grupal --}}
+            <div class="d-flex align-items-center gap-2 flex-fill">
+                <small class="text-muted">👥 {{ $group_progress ?? 0 }}%</small>
+                <div class="progress flex-fill" style="height: 20px; background-color: #e9ecef; border-radius: 3px; overflow: hidden;" data-bs-toggle="tooltip" data-bs-placement="top" title="check the progress of your classmates here">
+                    <div
+                        class="progress-bar"
+                        id="group-progress-bar"
+                        role="progressbar"
+                        style="width: {{ $group_progress ?? 0 }}%; background: linear-gradient(90deg, #58CC02 0%, #16A34A 100%); transition: width 0.6s ease;"
+                        aria-valuenow="{{ $group_progress ?? 0 }}"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    ></div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row sticky-top p-1" id="sticky-bar" style="background-color: white;">
@@ -71,7 +91,7 @@
         @else
         <ul class="nav nav-tabs" id="sectionsTabs" role="tablist">
             @foreach($unit->sections->sortBy('position') as $section)
-                @php 
+                @php
                     $index = $loop->index + 1;
                     $section_exercises = $section->exercises->sortBy('position');
                     if($section_exercises->count() > 0) {
@@ -83,28 +103,28 @@
                 @if($section_exercises->count() > 0)
                 <li class="nav-item" role="presentation">
                     @if($index-1 == 0)
-                        <button 
-                            class="nav-link section-btn active" 
-                            id="{{ $section->underscore_name }}-tab" 
-                            data-bs-toggle="tab" 
-                            data-bs-target="#{{ $section->underscore_name}}" 
-                            type="button" 
-                            role="tab" 
-                            aria-controls="{{ $section->underscore_name }}" 
+                        <button
+                            class="nav-link section-btn active"
+                            id="{{ $section->underscore_name }}-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#{{ $section->underscore_name}}"
+                            type="button"
+                            role="tab"
+                            aria-controls="{{ $section->underscore_name }}"
                             aria-selected="true"
                             data-first-exercise-id="{{ $section_first_exercise_id }}"
                         >
                             {{ $index . ". " . $section->name }}
                         </button>
                     @else
-                        <button 
-                            class="nav-link section-btn" 
-                            id="{{ $section->underscore_name }}-tab" 
-                            data-bs-toggle="tab" 
-                            data-bs-target="#{{ $section->underscore_name}}" 
-                            type="button" 
-                            role="tab" 
-                            aria-controls="{{ $section->underscore_name }}" 
+                        <button
+                            class="nav-link section-btn"
+                            id="{{ $section->underscore_name }}-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#{{ $section->underscore_name}}"
+                            type="button"
+                            role="tab"
+                            aria-controls="{{ $section->underscore_name }}"
                             aria-selected="false"
                             data-first-exercise-id="{{ $section_first_exercise_id }}"
                         >
@@ -137,22 +157,22 @@
                     <div class="nav flex-column mt-2 nav-pills col-12 col-xl-2" id="v-pills-tab-{{ $section->underscore_name }}" role="tablist" aria-orientation="vertical">
                         @forelse($section->exercises->sortBy('position') as $e)
                             @php $index = $loop->index; @endphp
-                            <button 
+                            <button
                                 class="nav-link exercise-btn @if($e->subtype == 99 || $e->subtype == 991) meta @elseif(in_array($e->exerciseType->underscore_name, ['open_ended', 'poll', 'form'])) engagement @endif @if($index == 0) active @endif"
-                                id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" 
-                                data-bs-toggle="pill" 
-                                data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" 
-                                type="button" 
-                                role="tab" 
-                                aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}" 
+                                id="{{ $e->exerciseType->underscore_name . $e->id }}-tab"
+                                data-bs-toggle="pill"
+                                data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}"
+                                type="button"
+                                role="tab"
+                                aria-controls="{{ $e->exerciseType->underscore_name . $e->id }}"
                                 @if($index == 0)
                                     aria-selected="true"
                                 @else
                                     aria-selected="false"
                                 @endif
                                 data-exercise-id="{{ $e->id }}">
-                                    @if($e->title == '' or $e->title == null) 
-                                        @if(count($completed_exercises) != 0 and in_array($e->id, $completed_exercises)) 
+                                    @if($e->title == '' or $e->title == null)
+                                        @if(count($completed_exercises) != 0 and in_array($e->id, $completed_exercises))
                                             <div class="d-flex justify-content-between">
                                                 <div>
                                                     <p class="text-end">Activity #{{ $e->id }}</p>
@@ -164,8 +184,8 @@
                                         @else
                                             Activity #{{ $e->id }}
                                         @endif
-                                    @else 
-                                        @if(count($completed_exercises) != 0 and in_array($e->id, $completed_exercises)) 
+                                    @else
+                                        @if(count($completed_exercises) != 0 and in_array($e->id, $completed_exercises))
                                             {{ $e->title }} ✅
                                         @else
                                             {{ $e->title }}
@@ -173,7 +193,7 @@
                                     @endif
                             </button>
                         @empty
-                            <p class="text-center text-secondary"><small>No exercises added yet.</small></p>    
+                            <p class="text-center text-secondary"><small>No exercises added yet.</small></p>
                         @endforelse
                     </div>
                     <div class="tab-content container-fluid col-12 col-xl-10" id="v-pills-tabContent-{{ $section->underscore_name }}">
@@ -246,7 +266,7 @@
                                                 <img src="{{ asset('storage/files'. "/" . $e->image_name) }}" class="img-fluid col-12 col-lg-8" alt="img">
                                             </div>
                                         @endif
-                                        
+
                                         <form action="{{ route('tracking.store', ["$e->id", "$user->id"]) }}" method="POST" id="multiple_choice_form_{{ $e->id }}">
                                             @csrf
                                             {{-- Subtype 1 = Predicting --}}
@@ -265,7 +285,6 @@
                                             @elseif($e->subtype == 4 or $e->subtype == 99)
                                                 @include('exercises.multiple_choice.multiple_choice')
                                             @endif
-
                                             <x-exercise-forum-link :exercise="$e" />
                                             <br>
                                             @include('layouts.tracking.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
@@ -283,7 +302,7 @@
                                         @isset($e->extra_info) <p class="text-info"><span class="material-symbols-outlined text-info">info</span> &nbsp; {{ $e->extra_info }}</p> @endisset
 
                                         {{--  Dictation Cloze  --}}
-                                        @if($e->subtype == 1) 
+                                        @if($e->subtype == 1)
                                             @include('exercises.fill_in_the_gaps.dictation_cloze')
 
                                         {{-- Vocabulary Practice --}}
@@ -304,7 +323,7 @@
 
                                         {{-- Form --}}
                                         @include('exercises.form.dashboard')
-                                        
+
                                     </div>
                                 </div>
                                 @break
@@ -343,37 +362,37 @@
     // Inicializar variables necesarias desde PHP
     @if(isset($has_exercises) && $has_exercises)
     window.current_exercise_id = {{ json_encode($first_exercise_id) }};
-    
+
     // Inicializar timer al cargar la página
     if (typeof startTimer === 'function') {
         startTimer();
     }
     @endif
-    
+
     // Función para actualizar la barra de progreso de la unidad
     function updateUnitProgress(progress, completed, total) {
         const progressBar = document.getElementById('unit-progress-bar');
-        const progressText = document.getElementById('progress-text');
-        
+        const individualText = document.querySelector('.text-muted:first-child');
+
         if (progressBar) {
             progressBar.style.width = progress + '%';
             progressBar.setAttribute('aria-valuenow', progress);
         }
-        
-        if (progressText) {
-            progressText.textContent = completed + '/' + total;
+
+        if (individualText) {
+            individualText.textContent = '👀 ' + completed + '/' + total;
         }
     }
-    
+
     // Hacer la función disponible globalmente
     window.updateUnitProgress = updateUnitProgress;
-    
+
     // Inicializar manejo de eventos de video
     document.addEventListener('DOMContentLoaded', function() {
         if (typeof VideoHandler !== 'undefined') {
             VideoHandler.init();
         }
-        
+
         // Inicializar botones reset (verificar límite de 3 resets)
         if (typeof initResetButton === 'function') {
             // Buscar todos los botones reset en la página
@@ -383,10 +402,10 @@
                 initResetButton(exerciseId);
             });
         }
-        
+
         // Inicializar manejo de tabs de Bootstrap para secciones
         const sectionTabs = document.querySelectorAll('#sectionsTabs button[data-bs-toggle="tab"]');
-        
+
         sectionTabs.forEach(function(tab) {
             tab.addEventListener('show.bs.tab', function(event) {
                 // Ocultar TODOS los panes de sección ANTES de mostrar el nuevo
@@ -394,13 +413,13 @@
                 allSectionPanes.forEach(function(pane) {
                     pane.classList.remove('show', 'active');
                 });
-                
+
                 // Ocultar TODOS los panes de ejercicios de todas las secciones
                 const allExercisePanes = document.querySelectorAll('.exercise-pane');
                 allExercisePanes.forEach(function(pane) {
                     pane.classList.remove('show', 'active');
                 });
-                
+
                 // Desactivar TODOS los botones de ejercicios
                 const allExerciseButtons = document.querySelectorAll('.exercise-btn');
                 allExerciseButtons.forEach(function(btn) {
@@ -408,28 +427,28 @@
                     btn.setAttribute('aria-selected', 'false');
                 });
             });
-            
+
             tab.addEventListener('shown.bs.tab', function(event) {
                 // DESPUÉS de que Bootstrap haya mostrado la sección, activar el primer ejercicio
                 const targetId = event.target.getAttribute('data-bs-target');
                 const targetPane = document.querySelector(targetId);
                 const firstExerciseId = event.target.getAttribute('data-first-exercise-id');
-                
+
                 if (targetPane && firstExerciseId) {
                     // Buscar el botón del primer ejercicio usando el data-exercise-id
                     const firstExerciseButton = targetPane.querySelector(`[data-exercise-id="${firstExerciseId}"]`);
-                    
+
                     if (firstExerciseButton) {
                         // Obtener el data-bs-target del botón para encontrar el pane correspondiente
                         const exerciseTargetId = firstExerciseButton.getAttribute('data-bs-target');
                         const firstExercisePane = exerciseTargetId ? document.querySelector(exerciseTargetId) : null;
-                        
+
                         if (firstExercisePane) {
                             // Activar el primer ejercicio
                             firstExerciseButton.classList.add('active');
                             firstExerciseButton.setAttribute('aria-selected', 'true');
                             firstExercisePane.classList.add('show', 'active');
-                            
+
                             // Ejecutar funciones necesarias
                             if (typeof setCurrentExercise === 'function') {
                                 setCurrentExercise(parseInt(firstExerciseId));
@@ -447,12 +466,12 @@
                         // Fallback: buscar el primer ejercicio disponible en la sección
                         const fallbackButton = targetPane.querySelector('.exercise-btn');
                         const fallbackPane = targetPane.querySelector('.exercise-pane');
-                        
+
                         if (fallbackButton && fallbackPane) {
                             fallbackButton.classList.add('active');
                             fallbackButton.setAttribute('aria-selected', 'true');
                             fallbackPane.classList.add('show', 'active');
-                            
+
                             const fallbackExerciseId = fallbackButton.getAttribute('data-exercise-id');
                             if (fallbackExerciseId) {
                                 if (typeof setCurrentExercise === 'function') {
@@ -470,7 +489,7 @@
                 }
             });
         });
-        
+
         // Inicializar manejo de tabs de Bootstrap para ejercicios (pills)
         const exerciseTabs = document.querySelectorAll('.exercise-btn[data-bs-toggle="pill"]');
         exerciseTabs.forEach(function(tab) {
@@ -489,6 +508,12 @@
                     }
                 }
             });
+        });
+
+        // Inicializar tooltips Bootstrap (para los progress bars)
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
         });
     });
 </script>
