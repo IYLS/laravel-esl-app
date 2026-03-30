@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Unit;
 use App\Models\Section;
 use App\Models\Tracking;
-use App\Models\User;
 
 class StudentController extends Controller
 {
@@ -62,34 +61,6 @@ class StudentController extends Controller
         
         $unit_progress = $total_exercises > 0 ? round(($completed_count / $total_exercises) * 100) : 0;
 
-        // Calcular progreso grupal
-        $group_students = User::where('group_id', $user->group_id)
-            ->where('role', 'student')
-            ->where('activated', true)
-            ->get();
-
-        $group_completed = 0;
-        $group_total = 0;
-
-        foreach ($group_students as $student) {
-            $student_completed = Tracking::where('user_id', $student->id)->get()->map(function ($tracking) {
-                return $tracking->exercise_id;
-            })->toArray();
-
-            foreach($unit->sections as $section) {
-                $section_exercises = $section->exercises->where('exercise_type_id', '!=', 5);
-                $group_total += $section_exercises->count();
-                
-                foreach($section_exercises as $exercise) {
-                    if (in_array($exercise->id, $student_completed)) {
-                        $group_completed++;
-                    }
-                }
-            }
-        }
-
-        $group_progress = $group_total > 0 ? round(($group_completed / $group_total) * 100) : 0;
-
         $help_options = array();
         if ($unit->cultural_notes_enabled) array_push($help_options, $unit->cultural_notes);
         if ($unit->listening_tips_enabled) array_push($help_options, $unit->listening_tips);
@@ -98,7 +69,7 @@ class StudentController extends Controller
         if ($unit->translation_enabled) array_push($help_options, $unit->translation);
         if ($unit->dictionary_enabled) array_push($help_options, $unit->dictionary);
 
-        return view('student.show', compact(['unit', 'keywords', 'help_options', 'user', 'completed_exercises', 'first_exercise_id', 'unit_progress', 'completed_count', 'total_exercises', 'has_exercises', 'group_progress', 'group_completed', 'group_total']));
+        return view('student.show', compact(['unit', 'keywords', 'help_options', 'user', 'completed_exercises', 'first_exercise_id', 'unit_progress', 'completed_count', 'total_exercises', 'has_exercises']));
     }
 
     public function select(Request $request)

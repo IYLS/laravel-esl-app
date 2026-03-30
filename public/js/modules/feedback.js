@@ -23,6 +23,11 @@ const Feedback = {
         if (exerciseFeedback) {
             exerciseFeedback.hidden = hidden;
         }
+
+        const shortMsgA = document.getElementById(`feedback-exercise-short-message-a-${exerciseId}`);
+        if (shortMsgA) {
+            shortMsgA.hidden = hidden;
+        }
     },
 
     /**

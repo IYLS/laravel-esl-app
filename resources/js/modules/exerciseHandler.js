@@ -30,9 +30,15 @@ const ExerciseHandler = {
             case 'open_ended':
                 answers = ExerciseTypes.processOpenEnded(questions, exercise);
                 break;
+            case 'poll':
+                answers = ExerciseTypes.processPoll(questions, exercise);
+                break;
+            case 'form':
+                answers = ExerciseTypes.processForm(questions, exercise);
+                break;
             default:
                 answers = { responses: [] };
-        }
+            }
 
         // Agregar valores de tracking
         Tracking.appendToForm(exercise.id, type);
@@ -42,10 +48,7 @@ const ExerciseHandler = {
         const formId = `${type}_form_${exercise.id}`;
 
         // Agregar tiempo y conteos al formulario
-        const shouldIncludeCounts = type !== 'open_ended' && 
-                                   type !== 'form' && 
-                                   exercise.subtype !== 99 && 
-                                   exercise.subtype !== 991;
+        const shouldIncludeCounts = type !== 'open_ended' && answers.correct !== undefined;
 
         if (shouldIncludeCounts && answers.correct !== undefined) {
             ExerciseResponses.appendTimeAndCounts(

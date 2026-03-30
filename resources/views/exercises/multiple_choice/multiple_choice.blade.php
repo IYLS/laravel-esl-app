@@ -16,8 +16,6 @@
                 @endforeach
             </div>
         </div>
-        @if($e->subtype != '99' && $e->subtype != '991')
-            @include('feedback.question', ['feedbacks' => $question->feedbacks])
-        @endif
+        @include('feedback.question', ['feedbacks' => $question->feedbacks])
     </div>
 @endforeach

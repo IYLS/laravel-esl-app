@@ -179,42 +179,39 @@ class TrackingController extends Controller
                 }
             }
     
-    
-            if ($exercise->subtype != 99 and $exercise->subtype != 991) {
-                // Acumular contadores de feedback por tipo
-                $feedback_counts = [
-                    'Directive' => 0,
-                    'Explanatory' => 0,
-                    'Elaborative' => 0,
-                    'Knowledge of Correct Response' => 0
-                ];
-                
-                foreach($exercise->questions as $question) {
-                    if (isset($request->directive["$question->id"])) {
-                        $feedback_counts['Directive'] += (int)$request->directive["$question->id"];
-                    }
-                    if (isset($request->explanatory["$question->id"])) {
-                        $feedback_counts['Explanatory'] += (int)$request->explanatory["$question->id"];
-                    }
-                    if (isset($request->elaborative["$question->id"])) {
-                        $feedback_counts['Elaborative'] += (int)$request->elaborative["$question->id"];
-                    }
-                    if (isset($request->knowledge["$question->id"])) {
-                        $feedback_counts['Knowledge of Correct Response'] += (int)$request->knowledge["$question->id"];
-                    }
+            // Acumular contadores de feedback por tipo (todos los subtipos)
+            $feedback_counts = [
+                'Directive' => 0,
+                'Explanatory' => 0,
+                'Elaborative' => 0,
+                'Knowledge of Correct Response' => 0
+            ];
+
+            foreach($exercise->questions as $question) {
+                if (isset($request->directive["$question->id"])) {
+                    $feedback_counts['Directive'] += (int)$request->directive["$question->id"];
                 }
-    
-                // Guardar feedback usage en la nueva tabla
-                foreach($feedback_counts as $feedback_type => $count) {
-                    if ($count > 0) {
-                        TrackingFeedbackUsage::create([
-                            'tracking_id' => $tracking->id,
-                            'feedback_type' => $feedback_type,
-                            'open_count' => $count
-                        ]);
-                    }
+                if (isset($request->explanatory["$question->id"])) {
+                    $feedback_counts['Explanatory'] += (int)$request->explanatory["$question->id"];
+                }
+                if (isset($request->elaborative["$question->id"])) {
+                    $feedback_counts['Elaborative'] += (int)$request->elaborative["$question->id"];
+                }
+                if (isset($request->knowledge["$question->id"])) {
+                    $feedback_counts['Knowledge of Correct Response'] += (int)$request->knowledge["$question->id"];
                 }
             }
+
+            foreach($feedback_counts as $feedback_type => $count) {
+                if ($count > 0) {
+                    TrackingFeedbackUsage::create([
+                        'tracking_id' => $tracking->id,
+                        'feedback_type' => $feedback_type,
+                        'open_count' => $count
+                    ]);
+                }
+            }
+
     
             // Guardar help options en la nueva tabla
             $help_options = [

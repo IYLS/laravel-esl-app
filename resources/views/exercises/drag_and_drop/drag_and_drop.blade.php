@@ -36,9 +36,7 @@
                         <div class="d-inline col-5 border d-flex align-items-center" style="height:45px; width: 140px;" id="word-destination-{{ $question->answer }}" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
                         <div class="d-inline col-7" id="word-definition-{{ $question->answer }}">{{ $question->answer }}</div>
                     </div>
-                    @if($e->subtype != '99' && $e->subtype != '991')
-                        @include('feedback.question', ['feedbacks' => isset($question->feedbacks) ? $question->feedbacks : null])
-                    @endif
+                    @include('feedback.question', ['feedbacks' => isset($question->feedbacks) ? $question->feedbacks : null])
                 @endforeach
 
                 <x-exercise-forum-link :exercise="$e" />

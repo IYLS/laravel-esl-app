@@ -1,7 +1,5 @@
 <div class="row">
-    @if(!isset($subtype) || ($subtype != '99' && $subtype != '991'))
-        @include('feedback.exercise')
-    @endif
+    @include('feedback.exercise')
 </div>
 
 <div class="d-flex">

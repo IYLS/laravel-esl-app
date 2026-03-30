@@ -101,6 +101,18 @@
         }
     };
 
+    /**
+     * Normaliza subtype del ejercicio (evita fallos por string "99" vs número 99).
+     */
+    function exerciseSubtypeNum(exercise) {
+        const s = exercise && exercise.subtype;
+        if (s === null || s === undefined || s === '') {
+            return null;
+        }
+        const n = Number(s);
+        return Number.isNaN(n) ? null : n;
+    }
+
     // ============================================================================
     // MÓDULO: Feedback Manager
     // ============================================================================
@@ -119,6 +131,11 @@
             const exerciseFeedback = document.getElementById(`feedback-exercise-details-container-${exerciseId}`);
             if (exerciseFeedback) {
                 exerciseFeedback.hidden = hidden;
+            }
+
+            const shortMsgA = document.getElementById(`feedback-exercise-short-message-a-${exerciseId}`);
+            if (shortMsgA) {
+                shortMsgA.hidden = hidden;
             }
         },
 
@@ -315,7 +332,8 @@
             let correctQuestions = 0;
             const responses = [];
             const isPersonalResponse = questions[0]?.personal_response === true;
-            const shouldShowFeedback = exercise.subtype !== 99 && exercise.subtype !== 991 && !isPersonalResponse;
+            const shouldShowFeedback = !isPersonalResponse;
+            const st = exerciseSubtypeNum(exercise);
 
             questions.forEach(question => {
                 const alternatives = document.getElementsByName(`question-${question.id}`);
@@ -344,7 +362,7 @@
                                 FeedbackManager.showCorrect(question.id);
                             }
                             correctQuestions++;
-                        } else if (isNotSure && exercise.subtype === 3) {
+                        } else if (isNotSure && st === 3) {
                             // Evaluating statements: mostrar emoji pensativo para "I'm not sure"
                             responses.push({
                                 id: String(question.id),
@@ -372,9 +390,8 @@
 
             const wrongQuestions = questions.length - correctQuestions;
 
-            FeedbackManager.toggleConditionalMessages(exercise.id, questions.length, correctQuestions);
-
             if (shouldShowFeedback) {
+                FeedbackManager.toggleConditionalMessages(exercise.id, questions.length, correctQuestions);
                 FeedbackManager.updateCounters(exercise.id, correctQuestions, wrongQuestions);
                 FeedbackManager.setVisibility(false, exercise.id, questions);
             }
@@ -485,8 +502,6 @@
             let correctQuestions = 0;
             let wrongQuestions = 0;
             const responses = [];
-            const shouldShowFeedback = exercise.subtype !== 991 && exercise.subtype !== 99;
-
             questions.forEach(question => {
                 const definitionContainer = document.getElementById(`word-destination-${question.answer}`);
                 const wordContainer = document.getElementById(`word-${question.statement}`);
@@ -498,29 +513,25 @@
                         response: actualResponse
                     });
 
-                    if (shouldShowFeedback) {
-                        if (definitionContainer.contains(wordContainer)) {
-                            FeedbackManager.showCorrect(question.id);
-                            correctQuestions++;
-                        } else {
-                            FeedbackManager.showWrong(question.id);
-                            wrongQuestions++;
-                        }
+                    if (definitionContainer.contains(wordContainer)) {
+                        FeedbackManager.showCorrect(question.id);
+                        correctQuestions++;
+                    } else {
+                        FeedbackManager.showWrong(question.id);
                     }
                 } else {
                     responses.push({
                         id: String(question.id),
                         response: ''
                     });
+                    FeedbackManager.showWrong(question.id);
                 }
             });
 
-            if (shouldShowFeedback) {
-                wrongQuestions = questions.length - correctQuestions;
-                FeedbackManager.toggleConditionalMessages(exercise.id, questions.length, correctQuestions);
-                FeedbackManager.updateCounters(exercise.id, correctQuestions, wrongQuestions);
-                FeedbackManager.setVisibility(false, exercise.id, questions);
-            }
+            wrongQuestions = questions.length - correctQuestions;
+            FeedbackManager.toggleConditionalMessages(exercise.id, questions.length, correctQuestions);
+            FeedbackManager.updateCounters(exercise.id, correctQuestions, wrongQuestions);
+            FeedbackManager.setVisibility(false, exercise.id, questions);
 
             return {
                 correct: correctQuestions,
@@ -534,6 +545,7 @@
          */
         processPoll(questions, exercise) {
             const responses = [];
+            let answeredCount = 0;
 
             questions.forEach(question => {
                 const selected = document.querySelector(`input[name="question-${question.id}"]:checked`);
@@ -542,10 +554,87 @@
                         id: String(question.id),
                         response: String(selected.value)
                     });
+                    answeredCount++;
                 }
             });
 
+            const total = questions.length;
+            const correctQuestions = answeredCount === total ? total : 0;
+            const wrongQuestions = total - answeredCount;
+
+            FeedbackManager.toggleConditionalMessages(exercise.id, total, correctQuestions);
+            FeedbackManager.updateCounters(exercise.id, answeredCount, wrongQuestions);
+            FeedbackManager.setVisibility(false, exercise.id, questions);
+
             return {
+                correct: correctQuestions,
+                wrong: wrongQuestions,
+                responses: responses
+            };
+        },
+
+        /**
+         * Procesa respuestas de Form (tabla con checkboxes/radios)
+         */
+        processForm(questions, exercise) {
+            let correctQuestions = 0;
+            const responses = [];
+
+            questions.forEach(question => {
+                const hasDouble = question.answer != null && question.answer !== '';
+                const checked = document.querySelectorAll(`input.answer-${question.id}:checked`);
+                const vals = Array.from(checked).map(c => c.value).join(';;');
+                responses.push({
+                    id: String(question.id),
+                    response: vals
+                });
+
+                if (checked.length === 0) {
+                    FeedbackManager.showWrong(question.id);
+                    return;
+                }
+
+                let ok = true;
+                if (hasDouble) {
+                    const c0 = document.querySelectorAll(`input[name^="answers[${question.id}][0]"]:checked`).length;
+                    const c1 = document.querySelectorAll(`input[name^="answers[${question.id}][1]"]:checked`).length;
+                    ok = c0 > 0 && c1 > 0;
+                } else {
+                    const alts = question.alternatives || [];
+                    const mustCorrect = alts.filter(a => a.correct_alt).map(a => String(a.id));
+                    if (mustCorrect.length > 0) {
+                        const selectedIds = Array.from(checked).map(inp => {
+                            const m = String(inp.name).match(/\[(\d+)\]$/);
+                            if (m) {
+                                return m[1];
+                            }
+                            const v = String(inp.value || '');
+                            const found = alts.find(a => v.includes(String(a.title)));
+                            return found ? String(found.id) : '';
+                        }).filter(Boolean);
+                        ok = mustCorrect.length === selectedIds.length &&
+                            mustCorrect.every(id => selectedIds.includes(id));
+                    } else {
+                        ok = true;
+                    }
+                }
+
+                if (ok) {
+                    FeedbackManager.showCorrect(question.id);
+                    correctQuestions++;
+                } else {
+                    FeedbackManager.showWrong(question.id);
+                }
+            });
+
+            const wrongQuestions = questions.length - correctQuestions;
+            FeedbackManager.toggleConditionalMessages(exercise.id, questions.length, correctQuestions);
+            FeedbackManager.updateCounters(exercise.id, correctQuestions, wrongQuestions);
+            FeedbackManager.setVisibility(false, exercise.id, questions);
+
+            return {
+                correct: correctQuestions,
+                wrong: wrongQuestions,
                 responses: responses
             };
         },
@@ -600,7 +689,7 @@
                     answers = ExerciseResponseProcessor.processMultipleChoice(questions, exercise);
                     break;
                 case 'fill_in_the_gaps':
-                    if (exercise.subtype == 2) {
+                    if (exerciseSubtypeNum(exercise) === 2) {
                         answers = ExerciseResponseProcessor.processFillInTheGaps(questions, exercise);
                     } else {
                         answers = ExerciseResponseProcessor.processDictationCloze(questions, exercise);
@@ -611,6 +700,9 @@
                     break;
                 case 'poll':
                     answers = ExerciseResponseProcessor.processPoll(questions, exercise);
+                    break;
+                case 'form':
+                    answers = ExerciseResponseProcessor.processForm(questions, exercise);
                     break;
                 default:
                     answers = { responses: [] };
@@ -634,11 +726,7 @@
             form.appendChild(timeInput);
 
             // Agregar correctas e incorrectas si corresponde
-            const shouldIncludeCounts = type !== 'open_ended' && 
-                                       type !== 'form' && 
-                                       type !== 'poll' &&
-                                       exercise.subtype !== 99 && 
-                                       exercise.subtype !== 991;
+            const shouldIncludeCounts = type !== 'open_ended' && answers.correct !== undefined;
 
             if (shouldIncludeCounts && answers.correct !== undefined) {
                 const correctInput = StudentUtils.createElement('input', {

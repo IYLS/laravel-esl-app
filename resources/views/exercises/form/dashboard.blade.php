@@ -100,6 +100,7 @@
                     @endforeach
                 </tbody>
             </table>
+            @include('feedback.question', ['feedbacks' => $question->feedbacks])
         </div>
     @endforeach
     

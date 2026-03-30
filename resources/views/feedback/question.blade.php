@@ -1,3 +1,6 @@
+@php
+    $feedbacks = $feedbacks ?? collect();
+@endphp
 <div class="m-1 ps-1 pe-1 border rounded question-feedback" id="question-feedback-container-{{ $question->id }}" hidden>
     <div class="row">
         <p class="p-3 text-success" id="question-{{ $question->id }}-feedback-correct" hidden>✅</p>
@@ -30,8 +33,8 @@
 
     @endphp
 
-    @if(isset($feedbacks) and count($feedbacks) != 0)
-        <ul class="nav nav-tabs" id="questionFeedbackTabs" role="tablist">
+    @if($feedbacks->isNotEmpty())
+        <ul class="nav nav-tabs" id="questionFeedbackTabs-{{ $question->id }}" role="tablist">
 
             @if($directive)
                 {{-- Directive --}}
@@ -108,7 +111,7 @@
 
         </ul>
 
-        <div class="tab-content" id="questionFeedbackTabsContent">
+        <div class="tab-content" id="questionFeedbackTabsContent-{{ $question->id }}">
             <div class="tab-pane p-3 fade @if($first == 'directive') show active @endif" id="directive-{{ $question->id }}" role="tabpanel" aria-labelledby="directive-{{ $question->id }}-tab">
                 {{-- Directive --}}
                 @if($feedbacks->where('feedback_type_id', 6)->first() != null)
@@ -151,7 +154,7 @@
                 @if($feedbacks->where('feedback_type_id', 3)->first() != null)
                     <div class="mt-2">
                         <p class="text-secondary mb-1 mt-1"><small>Elaborative feedback</small></p>
-                        <audio id="elaborative-feedback" controls class="show-on-incorrect-{{ $question->id }}">
+                        <audio id="elaborative-feedback-{{ $question->id }}" controls class="show-on-incorrect-{{ $question->id }}">
                             <source src="{{ asset('storage/files/'.$feedbacks->where('feedback_type_id', 3)->first()->audio_name) }}" type="audio/mpeg">
                         </audio>
                     </div>

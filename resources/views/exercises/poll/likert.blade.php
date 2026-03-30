@@ -23,6 +23,7 @@
                 </div>
                 <small class="text-muted d-block mt-1">1 = strongly disagree — 7 = strongly agree</small>
             </div>
+            @include('feedback.question', ['feedbacks' => $question->feedbacks])
         </div>
     @endforeach
 
