@@ -13,8 +13,9 @@ class TrackingFeedbackUsage extends Model
 
     protected $fillable = [
         'tracking_id',
+        'question_id',
         'feedback_type',
-        'open_count'
+        'open_count',
     ];
 
     public $timestamps = true;
@@ -22,5 +23,10 @@ class TrackingFeedbackUsage extends Model
     public function tracking()
     {
         return $this->belongsTo(Tracking::class);
+    }
+
+    public function question()
+    {
+        return $this->belongsTo(Question::class);
     }
 }

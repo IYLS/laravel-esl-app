@@ -287,9 +287,19 @@
             <span class="material-symbols-outlined">quiz</span>
             <span>Question Responses</span>
         </div>
-        @php $type = $tracking->exercise->exerciseType->underscore_name; @endphp
+        @php
+            $type = $tracking->exercise->exerciseType->underscore_name;
+            $feedbackByQuestion = $tracking->feedbackUsage->whereNotNull('question_id');
+            $feedbackLegacyAggregate = $tracking->feedbackUsage->whereNull('question_id');
+            $usePerQuestionFeedback = $feedbackByQuestion->isNotEmpty();
+        @endphp
+
+        @if(!$usePerQuestionFeedback && $feedbackLegacyAggregate->isNotEmpty())
+            @include('components.feedback-interactions-table', ['feedbackUsage' => $feedbackLegacyAggregate])
+        @endif
+
         @if($type == 'form')
-            @foreach($tracking->exercise->questions as $question)
+            @foreach($tracking->exercise->questions->sortBy('position') as $question)
                 @php $q_n = $loop->index + 1; @endphp
                 <div class="question-header">Question {{ $q_n }}</div>
                 <div class="tracking-info-item" style="margin-bottom: 1.5rem;">
@@ -300,7 +310,9 @@
                         @endforeach
                     </ul>
                 </div>
-                @include('components.feedback-interactions-table', ['feedbackUsage' => $tracking->feedbackUsage])
+                @if($usePerQuestionFeedback)
+                    @include('components.feedback-interactions-table', ['feedbackUsage' => $feedbackByQuestion->where('question_id', $question->id)])
+                @endif
             @endforeach
         @elseif($type == 'multiple_choice')
             @forelse($tracking->userResponses as $response)
@@ -315,7 +327,9 @@
                     </div>
                     <div class="tracking-info-value">{{ $response->response }}</div>
                 </div>
-                @include('components.feedback-interactions-table', ['feedbackUsage' => $tracking->feedbackUsage])
+                @if($usePerQuestionFeedback)
+                    @include('components.feedback-interactions-table', ['feedbackUsage' => $feedbackByQuestion->where('question_id', $response->question_id)])
+                @endif
             @empty
                 <p class="text-secondary text-center"><small>No responses available</small></p>
             @endforelse
@@ -327,7 +341,9 @@
                     <div class="tracking-info-label">Response</div>
                     <div class="tracking-info-value">{{ $response->response }}</div>
                 </div>
-                @include('components.feedback-interactions-table', ['feedbackUsage' => $tracking->feedbackUsage])
+                @if($usePerQuestionFeedback)
+                    @include('components.feedback-interactions-table', ['feedbackUsage' => $feedbackByQuestion->where('question_id', $response->question_id)])
+                @endif
             @empty
                 <p class="text-secondary text-center"><small>No responses available</small></p>
             @endforelse
@@ -339,7 +355,9 @@
                     <div class="tracking-info-label">Response</div>
                     <div class="tracking-info-value">{{ $response->response }}</div>
                 </div>
-                @include('components.feedback-interactions-table', ['feedbackUsage' => $tracking->feedbackUsage])
+                @if($usePerQuestionFeedback)
+                    @include('components.feedback-interactions-table', ['feedbackUsage' => $feedbackByQuestion->where('question_id', $response->question_id)])
+                @endif
             @empty
                 <p class="text-secondary text-center"><small>No responses available</small></p>
             @endforelse

@@ -179,36 +179,25 @@ class TrackingController extends Controller
                 }
             }
     
-            // Acumular contadores de feedback por tipo (todos los subtipos)
-            $feedback_counts = [
-                'Directive' => 0,
-                'Explanatory' => 0,
-                'Elaborative' => 0,
-                'Knowledge of Correct Response' => 0
-            ];
+            // Contadores de feedback por pregunta y tipo
+            foreach ($exercise->questions as $question) {
+                $qid = $question->id;
+                $perQuestionCounts = [
+                    'Directive' => isset($request->directive["$qid"]) ? (int) $request->directive["$qid"] : 0,
+                    'Explanatory' => isset($request->explanatory["$qid"]) ? (int) $request->explanatory["$qid"] : 0,
+                    'Elaborative' => isset($request->elaborative["$qid"]) ? (int) $request->elaborative["$qid"] : 0,
+                    'Knowledge of Correct Response' => isset($request->knowledge["$qid"]) ? (int) $request->knowledge["$qid"] : 0,
+                ];
 
-            foreach($exercise->questions as $question) {
-                if (isset($request->directive["$question->id"])) {
-                    $feedback_counts['Directive'] += (int)$request->directive["$question->id"];
-                }
-                if (isset($request->explanatory["$question->id"])) {
-                    $feedback_counts['Explanatory'] += (int)$request->explanatory["$question->id"];
-                }
-                if (isset($request->elaborative["$question->id"])) {
-                    $feedback_counts['Elaborative'] += (int)$request->elaborative["$question->id"];
-                }
-                if (isset($request->knowledge["$question->id"])) {
-                    $feedback_counts['Knowledge of Correct Response'] += (int)$request->knowledge["$question->id"];
-                }
-            }
-
-            foreach($feedback_counts as $feedback_type => $count) {
-                if ($count > 0) {
-                    TrackingFeedbackUsage::create([
-                        'tracking_id' => $tracking->id,
-                        'feedback_type' => $feedback_type,
-                        'open_count' => $count
-                    ]);
+                foreach ($perQuestionCounts as $feedback_type => $count) {
+                    if ($count > 0) {
+                        TrackingFeedbackUsage::create([
+                            'tracking_id' => $tracking->id,
+                            'question_id' => $qid,
+                            'feedback_type' => $feedback_type,
+                            'open_count' => $count,
+                        ]);
+                    }
                 }
             }
 
@@ -282,7 +271,16 @@ class TrackingController extends Controller
     public function show(Request $request, $id)
     {
         $tracking = Tracking::with(['helpUsage', 'feedbackUsage', 'userResponses.question'])->find($id);
-        
+
+        $sortedResponses = $tracking->userResponses
+            ->sortBy(function (UserResponse $response) {
+                $position = optional($response->question)->position;
+
+                return [(int) ($position ?? 1_000_000), (int) $response->question_id];
+            })
+            ->values();
+        $tracking->setRelation('userResponses', $sortedResponses);
+
         // Obtener parámetros de filtro de la query string para pasarlos a la vista
         $group_id = $request->query('group');
         $user_id = $request->query('student');
