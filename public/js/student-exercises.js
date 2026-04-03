@@ -1073,6 +1073,20 @@
         ExerciseSubmitHandler.handleSubmit(exercise, questions, type, exerciseId, userId, route);
     };
 
+    window.resetMorphSubmitButton = function(exerciseId) {
+        const btn = document.getElementById('exercise-' + exerciseId + '-check-btn');
+        if (btn && btn.getAttribute('data-can-morph') === '1') {
+            btn.textContent = 'Check';
+        }
+    };
+
+    window.exerciseSubmitClick = function(button, exercise, questions, type, exerciseId, userId, route) {
+        checkAction(exercise, questions, type, exerciseId, userId, route);
+        if (button && button.getAttribute('data-can-morph') === '1' && String(button.textContent).trim() === 'Check') {
+            button.textContent = 'Try again';
+        }
+    };
+
     // Reset
     window.resetExercise = function(exerciseId, questions, exerciseType) {
         // Si no se proporciona el tipo, intentar detectarlo o usar múltiple choice por defecto
@@ -1084,6 +1098,7 @@
             } else {
                 // Por defecto, solo resetear feedback
                 FeedbackManager.setVisibility(true, exerciseId, questions);
+                resetMorphSubmitButton(exerciseId);
                 return;
             }
         }
@@ -1213,6 +1228,8 @@
         if (anyWrongElement) {
             anyWrongElement.hidden = true;
         }
+
+        resetMorphSubmitButton(exerciseId);
     };
 
     // Utilidades específicas

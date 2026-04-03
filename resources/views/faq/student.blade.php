@@ -199,9 +199,8 @@
                                     <li>Lee cuidadosamente la pregunta o instrucción.</li>
                                     <li>Escucha el audio si está disponible haciendo clic en el botón de reproducción.</li>
                                     <li>Selecciona la opción que consideres correcta marcando el checkbox o radio button correspondiente.</li>
-                                    <li>Haz clic en el botón <strong>"Check"</strong> para verificar tu respuesta.</li>
+                                    <li>Haz clic en el botón <strong>"Check"</strong> para verificar tu respuesta. Tras el primer envío, el mismo botón mostrará <strong>"Try again"</strong> para que puedas volver a intentar.</li>
                                     <li>Revisa el feedback que aparece: ✓ para respuestas correctas, ✗ para incorrectas.</li>
-                                    <li>Si tu respuesta fue incorrecta, puedes hacer clic en <strong>"Try again"</strong> para intentar nuevamente.</li>
                                     <li>Puedes usar el botón <strong>"Reset"</strong> para limpiar tus respuestas (máximo 3 veces por ejercicio).</li>
                                 </ol>
                                 <div class="info-box alert-info">
