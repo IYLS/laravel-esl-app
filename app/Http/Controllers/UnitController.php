@@ -8,6 +8,8 @@ use App\Models\Keyword;
 use App\Models\Section;
 use App\Models\GlossedWord;
 use App\Http\Requests\StoreUnitRequest;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class UnitController extends Controller
@@ -193,29 +195,29 @@ class UnitController extends Controller
         ])->findOrFail($id);
 
         return DB::transaction(function () use ($originalUnit) {
-            $newUnit = $originalUnit->replicate();
+            $newUnit = $this->replicateWithoutId($originalUnit);
             $newUnit->title = $originalUnit->title.' (Copy)';
             $newUnit->save();
 
             foreach ($originalUnit->keywords as $keyword) {
-                $newKeyword = $keyword->replicate();
+                $newKeyword = $this->replicateWithoutId($keyword);
                 $newKeyword->unit_id = $newUnit->id;
                 $newKeyword->save();
             }
 
             foreach ($originalUnit->glossedWords as $glossedWord) {
-                $newGlossedWord = $glossedWord->replicate();
+                $newGlossedWord = $this->replicateWithoutId($glossedWord);
                 $newGlossedWord->unit_id = $newUnit->id;
                 $newGlossedWord->save();
             }
 
             foreach ($originalUnit->sections->sortBy('position')->values() as $section) {
-                $newSection = $section->replicate();
+                $newSection = $this->replicateWithoutId($section);
                 $newSection->unit_id = $newUnit->id;
                 $newSection->save();
 
                 foreach ($section->exercises->sortBy('position')->values() as $exercise) {
-                    $newExercise = $exercise->replicate();
+                    $newExercise = $this->replicateWithoutId($exercise);
                     $newExercise->section_id = $newSection->id;
                     $newExercise->save();
 
@@ -227,7 +229,7 @@ class UnitController extends Controller
                             ->whereNull('alternative_id')
                             ->values() as $feedback
                     ) {
-                        $newFeedback = $feedback->replicate();
+                        $newFeedback = $this->replicateWithoutId($feedback);
                         $newFeedback->exercise_id = $newExercise->id;
                         $newFeedback->question_id = null;
                         $newFeedback->alternative_id = null;
@@ -235,17 +237,17 @@ class UnitController extends Controller
                     }
 
                     foreach ($exercise->questions->sortBy('position')->values() as $question) {
-                        $newQuestion = $question->replicate();
+                        $newQuestion = $this->replicateWithoutId($question);
                         $newQuestion->exercise_id = $newExercise->id;
                         $newQuestion->save();
 
                         foreach ($question->alternatives->sortBy('id')->values() as $alternative) {
-                            $newAlternative = $alternative->replicate();
+                            $newAlternative = $this->replicateWithoutId($alternative);
                             $newAlternative->question_id = $newQuestion->id;
                             $newAlternative->save();
 
                             if ($alternative->feedback) {
-                                $newAltFeedback = $alternative->feedback->replicate();
+                                $newAltFeedback = $this->replicateWithoutId($alternative->feedback);
                                 $newAltFeedback->exercise_id = $newExercise->id;
                                 $newAltFeedback->question_id = $newQuestion->id;
                                 $newAltFeedback->alternative_id = $newAlternative->id;
@@ -256,7 +258,7 @@ class UnitController extends Controller
                         // Feedback ligado a la pregunta sin alternativa (p. ej. Directive, Elaborative).
                         // Los explanatory con alternative_id se copiaron arriba; evitar duplicar.
                         foreach ($question->feedbacks->whereNull('alternative_id')->values() as $feedback) {
-                            $newFeedback = $feedback->replicate();
+                            $newFeedback = $this->replicateWithoutId($feedback);
                             $newFeedback->exercise_id = $newExercise->id;
                             $newFeedback->question_id = $newQuestion->id;
                             $newFeedback->alternative_id = null;
@@ -268,6 +270,26 @@ class UnitController extends Controller
 
             return redirect()->route('units.index')->with('success', 'Unit duplicated successfully!');
         });
+    }
+
+    /**
+     * Replica sin incluir la PK en los atributos del INSERT.
+     * En PostgreSQL, insertar "id" = NULL viola NOT NULL; hay que omitir la columna y usar la secuencia.
+     *
+     * @template T of Model
+     * @param  T  $model
+     * @return T
+     */
+    private function replicateWithoutId(Model $model): Model
+    {
+        $copy = $model->replicate();
+        $key = $model->getKeyName();
+        if ($key !== null && $key !== '') {
+            $copy->setRawAttributes(Arr::except($copy->getAttributes(), [$key]), true);
+        }
+        $copy->exists = false;
+
+        return $copy;
     }
 
     private function getVideoFrom(Request $request)
