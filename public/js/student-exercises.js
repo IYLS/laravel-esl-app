@@ -196,6 +196,12 @@
             if (correct) correct.hidden = true;
             if (wrong) wrong.hidden = true;
             if (notSure) notSure.hidden = false;
+
+            // Restaurar tabs que podrían haberse ocultado si se respondió correctamente antes
+            const explanatoryBtn = document.getElementById(`explanatory-${questionId}-tab`);
+            const knowledgeBtn   = document.getElementById(`knowledge-of-correct-response-${questionId}-tab`);
+            if (explanatoryBtn) explanatoryBtn.closest('li').hidden = false;
+            if (knowledgeBtn)   knowledgeBtn.closest('li').hidden = false;
         },
 
         /**
