@@ -21,14 +21,14 @@
     if($feedbacks->where('feedback_type_id', 5)->first() != null) $explanatory = true;
 
     $first = "";
-    if($elaborative) {
-        $first = "elaborative";
-    } else if(!$elaborative and $directive) {
+    if($directive) {
         $first = "directive";
-    } else if(!$elaborative and !$directive and $knowledge) {
-        $first = "knowledge";
-    } else if(!$elaborative and !$directive and !$knowledge and $explanatory) {
+    } else if($elaborative) {
+        $first = "elaborative";
+    } else if($explanatory) {
         $first = "explanatory";
+    } else if($knowledge) {
+        $first = "knowledge";
     }
 
     @endphp
