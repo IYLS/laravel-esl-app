@@ -149,6 +149,17 @@
             if (correct) correct.hidden = false;
             if (wrong) wrong.hidden = true;
             if (notSure) notSure.hidden = true;
+
+            // Cuando la respuesta es correcta: ocultar explanatory y knowledge, activar elaborative
+            const explanatoryBtn = document.getElementById(`explanatory-${questionId}-tab`);
+            const knowledgeBtn   = document.getElementById(`knowledge-of-correct-response-${questionId}-tab`);
+            const elaborativeBtn = document.getElementById(`elaborative-${questionId}-tab`);
+            if (explanatoryBtn) explanatoryBtn.closest('li').hidden = true;
+            if (knowledgeBtn)   knowledgeBtn.closest('li').hidden = true;
+            if (elaborativeBtn) {
+                elaborativeBtn.closest('li').hidden = false;
+                bootstrap.Tab.getOrCreateInstance(elaborativeBtn).show();
+            }
         },
 
         /**
@@ -161,6 +172,18 @@
             if (correct) correct.hidden = true;
             if (wrong) wrong.hidden = false;
             if (notSure) notSure.hidden = true;
+
+            // Restaurar tabs explanatory y knowledge (ocultos por showCorrect)
+            const explanatoryBtn = document.getElementById(`explanatory-${questionId}-tab`);
+            const knowledgeBtn   = document.getElementById(`knowledge-of-correct-response-${questionId}-tab`);
+            if (explanatoryBtn) explanatoryBtn.closest('li').hidden = false;
+            if (knowledgeBtn)   knowledgeBtn.closest('li').hidden = false;
+
+            // Activar la tab de mayor prioridad (directive > elaborative > explanatory > knowledge)
+            const directiveBtn = document.getElementById(`directive-${questionId}-tab`);
+            const elaborativeBtn = document.getElementById(`elaborative-${questionId}-tab`);
+            const firstTab = directiveBtn || elaborativeBtn || explanatoryBtn || knowledgeBtn;
+            if (firstTab) bootstrap.Tab.getOrCreateInstance(firstTab).show();
         },
 
         /**
