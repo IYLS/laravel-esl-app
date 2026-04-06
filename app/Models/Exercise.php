@@ -28,7 +28,8 @@ class Exercise extends Model
         'extra_info',
         'position',
         'translated_instructions',
-        'heading_title'
+        'heading_title',
+        'category'
     ];
 
     public $timestamps = true;

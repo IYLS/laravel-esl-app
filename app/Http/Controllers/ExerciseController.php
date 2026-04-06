@@ -25,12 +25,13 @@ class ExerciseController extends Controller
         return view('exercises.index', compact('unit', 'types'));
     }
 
-    public function addForm(Unit $unit, ExerciseType $exercise_type, Section $section)
+    public function addForm(Request $request, Unit $unit, ExerciseType $exercise_type, Section $section)
     {
         return view('modals.exercises.add_form', [
             'type' => $exercise_type,
             'section' => $section,
             'section_id' => $section->id,
+            'category' => $request->query('category', 'comprehension'),
         ]);
     }
 
@@ -83,6 +84,7 @@ class ExerciseController extends Controller
             ? $request->boolean('show_forum_link')
             : false;
         $exercise->forum_button_label = $this->normalizedForumButtonLabel($request->input('forum_button_label'));
+        $exercise->category = $request->input('category');
 
         $exercise->save();
         
