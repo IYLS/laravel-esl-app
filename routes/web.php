@@ -66,6 +66,7 @@ Route::get('/student/welcome', [StudentController::class, 'welcome'])->name('stu
 Route::get('/student/level_selection', [StudentController::class, 'level_selection'])->name('student.level_selection');
 Route::post('/student/select/unit', [StudentController::class, 'select'])->name('student.select');
 Route::get('/student/dashboard/{unit}', [StudentController::class, 'show'])->name('student.show');
+Route::get('/student/dashboard/{unit}/group-progress', [StudentController::class, 'groupProgress'])->name('student.group_progress');
 
 // Leaderboard Routes
 Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard.index');

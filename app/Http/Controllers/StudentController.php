@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Unit;
 use App\Models\Section;
 use App\Models\Tracking;
+use App\Models\User;
 
 class StudentController extends Controller
 {
@@ -70,6 +71,50 @@ class StudentController extends Controller
         if ($unit->dictionary_enabled) array_push($help_options, $unit->dictionary);
 
         return view('student.show', compact(['unit', 'keywords', 'help_options', 'user', 'completed_exercises', 'first_exercise_id', 'unit_progress', 'completed_count', 'total_exercises', 'has_exercises']));
+    }
+
+    public function groupProgress($unit_id)
+    {
+        $unit = Unit::find($unit_id);
+        $user = Auth::user();
+
+        if (!$unit || !$user->group_id) {
+            return response()->json(['progress' => 0]);
+        }
+
+        $exerciseIds = collect();
+        foreach ($unit->sections as $section) {
+            $exerciseIds = $exerciseIds->merge(
+                $section->exercises->where('exercise_type_id', '!=', 5)->pluck('id')
+            );
+        }
+        $totalExercises = $exerciseIds->count();
+
+        if ($totalExercises === 0) {
+            return response()->json(['progress' => 0]);
+        }
+
+        $groupUserIds = User::where('group_id', $user->group_id)->pluck('id');
+        $studentCount  = $groupUserIds->count();
+
+        if ($studentCount === 0) {
+            return response()->json(['progress' => 0]);
+        }
+
+        $completedPerUser = Tracking::whereIn('user_id', $groupUserIds)
+            ->whereIn('exercise_id', $exerciseIds)
+            ->selectRaw('user_id, COUNT(DISTINCT exercise_id) as completed')
+            ->groupBy('user_id')
+            ->pluck('completed', 'user_id');
+
+        $totalProgress = 0;
+        foreach ($groupUserIds as $uid) {
+            $totalProgress += (($completedPerUser[$uid] ?? 0) / $totalExercises) * 100;
+        }
+
+        return response()->json([
+            'progress' => round($totalProgress / $studentCount),
+        ]);
     }
 
     public function select(Request $request)

@@ -5,21 +5,54 @@
 
 <div class="p-4 row w-100 h-100 col-12 student-module">
     <div class="col-12 mb-2">
-        <div class="d-flex justify-content-between align-items-center mb-1">
-            <h5 class="pl-2 mb-0">{{ $unit->title }}</h5>
-            <small class="text-muted" id="progress-text">{{ $completed_count ?? 0 }}/{{ $total_exercises ?? 0 }}</small>
-        </div>
-        {{-- Barra de progreso sutil --}}
-        <div class="progress" style="height: 4px; background-color: #e9ecef; border-radius: 2px; overflow: hidden;">
-            <div 
-                class="progress-bar" 
-                id="unit-progress-bar"
-                role="progressbar" 
-                style="width: {{ $unit_progress ?? 0 }}%; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); transition: width 0.6s ease;"
-                aria-valuenow="{{ $unit_progress ?? 0 }}" 
-                aria-valuemin="0" 
-                aria-valuemax="100"
-            ></div>
+        <h5 class="mb-2">{{ $unit->title }}</h5>
+        <div class="row g-2">
+            {{-- Individual progress --}}
+            <div class="col-6"
+                 data-bs-toggle="tooltip"
+                 data-bs-placement="bottom"
+                 title="Check your progress here">
+                <div class="d-flex align-items-center mb-1">
+                    <span class="me-1" style="font-size:.9rem;">🎯</span>
+                    <small class="text-muted fw-semibold">My progress</small>
+                    <small class="text-muted ms-auto" id="progress-text">{{ $completed_count ?? 0 }}/{{ $total_exercises ?? 0 }}</small>
+                </div>
+                <div class="progress" style="height: 6px; border-radius: 3px;">
+                    <div
+                        class="progress-bar"
+                        id="unit-progress-bar"
+                        role="progressbar"
+                        style="width: {{ $unit_progress ?? 0 }}%; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); transition: width 0.6s ease;"
+                        aria-valuenow="{{ $unit_progress ?? 0 }}"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    ></div>
+                </div>
+            </div>
+            {{-- Group progress --}}
+            @if($user->group_id)
+            <div class="col-6"
+                 data-bs-toggle="tooltip"
+                 data-bs-placement="bottom"
+                 title="Check the progress of your classmates here">
+                <div class="d-flex align-items-center mb-1">
+                    <span class="me-1" style="font-size:.9rem;">👥</span>
+                    <small class="text-muted fw-semibold">Group</small>
+                    <small class="text-muted ms-auto" id="group-progress-text">...</small>
+                </div>
+                <div class="progress" style="height: 6px; border-radius: 3px;">
+                    <div
+                        class="progress-bar"
+                        id="group-progress-bar"
+                        role="progressbar"
+                        style="width: 0%; background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%); transition: width 0.8s ease;"
+                        aria-valuenow="0"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    ></div>
+                </div>
+            </div>
+            @endif
         </div>
     </div>
     <div class="row sticky-top p-1" id="sticky-bar" style="background-color: white;">
@@ -350,7 +383,30 @@
     }
     @endif
     
-    // Función para actualizar la barra de progreso de la unidad
+    // Carga el progreso grupal vía AJAX
+    function loadGroupProgress() {
+        var groupBar = document.getElementById('group-progress-bar');
+        if (!groupBar) return;
+        fetch('{{ route("student.group_progress", $unit->id) }}', {
+            headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var bar = document.getElementById('group-progress-bar');
+            var text = document.getElementById('group-progress-text');
+            if (bar) {
+                bar.style.width = data.progress + '%';
+                bar.setAttribute('aria-valuenow', data.progress);
+            }
+            if (text) text.textContent = data.progress + '%';
+        })
+        .catch(function() {
+            var text = document.getElementById('group-progress-text');
+            if (text) text.textContent = '—';
+        });
+    }
+
+    // Función para actualizar la barra de progreso individual y refrescar la grupal
     function updateUnitProgress(progress, completed, total) {
         const progressBar = document.getElementById('unit-progress-bar');
         const progressText = document.getElementById('progress-text');
@@ -363,6 +419,8 @@
         if (progressText) {
             progressText.textContent = completed + '/' + total;
         }
+
+        loadGroupProgress();
     }
     
     // Hacer la función disponible globalmente
@@ -489,6 +547,14 @@
                     }
                 }
             });
+        });
+
+        // Cargar progreso grupal al iniciar
+        loadGroupProgress();
+
+        // Inicializar tooltips de Bootstrap
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function(el) {
+            new bootstrap.Tooltip(el);
         });
     });
 </script>
