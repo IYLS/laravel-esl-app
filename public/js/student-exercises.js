@@ -145,8 +145,10 @@
         showCorrect(questionId) {
             const correct = document.getElementById(`question-${questionId}-feedback-correct`);
             const wrong = document.getElementById(`question-${questionId}-feedback-wrong`);
+            const notSure = document.getElementById(`question-${questionId}-feedback-not-sure`);
             if (correct) correct.hidden = false;
             if (wrong) wrong.hidden = true;
+            if (notSure) notSure.hidden = true;
         },
 
         /**
