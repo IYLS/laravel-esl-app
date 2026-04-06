@@ -41,7 +41,7 @@
                 </thead>
                 <tbody>
                     @forelse($section->exercises->sortBy('position') as $exercise)
-                        <tr @if($exercise->subtype == 99 or $exercise->subtype == 991) style="background-color: #D1FAE5;" @endif>
+                        <tr @if($exercise->category == 'engagement') style="background-color: #FED7AA;" @elseif($exercise->subtype == 99 or $exercise->subtype == 991) style="background-color: #D1FAE5;" @endif>
 
                             <td class="col-1">
                                 {{ $exercise->title }}
@@ -73,12 +73,12 @@
             </table>
 
             @php
-                $exerciseTypes = $types->filter(fn($t) => !in_array($t->underscore_name, ['open_ended', 'poll', 'form']));
+                $exerciseTypes = $types->filter(fn($t) => !in_array($t->underscore_name, ['poll', 'form']));
                 $engagementTypes = $types->filter(fn($t) => in_array($t->underscore_name, ['open_ended', 'poll', 'form']));
             @endphp
             <div class="row">
                 <div class="col-12 col-md-4 d-flex justify-content-center mb-2">
-                    <button class="btn btn-primary btn-sm col-12" data-bs-toggle="collapse" href="#collapsableAddExercise{{ $section->id }}" role="button" aria-expanded="false" aria-controls="collapsableAddExercise{{ $section->id }}">Add exercise <span class="material-symbols-outlined">arrow_downward</span></button>
+                    <button class="btn btn-primary btn-sm col-12" data-bs-toggle="collapse" href="#collapsableAddExercise{{ $section->id }}" role="button" aria-expanded="false" aria-controls="collapsableAddExercise{{ $section->id }}">Add comprehension <span class="material-symbols-outlined">arrow_downward</span></button>
                 </div>
                 <div class="col-12 col-md-4 d-flex justify-content-center mb-2">
                     <button class="btn btn-warning btn-sm col-12 text-dark" data-bs-toggle="collapse" href="#collapsableAddEngagement{{ $section->id }}" role="button" aria-expanded="false" aria-controls="collapsableAddEngagement{{ $section->id }}">Add engagement <span class="material-symbols-outlined">arrow_downward</span></button>
@@ -91,7 +91,7 @@
                     <div class="collapse" id="collapsableAddExercise{{ $section->id }}">
                         <div class="d-flex flex-wrap gap-1 p-2">
                             @forelse($exerciseTypes as $type)
-                                <button type="button" class="btn btn-sm btn-primary btn-add-exercise" data-unit-id="{{ $unit->id }}" data-type-id="{{ $type->id }}" data-type-name="{{ $type->name }}" data-section-id="{{ $section->id }}">
+                                <button type="button" class="btn btn-sm btn-primary btn-add-exercise" data-unit-id="{{ $unit->id }}" data-type-id="{{ $type->id }}" data-type-name="{{ $type->name }}" data-section-id="{{ $section->id }}" data-category="comprehension">
                                     {{ $type->name }}
                                 </button>
                             @empty
@@ -104,7 +104,7 @@
                     <div class="collapse" id="collapsableAddEngagement{{ $section->id }}">
                         <div class="d-flex flex-wrap gap-1 p-2">
                             @forelse($engagementTypes as $type)
-                                <button type="button" class="btn btn-sm btn-warning text-dark btn-add-exercise" data-unit-id="{{ $unit->id }}" data-type-id="{{ $type->id }}" data-type-name="{{ $type->name }}" data-section-id="{{ $section->id }}">
+                                <button type="button" class="btn btn-sm btn-warning text-dark btn-add-exercise" data-unit-id="{{ $unit->id }}" data-type-id="{{ $type->id }}" data-type-name="{{ $type->name }}" data-section-id="{{ $section->id }}" data-category="engagement">
                                     {{ $type->name }}
                                 </button>
                             @empty
@@ -238,6 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var typeId = this.dataset.typeId;
             var typeName = this.dataset.typeName;
             var sectionId = this.dataset.sectionId;
+            var category = this.dataset.category || 'comprehension';
             var modal = document.getElementById('addExerciseModal');
             var body = document.getElementById('addExerciseModalBody');
             var title = document.getElementById('addExerciseModalTitle');
@@ -245,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
             body.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
             title.textContent = 'New ' + typeName + ' activity';
 
-            fetch(baseUrl + '/add-form/' + typeId + '/' + sectionId + '?_=' + Date.now(), {
+            fetch(baseUrl + '/add-form/' + typeId + '/' + sectionId + '?category=' + encodeURIComponent(category) + '&_=' + Date.now(), {
                 headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'text/html' }
             })
             .then(function(r) { return r.text(); })

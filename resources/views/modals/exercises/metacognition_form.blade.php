@@ -8,6 +8,7 @@
 @endphp
 <form @if($type_id == 2) enctype="multipart/form-data" @endif action="{{ route('exercises.store', [$section->unit->id, $type_id, $section->id]) }}" method="POST">
     @csrf
+    <input type="hidden" name="category" value="metacognition">
     <input id="title" name="title" type="text" class="form-control" placeholder="Title" required>
     <br>
     <input id="description" name="description" type="text" class="form-control mb-1" placeholder="(Optional) Description">

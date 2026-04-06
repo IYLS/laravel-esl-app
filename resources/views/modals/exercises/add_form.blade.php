@@ -2,6 +2,7 @@
 @php $modal_suffix = $type->underscore_name . '_' . $section_id; @endphp
 <form enctype="multipart/form-data" action="{{ route('exercises.store', [$section->unit->id, $type, $section_id]) }}" method="POST">
     @csrf
+    <input type="hidden" name="category" value="{{ $category }}">
     <input id="title_{{ $modal_suffix }}" name="title" type="text" class="form-control" placeholder="Title">
     <br>
     <input id="description_{{ $modal_suffix }}" name="description" type="text" class="form-control" placeholder="(Optional) Description">
