@@ -77,6 +77,19 @@ class TrackingController extends Controller
     {
         $exercise = Exercise::find($exercise_id);
 
+        // Guardar tracking mínimo para voice recognition (no guarda respuestas)
+        if ($exercise->exercise_type_id == 5) {
+            $intent_number = Tracking::where('exercise_id', $exercise->id)->where('user_id', $user_id)->count() + 1;
+            $vr_tracking = new Tracking;
+            $vr_tracking->intent_number = "$intent_number";
+            $vr_tracking->time_spent_in_seconds = 0;
+            $vr_tracking->correct_answers = "0";
+            $vr_tracking->wrong_answers = "0";
+            $vr_tracking->exercise_id = $exercise_id;
+            $vr_tracking->user_id = $user_id;
+            $vr_tracking->save();
+        }
+
         if($exercise->exercise_type_id != 5) {
             $tracking = new Tracking;
 
@@ -376,6 +389,12 @@ class TrackingController extends Controller
             if ($ex->id == $exercise->id) {
                 $found_current = true;
                 continue; // Continuar al siguiente después del actual
+            }
+
+            // Si el ejercicio actual no está en la lista filtrada (p.ej. voice_recognition),
+            // usar la posición para determinar cuáles vienen después
+            if (!$found_current && $ex->position > $exercise->position) {
+                $found_current = true;
             }
             
             // Si ya encontramos el ejercicio actual, buscar el siguiente sin completar
