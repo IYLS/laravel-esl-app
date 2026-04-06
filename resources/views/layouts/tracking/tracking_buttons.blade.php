@@ -22,6 +22,7 @@
         @endif
     </div>
 
+    @if(!isset($type) || $type != 'voice_recognition')
     <div class="m-1">
         <button
             id="reset-button-{{ $e->id }}"
@@ -32,4 +33,5 @@
             Reset
         </button>
     </div>
+    @endif
 </div>

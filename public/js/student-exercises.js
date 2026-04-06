@@ -961,6 +961,12 @@
                 dataType: 'json',
                 success: (response) => {
                     const currentExerciseUrl = `${type}${exercise.id}`;
+                    if (type === 'voice_recognition') {
+                        const sidebarBtn = document.querySelector(`[data-exercise-id="${exerciseId}"]`);
+                        if (sidebarBtn && !sidebarBtn.textContent.includes('✅')) {
+                            sidebarBtn.textContent = sidebarBtn.textContent.trim() + ' ✅';
+                        }
+                    }
                     ModalHandler.presentExerciseCompletion(
                         response.feedback_message,
                         response.status_message,
