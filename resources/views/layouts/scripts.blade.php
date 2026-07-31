@@ -1,25 +1,21 @@
-@if(Session::get('success'))
-@include('modals.exercises.message', ['message' => Session::get('success'), 'type' => 'success'])
-<script>
-    setTimeout(function(){
-        $('#alert-modal').modal('hide')
-    }, 1500);
+@if (session('success') || session('error'))
+  @include('modals.exercises.message', [
+      'message' => session('success') ?? session('error'),
+      'type'    => session('success') ? 'success' : 'error'
+  ])
 
-    $(function() {
-        $("#alert-modal").modal("show");
-    });
-</script>
-@elseif(Session::get('error'))
-@include('modals.exercises.message', ['message' => Session::get('error'), 'type' => 'error'])
-<script>
-    setTimeout(function(){
-        $('#alert-modal').modal('hide')
-    }, 1500);
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var el = document.getElementById('alert-modal');
+      if (!el) return;
 
-    $(function() {
-        $("#alert-modal").modal("show");
+      // Bootstrap 5: use the native API
+      var modal = bootstrap.Modal.getOrCreateInstance(el); // no double init
+      if (!el.classList.contains('show')) modal.show();
+
+      setTimeout(function(){ modal.hide(); }, 1500);
     });
-</script>
+  </script>
 @endif
 
 <!-- Lottie -->

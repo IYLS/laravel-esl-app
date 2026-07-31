@@ -138,7 +138,7 @@ class UnitController extends Controller
 
         if($request->has('video')) {
             $video_file_name = $request->file('video')->getClientOriginalName();
-            $video_file_url = $request->file('video')->storeAs('public/files', $video_file_name);
+            $video_file_url = $request->file('video')->storeAs('files', $video_file_name, 'public');
     
             $unit->video_name = $video_file_name;
         }
@@ -172,7 +172,7 @@ class UnitController extends Controller
         if($request->hasFile('video') and $request->file('video')->isValid()) 
         {
             $video_file_name = $request->file('video')->getClientOriginalName();
-            $video_file_path = $request->file('video')->storeAs('public/files', $video_file_name);
+            $video_file_path = $request->file('video')->storeAs('files', $video_file_name, 'public');
 
             return $video_file_name;
         } else {

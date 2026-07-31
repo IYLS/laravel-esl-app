@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal" id="{{ $modal_id }}" tabindex="-1" aria-labelledby="{{ $modal_id }}" aria-hidden="true" data-bs-backdrop="static">
+<div class="modal" id="{{ $modal_id }}" data-bs-backdrop="false" tabindex="-1" aria-labelledby="{{ $modal_id }}" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">

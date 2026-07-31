@@ -6,17 +6,16 @@
             {!! $question->statement !!}
         </div>
         <div class="mt-2">
-            <ol type="a">
+            <div class="alternatives-list">
                 @forelse($question->alternatives as $alt)
-                    <li>
-                        <div class="form-check">
-                            <input class="form-check-input multiple-choice-{{ $e->id }}-check" name="question-{{ $question->id }}" id="{{ $alt->id }}" type="radio" value="{{ $alt->title }}">
-                            <label class="form-check-label" for="{{ $alt->id }}">{{ $alt->title }}</label>
-                        </div>
-                    </li>
+                    <div class="d-flex align-items-center mb-2">
+                        <input class="form-check-input multiple-choice-{{ $e->id }}-check me-3" name="question-{{ $question->id }}" id="{{ $alt->id }}" type="radio" value="{{ $alt->title }}">
+                        <span class="me-3">{{ chr(97 + $loop->index) }}.</span>
+                        <label class="form-check-label mb-0" for="{{ $alt->id }}">{{ $alt->title }}</label>
+                    </div>
                 @empty
                 @endforelse
-            </ol>
+            </div>
         </div>
         @include('feedback.question', ['feedbacks' => $question->feedbacks])
     </div>

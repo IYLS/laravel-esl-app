@@ -1,25 +1,42 @@
 body {
-    font-family: 'Hind Siliguri', sans-serif !important;
-    height: 100%; 
+    font-family: "Hind Siliguri", sans-serif !important;
+    height: 100%;
     color: var(--primary-color-dark-2) !important;
 }
 
-select optgroup{
+select optgroup {
     background: grey;
-    color:#fff;
-    font-style:normal;
-    font-weight:normal;
+    color: #fff;
+    font-style: normal;
+    font-weight: normal;
 }
 
-ol {
-    counter-reset: list;
+.strikable {
+    text-decoration: line-through;
 }
-
-ol > li {
-    list-style: none;
+.not-strikable {
+    text-decoration: none;
 }
-
-ol > li:before {
-    content: counter(list, lower-alpha) ". ";
-    counter-increment: list;
+.clickable {
+    cursor: pointer !important;
+    background-color: white;
+}
+.meta {
+    color: green !important;
+    background-color: #f8f9fa !important;
+}
+.meta:active {
+    color: #f8f9fa !important;
+    background-color: #198754 !important;
+}
+.meta:focus {
+    color: #f8f9fa !important;
+    background-color: #198754 !important;
+}
+.meta.active {
+    color: #f8f9fa !important;
+    background-color: #198754 !important;
+}
+.div {
+    background-color: blue !important;
 }

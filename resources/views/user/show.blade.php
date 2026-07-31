@@ -32,7 +32,7 @@
                     <tr>
                         <td>Name</td>
                         <td>
-                            <input id="name" name="name" class="form-control" type="text" disabled value={{ $user->name }}>
+                            <input id="name" name="name" class="form-control" type="text" disabled value="{{ $user->name }}">
                         </td>
                     </tr>
                     <tr>
@@ -54,13 +54,13 @@
                     <tr>
                         <td>Language</td>
                         <td>
-                            <input id="language" name="language" class="form-control" type="text" disabled value={{ $user->language }}>
+                            <input id="language" name="language" class="form-control" type="text" disabled value="{{ $user->language }}">
                         </td>
                     </tr>
                     <tr>
                         <td>Email</td>
                         <td>
-                            <input id="email" name="email" class="form-control" type="text" disabled value={{ $user->email }}>
+                            <input id="email" name="email" class="form-control" type="text" disabled value="{{ $user->email }}">
                         </td>
                     </tr>
                     <tr>

@@ -3,39 +3,6 @@
 
 @section('title', 'Student Module')
 
-<style>
-    .strikable { text-decoration: line-through }
-    .not-strikable { text-decoration: none }
-    .modal-backdrop { 
-        opacity: 0 !important;
-        position: unset !important;
-    }
-    .clickable {
-        cursor: pointer !important;
-        background-color: white;
-    }
-
-    .meta {
-        color: green !important;
-        background-color: #f8f9fa !important;
-    }
-
-    .meta:active {
-        color: #f8f9fa !important;
-        background-color: #198754 !important;
-    }
-
-    .meta:focus {
-        color: #f8f9fa !important;
-        background-color: #198754 !important;
-    }
-
-    .meta.active {
-        color: #f8f9fa !important;
-        background-color: #198754 !important;
-    }
-</style>
-
 <div class="p-4 row w-100 h-100 col-12">
     <h5 class="pl-2">{{ $unit->title }}</h5>
     <div class="row sticky-top p-1" id="sticky-bar" style="background-color: white;">
@@ -58,7 +25,7 @@
         @if(isset($unit->video_name) and $unit->video_name != null and $unit->video_name != '')
             <div class="ratio ratio-16x9 mt-3">
                 <video title="Video" allowfullscreen controls>
-                    <source src="{{ asset('esl/public/storage/files') . "/" . $unit->video_name }}">
+                    <source src="{{ asset('storage/files') . "/" . $unit->video_name }}">
                 </video>
             </div>
             @if(isset($unit->video_copyright) and $unit->video_copyright != '') <p class="text-secondary"><small>{{ $unit->video_copyright }}</small></p> @endif
@@ -70,7 +37,7 @@
     </div>
 
     {{-- Exercises and content section --}}
-    <div class="col-12 col-xl-8 bg-light mt-2 p-3 rounded shadow" id="top_student_area">
+    <div class="col-12 col-xl-8 bg-light mt-2 p-3 rounded shadow overflow-auto" id="top_student_area" style="max-height: calc(100vh - 120px);">
         <ul class="nav nav-tabs" id="sectionsTabs" role="tablist">
             @foreach($unit->sections->sortBy('position') as $section)
                 @php 
@@ -231,13 +198,13 @@
 
                                         @if(isset($e->video_name) and $e->video_name != null and $e->video_name != '')
                                             <video title="Video" allowfullscreen controls class="ratio ratio-16x9 mt-3 w-75">
-                                                <source src="{{ asset('esl/public/storage/files') . "/" . $e->video_name }}">
+                                                <source src="{{ asset('storage/files') . "/" . $e->video_name }}">
                                             </video>
                                         @endif
 
                                         @if(isset($e->image_name) and $e->image_name != null and $e->image_name != '')
                                             <div class="row m-3">
-                                                <img src="{{ asset('esl/public/storage/files'. "/" . $e->image_name) }}" class="img-fluid col-12 col-lg-8" alt="img">
+                                                <img src="{{ asset('storage/files'. "/" . $e->image_name) }}" class="img-fluid col-12 col-lg-8" alt="img">
                                             </div>
                                         @endif
                                         
@@ -312,22 +279,27 @@
     </div>
 </div>
 
-
-{{-- Time spent on exercise --}}
 <script>
-    var startTime;
+    window.unstick = function () {
+        document.getElementById('sticky-bar')?.classList.remove('sticky-top');
+    };
 
+    // Time spent on exercise
+    var startTime;
     function startTimer() {
         window.startTime = new Date().getTime();
     }
-</script>
 
-{{-- Helper function to transform milliseconds to minutes and seconds format --}}
-<script>
-    function millisToMinutesAndSeconds(millis) {
-        var minutes = Math.floor(millis / 60000);
-        var seconds = ((millis % 60000) / 1000).toFixed(0);
-        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+    function millisToHms(ms) {
+        const n = Number(ms);
+        if (!Number.isFinite(n) || n < 0) return '00:00';
+
+        const totalSeconds = Math.floor(n / 1000);
+        const h = Math.floor(totalSeconds / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        const s = totalSeconds % 60;
+        const base = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        return (h > 0) ? `${h}:${base}` : base;
     }
 </script>
 
@@ -366,11 +338,15 @@
     function setFeedbackHidden(value, exercise_id, questions) {
         questions.forEach(function (question) {
             const questionFeedback = document.getElementById(`question-feedback-container-${question.id}`);
-            questionFeedback.hidden = value;
+            if (questionFeedback != null) {
+                questionFeedback.hidden = value;
+            }
         });
 
         var exerciseFeedback = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
-        exerciseFeedback.hidden = value;
+        if (exerciseFeedback != null) {
+            exerciseFeedback.hidden = value;
+        }
     }
 </script>
 
@@ -400,7 +376,7 @@
         appendTrackingValues(exercise.id, type);
 
         var currentTime = new Date().getTime();
-        var timeSpent = millisToMinutesAndSeconds(currentTime - window.startTime);
+        var timeSpent = millisToHms(currentTime - window.startTime);
     
         var form = document.getElementById(`${type}_form_${exercise.id}`);
 
@@ -589,8 +565,8 @@
 
         correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
         wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
-        correctAnswersItem.innerHTML = `<strong></strong> ${correct_questions}  ✅`;
-        wrongAnswersItem.innerHTML = `<strong></strong> ${wrong_questions}  ❌`;
+        correctAnswersItem.innerHTML = `<strong> ${correct_questions}</strong>  ✅`;
+        wrongAnswersItem.innerHTML = `<strong> ${wrong_questions}</strong>  ❌`;
         correctAnswersItem.hidden = false;
         wrongAnswersItem.hidden = false;
 
@@ -655,8 +631,8 @@
 
         correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
         wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
-        correctAnswersItem.innerHTML = `<strong></strong> ${correct_questions}  ✅`;
-        wrongAnswersItem.innerHTML = `<strong></strong> ${wrong_questions}  ❌`;
+        correctAnswersItem.innerHTML = `<strong> ${correct_questions}</strong>  ✅`;
+        wrongAnswersItem.innerHTML = `<strong> ${wrong_questions}</strong>  ❌`;
         correctAnswersItem.hidden = false;
         wrongAnswersItem.hidden = false;
 
@@ -673,6 +649,9 @@
 <script>
     function getOpenEndedResults(questions, exercise) {
         var responses = [];
+        var questions_number = 0;
+        var correct_questions = 0;
+        
         questions.forEach(function (question) {
             var answers = document.getElementsByName(`answer-${question.id}`);
             answers.forEach(function (answer) {
@@ -682,6 +661,9 @@
             if (document.getElementById(`question-${question.id}-feedback-correct`) != null) {
                 document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
             }
+
+            questions_number = answers.length;
+            correct_questions = questions_number;
         });
 
         if (document.getElementsByClassName(`show-on-all-correct-${exercise.id}`).length != 0) {
@@ -771,12 +753,11 @@
 
             correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
             wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
-            correctAnswersItem.innerHTML = `<strong></strong> ${correct_questions}  ✅`;
-            wrongAnswersItem.innerHTML = `<strong></strong> ${wrong_questions}  ❌`;
+            correctAnswersItem.innerHTML = `<strong> ${correct_questions}</strong>  ✅`;
+            wrongAnswersItem.innerHTML = `<strong> ${wrong_questions}</strong>  ❌`;
             correctAnswersItem.hidden = false;
             wrongAnswersItem.hidden = false;
         
-
             setFeedbackHidden(false, exercise.id, questions);
         }
 
@@ -875,7 +856,9 @@
     }
 
     function checkAction(exercise, questions, type, exercise_id, user_id, route) {
-        getResponseData(questions, exercise, type);
+        if(type != 'voice_recognition') {
+            getResponseData(questions, exercise, type);
+        }
 
         event.preventDefault();
         $.ajax({
@@ -974,37 +957,37 @@
             case "transcript":
                 window.transcript_count += 1;
                 window.transcript_total_time += time_spent;
-                console.log(`Total time spent in Transcript: ${millisToMinutesAndSeconds(window.transcript_total_time)}`);
+                console.log(`Total time spent in Transcript: ${millisToHms(window.transcript_total_time)}`);
                 console.log(`transcript_count: ${window.transcript_count}`);
                 break;
             case "listening_tips":
                 window.listening_tips_count += 1;
                 window.listening_tips_total_time += time_spent;
-                console.log(`Total time spent in Listening Tips: ${millisToMinutesAndSeconds(window.listening_tips_total_time)}`);
+                console.log(`Total time spent in Listening Tips: ${millisToHms(window.listening_tips_total_time)}`);
                 console.log(`listening_tips_count: ${window.listening_tips_count}`);
                 break;
             case "cultural_notes":
                 window.cultural_notes_count += 1;
                 window.cultural_notes_total_time += time_spent;
-                console.log(`Total time spent in Cultural notes: ${millisToMinutesAndSeconds(window.cultural_notes_total_time)}`);
+                console.log(`Total time spent in Cultural notes: ${millisToHms(window.cultural_notes_total_time)}`);
                 console.log(`cultural_notes_count: ${window.cultural_notes_count}`);
                 break;
             case "glossary":
                 window.glossary_count += 1;
                 window.glossary_total_time += time_spent;
-                console.log(`Total time spent in Glossary: ${millisToMinutesAndSeconds(window.glossary_total_time)}`);
+                console.log(`Total time spent in Glossary: ${millisToHms(window.glossary_total_time)}`);
                 console.log(`glossary_count: ${window.glossary_count}`);
                 break;
             case "translation":
                 window.translation_count += 1;
                 window.translation_total_time += time_spent;
-                console.log(`Total time spent in Translation: ${millisToMinutesAndSeconds(window.translation_total_time)}`);
+                console.log(`Total time spent in Translation: ${millisToHms(window.translation_total_time)}`);
                 console.log(`translation_count: ${window.translation_count}`);
                 break;
             case "dictionary":
                 window.dictionary_count += 1;
                 window.dictionary_total_time += time_spent;
-                console.log(`Total time spent in Dictionary: ${millisToMinutesAndSeconds(window.dictionary_total_time)}`);
+                console.log(`Total time spent in Dictionary: ${millisToHms(window.dictionary_total_time)}`);
                 console.log(`dictionary_count: ${window.dictionary_count}`);
                 break;
         }
@@ -1051,7 +1034,7 @@
 
         var transcript_total_time_input = document.createElement('input');
         transcript_total_time_input.setAttribute('name', 'transcript_total_time');
-        transcript_total_time_input.setAttribute('value', `${millisToMinutesAndSeconds(transcript_total_time)}`);
+        transcript_total_time_input.setAttribute('value', `${millisToHms(transcript_total_time)}`);
         transcript_total_time_input.hidden = true;
 
         var listening_tips_count_input = document.createElement('input');
@@ -1061,7 +1044,7 @@
 
         var listening_tips_total_time_input = document.createElement('input');
         listening_tips_total_time_input.setAttribute('name', 'listening_tips_total_time');
-        listening_tips_total_time_input.setAttribute('value', `${millisToMinutesAndSeconds(listening_tips_total_time)}`);
+        listening_tips_total_time_input.setAttribute('value', `${millisToHms(listening_tips_total_time)}`);
         listening_tips_total_time_input.hidden = true;
 
         var cultural_notes_count_input = document.createElement('input');
@@ -1071,7 +1054,7 @@
 
         var cultural_notes_total_time_input = document.createElement('input');
         cultural_notes_total_time_input.setAttribute('name', 'cultural_notes_total_time');
-        cultural_notes_total_time_input.setAttribute('value', `${millisToMinutesAndSeconds(cultural_notes_total_time)}`);
+        cultural_notes_total_time_input.setAttribute('value', `${millisToHms(cultural_notes_total_time)}`);
         cultural_notes_total_time_input.hidden = true;
 
         var glossary_count_input = document.createElement('input');
@@ -1081,7 +1064,7 @@
 
         var glossary_total_time_input = document.createElement('input');
         glossary_total_time_input.setAttribute('name', 'glossary_total_time');
-        glossary_total_time_input.setAttribute('value', `${millisToMinutesAndSeconds(glossary_total_time)}`);
+        glossary_total_time_input.setAttribute('value', `${millisToHms(glossary_total_time)}`);
         glossary_total_time_input.hidden = true;
 
         var translation_count_input = document.createElement('input');
@@ -1091,7 +1074,7 @@
 
         var translation_total_time_input = document.createElement('input');
         translation_total_time_input.setAttribute('name', 'translation_total_time');
-        translation_total_time_input.setAttribute('value', `${millisToMinutesAndSeconds(translation_total_time)}`);
+        translation_total_time_input.setAttribute('value', `${millisToHms(translation_total_time)}`);
         translation_total_time_input.hidden = true;
 
         var dictionary_count_input = document.createElement('input');
@@ -1101,7 +1084,7 @@
 
         var dictionary_total_time_input = document.createElement('input');
         dictionary_total_time_input.setAttribute('name', 'dictionary_total_time');
-        dictionary_total_time_input.setAttribute('value', `${millisToMinutesAndSeconds(dictionary_total_time)}`);
+        dictionary_total_time_input.setAttribute('value', `${millisToHms(dictionary_total_time)}`);
         dictionary_total_time_input.hidden = true;
 
         current_form.appendChild(transcript_count_input);
@@ -1121,7 +1104,6 @@
 
         current_form.appendChild(dictionary_count_input);
         current_form.appendChild(dictionary_total_time_input);
-
     }
 </script>
 

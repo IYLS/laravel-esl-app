@@ -171,7 +171,7 @@ class QuestionController extends Controller
         if($request->hasFile('audio') and $request->file('audio')->isValid()) 
         {
             $audio_file_name = $request->file('audio')->getClientOriginalName();
-            $audio_file_path = $request->file('audio')->storeAs('public/files', $audio_file_name);
+            $audio_file_path = $request->file('audio')->storeAs('files', $audio_file_name, 'public');
             
             return $audio_file_name;
         } else {
@@ -184,7 +184,7 @@ class QuestionController extends Controller
         if($request->hasFile('image') and $request->file('image')->isValid()) 
         {
             $image_file_name = $request->file('image')->getClientOriginalName();
-            $image_file_path = $request->file('image')->storeAs('public/files', $image_file_name);
+            $image_file_path = $request->file('image')->storeAs('files', $image_file_name, 'public');
 
             return $image_file_name;
         } else {
