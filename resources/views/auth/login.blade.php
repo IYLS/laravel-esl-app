@@ -39,7 +39,11 @@
 <div class="mt-auto text-secondary p-3">
     <div class="">
         <footer class="d-flex justify-content-center">
-            <p>&#169; 2025 www.ideasforlistening.com </p>
+            <p class="mb-0 text-center">
+                &#169; 2025 www.ideasforlistening.com
+                <span class="mx-1">·</span>
+                Developed by <a href="https://maberc.com" class="text-secondary text-decoration-none" target="_blank" rel="noopener noreferrer">Maberc</a>
+            </p>
         </footer>
     </div>    
 </div>
