@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Prepare environment
-        run: printf 'APP_KEY=\n' > .env
+        run: printf 'APP_KEY=base64:%s\n' "$(openssl rand -base64 32)" > .env
 
       - name: Build and start application
         run: docker compose up --build --detach
@@ -46,9 +46,6 @@ jobs:
           }
           echo "PHP syntax OK\n";
           '
-
-      - name: Generate application key
-        run: docker compose exec -T app php artisan key:generate --force
 
       - name: Create storage link
         run: docker compose exec -T app php artisan storage:link
