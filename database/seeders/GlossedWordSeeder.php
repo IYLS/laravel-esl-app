@@ -246,7 +246,7 @@ class GlossedWordSeeder extends Seeder
             [
                 'id' => 4035,
                 'word' => 'get it out of the way',
-                'description' => 'e.g. Let's get this paperwork out of the way to enjoy the rest of our afternoon.',
+                'description' => 'e.g. Let\'s get this paperwork out of the way to enjoy the rest of our afternoon.',
                 'unit_id' => 4002,
                 'deleted_at' => null,
             ],
