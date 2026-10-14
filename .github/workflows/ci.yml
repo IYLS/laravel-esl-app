@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - feature/upgrade
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-smoke-test:
+    name: Build and smoke test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Prepare environment
+        run: printf 'APP_KEY=base64:%s\n' "$(openssl rand -base64 32)" > .env
+
+      - name: Build and start application
+        run: docker compose up --build --detach
+
+      - name: Check PHP syntax
+        run: |
+          docker compose exec -T app php -r '
+          $paths = ["app", "bootstrap", "config", "database", "routes", "tests"];
+          foreach ($paths as $path) {
+              $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
+              foreach ($files as $file) {
+                  if (!$file->isFile() || $file->getExtension() !== "php") {
+                      continue;
+                  }
+                  try {
+                      token_get_all(file_get_contents($file->getPathname()), TOKEN_PARSE);
+                  } catch (ParseError $error) {
+                      fwrite(STDERR, $file->getPathname().": ".$error->getMessage().PHP_EOL);
+                      exit(1);
+                  }
+              }
+          }
+          echo "PHP syntax OK\n";
+          '
+
+      - name: Create storage link
+        run: docker compose exec -T app php artisan storage:link
+
+      - name: Check login page
+        run: curl --fail --retry 10 --retry-delay 5 --retry-connrefused http://localhost:8000/login
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down
