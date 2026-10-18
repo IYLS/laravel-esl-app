@@ -48,4 +48,9 @@ class AnswersSheet extends StudentMatrixSheet
     {
         return $this->context->answersFor((int) $user->id, $column['exercise']);
     }
+
+    protected function textColumns(): array
+    {
+        return $this->valueColumnIndexes();
+    }
 }
