@@ -2,6 +2,8 @@
 
 namespace App\Exports\Sheets;
 
+use Generator;
+
 /**
  * Comentarios que el estudiante publicó en el foro, uno por fila, con la hora
  * exacta en lugar del "hace x días" que muestra la interfaz.
@@ -18,16 +20,15 @@ class ForumSheet extends BaseSheet
         return ['ID', 'Nombre', 'Title', 'Comment', 'Hora'];
     }
 
-    public function array(): array
+    public function generator(): Generator
     {
         $commentsByUser = $this->context->comments()->groupBy('user_id');
-        $rows = [];
 
         foreach ($this->context->users() as $user) {
             $comments = $commentsByUser->get($user->id, collect());
 
             foreach ($comments as $comment) {
-                $rows[] = [
+                yield [
                     $user->user_id,
                     $user->name,
                     $comment->title,
@@ -36,7 +37,5 @@ class ForumSheet extends BaseSheet
                 ];
             }
         }
-
-        return $rows;
     }
 }
