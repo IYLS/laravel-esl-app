@@ -11,7 +11,7 @@ Aplicación Laravel para enseñanza de inglés como segundo idioma (ESL). Módul
 | **PHP** | 8.0.2 o superior |
 | **Laravel** | 9.x |
 | **Composer** | 2.x |
-| **Node.js** | 14.x o superior (para Laravel Mix) |
+| **Node.js** | 24.x o superior (para Laravel Mix) |
 | **npm** | 6.x o superior |
 | **MySQL** | 5.7+ / 8.x (o MariaDB 10.3+) |
 
