@@ -11,7 +11,6 @@ use App\Models\Unit;
 use App\Models\Group;
 use App\Models\TrackingHelpUsage;
 use App\Models\TrackingFeedbackUsage;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ExportTracking;
 use Carbon\Carbon;
 
@@ -303,6 +302,8 @@ class TrackingController extends Controller
 
     public function exportData(Request $request)
     {
+        set_time_limit(300);
+
         $groupId = $request->group;
         $userId = $request->student;
         $currentDate = Carbon::now()->format('d-m-Y H:i');
@@ -311,7 +312,7 @@ class TrackingController extends Controller
         if ($userId && $userId != "") {
             $user = User::findOrFail($userId);
             $fileName = "{$user->name} - {$currentDate}.xlsx";
-            return Excel::download(new ExportTracking($userId, 'student'), $fileName);
+            return $this->withDownloadToken($request, (new ExportTracking($userId, 'student'))->download($fileName));
         }
         
         // Si se seleccionó un grupo (sin estudiante específico), exportar todo el grupo
@@ -326,12 +327,27 @@ class TrackingController extends Controller
             
             $userIds = $users->pluck('id')->toArray();
             $fileName = "{$group->name} - {$currentDate}.xlsx";
-            return Excel::download(new ExportTracking($userIds, 'group'), $fileName);
+            return $this->withDownloadToken($request, (new ExportTracking($userIds, 'group'))->download($fileName));
         }
         
         // Si no se seleccionó ni grupo ni estudiante, retornar error
         return redirect()->route('tracking.index')
             ->with('error', 'Por favor seleccione un grupo o un estudiante para exportar.');
+    }
+
+    /**
+     * Devuelve el token que mandó el formulario en una cookie legible desde JS:
+     * así la pantalla de carga sabe cuándo empezó la descarga y puede cerrarse.
+     */
+    private function withDownloadToken(Request $request, $response)
+    {
+        $token = (string) $request->input('download_token', '');
+
+        if (preg_match('/^[A-Za-z0-9]{1,64}$/', $token)) {
+            $response->headers->setCookie(cookie('export_download_token', $token, 5, '/', null, null, false));
+        }
+
+        return $response;
     }
 
     private function sectionStatus($exercise, $user_id) {
