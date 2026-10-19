@@ -2,6 +2,8 @@
 
 namespace App\Exports\Sheets;
 
+use Generator;
+
 class PlatformTimeSheet extends BaseSheet
 {
     public function title(): string
@@ -14,18 +16,14 @@ class PlatformTimeSheet extends BaseSheet
         return ['ID', 'Nombre', 'Tiempo total en plataforma'];
     }
 
-    public function array(): array
+    public function generator(): Generator
     {
-        $rows = [];
-
         foreach ($this->context->users() as $user) {
-            $rows[] = [
+            yield [
                 $user->user_id,
                 $user->name,
                 $this->context->formatSeconds($this->context->platformSeconds((int) $user->id)),
             ];
         }
-
-        return $rows;
     }
 }

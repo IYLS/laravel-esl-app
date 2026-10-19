@@ -19,7 +19,11 @@ use App\Exports\Sheets\StagesTimeSheet;
 use App\Exports\Sheets\TriesPerExerciseSheet;
 use App\Exports\Sheets\UnitsCompletedSheet;
 use App\Exports\Sheets\UnitTimeSheet;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Common\Entity\Style\Style;
+use OpenSpout\Writer\XLSX\Writer;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Throwable;
 
 /**
  * Export del sistema de tracking: un libro con una pestaña por indicador, con
@@ -27,9 +31,16 @@ use Maatwebsite\Excel\Concerns\WithMultipleSheets;
  * unidades, stages, ejercicios y preguntas que tiene asignado el grupo.
  *
  * El formato sigue el archivo de referencia Columnas_de_datos.xlsx.
+ *
+ * El archivo se escribe con OpenSpout fila por fila directo a disco: armar el
+ * libro con PhpSpreadsheet guarda cada celda en memoria y con grupos grandes
+ * no alcanza en un servidor de 512MB.
  */
-class ExportTracking implements WithMultipleSheets
+class ExportTracking
 {
+    /** Máximo de caracteres que Excel admite en una celda. */
+    private const MAX_CELL_LENGTH = 32767;
+
     /** @var int[] */
     protected array $userIds;
 
@@ -65,5 +76,69 @@ class ExportTracking implements WithMultipleSheets
             new CorrectPerExerciseSheet($context),
             new AnswersSheet($context),
         ];
+    }
+
+    /**
+     * Genera el archivo en una ruta temporal y lo devuelve como descarga; el
+     * archivo se borra después de enviarlo.
+     */
+    public function download(string $fileName): BinaryFileResponse
+    {
+        $path = tempnam(sys_get_temp_dir(), 'tracking-export-');
+
+        try {
+            $this->store($path);
+        } catch (Throwable $e) {
+            @unlink($path);
+
+            throw $e;
+        }
+
+        return response()->download($path, $fileName)->deleteFileAfterSend();
+    }
+
+    /**
+     * Escribe el libro en $path, una pestaña tras otra.
+     */
+    public function store(string $path): void
+    {
+        $writer = new Writer();
+        $writer->openToFile($path);
+        $headingStyle = (new Style())->setFontBold();
+
+        try {
+            foreach ($this->sheets() as $index => $sheet) {
+                $current = $index === 0 ? $writer->getCurrentSheet() : $writer->addNewSheetAndMakeItCurrent();
+                $current->setName($sheet->title());
+
+                $writer->addRow(Row::fromValues($sheet->headings(), $headingStyle));
+
+                foreach ($sheet->generator() as $values) {
+                    $writer->addRow(Row::fromValues(array_map([$this, 'cellValue'], $values)));
+                }
+            }
+        } finally {
+            $writer->close();
+        }
+    }
+
+    /**
+     * Igual que hacía PhpSpreadsheet: los textos numéricos se escriben como
+     * número (salvo los que empiezan con 0, como "007") para que Excel pueda
+     * sumarlos, y los textos demasiado largos se recortan al máximo de Excel.
+     */
+    private function cellValue($value)
+    {
+        if (! is_string($value)) {
+            return $value;
+        }
+
+        if (preg_match('/^-?(0|[1-9]\d*)(\.\d+)?$/', $value) && strlen($value) <= 15) {
+            return str_contains($value, '.') ? (float) $value : (int) $value;
+        }
+
+        return mb_strlen($value) > self::MAX_CELL_LENGTH
+            ? mb_substr($value, 0, self::MAX_CELL_LENGTH)
+            : $value;
     }
 }

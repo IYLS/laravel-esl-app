@@ -18,7 +18,6 @@ use App\Models\UserResponse;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Tests\TestCase;
 
@@ -366,6 +365,35 @@ class ExportTrackingTest extends TestCase
         );
     }
 
+    /** @test */
+    public function the_download_returns_the_form_token_so_the_loading_screen_can_close()
+    {
+        $response = $this->post(route('tracking.export_data'), [
+            'student' => $this->student->id,
+            'download_token' => 'abc123',
+        ]);
+
+        $response->assertOk();
+        // Sin encriptar: el JS de la pantalla de carga la compara con el token.
+        $cookie = collect($response->headers->getCookies())
+            ->first(fn ($cookie) => $cookie->getName() === 'export_download_token');
+        $this->assertNotNull($cookie);
+        $this->assertSame('abc123', $cookie->getValue());
+        $this->assertFalse($cookie->isHttpOnly());
+    }
+
+    /** @test */
+    public function an_invalid_download_token_is_ignored()
+    {
+        $response = $this->post(route('tracking.export_data'), [
+            'student' => $this->student->id,
+            'download_token' => '<script>',
+        ]);
+
+        $response->assertOk();
+        $response->assertCookieMissing('export_download_token');
+    }
+
     // -----------------------------------------------------------------
     // Helpers
     // -----------------------------------------------------------------
@@ -377,13 +405,8 @@ class ExportTrackingTest extends TestCase
      */
     private function exportedSheets(?array $userIds = null): array
     {
-        $path = Excel::raw(
-            new ExportTracking($userIds ?? [$this->student->id], 'group'),
-            \Maatwebsite\Excel\Excel::XLSX
-        );
-
         $file = tempnam(sys_get_temp_dir(), 'export') . '.xlsx';
-        file_put_contents($file, $path);
+        (new ExportTracking($userIds ?? [$this->student->id], 'group'))->store($file);
 
         $spreadsheet = IOFactory::createReader('Xlsx')->load($file);
         $sheets = [];

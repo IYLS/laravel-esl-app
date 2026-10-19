@@ -2,7 +2,9 @@
 
 namespace App\Exports\Sheets;
 
+use App\Exports\ExportAttempt;
 use App\Exports\TrackingExportContext;
+use Generator;
 
 /**
  * Detalle en bruto: una fila por cada intento registrado, con todas las
@@ -33,16 +35,14 @@ class RawDataSheet extends BaseSheet
         ];
     }
 
-    public function array(): array
+    public function generator(): Generator
     {
-        $rows = [];
-
         foreach ($this->context->users() as $user) {
             foreach ($this->context->exerciseRows() as $row) {
                 $exercise = $row['exercise'];
 
                 foreach ($this->context->attempts((int) $user->id, (int) $exercise->id) as $attempt) {
-                    $rows[] = [
+                    yield [
                         optional($user->group)->name,
                         $user->name,
                         $user->user_id,
@@ -50,17 +50,15 @@ class RawDataSheet extends BaseSheet
                         $this->context->stageShortName($row['section']),
                         $this->context->exerciseTitle($exercise),
                         $this->helpOptions($attempt),
-                        $this->context->formatSeconds($attempt->time_spent_in_seconds),
-                        (int) $attempt->correct_answers,
-                        (int) $attempt->intent_number,
-                        (int) $attempt->wrong_answers,
+                        $this->context->formatSeconds($attempt->timeSpentSeconds),
+                        $attempt->correctAnswers,
+                        $attempt->intentNumber,
+                        $attempt->wrongAnswers,
                         $this->context->answersForAttempt($attempt, $exercise),
                     ];
                 }
             }
         }
-
-        return $rows;
     }
 
     protected function textColumns(): array
@@ -71,16 +69,16 @@ class RawDataSheet extends BaseSheet
     /**
      * Opciones de ayuda que el estudiante abrió durante el intento.
      */
-    private function helpOptions($attempt): string
+    private function helpOptions(ExportAttempt $attempt): string
     {
         $used = [];
 
-        foreach ($attempt->helpUsage as $usage) {
-            if ((int) $usage->open_count <= 0) {
+        foreach ($attempt->helpUsage as $helpType => $usage) {
+            if ($usage['count'] <= 0) {
                 continue;
             }
 
-            $used[] = TrackingExportContext::HELP_TYPES[$usage->help_type] ?? $usage->help_type;
+            $used[] = TrackingExportContext::HELP_TYPES[$helpType] ?? $helpType;
         }
 
         return implode(', ', array_unique($used));

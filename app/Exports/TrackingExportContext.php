@@ -68,7 +68,7 @@ class TrackingExportContext
     /** @var array<int,string> exercise_id => título (con sufijo numérico si se repite en el stage) */
     protected array $exerciseTitles = [];
 
-    /** @var array<int,array<int,Tracking[]>> user_id => exercise_id => intentos */
+    /** @var array<int,array<int,ExportAttempt[]>> user_id => exercise_id => intentos */
     protected ?array $trackingIndex = null;
 
     /** @var array<int,int> user_id => segundos acumulados en toda la plataforma */
@@ -356,14 +356,14 @@ class TrackingExportContext
     /**
      * Intentos de un estudiante en un ejercicio, del más antiguo al más reciente.
      *
-     * @return Tracking[]
+     * @return ExportAttempt[]
      */
     public function attempts(int $userId, int $exerciseId): array
     {
         return $this->trackingIndex()[$userId][$exerciseId] ?? [];
     }
 
-    public function latestAttempt(int $userId, int $exerciseId): ?Tracking
+    public function latestAttempt(int $userId, int $exerciseId): ?ExportAttempt
     {
         $attempts = $this->attempts($userId, $exerciseId);
 
@@ -379,7 +379,7 @@ class TrackingExportContext
      * Todos los intentos de un estudiante en un conjunto de ejercicios.
      *
      * @param  iterable<int>  $exerciseIds
-     * @return Tracking[]
+     * @return ExportAttempt[]
      */
     public function attemptsForExercises(int $userId, iterable $exerciseIds): array
     {
@@ -402,7 +402,7 @@ class TrackingExportContext
         $seconds = 0;
 
         foreach ($this->attemptsForExercises($userId, $exerciseIds) as $attempt) {
-            $seconds += (int) $attempt->time_spent_in_seconds;
+            $seconds += $attempt->timeSpentSeconds;
         }
 
         return $seconds;
@@ -422,13 +422,13 @@ class TrackingExportContext
         }
 
         foreach ($this->attemptsForExercises($userId, $exerciseIds) as $attempt) {
-            foreach ($attempt->helpUsage as $usage) {
-                if (! isset($totals[$usage->help_type])) {
+            foreach ($attempt->helpUsage as $helpType => $usage) {
+                if (! isset($totals[$helpType])) {
                     continue;
                 }
 
-                $totals[$usage->help_type]['count'] += (int) $usage->open_count;
-                $totals[$usage->help_type]['seconds'] += (int) $usage->time_spent_seconds;
+                $totals[$helpType]['count'] += $usage['count'];
+                $totals[$helpType]['seconds'] += $usage['seconds'];
             }
         }
 
@@ -446,12 +446,12 @@ class TrackingExportContext
         $totals = array_fill_keys(array_keys(self::FEEDBACK_TYPES), 0);
 
         foreach ($this->attemptsForExercises($userId, $exerciseIds) as $attempt) {
-            foreach ($attempt->feedbackUsage as $usage) {
-                if (! isset($totals[$usage->feedback_type])) {
+            foreach ($attempt->feedbackUsage as $feedbackType => $count) {
+                if (! isset($totals[$feedbackType])) {
                     continue;
                 }
 
-                $totals[$usage->feedback_type] += (int) $usage->open_count;
+                $totals[$feedbackType] += $count;
             }
         }
 
@@ -515,46 +515,20 @@ class TrackingExportContext
     {
         $attempt = $this->latestAttempt($userId, $exercise->id);
 
-        if ($attempt === null) {
-            return '';
-        }
-
-        $byQuestion = $attempt->userResponses->groupBy('question_id');
-        $questions = $exercise->questions->values();
-        $multiple = $questions->count() > 1;
-        $parts = [];
-
-        foreach ($questions as $index => $question) {
-            $responses = $byQuestion->get($question->id, collect())
-                ->map(fn ($response) => trim((string) $response->response))
-                ->filter(fn (string $response) => $response !== '')
-                ->implode('; ');
-
-            if ($responses === '') {
-                continue;
-            }
-
-            $parts[] = $multiple ? sprintf('Q%d: %s', $index + 1, $responses) : $responses;
-        }
-
-        return implode(' | ', $parts);
+        return $attempt === null ? '' : $this->answersForAttempt($attempt, $exercise);
     }
 
     /**
      * Respuestas de un intento concreto, para la pestaña de datos completos.
      */
-    public function answersForAttempt(Tracking $attempt, Exercise $exercise): string
+    public function answersForAttempt(ExportAttempt $attempt, Exercise $exercise): string
     {
         $questions = $exercise->questions->values();
-        $byQuestion = $attempt->userResponses->groupBy('question_id');
         $multiple = $questions->count() > 1;
         $parts = [];
 
         foreach ($questions as $index => $question) {
-            $responses = $byQuestion->get($question->id, collect())
-                ->map(fn ($response) => trim((string) $response->response))
-                ->filter(fn (string $response) => $response !== '')
-                ->implode('; ');
+            $responses = implode('; ', $attempt->responses[$question->id] ?? []);
 
             if ($responses === '') {
                 continue;
@@ -576,11 +550,14 @@ class TrackingExportContext
         $incorrect = 0;
 
         foreach ($this->attempts($userId, $exercise->id) as $attempt) {
-            $responses = $attempt->userResponses->where('question_id', $question->id);
+            $answeredCorrectly = false;
 
-            $answeredCorrectly = $responses->contains(
-                fn ($response) => $this->isResponseCorrect($exercise, $question, (string) $response->response)
-            );
+            foreach ($attempt->responses[$question->id] ?? [] as $response) {
+                if ($this->isResponseCorrect($exercise, $question, $response)) {
+                    $answeredCorrectly = true;
+                    break;
+                }
+            }
 
             if (! $answeredCorrectly) {
                 $incorrect++;
@@ -618,7 +595,7 @@ class TrackingExportContext
     {
         $attempt = $this->latestAttempt($userId, $exercise->id);
 
-        return $attempt === null ? null : (int) $attempt->correct_answers;
+        return $attempt?->correctAnswers;
     }
 
     // -----------------------------------------------------------------
@@ -670,7 +647,7 @@ class TrackingExportContext
     }
 
     /**
-     * @return array<int,array<int,Tracking[]>>
+     * @return array<int,array<int,ExportAttempt[]>>
      */
     protected function trackingIndex(): array
     {
@@ -683,14 +660,25 @@ class TrackingExportContext
         $index = [];
 
         if (! empty($exerciseIds) && ! empty($this->userIds)) {
-            Tracking::with(['helpUsage', 'feedbackUsage', 'userResponses'])
+            // Sólo las columnas que usan las pestañas: el índice queda completo
+            // en memoria y las columnas de texto heredadas (help_options,
+            // feedback) lo inflan sin aportar nada.
+            Tracking::select([
+                'id', 'user_id', 'exercise_id', 'created_at', 'time_spent_in_seconds',
+                'correct_answers', 'wrong_answers', 'intent_number',
+            ])
+                ->with([
+                    'helpUsage:id,tracking_id,help_type,open_count,time_spent_seconds',
+                    'feedbackUsage:id,tracking_id,feedback_type,open_count',
+                    'userResponses:id,tracking_id,question_id,response',
+                ])
                 ->whereIn('user_id', $this->userIds)
                 ->whereIn('exercise_id', $exerciseIds)
                 ->orderBy('created_at')
                 ->orderBy('id')
                 ->chunk(500, function ($trackings) use (&$index) {
                     foreach ($trackings as $tracking) {
-                        $index[(int) $tracking->user_id][(int) $tracking->exercise_id][] = $tracking;
+                        $index[(int) $tracking->user_id][(int) $tracking->exercise_id][] = ExportAttempt::fromTracking($tracking);
                     }
                 });
         }

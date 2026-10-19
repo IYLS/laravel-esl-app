@@ -2,6 +2,8 @@
 
 namespace App\Exports\Sheets;
 
+use Generator;
+
 class UnitsCompletedSheet extends BaseSheet
 {
     public function title(): string
@@ -14,10 +16,9 @@ class UnitsCompletedSheet extends BaseSheet
         return ['ID', 'Nombre', 'Numero de unidades completadas'];
     }
 
-    public function array(): array
+    public function generator(): Generator
     {
         $units = $this->context->units();
-        $rows = [];
 
         foreach ($this->context->users() as $user) {
             $completed = 0;
@@ -28,9 +29,7 @@ class UnitsCompletedSheet extends BaseSheet
                 }
             }
 
-            $rows[] = [$user->user_id, $user->name, $completed];
+            yield [$user->user_id, $user->name, $completed];
         }
-
-        return $rows;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Exports\Sheets;
 
 use App\Models\User;
+use Generator;
 
 /**
  * Pestaña con un estudiante por fila y una columna por indicador, que es la
@@ -34,10 +35,9 @@ abstract class StudentMatrixSheet extends BaseSheet
         return array_merge(['ID', 'Nombre'], array_column($this->resolvedColumns(), 'heading'));
     }
 
-    public function array(): array
+    public function generator(): Generator
     {
         $columns = $this->resolvedColumns();
-        $rows = [];
 
         foreach ($this->context->users() as $user) {
             $row = [$user->user_id, $user->name];
@@ -46,10 +46,8 @@ abstract class StudentMatrixSheet extends BaseSheet
                 $row[] = $this->value($user, $column);
             }
 
-            $rows[] = $row;
+            yield $row;
         }
-
-        return $rows;
     }
 
     /**

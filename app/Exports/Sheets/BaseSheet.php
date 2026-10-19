@@ -3,20 +3,17 @@
 namespace App\Exports\Sheets;
 
 use App\Exports\TrackingExportContext;
-use Maatwebsite\Excel\Concerns\FromArray;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
-use Maatwebsite\Excel\Concerns\WithStyles;
-use Maatwebsite\Excel\Concerns\WithTitle;
+use Generator;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 /**
- * WithStrictNullComparison es necesario para que los ceros se escriban como 0
- * y no queden como celdas vacías.
+ * Una pestaña del export. Entrega sus filas con un generador para que
+ * ExportTracking las escriba al archivo de a una, sin armar la pestaña
+ * completa en memoria.
  */
-abstract class BaseSheet implements FromArray, WithHeadings, WithStrictNullComparison, WithStyles, WithTitle
+abstract class BaseSheet
 {
     /** Límites del ancho calculado a partir del contenido, en caracteres. */
     private const MIN_WIDTH = 12;
@@ -98,4 +95,16 @@ abstract class BaseSheet implements FromArray, WithHeadings, WithStrictNullCompa
             $sheet->getColumnDimension($letter)->setWidth($width);
         }
     }
+
+    abstract public function title(): string;
+
+    /**
+     * Fila de cabecera (se escribe en negrita).
+     */
+    abstract public function headings(): array;
+
+    /**
+     * Filas de datos, una por iteración.
+     */
+    abstract public function generator(): Generator;
 }
