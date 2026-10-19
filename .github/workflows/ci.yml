@@ -24,7 +24,7 @@ jobs:
         run: printf 'APP_KEY=base64:%s\n' "$(openssl rand -base64 32)" > .env
 
       - name: Build and start application
-        run: docker compose up --build --detach
+        run: docker compose up --build --detach --wait --wait-timeout 120
 
       - name: Check PHP syntax
         run: |
