@@ -51,6 +51,16 @@ abstract class StudentMatrixSheet extends BaseSheet
     }
 
     /**
+     * Índices (desde 1) de las columnas de indicadores, sin ID ni Nombre.
+     *
+     * @return int[]
+     */
+    protected function valueColumnIndexes(): array
+    {
+        return array_map(fn (int $offset) => $offset + 3, array_keys($this->resolvedColumns()));
+    }
+
+    /**
      * @return array<int,array<string,mixed>>
      */
     protected function resolvedColumns(): array

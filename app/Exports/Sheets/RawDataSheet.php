@@ -61,6 +61,11 @@ class RawDataSheet extends BaseSheet
         }
     }
 
+    protected function textColumns(): array
+    {
+        return [array_search('Respuestas', $this->headings(), true) + 1];
+    }
+
     /**
      * Opciones de ayuda que el estudiante abrió durante el intento.
      */

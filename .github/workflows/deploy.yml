@@ -15,6 +15,9 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
+          envs: DEPLOY_BRANCH
           script: |
             cd /var/www/laravel-esl-app
             bash deploy.sh
+        env:
+          DEPLOY_BRANCH: ${{ github.ref_name }}
