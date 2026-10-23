@@ -7,7 +7,7 @@ COPY resources ./resources
 RUN npm ci --no-audit --no-fund \
     && npm run production
 
-FROM php:8.4-apache
+FROM php:8.5-apache
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -35,24 +35,18 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
         /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 COPY composer.json composer.lock ./
-RUN composer install --no-interaction --prefer-dist --no-scripts
+RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-scripts
 
 COPY . .
 RUN composer dump-autoload --optimize \
     && mkdir -p storage/framework/cache storage/framework/sessions \
         storage/framework/views storage/logs bootstrap/cache \
+    && php artisan storage:link \
     && chown -R www-data:www-data storage bootstrap/cache
 
 COPY --from=assets /app/public/js ./public/js
 COPY --from=assets /app/public/css ./public/css
 
-# Entrypoint: espera la BD, migra y puebla (seeders) al arrancar el contenedor.
-# El sed elimina los CRLF por si el archivo se edita en Windows.
-RUN sed -i 's/\r$//' docker/entrypoint.sh \
-    && cp docker/entrypoint.sh /usr/local/bin/docker-entrypoint.sh \
-    && chmod +x /usr/local/bin/docker-entrypoint.sh
-
 EXPOSE 80
 
-ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["apache2-foreground"]

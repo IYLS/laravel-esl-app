@@ -22,6 +22,32 @@ Aplicación Laravel para enseñanza de inglés como segundo idioma (ESL). Módul
 ---
 
 ## Entorno local
+## Desarrollo local con Docker
+
+El entorno de desarrollo usa Compose y recursos separados de producción: app en `http://localhost:8001`, PostgreSQL en `localhost:5433` y un watcher de Laravel Mix.
+
+```bash
+cp .env.docker.dev.example .env.docker.dev
+docker compose -f docker-compose.dev.yml --env-file .env.docker.dev -p laravel-esl-dev up -d --build
+docker compose -f docker-compose.dev.yml --env-file .env.docker.dev -p laravel-esl-dev exec app php artisan storage:link
+docker compose -f docker-compose.dev.yml --env-file .env.docker.dev -p laravel-esl-dev exec app php docker/init-db.php
+```
+
+Los cambios de PHP se reflejan al recargar la página; los cambios de CSS/JS los compila el servicio `assets`. Para ver sus logs:
+
+```bash
+docker compose -f docker-compose.dev.yml --env-file .env.docker.dev -p laravel-esl-dev logs -f assets
+```
+
+Para detener el entorno sin borrar la base de datos:
+
+```bash
+docker compose -f docker-compose.dev.yml --env-file .env.docker.dev -p laravel-esl-dev down
+```
+
+Los datos usan volúmenes separados por proyecto. No agregues `-v` a `down` salvo que quieras borrar la base de desarrollo.
+
+## Entorno local
 
 ### 1. Clonar e instalar
 
@@ -180,63 +206,61 @@ No se requiere configuración adicional en el dispositivo nuevo.
 
 ### Requisitos del servidor
 
-- Ubuntu 20.04 o 22.04
-- PHP 8.0+ con FPM
-- Nginx o Apache
-- MySQL/MariaDB
-- Node.js y npm (para compilar assets)
+- Ubuntu 22.04 o posterior
+- Docker Engine y Docker Compose plugin
+- Docker Engine y Docker Compose plugin 2.17 o posterior (`up --wait`)
+- Un usuario SSH con permiso para ejecutar Docker
+- Nginx en el host o un proxy inverso delante del puerto local de la app
 
-### Script de despliegue
+PHP, Composer, Node.js y PostgreSQL se ejecutan en contenedores; no hace falta instalarlos en el servidor.
 
-El proyecto incluye `deploy.sh` para automatizar el despliegue:
+### Preparar el servidor
+
+Clona el repositorio en `/var/www/laravel-esl-app` y crea el archivo privado de entorno:
+
+```bash
+cd /var/www/laravel-esl-app
+cp .env.docker.example .env.docker
+```
+
+Edita `.env.docker` en el servidor. Configura `APP_URL`, una `APP_KEY` estable y credenciales fuertes para PostgreSQL. Si la aplicación ya tenía una clave, conserva esa misma `APP_KEY`; cambiarla invalida sesiones y datos cifrados existentes. Genera una clave nueva con `openssl rand -base64 32` y guárdala como `APP_KEY=base64:<valor>` solo si es una instalación nueva. No subas `.env.docker` al repositorio.
+
+La app se publica solo en `127.0.0.1:8000`, para que Nginx del host pueda conectarse sin exponer Apache directamente. Configura el proxy de tu dominio hacia `http://127.0.0.1:8000` y termina TLS en Nginx.
+
+PostgreSQL no publica ningún puerto al host. Sus datos y los archivos subidos por la aplicación se conservan en volúmenes Docker.
+
+### Despliegue
+
+GitHub Actions continúa conectándose por SSH y ejecutando `deploy.sh`. El script actualiza la rama que disparó el workflow, construye la imagen, espera a PostgreSQL, ejecuta migraciones y actualiza los contenedores:
 
 ```bash
 chmod +x deploy.sh
 ./deploy.sh
 ```
 
-**Despliegue completo** (tras `git pull`):
-
-- Git pull
-- `composer install --no-dev`
-- Migraciones
-- Compilación de assets
-- Permisos
-- Cachés de producción
-- Reinicio de PHP-FPM
-
-**Corrección rápida** (solo assets y cachés):
+Para reconstruir y reiniciar sin traer código ni ejecutar migraciones:
 
 ```bash
 ./deploy.sh --fix
 ```
 
-### Despliegue manual
+El usuario SSH debe pertenecer al grupo `docker` o tener permisos equivalentes. Ya no se reinicia PHP-FPM del host.
+
+### Primer arranque y datos
+
+El deploy ejecuta migraciones, pero no carga seeders automáticamente. Para una instalación nueva que necesita los datos iniciales definidos por los seeders, ejecuta una sola vez:
 
 ```bash
-cd /var/www/laravel-esl-app
-
-composer install --no-dev --optimize-autoloader
-php artisan migrate --force
-npm ci && npm run production
-chown -R www-data:www-data storage bootstrap/cache public
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+docker compose --env-file .env.docker run --rm --no-deps app php docker/init-db.php
 ```
 
-### Variables de entorno en producción
+Si vas a pasar datos existentes de MySQL a PostgreSQL, ese traslado debe hacerse por separado antes de apuntar producción a la nueva base. Cambiar el motor en Compose no convierte ni copia los datos.
 
-```env
-APP_ENV=production
-APP_DEBUG=false
-APP_URL=https://tu-dominio.com
+Para revisar servicios y logs:
 
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_DATABASE=laravel_esl
-DB_USERNAME=...
-DB_PASSWORD=...
+```bash
+docker compose --env-file .env.docker ps
+docker compose --env-file .env.docker logs -f app db
 ```
 
 ---
