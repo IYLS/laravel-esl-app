@@ -20,6 +20,7 @@ jobs:
             cd /var/www/laravel-esl-app
 
             cat > .env.docker <<EOF
+            APP_NAME=laravel
             APP_ENV=production
             APP_DEBUG=false
             APP_URL=${APP_URL}
