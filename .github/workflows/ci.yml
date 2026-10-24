@@ -21,7 +21,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Prepare environment
-        run: printf 'APP_KEY=base64:%s\n' "$(openssl rand -base64 32)" > .env
+        run: |
+          cat > .env <<EOF
+          APP_KEY=base64:$(openssl rand -base64 32)
+          APP_URL=http://localhost:8000
+          DB_DATABASE=laravel_esl_ci
+          DB_USERNAME=laravel_ci
+          DB_PASSWORD=laravel_ci_password
+          EOF
 
       - name: Build and start application
         run: docker compose up --build --detach --wait --wait-timeout 120
