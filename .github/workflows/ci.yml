@@ -20,6 +20,9 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Lint shell scripts
+        run: bash -n deploy.sh
+
       - name: Prepare environment
         run: |
           cat > .env <<EOF
