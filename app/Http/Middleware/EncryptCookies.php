@@ -12,6 +12,7 @@ class EncryptCookies extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        //
+        // La lee la pantalla de carga del export de tracking (no es sensible).
+        'export_download_token',
     ];
 }

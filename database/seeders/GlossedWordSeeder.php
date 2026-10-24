@@ -246,7 +246,7 @@ class GlossedWordSeeder extends Seeder
             [
                 'id' => 4035,
                 'word' => 'get it out of the way',
-                'description' => 'e.g. Let's get this paperwork out of the way to enjoy the rest of our afternoon.',
+                'description' => 'e.g. Let\'s get this paperwork out of the way to enjoy the rest of our afternoon.',
                 'unit_id' => 4002,
                 'deleted_at' => null,
             ],
@@ -260,7 +260,7 @@ class GlossedWordSeeder extends Seeder
             [
                 'id' => 4037,
                 'word' => 'hijack',
-                'description' => 'e.g. Cyber attackers can hijack your Wi"æFi connection to intercept personal data without your knowledge.',
+                'description' => 'e.g. Cyber attackers can hijack your Wi-Fi connection to intercept personal data without your knowledge.',
                 'unit_id' => 4002,
                 'deleted_at' => null,
             ],
@@ -288,7 +288,7 @@ class GlossedWordSeeder extends Seeder
             [
                 'id' => 4040,
                 'word' => 'premise',
-                'description' => 'e.g. The novel's premise that dreams can alter reality captivated readers from the first page.',
+                'description' => 'e.g. The novel\'s premise that dreams can alter reality captivated readers from the first page.',
                 'unit_id' => 4002,
                 'deleted_at' => null,
             ],
@@ -316,14 +316,14 @@ class GlossedWordSeeder extends Seeder
             [
                 'id' => 4044,
                 'word' => 'giving up',
-                'description' => 'She didn't win the race, but she's not giving up.',
+                'description' => 'She didn\'t win the race, but she\'s not giving up.',
                 'unit_id' => 4001,
                 'deleted_at' => '2025-08-18 12:33:32',
             ],
             [
                 'id' => 4045,
                 'word' => 'giving up',
-                'description' => 'She didn't win the race, but she's not giving up.',
+                'description' => 'She didn\'t win the race, but she\'s not giving up.',
                 'unit_id' => 4001,
                 'deleted_at' => null,
             ],
@@ -379,7 +379,7 @@ class GlossedWordSeeder extends Seeder
             [
                 'id' => 4057,
                 'word' => 'maid',
-                'description' => '(noun) a person (usually a woman) who cleans or works in someone's home.',
+                'description' => '(noun) a person (usually a woman) who cleans or works in someone\'s home.',
                 'unit_id' => 4003,
                 'deleted_at' => null,
             ],
@@ -449,7 +449,7 @@ class GlossedWordSeeder extends Seeder
             [
                 'id' => 4065,
                 'word' => 'crush',
-                'description' => '(verb) to completely destroy someone's hopes, ambitions, or plans, usually in a harsh or devastating way.',
+                'description' => '(verb) to completely destroy someone\'s hopes, ambitions, or plans, usually in a harsh or devastating way.',
                 'unit_id' => 4003,
                 'deleted_at' => null,
             ],
@@ -533,7 +533,7 @@ class GlossedWordSeeder extends Seeder
             [
                 'id' => 4095,
                 'word' => 'Discourage',
-                'description' => '(verb) The negative reviews didn't discourage her from publishing her book.',
+                'description' => '(verb) The negative reviews didn\'t discourage her from publishing her book.',
                 'unit_id' => 4005,
                 'deleted_at' => null,
             ],
@@ -561,7 +561,7 @@ class GlossedWordSeeder extends Seeder
             [
                 'id' => 4099,
                 'word' => 'Moron',
-                'description' => '(noun) e.g. I felt like a moron when I realized I'd been using the wrong password all day.',
+                'description' => '(noun) e.g. I felt like a moron when I realized I\'d been using the wrong password all day.',
                 'unit_id' => 4005,
                 'deleted_at' => null,
             ],
@@ -589,7 +589,7 @@ class GlossedWordSeeder extends Seeder
             [
                 'id' => 4075,
                 'word' => 'manager',
-                'description' => '(noun) A person whose job is to arrange or find work for a singer or actor, etc.  e.g. The band's manager arranged all their concerts and made sure they arrived on time for every show.',
+                'description' => '(noun) A person whose job is to arrange or find work for a singer or actor, etc.  e.g. The band\'s manager arranged all their concerts and made sure they arrived on time for every show.',
                 'unit_id' => 4004,
                 'deleted_at' => null,
             ],
@@ -610,7 +610,7 @@ class GlossedWordSeeder extends Seeder
             [
                 'id' => 4080,
                 'word' => 'blow it',
-                'description' => '(phrase) e.g. This is your big chance—don't blow it!',
+                'description' => '(phrase) e.g. This is your big chance—don\'t blow it!',
                 'unit_id' => 4004,
                 'deleted_at' => null,
             ],
@@ -658,7 +658,7 @@ class GlossedWordSeeder extends Seeder
             ],
             [
                 'id' => 4087,
-                'word' => 'got me through my parents' divorce',
+                'word' => 'got me through my parents\' divorce',
                 'description' => '(phrase) e.g. Music really got me through my exams.',
                 'unit_id' => 4004,
                 'deleted_at' => '2025-09-03 10:34:51',
@@ -666,7 +666,7 @@ class GlossedWordSeeder extends Seeder
             [
                 'id' => 4088,
                 'word' => 'tunes',
-                'description' => '(noun) e.g. My sister can't stop humming that catchy tune from the concert.',
+                'description' => '(noun) e.g. My sister can\'t stop humming that catchy tune from the concert.',
                 'unit_id' => 4004,
                 'deleted_at' => null,
             ],
@@ -680,7 +680,7 @@ class GlossedWordSeeder extends Seeder
             [
                 'id' => 4090,
                 'word' => 'wind up',
-                'description' => '(phrasal verb) e.g. If you're not careful, you'll wind up late again.',
+                'description' => '(phrasal verb) e.g. If you\'re not careful, you\'ll wind up late again.',
                 'unit_id' => 4004,
                 'deleted_at' => null,
             ],
