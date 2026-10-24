@@ -42,5 +42,5 @@ jobs:
           APP_URL: ${{ vars.APP_URL }}
           APP_PORT: ${{ vars.APP_PORT }}
           DB_DATABASE: ${{ vars.DB_DATABASE }}
-          DB_USERNAME: ${{ vars.DB_USERNAME }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
