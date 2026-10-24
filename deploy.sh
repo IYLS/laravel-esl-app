@@ -50,3 +50,8 @@ echo "Levantando la aplicación..."
 "${COMPOSE[@]}" ps
 
 echo "Despliegue Docker completado."
+
+"${COMPOSE[@]}" ps
+echo "Limpiando imágenes y caché de build antiguos..."
+docker image prune -f
+docker builder prune -f --filter "until=168h"
