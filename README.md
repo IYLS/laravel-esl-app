@@ -23,7 +23,7 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
 
 ### Con Docker (recomendado para desarrollo local)
 
-Requiere Docker Desktop con Docker Compose. En PowerShell, desde la raíz del proyecto:
+Requiere Docker Desktop con Docker Compose. La aplicación usa PHP 8.5 y Laravel 13. En PowerShell, desde la raíz del proyecto:
 
 ```powershell
 Copy-Item .env.example .env

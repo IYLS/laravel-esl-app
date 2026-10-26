@@ -11,7 +11,7 @@ class UserTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function user_has_group_relationship()
     {
         $user = new User();
@@ -19,7 +19,7 @@ class UserTest extends TestCase
         $this->assertTrue(method_exists($user, 'group'));
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function user_has_many_comments()
     {
         $user = User::factory()->create();
@@ -27,7 +27,7 @@ class UserTest extends TestCase
         $this->assertTrue(method_exists($user, 'comments'));
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function user_password_is_hidden()
     {
         $user = User::factory()->create(['password' => 'secret123']);
@@ -35,7 +35,7 @@ class UserTest extends TestCase
         $this->assertArrayNotHasKey('password', $user->toArray());
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function user_can_be_created_with_fillable_attributes()
     {
         $user = User::factory()->create([

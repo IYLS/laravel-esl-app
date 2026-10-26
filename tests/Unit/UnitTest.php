@@ -12,7 +12,7 @@ class UnitTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function unit_has_sections_relationship()
     {
         $unit = new Unit();
@@ -20,7 +20,7 @@ class UnitTest extends TestCase
         $this->assertTrue(method_exists($unit, 'sections'));
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function unit_has_groups_relationship()
     {
         $unit = new Unit();
@@ -28,7 +28,7 @@ class UnitTest extends TestCase
         $this->assertTrue(method_exists($unit, 'groups'));
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function unit_has_keywords_relationship()
     {
         $unit = new Unit();
@@ -36,7 +36,7 @@ class UnitTest extends TestCase
         $this->assertTrue(method_exists($unit, 'keywords'));
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function unit_has_glossed_words_relationship()
     {
         $unit = new Unit();

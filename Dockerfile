@@ -7,7 +7,7 @@ COPY resources ./resources
 RUN npm ci --no-audit --no-fund \
     && npm run production
 
-FROM php:8.2-apache
+FROM php:8.5-apache
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -38,7 +38,8 @@ COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-scripts
 
 COPY . .
-RUN composer dump-autoload --optimize \
+RUN rm -f bootstrap/cache/*.php \
+    && composer dump-autoload --optimize \
     && mkdir -p storage/framework/cache storage/framework/sessions \
         storage/framework/views storage/logs bootstrap/cache \
     && php artisan storage:link \

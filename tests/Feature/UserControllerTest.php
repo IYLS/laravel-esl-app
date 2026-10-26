@@ -17,7 +17,7 @@ class UserControllerTest extends TestCase
         $this->teacher = User::factory()->create(['role' => 'teacher']);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function teacher_can_access_users_index()
     {
         $response = $this->actingAs($this->teacher)->get('/users');
@@ -25,7 +25,7 @@ class UserControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function teacher_can_access_create_user_page()
     {
         $response = $this->actingAs($this->teacher)->get('/users/create');
@@ -33,7 +33,7 @@ class UserControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function teacher_can_view_user_details()
     {
         $student = User::factory()->create(['role' => 'student']);
