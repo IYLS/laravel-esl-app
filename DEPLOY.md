@@ -288,6 +288,7 @@ laravel-esl-app/
 │   └── views/
 ├── routes/web.php
 ├── deploy.sh
+├── ci-deploy.sh
 └── webpack.mix.js       # Laravel Mix (no Vite)
 ```
 

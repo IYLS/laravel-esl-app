@@ -35,7 +35,7 @@ jobs:
 
             sed -i 's/^[[:space:]]*//' .env.docker
 
-            bash deploy.sh
+            bash ci-deploy.sh
         env:
           DEPLOY_BRANCH: ${{ github.ref_name }}
           APP_KEY: ${{ secrets.APP_KEY }}
