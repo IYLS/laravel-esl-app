@@ -10,7 +10,7 @@ class QuestionTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function question_belongs_to_exercise()
     {
         $question = new Question();
@@ -18,7 +18,7 @@ class QuestionTest extends TestCase
         $this->assertTrue(method_exists($question, 'exercise'));
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function question_has_many_feedbacks()
     {
         $question = new Question();
@@ -26,7 +26,7 @@ class QuestionTest extends TestCase
         $this->assertTrue(method_exists($question, 'feedbacks'));
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function question_has_many_alternatives()
     {
         $question = new Question();
@@ -34,7 +34,7 @@ class QuestionTest extends TestCase
         $this->assertTrue(method_exists($question, 'alternatives'));
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function question_has_one_response()
     {
         $question = new Question();

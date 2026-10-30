@@ -50,7 +50,7 @@ class ExportTrackingTest extends TestCase
         $this->seedCurriculum();
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_builds_one_sheet_per_indicator_with_the_reference_titles()
     {
         $sheets = $this->exportedSheets();
@@ -76,7 +76,7 @@ class ExportTrackingTest extends TestCase
         ], array_keys($sheets));
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function every_sheet_title_fits_the_excel_limit()
     {
         foreach (array_keys($this->exportedSheets()) as $title) {
@@ -84,7 +84,7 @@ class ExportTrackingTest extends TestCase
         }
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function student_rows_start_with_id_and_name()
     {
         $sheets = $this->exportedSheets();
@@ -96,7 +96,7 @@ class ExportTrackingTest extends TestCase
         }
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_counts_completed_units_and_totals_platform_time()
     {
         $sheets = $this->exportedSheets();
@@ -110,7 +110,7 @@ class ExportTrackingTest extends TestCase
         $this->assertSame('09:00', $sheets['Unit (time)'][1][2]);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_labels_stage_columns_per_unit_and_counts_completed_exercises()
     {
         $sheets = $this->exportedSheets();
@@ -127,7 +127,7 @@ class ExportTrackingTest extends TestCase
         $this->assertSame(1, (int) $sheets['Stages (completed exercises)'][1][4]);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_marks_each_exercise_as_completed_or_not()
     {
         $row = $this->headedRow('Completed exercises');
@@ -138,7 +138,7 @@ class ExportTrackingTest extends TestCase
         $this->assertSame('Yes', $row['U1 - Verification stage - Evaluating statements']);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_numbers_exercises_that_share_a_title_inside_a_stage()
     {
         $headings = $this->exportedSheets()['Number of tries per exercise'][0];
@@ -147,7 +147,7 @@ class ExportTrackingTest extends TestCase
         $this->assertContains('U1 - PS - Resources 2 (E)', $headings);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_marks_the_category_of_each_exercise_in_the_tries_sheet()
     {
         $row = $this->headedRow('Number of tries per exercise');
@@ -158,7 +158,7 @@ class ExportTrackingTest extends TestCase
         $this->assertSame(1, (int) $row['U1 - RS - Enjoyment (E)']);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_splits_time_by_stage_and_by_exercise_category()
     {
         $stages = $this->headedRow('Stages (time of interaction)');
@@ -173,7 +173,7 @@ class ExportTrackingTest extends TestCase
         $this->assertSame('01:00', $categories['U1: Engagement']);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_reports_help_option_interactions_and_time_per_unit()
     {
         $interactions = $this->headedRow('Help options (interactions)');
@@ -189,7 +189,7 @@ class ExportTrackingTest extends TestCase
         $this->assertSame('00:00', $time['U1: Dictionary Time Spent']);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_counts_feedback_openings_per_type()
     {
         $row = $this->headedRow('Feedback');
@@ -200,7 +200,7 @@ class ExportTrackingTest extends TestCase
         $this->assertSame(2, (int) $row['U1: Feedback: Knowledge of correct response']);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_counts_incorrect_tries_per_question()
     {
         $row = $this->headedRow('Number of incorrect (question)');
@@ -211,7 +211,7 @@ class ExportTrackingTest extends TestCase
         $this->assertSame(2, (int) $row['U1 - VS - Evaluating statements - Q2']);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_reports_correct_answers_from_the_latest_attempt()
     {
         $row = $this->headedRow('Number of correct (exercise)');
@@ -219,7 +219,7 @@ class ExportTrackingTest extends TestCase
         $this->assertSame(1, (int) $row['U1: Evaluating statements']);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function only_auto_graded_comprehension_exercises_get_correctness_columns()
     {
         $headings = $this->exportedSheets()['Number of correct (exercise)'][0];
@@ -229,7 +229,7 @@ class ExportTrackingTest extends TestCase
         $this->assertNotContains('U1: Enjoyment', $headings);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function personal_response_questions_are_left_out_of_the_correctness_sheets()
     {
         $sheets = $this->exportedSheets();
@@ -244,7 +244,7 @@ class ExportTrackingTest extends TestCase
         $this->assertContains('U1 - VS - What do you think?', $sheets['Number of tries per exercise'][0]);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_lists_reflection_answers_and_open_answers()
     {
         $reflection = $this->headedRow('Reflection');
@@ -259,7 +259,7 @@ class ExportTrackingTest extends TestCase
         $this->assertArrayNotHasKey('U1 VS: Evaluating statements', $answers);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_lists_forum_comments_with_a_real_timestamp()
     {
         $sheets = $this->exportedSheets();
@@ -270,7 +270,7 @@ class ExportTrackingTest extends TestCase
         $this->assertSame('02-06-2026 10:30:00', $sheets['Forum'][1][4]);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function the_raw_sheet_has_one_row_per_attempt()
     {
         $sheets = $this->exportedSheets();
@@ -305,7 +305,7 @@ class ExportTrackingTest extends TestCase
         $this->assertSame('Q1: Listen for names | Q2: Take notes', $organization[11]);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_exports_every_student_of_a_group()
     {
         $other = $this->makeStudent('STU-2', 'Ana Rojas');
@@ -318,7 +318,7 @@ class ExportTrackingTest extends TestCase
         $this->assertSame(0, (int) $rows[0][2]);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function a_student_without_tracking_gets_empty_values_instead_of_errors()
     {
         $other = $this->makeStudent('STU-3', 'Sin Datos');
@@ -331,7 +331,7 @@ class ExportTrackingTest extends TestCase
         $this->assertCount(1, $sheets['Forum']);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function unit_columns_follow_curriculum_position_not_insertion_order()
     {
         // Se crean desordenadas y con una sin posición definida.
@@ -353,7 +353,7 @@ class ExportTrackingTest extends TestCase
         $this->assertSame(['ID', 'Nombre', 'U1', 'U2', 'U3', 'U9'], $headings);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function stage_columns_follow_position_within_each_unit()
     {
         $headings = $this->exportedSheets()['Stages (time of interaction)'][0];
@@ -365,7 +365,7 @@ class ExportTrackingTest extends TestCase
         );
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function the_download_returns_the_form_token_so_the_loading_screen_can_close()
     {
         $response = $this->post(route('tracking.export_data'), [
@@ -382,7 +382,7 @@ class ExportTrackingTest extends TestCase
         $this->assertFalse($cookie->isHttpOnly());
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function an_invalid_download_token_is_ignored()
     {
         $response = $this->post(route('tracking.export_data'), [

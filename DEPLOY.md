@@ -33,6 +33,8 @@ docker compose -f docker-compose.dev.yml --env-file .env.docker.dev -p laravel-e
 docker compose -f docker-compose.dev.yml --env-file .env.docker.dev -p laravel-esl-dev exec app php docker/init-db.php
 ```
 
+Al iniciar, el contenedor de la app genera y conserva una clave de Laravel en un volumen de desarrollo si `APP_KEY` está vacío, limpia los manifiestos de paquetes e instala las dependencias de Composer, incluidas las de desarrollo. Para actualizar un volumen `vendor` antiguo tras cambiar dependencias, vuelve a ejecutar `up -d --build --force-recreate app`; no uses `down -v`, porque borraría también la base local y la clave guardada.
+
 Los cambios de PHP se reflejan al recargar la página; los cambios de CSS/JS los compila el servicio `assets`. Para ver sus logs:
 
 ```bash
@@ -286,6 +288,7 @@ laravel-esl-app/
 │   └── views/
 ├── routes/web.php
 ├── deploy.sh
+├── ci-deploy.sh
 └── webpack.mix.js       # Laravel Mix (no Vite)
 ```
 

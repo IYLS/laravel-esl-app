@@ -17,11 +17,11 @@ class ExampleTest extends TestCase
      */
     public function test_the_application_returns_a_successful_response()
     {
-        // La ruta '/' redirige a login si no hay usuario autenticado
+        // Guests see the public landing page.
         $response = $this->get('/');
 
-        $response->assertStatus(302);
-        $response->assertRedirect(route('auth.login'));
+        $response->assertOk();
+        $response->assertViewIs('auth.landing');
     }
 
     /**

@@ -12,7 +12,7 @@ class ExerciseTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function exercise_belongs_to_section()
     {
         $exercise = new Exercise();
@@ -20,7 +20,7 @@ class ExerciseTest extends TestCase
         $this->assertTrue(method_exists($exercise, 'section'));
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function exercise_belongs_to_exercise_type()
     {
         $exercise = new Exercise();
@@ -28,7 +28,7 @@ class ExerciseTest extends TestCase
         $this->assertTrue(method_exists($exercise, 'exerciseType'));
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function exercise_has_many_questions()
     {
         $exercise = new Exercise();
@@ -36,7 +36,7 @@ class ExerciseTest extends TestCase
         $this->assertTrue(method_exists($exercise, 'questions'));
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function exercise_has_many_feedbacks()
     {
         $exercise = new Exercise();
@@ -44,7 +44,7 @@ class ExerciseTest extends TestCase
         $this->assertTrue(method_exists($exercise, 'feedbacks'));
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function exercise_has_one_tracking()
     {
         $exercise = new Exercise();

@@ -22,7 +22,7 @@ class TrackingControllerTest extends TestCase
         $this->teacher = User::factory()->create(['role' => 'teacher']);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function teacher_can_access_tracking_index()
     {
         $response = $this->actingAs($this->teacher)->get('/tracking/index');
@@ -30,7 +30,7 @@ class TrackingControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function teacher_can_view_tracking_details()
     {
         $exerciseType = ExerciseType::factory()->create();

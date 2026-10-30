@@ -10,7 +10,7 @@ class GroupTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function group_belongs_to_many_units()
     {
         $group = new Group();
@@ -18,7 +18,7 @@ class GroupTest extends TestCase
         $this->assertTrue(method_exists($group, 'units'));
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function group_has_many_users()
     {
         $group = new Group();
