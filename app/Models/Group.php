@@ -15,10 +15,15 @@ class Group extends Model
 
     protected $table = 'groups';
     protected $fillable = [
-        'name'
+        'name',
+        'leaderboard_enabled',
     ];
 
-    public $timestamps = false;
+    protected $casts = [
+        'leaderboard_enabled' => 'boolean',
+    ];
+
+    public $timestamps = true;
     public $incrementing = true;
 
     public function units() { return $this->belongsToMany(Unit::class, 'unit_group'); }

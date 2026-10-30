@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Unit;
 use App\Models\Section;
 use App\Models\Tracking;
+use App\Models\User;
 
 class StudentController extends Controller
 {
@@ -18,18 +19,48 @@ class StudentController extends Controller
     public function show($unit_id)
     {
         $unit = Unit::find($unit_id);
+        
+        if (!$unit) {
+            return redirect()->route('student.level_selection')
+                ->with('error', 'La unidad solicitada no existe.');
+        }
+        
         $keywords = $unit->keywords;
         $user = Auth::user();
 
-        if (isset($unit->sections->first()->exercises)) {
-            $first_exercise_id = $unit->sections->first()->exercises->first()->id;
-        } else {
-            $first_exercise_id = 0;
+        // Verificar si hay ejercicios válidos en alguna sección (incluye Voice Recognition)
+        $has_exercises = false;
+        $first_exercise_id = 0;
+        
+        foreach($unit->sections as $section) {
+            if ($section->exercises->count() > 0) {
+                $has_exercises = true;
+                if ($first_exercise_id == 0) {
+                    $first_exercise_id = $section->exercises->sortBy('position')->first()->id;
+                }
+            }
         }
 
         $completed_exercises = Tracking::where('user_id', $user->id)->get()->map(function ($tracking) {
             return $tracking->exercise_id;
         })->toArray();
+
+        // Calcular progreso de la unidad (ejercicios completados / total de ejercicios, excluyendo tipo 5)
+        $total_exercises = 0;
+        $completed_count = 0;
+        
+        foreach($unit->sections as $section) {
+            $section_exercises = $section->exercises->where('exercise_type_id', '!=', 5);
+            $total_exercises += $section_exercises->count();
+            
+            foreach($section_exercises as $exercise) {
+                if (in_array($exercise->id, $completed_exercises)) {
+                    $completed_count++;
+                }
+            }
+        }
+        
+        $unit_progress = $total_exercises > 0 ? round(($completed_count / $total_exercises) * 100) : 0;
 
         $help_options = array();
         if ($unit->cultural_notes_enabled) array_push($help_options, $unit->cultural_notes);
@@ -39,7 +70,51 @@ class StudentController extends Controller
         if ($unit->translation_enabled) array_push($help_options, $unit->translation);
         if ($unit->dictionary_enabled) array_push($help_options, $unit->dictionary);
 
-        return view('student.show', compact(['unit', 'keywords', 'help_options', 'user', 'completed_exercises', 'first_exercise_id']));
+        return view('student.show', compact(['unit', 'keywords', 'help_options', 'user', 'completed_exercises', 'first_exercise_id', 'unit_progress', 'completed_count', 'total_exercises', 'has_exercises']));
+    }
+
+    public function groupProgress($unit_id)
+    {
+        $unit = Unit::find($unit_id);
+        $user = Auth::user();
+
+        if (!$unit || !$user->group_id) {
+            return response()->json(['progress' => 0]);
+        }
+
+        $exerciseIds = collect();
+        foreach ($unit->sections as $section) {
+            $exerciseIds = $exerciseIds->merge(
+                $section->exercises->where('exercise_type_id', '!=', 5)->pluck('id')
+            );
+        }
+        $totalExercises = $exerciseIds->count();
+
+        if ($totalExercises === 0) {
+            return response()->json(['progress' => 0]);
+        }
+
+        $groupUserIds = User::where('group_id', $user->group_id)->pluck('id');
+        $studentCount  = $groupUserIds->count();
+
+        if ($studentCount === 0) {
+            return response()->json(['progress' => 0]);
+        }
+
+        $completedPerUser = Tracking::whereIn('user_id', $groupUserIds)
+            ->whereIn('exercise_id', $exerciseIds)
+            ->selectRaw('user_id, COUNT(DISTINCT exercise_id) as completed')
+            ->groupBy('user_id')
+            ->pluck('completed', 'user_id');
+
+        $totalProgress = 0;
+        foreach ($groupUserIds as $uid) {
+            $totalProgress += (($completedPerUser[$uid] ?? 0) / $totalExercises) * 100;
+        }
+
+        return response()->json([
+            'progress' => round($totalProgress / $studentCount),
+        ]);
     }
 
     public function select(Request $request)
@@ -53,6 +128,12 @@ class StudentController extends Controller
         {
             return view('student.level_selection');
         }
+    }
+
+    public function welcome()
+    {
+        $user = Auth::user();
+        return view('student.welcome', compact(['user']));
     }
 
     public function level_selection() 

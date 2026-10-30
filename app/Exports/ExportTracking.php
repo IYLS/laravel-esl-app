@@ -2,281 +2,143 @@
 
 namespace App\Exports;
 
-use App\Models\Tracking;
-use App\Models\User;
-use App\Models\Unit;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use App\Exports\Sheets\AnswersSheet;
+use App\Exports\Sheets\CompletedExercisesSheet;
+use App\Exports\Sheets\CorrectPerExerciseSheet;
+use App\Exports\Sheets\ExerciseCategoryTimeSheet;
+use App\Exports\Sheets\FeedbackSheet;
+use App\Exports\Sheets\ForumSheet;
+use App\Exports\Sheets\HelpOptionsInteractionsSheet;
+use App\Exports\Sheets\HelpOptionsTimeSheet;
+use App\Exports\Sheets\IncorrectPerQuestionSheet;
+use App\Exports\Sheets\PlatformTimeSheet;
+use App\Exports\Sheets\RawDataSheet;
+use App\Exports\Sheets\ReflectionSheet;
+use App\Exports\Sheets\StagesCompletedExercisesSheet;
+use App\Exports\Sheets\StagesTimeSheet;
+use App\Exports\Sheets\TriesPerExerciseSheet;
+use App\Exports\Sheets\UnitsCompletedSheet;
+use App\Exports\Sheets\UnitTimeSheet;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Common\Entity\Style\Style;
+use OpenSpout\Writer\XLSX\Writer;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Throwable;
 
-class ExportTracking implements FromCollection, WithHeadings, WithMapping
+/**
+ * Export del sistema de tracking: un libro con una pestaña por indicador, con
+ * los estudiantes en las filas y las columnas generadas a partir de las
+ * unidades, stages, ejercicios y preguntas que tiene asignado el grupo.
+ *
+ * El formato sigue el archivo de referencia Columnas_de_datos.xlsx.
+ *
+ * El archivo se escribe con OpenSpout fila por fila directo a disco: armar el
+ * libro con PhpSpreadsheet guarda cada celda en memoria y con grupos grandes
+ * no alcanza en un servidor de 512MB.
+ */
+class ExportTracking
 {
-    protected string $userId;
+    /** Máximo de caracteres que Excel admite en una celda. */
+    private const MAX_CELL_LENGTH = 32767;
 
-    function __construct(string $userId) {
-        $this->userId = $userId;
+    /** @var int[] */
+    protected array $userIds;
+
+    /** 'student' o 'group'; se conserva para distinguir el origen del export. */
+    protected string $exportType;
+
+    public function __construct($userIds, string $exportType = 'student')
+    {
+        $this->userIds = is_array($userIds) ? $userIds : [$userIds];
+        $this->exportType = $exportType;
     }
 
-    public function collection()
+    public function sheets(): array
     {
-        return User::where('id', $this->userId)->get();
-    }
-
-    public function map($user): array
-    {
-        $units = $this->getUserUnits();
-        $trackingData = $this->processTrackingData($user, $units);
-        $unitsData = $this->processUnits($user);
-
-        $data = [
-            $user->user_id,
-            $user->name,
-            $trackingData[0],
-            $trackingData[1],
-            $trackingData[2],
-        ];
-
-        foreach($unitsData as $unitData) {
-            array_push($data, $unitData["timeSpentInUnit"]);
-            array_push($data, $unitData["rightAnswersAmount"]);
-            array_push($data, $unitData["transcriptInteractions"]);
-            array_push($data, $unitData["transcriptTime"]);
-            array_push($data, $unitData["tipsInteractions"]);
-            array_push($data, $unitData["tipsTime"]);
-            array_push($data, $unitData["culturalNotesInteractions"]);
-            array_push($data, $unitData["culturalNotesTime"]);
-            array_push($data, $unitData["glossaryInteractions"]);
-            array_push($data, $unitData["glossaryTime"]);
-            array_push($data, $unitData["translationInteractions"]);
-            array_push($data, $unitData["translationTime"]);
-            array_push($data, $unitData["dictionaryInteractions"]);
-            array_push($data, $unitData["dictionaryTime"]);
-        }
-
-        return $data;
-    }
-
-    public function headings(): array
-    {
-        $units = $this->getUserUnits();
-        $array = [
-            "ID Usuario",
-            "Nombre",
-            "Numero de unidades completadas",
-            "Tiempo total en plataforma",
-            "Aciertos totales en plataforma",
-        ];
-
-        foreach($units as $key=>$unit) {
-            $key += 1;
-            array_push($array, "U$key: Tiempo");
-            array_push($array, "U$key: Aciertos");
-            array_push($array, "U$key: Transcript Interactions");
-            array_push($array, "U$key: Transcript Time Spent");
-            array_push($array, "U$key: Tips Interactions");
-            array_push($array, "U$key: Tips Time Spent");
-            array_push($array, "U$key: Cultural Notes Interactions");
-            array_push($array, "U$key: Cultural Notes Time Spent");
-            array_push($array, "U$key: Glossary Interactions");
-            array_push($array, "U$key: Glossary Time Spent");
-            array_push($array, "U$key: Translation Interactions");
-            array_push($array, "U$key: Translation Time Spent");
-            array_push($array, "U$key: Dictionary Interactions");
-            array_push($array, "U$key: Dictionary Time Spent");
-        };
-
-        return $array;
-    }
-
-    private function processTrackingData($user, $units): array
-    {
-        $trackings = Tracking::where('user_id', $user->id)->get();
-        $interactionTimes = array();
-        $totalCorrectAnswersOnPlatform = 0;
-
-        foreach($trackings as $tracking)
-        {
-            array_push($interactionTimes, $tracking->time_spent_in_minutes);
-            $totalCorrectAnswersOnPlatform += intval($tracking->correct_answers);
-        }
-
-        $totalTimeSpentOnPlatform = $this->sumTime($interactionTimes);
-        $completedUnitsCount = $units->count();
+        $context = new TrackingExportContext($this->userIds);
 
         return [
-            $completedUnitsCount,
-            $totalTimeSpentOnPlatform,
-            "$totalCorrectAnswersOnPlatform",
+            new RawDataSheet($context),
+            new UnitsCompletedSheet($context),
+            new PlatformTimeSheet($context),
+            new UnitTimeSheet($context),
+            new StagesCompletedExercisesSheet($context),
+            new CompletedExercisesSheet($context),
+            new StagesTimeSheet($context),
+            new ExerciseCategoryTimeSheet($context),
+            new ReflectionSheet($context),
+            new FeedbackSheet($context),
+            new HelpOptionsInteractionsSheet($context),
+            new HelpOptionsTimeSheet($context),
+            new ForumSheet($context),
+            new TriesPerExerciseSheet($context),
+            new IncorrectPerQuestionSheet($context),
+            new CorrectPerExerciseSheet($context),
+            new AnswersSheet($context),
         ];
     }
 
-    private function processUnits($user): array
+    /**
+     * Genera el archivo en una ruta temporal y lo devuelve como descarga; el
+     * archivo se borra después de enviarlo.
+     */
+    public function download(string $fileName): BinaryFileResponse
     {
-        $units = $this->getUserUnits();
-        $userId = $this->userId;
-        $unitsIndicators = array();
+        $path = tempnam(sys_get_temp_dir(), 'tracking-export-');
 
-        foreach($units as $unit)
-        {
-            $unitId = $unit->id;
-            $unitTrackings = Tracking::whereHas('exercise.section.unit', function ($query) use ($unitId) {
-                $query->where('units.id', $unitId);
-            })->where('user_id', "$userId")->get();
+        try {
+            $this->store($path);
+        } catch (Throwable $e) {
+            @unlink($path);
 
-            $timeSpentInUnit = array();
-            $correctAnswersInUnit = 0;
+            throw $e;
+        }
 
-            // Indicadores de opciones de ayuda por unidad
-            $transcriptInteractionsUnit = 0;
-            $transcriptTimesUnit = array();
-            $tipsInteractionsUnit = 0;
-            $tipsTimesUnit = array();
-            $culturalNotesInteractionsUnit = 0;
-            $culturalNotesTimesUnit = array();
-            $glossaryInteractionsUnit = 0;
-            $glossaryTimesUnit = array();
-            $translationInteractionsUnit = 0;
-            $translationTimesUnit = array();
-            $dictionaryInteractionsUnit = 0;
-            $dictionaryTimesUnit = array();
+        return response()->download($path, $fileName)->deleteFileAfterSend();
+    }
 
-            foreach($unitTrackings as $tracking)
-            {
-                $helpOptions = explode(",", $tracking->help_options);
+    /**
+     * Escribe el libro en $path, una pestaña tras otra.
+     */
+    public function store(string $path): void
+    {
+        $writer = new Writer();
+        $writer->openToFile($path);
+        $headingStyle = (new Style())->setFontBold();
 
-                if ($helpOptions != null and count($helpOptions) == 6) {
-                    $transcriptData = explode("~", $helpOptions[0]);
-                    $tipsData = explode("~", $helpOptions[1]);
-                    $culturalNotesData = explode("~", $helpOptions[2]);
-                    $glossaryData = explode("~", $helpOptions[3]);
-                    $translationData = explode("~", $helpOptions[4]);
-                    $dictionaryData = explode("~", $helpOptions[5]);
+        try {
+            foreach ($this->sheets() as $index => $sheet) {
+                $current = $index === 0 ? $writer->getCurrentSheet() : $writer->addNewSheetAndMakeItCurrent();
+                $current->setName($sheet->title());
 
-                    if (count($transcriptData) == 3) {
-                        $transcriptInteractions = $transcriptData[1];
-                        $transcriptTime = $transcriptData[2];
-                        array_push($transcriptTimesUnit, $transcriptTime);
-                        $transcriptInteractionsUnit += intval($transcriptInteractions);
-                    }
+                $writer->addRow(Row::fromValues($sheet->headings(), $headingStyle));
 
-                    if (count($tipsData) == 3) {
-                        $tipsInteractions = $tipsData[1];
-                        $tipsTime = $tipsData[2];
-                        array_push($tipsTimesUnit, $tipsTime);
-                        $tipsInteractionsUnit += intval($tipsInteractions);
-                    }
-
-                    if (count($culturalNotesData) == 3) {
-                        $culturalNotesInteractions = $culturalNotesData[1];
-                        $culturalNotesTime = $culturalNotesData[2];
-                        array_push($culturalNotesTimesUnit, $culturalNotesTime);
-                        $culturalNotesInteractionsUnit += intval($culturalNotesInteractions);
-                    }
-
-                    if (count($glossaryData) == 3) {
-                        $glossaryInteractions = $glossaryData[1];
-                        $glossaryTime = $glossaryData[2];
-                        array_push($glossaryTimesUnit, $glossaryTime);
-                        $glossaryInteractionsUnit += intval($glossaryInteractions);
-                    }
-
-                    if (count($translationData) == 3) {
-                        $translationInteractions = $translationData[1];
-                        $translationTime = $translationData[2];
-                        array_push($translationTimesUnit, $translationTime);
-                        $translationInteractionsUnit += intval($translationInteractions);
-                    }
-
-                    if (count($dictionaryData) == 3) {
-                        $dictionaryInteractions = $dictionaryData[1];
-                        $dictionaryTime = $dictionaryData[2];
-                        array_push($dictionaryTimesUnit, $dictionaryTime);
-                        $dictionaryInteractionsUnit += intval($dictionaryInteractions);
-                    }
+                foreach ($sheet->generator() as $values) {
+                    $writer->addRow(Row::fromValues(array_map([$this, 'cellValue'], $values)));
                 }
-
-                $correctAnswersInUnit += intval($tracking->correct_answers);
-                array_push($timeSpentInUnit, $tracking->time_spent_in_minutes);
             }
-
-            $unitData = [
-                "timeSpentInUnit" => $this->sumTime($timeSpentInUnit),
-                "rightAnswersAmount" => "$correctAnswersInUnit",
-                "transcriptInteractions" => "$transcriptInteractionsUnit",
-                "transcriptTime" => $this->sumTime($transcriptTimesUnit),
-                "tipsInteractions" => "$tipsInteractionsUnit",
-                "tipsTime" => $this->sumTime($tipsTimesUnit),
-                "culturalNotesInteractions" => "$culturalNotesInteractionsUnit",
-                "culturalNotesTime" => $this->sumTime($culturalNotesTimesUnit),
-                "glossaryInteractions" => "$glossaryInteractionsUnit",
-                "glossaryTime" => $this->sumTime($glossaryTimesUnit),
-                "translationInteractions" => "$translationInteractionsUnit",
-                "translationTime" => $this->sumTime($translationTimesUnit),
-                "dictionaryInteractions" => "$dictionaryInteractionsUnit",
-                "dictionaryTime" => $this->sumTime($dictionaryTimesUnit),
-            ];
-
-            array_push($unitsIndicators, $unitData);
+        } finally {
+            $writer->close();
         }
-
-        return $unitsIndicators;
     }
 
-    private function sumTime($times): string
+    /**
+     * Igual que hacía PhpSpreadsheet: los textos numéricos se escriben como
+     * número (salvo los que empiezan con 0, como "007") para que Excel pueda
+     * sumarlos, y los textos demasiado largos se recortan al máximo de Excel.
+     */
+    private function cellValue($value)
     {
-        $accumulatedHours = 0;
-        $accumulatedMinutes = 0;
-
-        foreach($times as $time) {
-            $timeExploded = explode(":", $time);
-
-            $hours = $timeExploded[0];
-            $minutes = $timeExploded[1];
-
-            if ($hours != "NaN" && $minutes != "NaN") {
-                $hours = intval($hours);
-                $minutes = intval($minutes);
-
-                $accumulatedHours += $hours;
-                $accumulatedMinutes += $minutes;
-            } else {
-                $accumulatedHours += 0;
-                $accumulatedMinutes += 0;
-            }
+        if (! is_string($value)) {
+            return $value;
         }
 
-        if ($accumulatedMinutes >= 60) {
-            $hoursToSum = intval($accumulatedMinutes/60);
-            $accumulatedMinutes = intval($accumulatedMinutes%60);
-            $accumulatedHours += $hoursToSum;
+        if (preg_match('/^-?(0|[1-9]\d*)(\.\d+)?$/', $value) && strlen($value) <= 15) {
+            return str_contains($value, '.') ? (float) $value : (int) $value;
         }
 
-        $finalMinutes = "";
-        $finalHours = "";
-
-        if(strlen($accumulatedMinutes) == 1) {
-            $finalMinutes = "0$accumulatedMinutes";
-        } else {
-            $finalMinutes = $accumulatedMinutes;
-        }
-
-        if(strlen($accumulatedHours) == 1) {
-            $finalHours = "0$accumulatedHours";
-        } else {
-            $finalHours = $accumulatedHours;
-        }
-
-        return "$finalHours:$finalMinutes";
-    }
-
-    private function getUserUnits()
-    {
-        $user = $this->currentUser();
-        return $user->group->units()->orderBy('title', 'asc')->get();
-    }
-
-    private function currentUser()
-    {
-        return User::where('id', $this->userId)->get()->first();
+        return mb_strlen($value) > self::MAX_CELL_LENGTH
+            ? mb_substr($value, 0, self::MAX_CELL_LENGTH)
+            : $value;
     }
 }

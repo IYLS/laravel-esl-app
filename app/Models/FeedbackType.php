@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Feedback;
 
 class FeedbackType extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'feedback_types';
 
@@ -19,7 +20,7 @@ class FeedbackType extends Model
         'level',
         'text_based'
     ];
-    public $timestamps = false;
+    public $timestamps = true;
     public $incrementing = true;
 
     public function existingFeedback() { return $this->hasMany(Feedback::class, 'feedback_type_id'); }

@@ -13,9 +13,13 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ReplyController;
+use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\GlossedWordsController;
+use App\Http\Controllers\FAQController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LeaderboardController;
 
 // Home
 Route::get('/', [AuthController::class, 'index'])->name('auth.index');
@@ -27,12 +31,18 @@ Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
 Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
 Route::put('/users/update/{user}', [UserController::class, 'update'])->name('users.update');
+Route::post('/users/update-password/{user}', [UserController::class, 'updatePassword'])->name('users.update_password');
 Route::get('/users/show/{user}', [UserController::class, 'show'])->name('users.show');
 Route::delete('/users/delete/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 Route::post('/users/filter', [UserController::class, 'executeFilter'])->name('users.execute_filter');
 
 // Auth Router
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
+
+// Profile Routes
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
 // Groups Routes
 Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
@@ -48,12 +58,18 @@ Route::get('/units/create', [UnitController::class, 'create'])->name('units.crea
 Route::post('/units/store', [UnitController::class, 'store'])->name('units.store');
 Route::put('/units/update/{unit}', [UnitController::class, 'update'])->name('units.update');
 Route::get('/units/show/{unit}', [UnitController::class, 'show'])->name('units.show');
+Route::post('/units/duplicate/{unit}', [UnitController::class, 'duplicate'])->name('units.duplicate');
 Route::delete('/units/delete/{unit}', [UnitController::class, 'destroy'])->name('units.destroy');
 
 // Student module Routes
+Route::get('/student/welcome', [StudentController::class, 'welcome'])->name('student.welcome');
 Route::get('/student/level_selection', [StudentController::class, 'level_selection'])->name('student.level_selection');
 Route::post('/student/select/unit', [StudentController::class, 'select'])->name('student.select');
 Route::get('/student/dashboard/{unit}', [StudentController::class, 'show'])->name('student.show');
+Route::get('/student/dashboard/{unit}/group-progress', [StudentController::class, 'groupProgress'])->name('student.group_progress');
+
+// Leaderboard Routes
+Route::get('/leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard.index');
 
 // Keywords Routes
 Route::get('/units/{unit}/keywords', [KeywordController::class, 'index'])->name('keywords.index');
@@ -64,6 +80,8 @@ Route::post('/units/{unit}/keywords/{keyword}/update', [KeywordController::class
 // Exercises Routes
 Route::get('/exercises/{exercise}', [ExerciseController::class, 'show'])->name('exercises.show');
 Route::get('/units/{unit}/exercises', [ExerciseController::class, 'index'])->name('exercises.index');
+Route::get('/units/{unit}/exercises/add-form/{exercise_type}/{section}', [ExerciseController::class, 'addForm'])->name('exercises.add-form');
+Route::get('/units/{unit}/exercises/metacognition-form/{section}/{underscore_type}', [ExerciseController::class, 'metacognitionForm'])->name('exercises.metacognition-form');
 Route::post('/units/{unit}/exercises/add', [ExerciseController::class, 'add'])->name('exercises.add');
 Route::post('/units/{unit}/exercises/store/{type}/section/{section}', [ExerciseController::class, 'store'])->name('exercises.store');
 Route::get('/units/{unit}/exercises/create/{type}/section/{section}', [ExerciseController::class, 'create'])->name('exercises.create');
@@ -80,6 +98,8 @@ Route::put('/questions/update/{question}', [QuestionController::class, 'update']
 // Feedback Routes
 Route::post('/feedback/{exercise}/store/', [FeedbackController::class, 'store'])->name('feedback.store');
 Route::post('/feedback/{exercise}/create', [FeedbackController::class, 'create'])->name('feedback.create');
+Route::get('/feedback/{exercise}/edit', [FeedbackController::class, 'edit'])->name('feedback.edit');
+Route::put('/feedback/{exercise}/update', [FeedbackController::class, 'update'])->name('feedback.update');
 Route::delete('/feedback/{exercise}/destroy', [FeedbackController::class, 'destroy'])->name('feedback.destroy');
 
 // Forum Routes
@@ -90,6 +110,10 @@ Route::delete('/forum/comment/{comment}/delete', [ForumController::class, 'destr
 
 // Reply Routes
 Route::post('/forum/comment/{comment}/reply/store', [ReplyController::class, 'store'])->name('replies.store');
+
+// Reaction Routes (AJAX)
+Route::post('/forum/comment/{comment}/reaction', [ReactionController::class, 'comment'])->name('reactions.comment');
+Route::post('/forum/reply/{reply}/reaction', [ReactionController::class, 'reply'])->name('reactions.reply');
 
 // Sections Routes
 Route::get('/units/{unit}/sections', [SectionController::class, 'index'])->name('sections.index');
@@ -108,6 +132,10 @@ Route::post('/tracking/exportData', [TrackingController::class, 'exportData'])->
 Route::post('/exercises/{unit}/set_positions', [ExerciseController::class, 'setPositions'])->name('exercises.positions');
 Route::post('/sections/{unit}/set_positions', [SectionController::class, 'setPositions'])->name('sections.positions');
 Route::post('/questions/set_positions', [QuestionController::class, 'setPositions'])->name('questions.positions');
+
+// FAQ Routes
+Route::get('/faq/student', [FAQController::class, 'student'])->name('faq.student');
+Route::get('/faq/teacher', [FAQController::class, 'teacher'])->name('faq.teacher');
 Route::post('/units/set_positions', [UnitController::class, 'setPositions'])->name('units.positions');
 
 // GlossedWords Routes

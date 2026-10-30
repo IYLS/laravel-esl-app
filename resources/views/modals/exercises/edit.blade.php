@@ -22,8 +22,15 @@
                             <option value="{{ $section->id }}" @if($section->id == $exercise->section->id) selected @endif>{{ $section->name }}</option>
                         @endforeach
                     </select>
-                    <input type="text" class="form-control mt-1" placeholder="(Optional) Additional Information" name="extra_info" placeholder="{{ $exercise->extra_info }}">
+                    <input type="text" class="form-control mt-1" placeholder="(Optional) Additional Information" name="extra_info" value="{{ old('extra_info', $exercise->extra_info) }}">
                     <p class="text-info"><small>(Optional) Enter here any relevant information about the exercise. e.g. An example of how to complete the exercise.</small></p>
+                    <input type="hidden" name="show_forum_link" value="0">
+                    <div class="form-check mt-2">
+                        <input type="checkbox" class="form-check-input" name="show_forum_link" id="edit_show_forum_link" value="1" @checked(old('show_forum_link', $exercise->show_forum_link))>
+                        <label class="form-check-label" for="edit_show_forum_link">Show forum link for students</label>
+                    </div>
+                    <label class="form-label mt-2 mb-0" for="edit_forum_button_label">Forum button text (optional)</label>
+                    <input type="text" class="form-control" name="forum_button_label" id="edit_forum_button_label" maxlength="255" placeholder="Leave empty for &quot;Go to Forum&quot;" value="{{ old('forum_button_label', $exercise->forum_button_label) }}">
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save</button>

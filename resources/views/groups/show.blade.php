@@ -16,6 +16,15 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Leaderboard visible</td>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="leaderboard_enabled" value="1" id="leaderboard_enabled" {{ ($group->leaderboard_enabled ?? true) ? 'checked' : '' }} disabled>
+                            <label class="form-check-label" for="leaderboard_enabled">Mostrar Leaderboard a los estudiantes de este grupo</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
                     <td>Students</td>
                     <td>
                         <div class="border rounded ms-2 me-2 p-2 row overflow-auto" style="height: 20vh !important;">
@@ -63,7 +72,8 @@
         studentLabels.forEach(function(label) { label.disabled = false });
 
         document.getElementById('name').disabled = false;
-        document.getElementById('units').disabled = false;
+        var lb = document.getElementById('leaderboard_enabled');
+        if (lb) lb.disabled = false;
     };
     
     function ifUserChecked(element) {

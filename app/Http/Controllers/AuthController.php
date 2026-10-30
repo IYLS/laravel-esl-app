@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -14,16 +16,21 @@ class AuthController extends Controller
             return view('auth.index', compact('user'));
         }
 
-        return redirect()->route('auth.login');
+        return view('auth.landing');
     }
 
     public function login(Request $request) 
     {
-        if (Auth::user() == null) {
-            return view('auth.login');
-        } else {
+        if (Auth::user() != null) {
             return redirect()->route('auth.index');
         }
+
+        $role = $request->query('role', 'student');
+        if (!in_array($role, ['student', 'teacher', 'researcher'])) {
+            $role = 'student';
+        }
+
+        return view('auth.login', compact('role'));
     }
 
     public function authenticate(Request $request)
@@ -33,12 +40,45 @@ class AuthController extends Controller
             'password' => ['required'],
             'role' => ['required'],
         ]);
+
+        // Researcher puede usar credenciales de teacher si no existe rol researcher
+        $user = User::where('email', $credentials['email'])
+            ->where('role', $credentials['role'])
+            ->first();
+        if (!$user && $credentials['role'] === 'researcher') {
+            $user = User::where('email', $credentials['email'])->where('role', 'teacher')->first();
+            if ($user) {
+                $credentials['role'] = 'teacher';
+            }
+        }
+        
+        if ($user) {
+            $passwordEntered = $credentials['password'];
+            $passwordStored = $user->password;
+            $passwordMatch = Hash::check($passwordEntered, $passwordStored);
+            
+            Log::info('Login attempt - Password comparison', [
+                'email' => $credentials['email'],
+                'role' => $credentials['role'],
+                'password_entered_length' => strlen($passwordEntered),
+                'password_stored_hash' => substr($passwordStored, 0, 20) . '...', // Solo primeros 20 caracteres del hash
+                'password_match' => $passwordMatch,
+                'user_id' => $user->id,
+                'user_exists' => true
+            ]);
+        } else {
+            Log::warning('Login attempt - User not found', [
+                'email' => $credentials['email'],
+                'role' => $credentials['role'],
+                'user_exists' => false
+            ]);
+        }
  
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
             if (Auth::user()->role == "student") {
-                return redirect()->route('student.level_selection');
+                return redirect()->route('student.welcome');
             }
 
             return redirect()->route('auth.index')->with('success', 'You logged in successfully!');
@@ -54,6 +94,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('auth.login');
+        return redirect()->route('auth.index');
     }
 }

@@ -4,7 +4,7 @@
     @foreach($e->questions->sortBy('position') as $question)
         <div class="border rounded p-4 mb-2">
             <h6>{{ $loop->index + 1 . ". " }} {{ $question->correct_answer }}</h6>
-            @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
+            @isset($e->extra_info) <p class="text-info"><span class="material-symbols-outlined text-info">info</span> &nbsp; {{ $e->extra_info }}</p> @endisset
             <table class="table table-bordered">
                 <thead>
                     <th>
@@ -100,8 +100,12 @@
                     @endforeach
                 </tbody>
             </table>
+            @include('feedback.question', ['feedbacks' => $question->feedbacks])
         </div>
     @endforeach
+    
+    <x-exercise-forum-link :exercise="$e" />
+
         <br>
     @include('layouts.tracking.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
 </form>

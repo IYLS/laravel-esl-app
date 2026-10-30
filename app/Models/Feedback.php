@@ -17,9 +17,10 @@ class Feedback extends Model
 
     protected $fillable = [
         'message',
-        'audio_name'
+        'audio_name',
+        'image_name'
     ];
-    public $timestamps = false;
+    public $timestamps = true;
     public $incrementing = true;
 
     public function alternative() { return $this->belongsTo(Alternative::class); }

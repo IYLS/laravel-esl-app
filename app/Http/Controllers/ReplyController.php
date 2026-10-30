@@ -11,18 +11,21 @@ class ReplyController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('student');
+        $this->middleware('auth');
     }
 
-    public function store(Request $request, $comment_id)
+    public function store(Request $request, \App\Models\Comment $comment)
     {
-        $reply = new Reply;
-        $reply->content = $request->content;
+        $validated = $request->validate([
+            'content' => 'required|string|max:5000',
+        ]);
 
-        $reply->user_id = Auth::user()->id;
-        $reply->comment_id = $comment_id;
+        $reply = new Reply;
+        $reply->content = $validated['content'];
+        $reply->user_id = Auth::id();
+        $reply->comment_id = $comment->id;
         $reply->save();
 
-        return redirect()->route('forum.show', $comment_id);
+        return redirect()->route('forum.show', $comment);
     }
 }

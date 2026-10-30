@@ -19,6 +19,7 @@
             @endfor
         </tbody>
     </table>
+    @include('feedback.question', ['feedbacks' => $question->feedbacks])
 @empty
     <div>
         <p class="text-secondary">Empty</p>

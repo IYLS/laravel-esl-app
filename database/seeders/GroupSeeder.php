@@ -10,6 +10,7 @@ class GroupSeeder extends Seeder
 {
     public function run()
     {
+        DB::table('groups')->truncate();
         DB::table('groups')->insert([
             [
                 'id' => 345,

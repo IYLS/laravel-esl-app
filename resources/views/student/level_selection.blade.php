@@ -3,7 +3,7 @@
 
 @section('title', 'Unit selection')
 
-<div class="container h-100">
+<div class="container h-100 student-module student-level-selection">
     <div class="row align-items-center h-100">
         <div class="col-10 col-10 col-md-8 col-lg-6 col-xl-4 mx-auto">
             <div class="bg-white p-4 rounded border border-1 border-white shadow" style="margin-top: 25%;">
@@ -20,9 +20,9 @@
                                 @endforelse
                             </select>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 d-flex gap-2">
                             <button class="btn btn-primary" type="submit">Enter</button>
-                            <a class="btn btn-secondary" type="submit">Cancel</a>
+                            <a href="{{ route('auth.index') }}" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>
                 @else

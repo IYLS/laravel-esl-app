@@ -35,7 +35,7 @@ class Unit extends Model
         'video_copyright'
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
     public $incrementing = true;
 
     public function sections() { return $this->hasMany(Section::class); }

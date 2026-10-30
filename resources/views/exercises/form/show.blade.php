@@ -20,7 +20,6 @@
         @isset($exercise->extra_info)<p class="text-info">Additional Information: {{ $exercise->extra_info }}</p>@endisset
         @isset($exercise->instructions)<p>Instructions: {!! $exercise->instructions !!}</p>@endisset
         @isset($exercise->translated_instructions)<p>Translated Instructions: {!! $exercise->translated_instructions !!}</p>@endisset
-        @include('modals.exercises.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
     </div>
 
     <div class="card p-4 m-2">
@@ -29,7 +28,7 @@
         <div class="card mt-2 p-3 mb-1">
             @php $question_number = $loop->index + 1;  @endphp
             <h6>{{ "Item " . $question_number }} - {{ $question->correct_answer }}</h6>
-            @if(isset($question->exclusive_responses) and $question->exclusive_responses) 
+            @if(isset($question->exclusive_responses) and $question->exclusive_responses)
             <p>Exclusive responses: True</p>
             @else
             <p>Exclusive responses: False</p>
@@ -46,7 +45,7 @@
                     <th>
                         <p class="text-center ms-2">{{ $question->answer }}</p>
                     </th>
-                    @endisset                        
+                    @endisset
                 </thead>
                 <tbody>
                     @foreach($question->alternatives as $alt)
@@ -66,13 +65,11 @@
             </table>
             <div class="d-flex justify-content-end">
                 <button type="button" id="delete_question_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_question_{{ $question->id }}">
-                    <i class="mdi mdi-delete"></i>
+                    <span class="material-symbols-outlined">delete</span>
                 </button>
-                @include('modals.questions.delete_confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete question number $question_number.", 'button_target_id' => "delete_question_$question->id", 'route' => route('questions.destroy', [$exercise->id, $question->id])])
                 <button type="button" id="edit_question_button" class="btn btn-sm btn-warning ms-1" data-bs-toggle="modal" data-bs-target="#edit_question_{{ $question->id }}">
-                    <i class="mdi mdi-pencil"></i>
+                    <span class="material-symbols-outlined">edit</span>
                 </button>
-                @include('modals.questions.edit', ['button_target_id' => "edit_question_$question->id", 'alternatives' => $question->alternatives])
             </div>
         </div>
         @empty
@@ -84,9 +81,8 @@
         <div>
             <button type="button" id="addQuestionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addQuestionModal">Add question</button>
             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#questions_positions_modal">
-                Positions  <i class="mdi mdi-sort-ascending"></i>
+                Positions  <span class="material-symbols-outlined">sort</span>
             </button>
-            @include('modals.questions.set_positions', ["modal_id" => "questions_positions_modal", "questions" => $exercise->questions])
         </div>
     </div>
 
@@ -95,6 +91,13 @@
     </div>
 </div>
 
+@foreach($exercise->questions->sortBy('position') as $question)
+    @php $question_number = $loop->index + 1; @endphp
+    @include('modals.questions.delete_confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete question number $question_number.", 'button_target_id' => "delete_question_$question->id", 'route' => route('questions.destroy', [$exercise->id, $question->id])])
+    @include('modals.questions.edit', ['button_target_id' => "edit_question_$question->id", 'alternatives' => $question->alternatives])
+@endforeach
 @include('modals.questions.add')
+@include('modals.questions.set_positions', ["modal_id" => "questions_positions_modal", "questions" => $exercise->questions])
+@include('modals.exercises.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
 
 @endsection

@@ -26,9 +26,10 @@ class User extends Authenticable
         'language', 
         'email', 
         'role', 
-        'activated'
+        'activated',
+        'avatar'
     ];
-    public $timestamps = false;
+    public $timestamps = true;
     public $incrementing = true;
 
     public function group() { return $this->belongsTo(Group::class); }

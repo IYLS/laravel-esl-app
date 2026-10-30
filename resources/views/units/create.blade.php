@@ -43,7 +43,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <p>Cultural Notes</p>
+                            <p>Culture Notes</p>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="cultural_notes_enabled" value="true" id="cultural_notes_enabled">
                                 <label class="form-check-label" for="cultural_notes_enabled">Enabled</label>

@@ -4,7 +4,7 @@
     $subtype = $exercise->subtype;
 @endphp
 
-<div class="modal fade" id="addQuestionModal" tabindex="-1" aria-labelledby="addQuestionModal" aria-hidden="true">
+<div class="modal fade" id="addQuestionModal" tabindex="-1" aria-labelledby="addQuestionModal" aria-hidden="true" data-bs-focus="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -107,6 +107,11 @@
                                 <br>
                                 @break
                         @endswitch
+                        @break
+                    @case('poll')
+                        <p><small>Question statement (Likert scale 1-7 will be auto-generated):</small></p>
+                        <textarea id="statement" name="statement" class="form-control" rows="3" placeholder="e.g. I found this activity easy to understand" required></textarea>
+                        <br>
                         @break
                     @case('form')
                         @php  $id = count($exercise->questions); @endphp
