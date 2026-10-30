@@ -1,6 +1,6 @@
 # Documentación técnica — Laravel ESL App
 
-Aplicación web para aprendizaje de inglés (ESL) basada en **Laravel 9**. Incluye módulo de docente (gestión de unidades, ejercicios, feedback, tracking) y módulo de estudiante (selección de nivel, resolución de ejercicios, foro).
+Aplicación web para aprendizaje de inglés (ESL) basada en **Laravel 13**. Incluye módulo de docente (gestión de unidades, ejercicios, feedback, tracking) y módulo de estudiante (selección de nivel, resolución de ejercicios, foro).
 
 ---
 
@@ -8,14 +8,14 @@ Aplicación web para aprendizaje de inglés (ESL) basada en **Laravel 9**. Inclu
 
 | Componente | Versión / detalle |
 |---|---|
-| PHP | `^8.0.2` (recomendado **8.1–8.2** para Laravel 9) |
-| Framework | Laravel **9.x** |
+| PHP | `^8.5` |
+| Framework | Laravel **13.x** |
 | Base de datos | **MySQL** (pdo_mysql) |
 | Frontend assets | Laravel Mix 6 + Webpack |
 | Autenticación | Sesión Laravel (roles `teacher` / `student`) |
-| Excel | maatwebsite/excel 3.x (export de tracking) |
+| Excel | maatwebsite/excel 4.x (export de tracking) |
 | Editor rich text | TinyMCE 6 vía CDN |
-| Testing | PHPUnit 9 |
+| Testing | PHPUnit 12 |
 
 Zona horaria de la app: `America/Santiago` (`config/app.php`).
 
@@ -25,11 +25,11 @@ Zona horaria de la app: `America/Santiago` (`config/app.php`).
 
 ### Software obligatorio
 
-- **PHP 8.0.2+** (idealmente 8.1 o 8.2) con extensiones:
+- **PHP 8.5+** con extensiones:
   - `bcmath`, `ctype`, `fileinfo`, `json`, `mbstring`, `openssl`
   - `pdo`, `pdo_mysql`, `tokenizer`, `xml`, `curl`
 - **Composer** 2.x
-- **Node.js** 16+ y **npm** (para compilar assets con Mix)
+- **Node.js** 20+ y **npm** (para compilar assets con Mix)
 - **MySQL** 5.7+ / 8.x (o MariaDB equivalente)
 - **Git**
 
@@ -387,7 +387,7 @@ Para tests con SQLite en memoria, descomentar en `phpunit.xml`:
 
 ## 11. Referencias
 
-- [Laravel 9 docs](https://laravel.com/docs/9.x)
+- [Laravel 13 docs](https://laravel.com/docs/13.x)
 - [Laravel Mix](https://laravel-mix.com/)
 - [Maatwebsite Excel](https://docs.laravel-excel.com/)
 - Código de rutas: `routes/web.php`
