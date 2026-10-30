@@ -21,24 +21,9 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-### Con Docker (recomendado para desarrollo local)
-
-Requiere Docker Desktop con Docker Compose. En PowerShell, desde la raíz del proyecto:
-
-```powershell
-Copy-Item .env.example .env
-docker compose up -d --build
-docker compose exec app php artisan key:generate --force
-docker compose exec app php artisan migrate --seed
-docker compose exec app php artisan storage:link
-```
-
-Abrir [http://localhost:8000/login](http://localhost:8000/login). MySQL queda disponible en `localhost:3307`.
-Para detener los contenedores sin borrar la base de datos: `docker compose down`.
-
 ### Validación en GitHub
 
-El workflow **CI / Build and smoke test** construye la imagen Docker, revisa la sintaxis PHP, levanta los contenedores y comprueba `/login`. No ejecuta migraciones, ya que el historial actual requiere compatibilidad y revisión antes de validarlo contra una base vacía. Para impedir merges cuando falle, configura `Build and smoke test` como *required status check* en las reglas de protección de la rama destino.
+El workflow **CI / Build and smoke test** instala las dependencias, compila los assets, revisa la sintaxis PHP, levanta la aplicación con `php artisan serve` y comprueba `/login`. No ejecuta migraciones, ya que el historial actual requiere compatibilidad y revisión antes de validarlo contra una base vacía. Para impedir merges cuando falle, configura `Build and smoke test` como *required status check* en las reglas de protección de la rama destino.
 
 ### Instalación manual
 

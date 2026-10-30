@@ -45,7 +45,7 @@ if [ "$MODE" = "full" ]; then
                 echo "$output"
                 echo "  ⚠ Conexión a BD rechazada. Intentando recuperar..."
                 php artisan config:clear 2>/dev/null || true
-                sudo systemctl start mysql 2>/dev/null || sudo systemctl start mariadb 2>/dev/null || sudo service mysql start 2>/dev/null || sudo service mariadb start 2>/dev/null || true
+                sudo systemctl start postgresql 2>/dev/null || sudo systemctl start mysql 2>/dev/null || sudo systemctl start mariadb 2>/dev/null || sudo service mysql start 2>/dev/null || sudo service mariadb start 2>/dev/null || true
                 sleep 3
                 if [ $attempt -lt $max_attempts ]; then
                     echo "  Reintento $((attempt + 1))/$max_attempts en 5s..."
@@ -57,7 +57,7 @@ if [ "$MODE" = "full" ]; then
             fi
             attempt=$((attempt + 1))
         done
-        echo "  ✗ No se pudo conectar a la BD tras $max_attempts intentos. Revisa .env y que MySQL esté en ejecución."
+        echo "  ✗ No se pudo conectar a la BD tras $max_attempts intentos. Revisa .env y que la base de datos esté en ejecución."
         return 1
     }
     migrate_with_retry || exit 1

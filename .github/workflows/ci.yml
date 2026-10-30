@@ -23,32 +23,47 @@ jobs:
       - name: Lint shell scripts
         run: bash -n deploy.sh
 
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: bcmath, gd, intl, mbstring, pdo_pgsql, zip
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
       - name: Prepare environment
         run: |
           cat > .env <<EOF
           APP_KEY=base64:$(openssl rand -base64 32)
           APP_URL=http://localhost:8000
-          DB_DATABASE=laravel_esl_ci
-          DB_USERNAME=laravel_ci
-          DB_PASSWORD=laravel_ci_password
+          DB_CONNECTION=sqlite
+          DB_DATABASE=:memory:
+          SESSION_DRIVER=file
+          CACHE_DRIVER=file
           EOF
 
-      - name: Build and start application
-        run: docker compose up --build --detach --wait --wait-timeout 120
+      - name: Install dependencies
+        run: |
+          composer install --no-interaction --prefer-dist
+          npm ci
+
+      - name: Build assets
+        run: npm run production
 
       - name: Check PHP syntax
         run: |
-          docker compose exec -T app bash -c '
-            find app bootstrap config database routes tests -name "*.php" -print0 \
-              | xargs -0 -P$(nproc) -n10 php -l > /dev/null
-          '
+          find app bootstrap config database routes tests -name "*.php" -print0 \
+            | xargs -0 -P$(nproc) -n10 php -l > /dev/null
 
       - name: Create storage link
-        run: docker compose exec -T app php artisan storage:link
+        run: php artisan storage:link
+
+      - name: Start application
+        run: php artisan serve --port=8000 > /dev/null 2>&1 &
 
       - name: Check login page
         run: curl --fail --retry 10 --retry-delay 5 --retry-connrefused http://localhost:8000/login
-
-      - name: Stop containers
-        if: always()
-        run: docker compose down
