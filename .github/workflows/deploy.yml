@@ -17,7 +17,15 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           envs: DEPLOY_BRANCH,APP_KEY,APP_URL,APP_PORT,DB_DATABASE,DB_USERNAME,DB_PASSWORD
           script: |
+            set -e
             cd /var/www/laravel-esl-app
+
+            # Sincronizar antes de llamar a ci-deploy.sh: el script debe ser el del commit
+            # que se despliega, no el que quedó en el servidor. Los cambios locales quedan
+            # en git stash y el checkout funciona aunque la rama del servidor haya divergido.
+            git fetch origin "$DEPLOY_BRANCH"
+            git -c user.name=deploy -c user.email=deploy@localhost stash push --message "pre-deploy $(date -u +%FT%TZ)"
+            git checkout -B "$DEPLOY_BRANCH" FETCH_HEAD
 
             cat > .env.docker <<EOF
             APP_NAME=laravel

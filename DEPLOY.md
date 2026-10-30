@@ -123,9 +123,11 @@ Abrir `http://localhost:8000`.
 
 ## Automatización de deploy (GitHub Actions)
 
-El deploy se ejecuta automáticamente vía **GitHub Actions + SSH** en cada push a `main`.
+El deploy se ejecuta automáticamente vía **GitHub Actions + SSH** en cada push a `main` o `feature/upgrade`.
 
-Flujo: `git push` → GitHub Actions → SSH → Droplet → `deploy.sh`
+Flujo: `git push` → GitHub Actions → SSH → Droplet → sincroniza la rama → `ci-deploy.sh`
+
+El workflow sincroniza el código antes de llamar a `ci-deploy.sh`, de modo que siempre corre la versión del script del commit desplegado. Si el servidor tenía cambios locales en archivos versionados, quedan guardados en `git stash` (`git stash list`).
 
 ### Configuración inicial (una sola vez)
 
@@ -156,10 +158,10 @@ $pub = Get-Content "$env:USERPROFILE\.ssh\github_deploy_key.pub"
 ssh TU_USUARIO@IP_DROPLET "echo '$pub' >> ~/.ssh/authorized_keys"
 ```
 
-#### Paso 3 — Permitir reinicio de PHP-FPM sin contraseña (en el droplet)
+#### Paso 3 — Permitir el uso de Docker (en el droplet)
 
 ```bash
-echo "TU_USUARIO ALL=(ALL) NOPASSWD: /bin/systemctl restart php*-fpm" | sudo tee /etc/sudoers.d/deploy
+sudo usermod -aG docker TU_USUARIO
 ```
 
 #### Paso 4 — Agregar secrets en GitHub
@@ -171,6 +173,16 @@ echo "TU_USUARIO ALL=(ALL) NOPASSWD: /bin/systemctl restart php*-fpm" | sudo tee
 | `DEPLOY_SSH_KEY` | Contenido completo de `github_deploy_key` (clave privada, incluyendo `-----BEGIN` y `-----END`) |
 | `DEPLOY_HOST` | IP o dominio del droplet |
 | `DEPLOY_USER` | Usuario SSH del droplet (ej. `root`) |
+| `APP_KEY` | Clave de Laravel (`base64:...`) |
+| `DB_USERNAME` | Usuario de PostgreSQL |
+| `DB_PASSWORD` | Contraseña de PostgreSQL |
+
+En la pestaña **Variables** de la misma pantalla, agregar:
+
+| Variable | Valor |
+|---|---|
+| `APP_URL` | URL pública de la aplicación |
+| `DB_DATABASE` | Nombre de la base de datos |
 
 Para obtener el contenido de la clave privada:
 
@@ -199,7 +211,8 @@ No se requiere configuración adicional en el dispositivo nuevo.
 | Error | Causa probable | Solución |
 |---|---|---|
 | `Permission denied (publickey)` | Clave pública no está en el droplet | Repetir Paso 2 |
-| `sudo: a password is required` | sudoers no configurado | Repetir Paso 3 |
+| `permission denied ... docker.sock` o `Docker Compose plugin no está instalado` | Usuario sin acceso a Docker | Repetir Paso 3 |
+| `Define APP_URL en .env.docker` (o similar) | Falta un secret o variable en GitHub | Repetir Paso 4 |
 | `403 Forbidden` al pushear | Cuenta sin permisos en el repo | Verificar en Settings → Collaborators |
 
 ---
@@ -233,17 +246,18 @@ PostgreSQL no publica ningún puerto al host. Sus datos y los archivos subidos p
 
 ### Despliegue
 
-GitHub Actions continúa conectándose por SSH y ejecutando `deploy.sh`. El script actualiza la rama que disparó el workflow, construye la imagen, espera a PostgreSQL, ejecuta migraciones y actualiza los contenedores:
+GitHub Actions se conecta por SSH, sincroniza la rama que disparó el workflow y ejecuta `ci-deploy.sh`, que construye la imagen, espera a PostgreSQL, ejecuta migraciones y actualiza los contenedores. `deploy.sh` es el flujo anterior sin Docker y el workflow ya no lo usa.
+
+Para desplegar a mano desde el servidor:
 
 ```bash
-chmod +x deploy.sh
-./deploy.sh
+DEPLOY_BRANCH=feature/upgrade bash ci-deploy.sh
 ```
 
 Para reconstruir y reiniciar sin traer código ni ejecutar migraciones:
 
 ```bash
-./deploy.sh --fix
+bash ci-deploy.sh --fix
 ```
 
 El usuario SSH debe pertenecer al grupo `docker` o tener permisos equivalentes. Ya no se reinicia PHP-FPM del host.
