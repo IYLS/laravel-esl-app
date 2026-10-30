@@ -16,3 +16,4 @@ yarn-error.log
 .env.docker.dev
 /vendor
 .env
+.env.production
