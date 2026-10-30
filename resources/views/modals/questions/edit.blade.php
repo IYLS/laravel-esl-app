@@ -4,7 +4,7 @@
     $subtype = $exercise->subtype;
 @endphp
 
-<div class="modal fade" id="{{ $button_target_id }}" tabindex="-1" aria-labelledby="{{ $button_target_id }}" aria-hidden="true">
+<div class="modal fade" id="{{ $button_target_id }}" tabindex="-1" aria-labelledby="{{ $button_target_id }}" aria-hidden="true" data-bs-focus="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -35,7 +35,7 @@
                                         </div>
                                         <div class="col-1">
                                             <button class="btn btn-sm btn-danger" type="button" onclick="removeAlternative({{ json_encode($question->id) }}, {{ json_encode($loop->index) }})">
-                                                <i class="mdi mdi-delete"></i>
+                                                <span class="material-symbols-outlined">delete</span>
                                             </button>
                                         </div>
                                     </div>
@@ -67,7 +67,7 @@
                                         </div>
                                         <div class="col-1">
                                             <button class="btn btn-sm btn-danger" type="button" onclick="removeAlternative({{ json_encode($question->id) }}, {{ json_encode($loop->index) }})">
-                                                <i class="mdi mdi-delete"></i>
+                                                <span class="material-symbols-outlined">delete</span>
                                             </button>
                                         </div>
                                     </div>
@@ -148,6 +148,12 @@
                                 @break
                         @endswitch
                         @break
+                    @case('poll')
+                        <p><small>Question statement:</small></p>
+                        <textarea id="statement" name="statement" class="form-control" rows="3" placeholder="e.g. I found this activity easy to understand">{!! $question->statement !!}</textarea>
+                        <p class="text-secondary mt-1"><small>Scale 1-7 is fixed and cannot be edited.</small></p>
+                        <br>
+                        @break
                     @case('form')
                         @php 
                             $id = "".count($exercise->questions)."-$question->id";
@@ -174,7 +180,7 @@
                                             <input type="text" class="form-control" name="alternatives[]" placeholder="Statement" value="{{ $alt->title }}">
                                         </div>
                                         <div class="col-1">
-                                            <button type="button" class="btn btn-danger" onclick="deleteFormQuestion(`form-question-{{ $id }}`)"><i class="mdi mdi-delete"></i></button>
+                                            <button type="button" class="btn btn-danger" onclick="deleteFormQuestion(`form-question-{{ $id }}`)"><span class="material-symbols-outlined">delete</span></button>
                                         </div>
                                     </div>
                                 @endforeach 

@@ -1,59 +1,37 @@
 <div class="row">
-    @if(isset($subtype) && $subtype != '99' && $subtype != '991')
-        @include('feedback.exercise')
-    @endif
+    @include('feedback.exercise')
 </div>
+
+@php
+    $url = route('tracking.store', [$e->id, $user->id]);
+    $useMorphingSubmit = isset($subtype) && $subtype != '99' && $subtype != '991';
+@endphp
 
 <div class="d-flex">
-    @php $url = route("tracking.store", ["$e->id", "$user->id"]); @endphp
-    @if(isset($subtype) &&$subtype != '99' && $subtype != '991')
-        <div class="m-1">
-            <button class="btn btn-primary btn-sm" type="button"
-            onclick="checkAction({{ json_encode($e) }}, {{ json_encode($e->questions) }}, {{ json_encode($e->exerciseType->underscore_name) }}, {{ json_encode($e->id) }}, {{ json_encode($user->id) }}, {{ json_encode($url) }});"
-            id="try_again_button_{{ $e->id }}"
-            
-            disabled
-            >
-                Try again
-            </button>
-        </div>
-    @endif
+    <div class="m-1">
+        @if(isset($type) && $type == 'voice_recognition')
+            <button type="button" class="btn btn-primary btn-sm" id="exercise-{{ $e->id }}-check-btn"
+                @if($useMorphingSubmit) data-can-morph="1" @endif
+                onclick="exerciseSubmitClick(this, {{ json_encode($e) }}, {{ json_encode($e->questions) }}, {{ json_encode('voice_recognition') }}, {{ json_encode($e->id) }}, {{ json_encode($user->id) }}, {{ json_encode($url) }});"
+            >Check</button>
+        @else
+            <button type="button" class="btn btn-primary btn-sm" id="exercise-{{ $e->id }}-check-btn"
+                @if($useMorphingSubmit) data-can-morph="1" @endif
+                onclick="exerciseSubmitClick(this, {{ json_encode($e) }}, {{ json_encode($e->questions) }}, {{ json_encode($e->exerciseType->underscore_name) }}, {{ json_encode($e->id) }}, {{ json_encode($user->id) }}, {{ json_encode($url) }});"
+            >Check</button>
+        @endif
+    </div>
 
-    @if(isset($type) && $type == 'voice_recognition')
-        <div class="m-1">
-            <button class="btn btn-primary btn-sm" id="exercise-{{ $e->id }}-check-btn" onclick='checkAction({{ json_encode($e) }}, {{ json_encode($e->questions) }}, {{ json_encode("voice_recognition") }}, {{ json_encode($e->id) }}, {{ json_encode($user->id) }}, {{ json_encode($url) }});' type="button">Check</button>
-        </div>
-    @else
-        <div class="m-1">
-            <button class="btn btn-primary btn-sm" id="exercise-{{ $e->id }}-check-btn" onclick='checkAction({{ json_encode($e) }}, {{ json_encode($e->questions) }}, {{ json_encode($e->exerciseType->underscore_name) }}, {{ json_encode($e->id) }}, {{ json_encode($user->id) }}, {{ json_encode($url) }});  toggleTryAgainButton("enabled",{{ json_encode($e->id) }});' type="button">Check</button>
-        </div>
-    @endif
-
-    @if($e->exerciseType->underscore_name == 'multiple_choice')
-        <div class="m-1">
-            <button 
-                class="btn btn-info btn-sm" 
-                onclick="resetExercise({{ json_encode($e->id) }}, {{ json_encode($e->questions) }}); resetFeedbackInteractionsCount({{ json_encode($e->id) }});" 
-                type="button"
-            >
-                Reset
-            </button>
-        </div>
+    @if(!isset($type) || $type != 'voice_recognition')
+    <div class="m-1">
+        <button
+            id="reset-button-{{ $e->id }}"
+            class="btn btn-info btn-sm"
+            onclick="resetExercise({{ json_encode($e->id) }}, {{ json_encode($e->questions) }}, {{ json_encode($e->exerciseType->underscore_name) }}); resetFeedbackInteractionsCount({{ json_encode($e->id) }});"
+            type="button"
+        >
+            Reset
+        </button>
+    </div>
     @endif
 </div>
-
-@section('scripts')
-    <script>
-        function toggleTryAgainButton(status, exercise_id) {
-            if (document.getElementById(`try_again_button_${exercise_id}`) != null) {
-                var button = document.getElementById(`try_again_button_${exercise_id}`);
-                if (status == "enabled") {
-                    button.disabled = false;
-                }
-                if (status == "disabled") {
-                    button.disabled = true
-                }
-            }
-        }
-    </script>
-@endsection

@@ -1,88 +1,94 @@
 @extends('layouts.app')
+@section('title', 'Forum')
+
 @section('main')
+<div class="forum-page">
+    <h1 class="forum-page-title">
+        <span class="material-symbols-outlined">forum</span>
+        Forum
+    </h1>
 
-@php use Carbon\Carbon; @endphp
-
-<style>
-    #forum-content-container { height: 60vh; }
-    #forum-comment-container { height: 20%; }
-    .forum-self-comment { background-color: #f0f5fc !important; }
-</style>
-
-<div class="container">
-    <h3 class="m-3">Students Forum</h3>
-    <div class="overflow-auto border mt-4 mb-4" id="forum-content-container">
-        @if(isset($comments) and $comments != null)
-            @forelse($comments as $comment)
-                <div class="card ps-3 pe-3 pt-1 pb-1 m-3 @if($comment->user_id == $current_user->id) forum-self-comment @endif">
-                    <h5 class="mt-1">{{ $comment->title }}</h5>
-                    <p>{{ $comment->content }}</p>
-                    <div class="row col-12">
-                        <div class="col-12 col-md-8 d-flex align-items-center justify-content-start">
-                            @php $posted_by = ""; @endphp
-                            @if(isset($comment->user->name) and $comment->user->name == $current_user->name)
-                                @php $posted_by = "posted by @me"; @endphp
-                            @elseif(isset($comment->user->name) and $comment->user->name != $current_user->name)
-                                @php $posted_by = "posted by @" . $comment->user->name; @endphp
-                            @endif
-                
-                            @if ($comment->created_at->diffInSeconds(Carbon::now()) <= 59)
-                                @if ($comment->created_at->diffInSeconds(Carbon::now()) == 0)
-                                    @php $posted_on = " just now"; @endphp
-                                @else
-                                    @php $posted_on = " " . $comment->created_at->diffInSeconds(Carbon::now()) . " seconds ago"; @endphp
-                                @endif
-                            @elseif ($comment->created_at->diffInMinutes(Carbon::now()) <= 59)
-                                @php $posted_on = " " . $comment->created_at->diffInMinutes(Carbon::now()) . " minutes ago"; @endphp
-                            @elseif ($comment->created_at->diffInHours(Carbon::now()) <= 23)
-                                @php $posted_on = " " . $comment->created_at->diffInHours(Carbon::now()) . " hours ago"; @endphp
-                            @elseif ($comment->created_at->diffInDays(Carbon::now()) >= 1)
-                                @if ($comment->created_at->diffInDays(Carbon::now()) == 1)
-                                    @php $posted_on = " yesterday"; @endphp
-                                @else
-                                    @php $posted_on = " " . $comment->created_at->diffInDays(Carbon::now()) . " days ago"; @endphp
-                                @endif
-                            @endif
-                        <p class="text-secondary"><small>{{ $posted_by . $posted_on }}</small></p>
+    {{-- Lista de posts --}}
+    <section class="forum-posts-section">
+        @if(isset($comments) && $comments->count() > 0)
+            @foreach($comments as $comment)
+                @php
+                    $isOwn = $comment->user_id == $current_user->id;
+                    $authorName = ($comment->user->name ?? '') == $current_user->name ? 'me' : ($comment->user->name ?? '');
+                @endphp
+                <article class="forum-card {{ $isOwn ? 'own' : '' }}">
+                    <a href="{{ route('forum.show', $comment->id) }}" class="forum-post-link">
+                        <div class="forum-post-header">
+                            <x-forum-avatar :user="$comment->user ?? null" size="md" />
+                            <div class="forum-post-body">
+                                <h2 class="forum-post-title">{{ $comment->title }}</h2>
+                                <p class="forum-post-preview">{{ Str::limit(strip_tags($comment->content), 120) }}</p>
+                                <div class="forum-post-meta">
+                                    <x-user-mention :name="$authorName" />
+                                    <span>·</span>
+                                    <x-forum-time :datetime="$comment->created_at" />
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-12 col-md-4 d-flex align-items-center justify-content-end">
-                            <a class="btn d-flex" href="{{ route('forum.show', $comment->id) }}">
-                                <i class="mdi mdi-18px mdi-comment-multiple-outline me-1 text-primary"></i><p class="text-primary"><small>{{ $comment->replies->count() }} replies</small></p>
+                    </a>
+                    <div class="forum-post-footer">
+                        <div class="forum-post-actions">
+                            <a href="{{ route('forum.show', $comment->id) }}" class="forum-stat">
+                                <span class="material-symbols-outlined">chat_bubble</span>
+                                {{ $comment->replies->count() }}
                             </a>
-                            @if ($comment->user_id == $current_user->id or Auth::user()->role == 'teacher')
-                                <form action="{{ route('forum.destroy', $comment->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn d-flex" type="submit">
-                                        <i class="mdi mdi-delete text-danger"></i><p class="text-danger"><small>delete</small></p>
-                                    </button>
-                                </form>
-                            @endif
+                            <div onclick="event.preventDefault(); event.stopPropagation();">
+                                <x-reaction-picker type="comment" :id="$comment->id" :reactions="$comment->reactions ?? collect()" />
+                            </div>
+                        </div>
+                        @if($isOwn || Auth::user()->role == 'teacher')
+                            <form action="{{ route('forum.destroy', $comment->id) }}" method="POST" class="d-inline" onclick="event.stopPropagation();">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="forum-btn-delete" onclick="return confirm('¿Eliminar este post?');">
+                                    <span class="material-symbols-outlined" style="font-size:1rem;">delete</span>
+                                    Eliminar
+                                </button>
+                            </form>
+                        @endif
+                    </div>
+                </article>
+            @endforeach
+        @else
+            <div class="forum-empty">
+                <div class="forum-empty-icon">
+                    <span class="material-symbols-outlined">forum</span>
+                </div>
+                <p class="mb-0">No hay posts aún. ¡Sé el primero en escribir!</p>
+            </div>
+        @endif
+    </section>
+
+    {{-- Formulario nuevo post --}}
+    <section class="forum-new-post-section mt-4">
+        <div class="forum-form-card">
+            <h2 class="forum-section-title">Nuevo post</h2>
+            <form action="{{ route('forum.store') }}" method="POST">
+                @csrf
+                <div class="mb-3">
+                    <label for="forum-title" class="form-label">Título</label>
+                    <input type="text" id="forum-title" name="title" class="form-control" placeholder="Título del post" required>
+                </div>
+                <div class="mb-3">
+                    <label for="forum-content" class="form-label">Contenido</label>
+                    <div class="forum-compose-wrap position-relative">
+                        <textarea id="forum-content" name="content" class="form-control" rows="4" placeholder="Escribe tu mensaje..." required></textarea>
+                        <div class="forum-compose-actions">
+                            <x-emoji-picker target="forum-content" />
                         </div>
                     </div>
                 </div>
-            @empty
-                <p class="text-center text-secondary"><small>Be the first to write on the forum!</small></p>
-            @endforelse
-        
-            @else
-
-            <p class="text-center text-secondary"><small>Be the first to write on the forum!</small></p>
-        @endif
-    </div>
-    <div class="p-1" id="forum-comment-container">
-        <h5 class="m-1">New post</h5>
-        <form action="{{ route('forum.store') }}" method="POST" class="row">
-            @csrf
-            <div class="col-11">
-                <input class="form-control m-1" name="title" type="text" placeholder="Title" required>
-                <textarea class="form-control m-1" name="content" type="text" placeholder="Content" required></textarea>
-            </div>
-            <button class="col-1 text-center btn btn-primary" type="submit">
-                <i class="mdi mdi-24px mdi-send"></i>
-            </button>
-        </form>
-    </div>
+                <button type="submit" class="btn btn-primary">
+                    <span class="material-symbols-outlined" style="font-size:1.1rem; vertical-align:middle;">send</span>
+                    Publicar
+                </button>
+            </form>
+        </div>
+    </section>
 </div>
-
 @endsection

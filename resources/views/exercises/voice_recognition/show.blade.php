@@ -16,14 +16,13 @@
         @isset($exercise->extra_info)<p class="text-info">Additional Information: {{ $exercise->extra_info }}</p>@endisset
         @isset($exercise->instructions)<p>Instructions: {!! $exercise->instructions !!}</p>@endisset
         @isset($exercise->translated_instructions)<p>Translated Instructions: {!! $exercise->translated_instructions !!}</p>@endisset
-        @include('modals.exercises.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
     </div>
 
     <div class="card p-4 m-2">
-        <h4>Activity items</h4>        
+        <h4>Activity items</h4>
         @forelse($exercise->questions->sortBy('position') as $question)
             <div class="card mt-1 mb-1 p-4">
-                <div class="d-flex row">                    
+                <div class="d-flex row">
                     @php $question_number = $loop->index + 1; @endphp
                     <div class="col-12 col-md-10">
                         <p>{{ $question_number }}. &nbsp;</p>
@@ -33,20 +32,18 @@
                         <div class="row">
                             <audio controls style="width: 350px;">
                                 <source src="{{ asset('storage/files/'.$question->audio_name) }}" type="audio/mpeg">
-                            </audio> 
+                            </audio>
                         </div>
                     </div>
                     <div class="col-12 col-md-2 d-flex justify-content-center">
                         <div>
                             <br>
                             <button type="button" id="delete_question_button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete_question_{{ $question->id }}">
-                                <i class="mdi mdi-delete"></i>
+                                <span class="material-symbols-outlined">delete</span>
                             </button>
-                            @include('modals.questions.delete_confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete question number $question_number.", 'button_target_id' => "delete_question_$question->id", 'route' => route('questions.destroy', [$exercise->id, $question->id])])
                             <button type="button" id="edit_question_button" class="btn btn-sm btn-warning ms-1" data-bs-toggle="modal" data-bs-target="#edit_question_{{ $question->id }}">
-                                <i class="mdi mdi-pencil"></i>
+                                <span class="material-symbols-outlined">edit</span>
                             </button>
-                            @include('modals.questions.edit', ['button_target_id' => "edit_question_$question->id", 'alternatives' => $question->alternatives])
                         </div>
                     </div>
                 </div>
@@ -60,9 +57,8 @@
         <div>
             <button type="button" id="addQuestionButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addQuestionModal">Add question</button>
             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#questions_positions_modal">
-                Positions  <i class="mdi mdi-sort-ascending"></i>
+                Positions  <span class="material-symbols-outlined">sort</span>
             </button>
-            @include('modals.questions.set_positions', ["modal_id" => "questions_positions_modal", "questions" => $exercise->questions])
         </div>
     </div>
 
@@ -73,6 +69,13 @@
     </div>
 </div>
 
-@include('modals.questions.add');
+@foreach($exercise->questions->sortBy('position') as $question)
+    @php $question_number = $loop->index + 1; @endphp
+    @include('modals.questions.delete_confirmation', ['title' => 'Confirmation request', 'body' => "Please confirm you want to delete question number $question_number.", 'button_target_id' => "delete_question_$question->id", 'route' => route('questions.destroy', [$exercise->id, $question->id])])
+    @include('modals.questions.edit', ['button_target_id' => "edit_question_$question->id", 'alternatives' => $question->alternatives])
+@endforeach
+@include('modals.questions.add')
+@include('modals.questions.set_positions', ["modal_id" => "questions_positions_modal", "questions" => $exercise->questions])
+@include('modals.exercises.edit', ['section' => $exercise->section, 'type' => $exercise->exerciseType])
 
 @endsection

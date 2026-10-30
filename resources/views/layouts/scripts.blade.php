@@ -1,3 +1,31 @@
+{{-- jQuery y jQuery UI al final del body (no bloquean render inicial; ~330KB fuera del critical path) --}}
+<script src="{{ asset('jquery/jquery-3.3.1.min.js') }}"></script>
+<script src="{{ asset('jquery/jquery-ui.min.js') }}"></script>
+{{-- Utils y exerciseHelpers para modales Add/Edit pregunta (alternativas en multiple choice, etc.) --}}
+<script src="{{ asset('js/modules/utils.js') }}"></script>
+<script src="{{ asset('js/modules/exerciseHelpers.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof $ !== 'undefined' && $.fn.draggable) {
+        $('.modal[data-bs-backdrop="false"]').draggable({ handle: '.modal-header' });
+    }
+
+    // Prevenir que wheel dispare scroll cuando modal está abierto (fix flickering)
+    document.addEventListener('wheel', function(e) {
+        var modal = document.querySelector('.modal.show');
+        if (!modal) return;
+        var target = e.target;
+        if (!target.closest('.modal') && !target.closest('.modal-backdrop')) return;
+        var body = modal.querySelector('.modal-body');
+        if (body && target.closest('.modal-body') && body.scrollHeight > body.clientHeight) {
+            return;
+        }
+        e.preventDefault();
+        e.stopPropagation();
+    }, { passive: false, capture: true });
+});
+</script>
+
 @if (session('success') || session('error'))
   @include('modals.exercises.message', [
       'message' => session('success') ?? session('error'),
@@ -21,77 +49,146 @@
 <!-- Lottie -->
 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
-<!-- Bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+{{-- Bootstrap ya está cargado en head.blade.php - NO duplicar (causa que collapse/dropdown no se replieguen) --}}
 
+{{-- Inicializar popovers de Bootstrap --}}
 <script>
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-        return new bootstrap.Popover(popoverTriggerEl)
-    })
+    document.addEventListener('DOMContentLoaded', function () {
+        const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+        popoverTriggerList.forEach(function (popoverTriggerEl) {
+            new bootstrap.Popover(popoverTriggerEl);
+        });
+    });
 </script>
 
+{{-- Forum pickers: reacciones y emoji --}}
 <script>
-    function addColumn(id) {
-        const questionsContainer = document.getElementById(`questions-form-${id}`);
-
-        var input = document.createElement('input');
-        input.setAttribute('type', "text");
-        input.setAttribute('class', "form-control");
-        input.setAttribute('placeholder', "Question statement");
-        input.setAttribute('name', "alternatives[]");
-        var inputContainer = document.createElement('div');
-        inputContainer.setAttribute('class', "col-10");
-        inputContainer.appendChild(input);
-
-        var deleteIcon = document.createElement('i');
-        deleteIcon.setAttribute('class', 'mdi mdi-delete');
-        var deleteButton = document.createElement('a');
-        deleteButton.setAttribute('class', "btn btn-danger");
-        deleteButton.setAttribute('onclick', `deleteFormQuestion('form-question-${numberOfQuestions()}')`);
-        deleteButton.appendChild(deleteIcon);
-        var deleteContainer = document.createElement('div');
-        deleteContainer.setAttribute('class', "col-2");
-        deleteContainer.appendChild(deleteButton);
-
-        var container = document.createElement('div');
-        container.setAttribute('class', "row form-question-title mb-1");
-        container.setAttribute('id', `form-question-${numberOfQuestions()}`);
-        container.appendChild(inputContainer);
-        container.appendChild(deleteContainer);
-
-        questionsContainer.appendChild(container);
+(function() {
+    function closeAllForumPickers() {
+        document.querySelectorAll('.forum-picker-popover.is-open').forEach(function(el) {
+            el.classList.remove('is-open');
+            el.setAttribute('aria-hidden', 'true');
+        });
     }
-
-    function numberOfQuestions() { return document.getElementsByClassName('form-question-title').length + 1; }
-    function deleteFormQuestion(id) { document.getElementById(id).remove(); }
-    
-    function addAlternative(id) {
-        const alternativesContainer = document.getElementById(`question-${id}-alternatives`);
-
-        var inputContainer = document.createElement('div');
-        inputContainer.setAttribute('class', "col-9");
-        inputContainer.innerHTML = "<input type='text' class='form-control' placeholder='Alternative title' name='alternatives[]'>";
-
-        var checkContainer = document.createElement('div');
-        checkContainer.setAttribute('class', "col-1 form-check");
-        checkContainer.innerHTML = `<input class='form-check-input' value='${numberOfAlternatives(id)}' type='radio' name='correct_answer'>`;
-
-        var deleteContainer = document.createElement('div');
-        deleteContainer.setAttribute('class', "col-1");
-        deleteContainer.innerHTML = `<button type='button' class='btn btn-danger btn-sm' onclick='removeAlternative("${id}", ${numberOfAlternatives(id)})'><i class='mdi mdi-delete'></i></button>`;
-
-        var container = document.createElement('div');
-        container.setAttribute('class', `row ms-1 me-1 question-${id}-alternative mb-1 d-flex justify-content-center align-items-center`);
-        container.setAttribute('id', `question-${id}-alternative-${numberOfAlternatives(id)}`);
-        container.appendChild(checkContainer);
-        container.appendChild(inputContainer);
-        container.appendChild(deleteContainer);
-
-        alternativesContainer.appendChild(container);
+    function positionPopover(popover, trigger, alignEnd) {
+        var rect = trigger.getBoundingClientRect();
+        var spaceAbove = rect.top, spaceBelow = window.innerHeight - rect.bottom;
+        if (alignEnd) {
+            popover.style.right = (window.innerWidth - rect.right) + 'px';
+            popover.style.left = 'auto';
+        } else {
+            popover.style.left = rect.left + 'px';
+            popover.style.right = 'auto';
+        }
+        popover.style.width = 'auto';
+        if (spaceBelow >= 120 || spaceAbove < spaceBelow) {
+            popover.style.top = 'auto';
+            popover.style.bottom = (window.innerHeight - rect.top + 4) + 'px';
+        } else {
+            popover.style.top = (rect.bottom + 4) + 'px';
+            popover.style.bottom = 'auto';
+        }
     }
-
-    function numberOfAlternatives(id) { return document.getElementsByClassName(`question-${id}-alternative`).length; }
-    function removeAlternative(id, index) { document.getElementById(`question-${id}-alternative-${index}`).remove(); }
+    function initReactionPickers() {
+        document.querySelectorAll('.reaction-picker-wrapper:not([data-reaction-init])').forEach(function(wrapper) {
+            wrapper.dataset.reactionInit = '1';
+            var route = wrapper.dataset.route, reactionsList = wrapper.querySelector('.reactions-list');
+            var trigger = wrapper.querySelector('.reaction-add-btn'), popover = wrapper.querySelector('.reaction-dropdown');
+            if (!trigger || !popover) return;
+            function sendReaction(emoji, btn) {
+                if (btn) btn.classList.add('loading');
+                var fd = new FormData();
+                fd.append('emoji', emoji);
+                fd.append('_token', document.querySelector('input[name="_token"]')?.value);
+                fetch(route, { method: 'POST', headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }, body: fd })
+                    .then(function(r) { if (btn) btn.classList.remove('loading'); return r.ok ? r.json() : null; })
+                    .then(function(data) {
+                        if (!data) return;
+                        reactionsList.innerHTML = '';
+                        var reactions = data.reactions;
+                        if (typeof reactions === 'object' && !Array.isArray(reactions)) reactions = Object.values(reactions);
+                        (reactions || []).forEach(function(r) {
+                            var b = document.createElement('button');
+                            b.type = 'button';
+                            b.className = 'reaction-btn' + (r.user_reacted ? ' reacted' : '');
+                            b.dataset.emoji = r.emoji;
+                            b.title = (r.users || []).join(', ');
+                            b.innerHTML = '<span class="reaction-emoji">' + r.emoji + '</span>' + (r.count > 1 ? '<span class="reaction-count">' + r.count + '</span>' : '');
+                            b.addEventListener('click', function(e) { e.preventDefault(); sendReaction(this.dataset.emoji, this); });
+                            reactionsList.appendChild(b);
+                        });
+                    });
+            }
+            trigger.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                closeAllForumPickers();
+                if (popover.classList.contains('is-open')) {
+                    popover.classList.remove('is-open');
+                    popover.setAttribute('aria-hidden', 'true');
+                } else {
+                    positionPopover(popover, trigger, false);
+                    popover.classList.add('is-open');
+                    popover.setAttribute('aria-hidden', 'false');
+                }
+            });
+            popover.querySelectorAll('.reaction-emoji-add').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    popover.classList.remove('is-open');
+                    popover.setAttribute('aria-hidden', 'true');
+                    sendReaction(this.dataset.emoji);
+                });
+            });
+            wrapper.querySelectorAll('.reaction-btn').forEach(function(btn) {
+                btn.addEventListener('click', function(e) { e.preventDefault(); sendReaction(this.dataset.emoji, this); });
+            });
+        });
+    }
+    function initEmojiPickers() {
+        document.querySelectorAll('.emoji-picker-wrapper:not([data-emoji-init])').forEach(function(wrapper) {
+            wrapper.dataset.emojiInit = '1';
+            var trigger = wrapper.querySelector('.emoji-trigger'), popover = wrapper.querySelector('.emoji-picker-dropdown');
+            var targetId = wrapper.dataset.target || 'content';
+            if (!trigger || !popover) return;
+            trigger.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                closeAllForumPickers();
+                if (popover.classList.contains('is-open')) {
+                    popover.classList.remove('is-open');
+                } else {
+                    positionPopover(popover, trigger, wrapper.dataset.align === 'end');
+                    popover.classList.add('is-open');
+                }
+            });
+            popover.querySelectorAll('.emoji-btn').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var ta = document.getElementById(targetId);
+                    if (ta) {
+                        var emoji = this.dataset.emoji, start = ta.selectionStart, end = ta.selectionEnd;
+                        ta.value = ta.value.substring(0, start) + emoji + ta.value.substring(end);
+                        ta.selectionStart = ta.selectionEnd = start + emoji.length;
+                        ta.focus();
+                    }
+                    popover.classList.remove('is-open');
+                });
+            });
+        });
+    }
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.forum-picker-popover') && !e.target.closest('.reaction-add-btn') && !e.target.closest('.emoji-trigger')) {
+            closeAllForumPickers();
+        }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        initReactionPickers();
+        initEmojiPickers();
+    });
+    if (document.readyState !== 'loading') {
+        initReactionPickers();
+        initEmojiPickers();
+    }
+})();
 </script>

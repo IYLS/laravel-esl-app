@@ -16,7 +16,7 @@ class Keyword extends Model
         'keyword',
         'description',
     ];
-    public $timestamps = false;
+    public $timestamps = true;
     public $incrementing = true;
 
     public function unit()

@@ -24,9 +24,8 @@
                             </div>
                             <div class="m-1">
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#positions_modal_{{ $section->id }}">
-                                    Positions  <i class="mdi mdi-sort-ascending"></i>
+                                    Positions  <span class="material-symbols-outlined">sort</span>
                                 </button>
-                                @include('modals.exercises.set_positions', ["modal_id" => "positions_modal_$section->id"])
                             </div>
                         </div>
                     </div>
@@ -42,7 +41,7 @@
                 </thead>
                 <tbody>
                     @forelse($section->exercises->sortBy('position') as $exercise)
-                        <tr @if($exercise->subtype == 99 or $exercise->subtype == 991) style="background-color: #5fde72;" @endif>
+                        <tr @if($exercise->category == 'engagement') style="background-color: #FED7AA;" @elseif($exercise->subtype == 99 or $exercise->subtype == 991) style="background-color: #D1FAE5;" @endif>
 
                             <td class="col-1">
                                 {{ $exercise->title }}
@@ -55,13 +54,11 @@
                             </td>
                             <td class="col-1">
                                 <div class="d-flex">
-                                    <form action="{{ route("exercises.destroy", [$exercise->section->unit_id, $exercise->exercise_type_id, $exercise->id]) }}" method="POST">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button type="submit" class="btn-sm btn btn-danger"><i class="mdi mdi-delete" aria-hidden="true"></i></button>
-                                    </form>
+                                    <button type="button" class="btn-sm btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteExerciseModal{{ $exercise->id }}" title="Delete exercise">
+                                        <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+                                    </button>
         
-                                    <a href="{{ route("exercises.show", $exercise->id) }}" class="btn-sm btn btn-success me-1 ms-1"><i class="mdi mdi-magnify" aria-hidden="true"></i></a>
+                                    <a href="{{ route("exercises.show", $exercise->id) }}" class="btn-sm btn btn-success me-1 ms-1"><span class="material-symbols-outlined" aria-hidden="true">search</span></a>
                                 </div>
                             </td>
                         </tr>
@@ -75,54 +72,62 @@
                 </tbody>
             </table>
 
+            @php
+                $exerciseTypes = $types->filter(fn($t) => !in_array($t->underscore_name, ['poll', 'form']));
+                $engagementTypes = $types->filter(fn($t) => in_array($t->underscore_name, ['open_ended', 'poll', 'form']));
+            @endphp
             <div class="row">
-                <div class="col-6 d-flex justify-content-center">
-                    <button class="btn btn-primary btn-sm col-12 col-md-4 mt-2" data-bs-toggle="collapse" href="#collapsableAddExercise{{ $section->id }}" role="button" aria-expanded="false" aria-controls="collapsableAddExercise{{ $section->id }}">Add exercise <i class="mdi mdi-arrow-down"></i></button>
+                <div class="col-12 col-md-4 d-flex justify-content-center mb-2">
+                    <button class="btn btn-primary btn-sm col-12" data-bs-toggle="collapse" href="#collapsableAddExercise{{ $section->id }}" role="button" aria-expanded="false" aria-controls="collapsableAddExercise{{ $section->id }}">Add comprehension <span class="material-symbols-outlined">arrow_downward</span></button>
+                </div>
+                <div class="col-12 col-md-4 d-flex justify-content-center mb-2">
+                    <button class="btn btn-warning btn-sm col-12 text-dark" data-bs-toggle="collapse" href="#collapsableAddEngagement{{ $section->id }}" role="button" aria-expanded="false" aria-controls="collapsableAddEngagement{{ $section->id }}">Add engagement <span class="material-symbols-outlined">arrow_downward</span></button>
+                </div>
+                <div class="col-12 col-md-4 d-flex justify-content-center mb-2">
+                    <button class="btn btn-success btn-sm col-12" data-bs-toggle="collapse" href="#collapsableAddMetacognition{{ $section->id }}" role="button" aria-expanded="false" aria-controls="collapsableAddMetacognition{{ $section->id }}">Add metacognition <span class="material-symbols-outlined">arrow_downward</span></button>
                 </div>
 
-                <div class="col-6 d-flex justify-content-center">
-                    <button class="btn btn-success btn-sm col-12 col-md-4 mt-2" data-bs-toggle="collapse" href="#collapsableAddMetacognition{{ $section->id }}" role="button" aria-expanded="false" aria-controls="collapsableAddMetacognition{{ $section->id }}">Add metacognition  <i class="mdi mdi-arrow-down"></i></button>
-                </div>
-
-                <div class="col-6 d-flex justify-content-center">
+                <div class="col-12">
                     <div class="collapse" id="collapsableAddExercise{{ $section->id }}">
-                        @forelse($types as $type)
-                            <div>
-                                <button type="button" id="add_{{ $type->underscore_name }}_button" class="btn btn-sm btn-primary mt-1" data-bs-toggle="modal" data-bs-target="#add_{{ $type->underscore_name}}_exercise_modal_{{ $section->id }}">
+                        <div class="d-flex flex-wrap gap-1 p-2">
+                            @forelse($exerciseTypes as $type)
+                                <button type="button" class="btn btn-sm btn-primary btn-add-exercise" data-unit-id="{{ $unit->id }}" data-type-id="{{ $type->id }}" data-type-name="{{ $type->name }}" data-section-id="{{ $section->id }}" data-category="comprehension">
                                     {{ $type->name }}
                                 </button>
-                                @include('modals.exercises.add', ['section_id' => $section->id, 'type' => $type])
-                            </div>
-                        @empty
-                        @endforelse
+                            @empty
+                                <p class="text-secondary small mb-0">No exercise types</p>
+                            @endforelse
+                        </div>
                     </div>
                 </div>
-                
-                <div class="col-6 d-flex justify-content-center">
+                <div class="col-12">
+                    <div class="collapse" id="collapsableAddEngagement{{ $section->id }}">
+                        <div class="d-flex flex-wrap gap-1 p-2">
+                            @forelse($engagementTypes as $type)
+                                <button type="button" class="btn btn-sm btn-warning text-dark btn-add-exercise" data-unit-id="{{ $unit->id }}" data-type-id="{{ $type->id }}" data-type-name="{{ $type->name }}" data-section-id="{{ $section->id }}" data-category="engagement">
+                                    {{ $type->name }}
+                                </button>
+                            @empty
+                                <p class="text-secondary small mb-0">No engagement types</p>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
                     <div class="collapse" id="collapsableAddMetacognition{{ $section->id }}">
-                        <div class="ms-1 me-1">
-                            <button type="button" id="add_multiple_choice_button" class="btn btn-sm btn-success mt-1" data-bs-toggle="modal" data-bs-target="#add_meta_multiple_choice_exercise_modal_{{ $section->id }}">
+                        <div class="d-flex flex-wrap gap-1 p-2">
+                            <button type="button" class="btn btn-sm btn-success btn-add-metacognition" data-unit-id="{{ $unit->id }}" data-section-id="{{ $section->id }}" data-underscore-type="multiple_choice" data-type-name="Multiple Choice">
                                 Multiple choice
                             </button>
-                            @include('modals.exercises.metacognition', ['section' => $section, 'underscore_type' => 'multiple_choice', 'type' => 'Multiple Choice'])
-                        </div>
-                        <div class="ms-1 me-1">
-                            <button type="button" id="add_drag_and_drop_button" class="btn btn-sm btn-success mt-1" data-bs-toggle="modal" data-bs-target="#add_meta_drag_and_drop_exercise_modal_{{ $section->id }}">
+                            <button type="button" class="btn btn-sm btn-success btn-add-metacognition" data-unit-id="{{ $unit->id }}" data-section-id="{{ $section->id }}" data-underscore-type="drag_and_drop" data-type-name="Drag and Drop">
                                 Drag and Drop
                             </button>
-                            @include('modals.exercises.metacognition', ['section' => $section, 'underscore_type' => 'drag_and_drop', 'type' => 'Drag and Drop'])
-                        </div>
-                        <div class="ms-1 me-1">
-                            <button type="button" id="add_open_ended_metacognition_button" class="btn btn-sm btn-success mt-1" data-bs-toggle="modal" data-bs-target="#add_meta_open_ended_exercise_modal_{{ $section->id }}">
+                            <button type="button" class="btn btn-sm btn-success btn-add-metacognition" data-unit-id="{{ $unit->id }}" data-section-id="{{ $section->id }}" data-underscore-type="open_ended" data-type-name="Open Ended">
                                 Open-ended
                             </button>
-                            @include('modals.exercises.metacognition', ['section' => $section, 'underscore_type' => 'open_ended', 'type' => 'Open Ended'])
-                        </div>
-                        <div class="ms-1 me-1">
-                            <button type="button" id="add_form_button" class="btn btn-sm btn-success mt-1" data-bs-toggle="modal" data-bs-target="#add_meta_form_exercise_modal_{{ $section->id }}">
+                            <button type="button" class="btn btn-sm btn-success btn-add-metacognition" data-unit-id="{{ $unit->id }}" data-section-id="{{ $section->id }}" data-underscore-type="form" data-type-name="Form">
                                 Form
                             </button>
-                            @include('modals.exercises.metacognition', ['section' => $section, 'underscore_type' => 'form', 'type' => 'Form'])
                         </div>
                     </div>
                 </div>
@@ -135,4 +140,163 @@
     @endforelse
 </div>
 
+{{-- Un solo modal para Add Exercise (contenido cargado por AJAX) --}}
+<div class="modal fade" id="addExerciseModal" tabindex="-1" aria-hidden="true" data-bs-focus="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addExerciseModalTitle">New activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="addExerciseModalBody">
+                <div class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Un solo modal para Add Metacognition (contenido cargado por AJAX) --}}
+<div class="modal fade" id="addMetacognitionModal" tabindex="-1" aria-hidden="true" data-bs-focus="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addMetacognitionModalTitle">New activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="addMetacognitionModalBody">
+                <div class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@foreach($unit->sections->sortBy('position') as $section)
+    @include('modals.exercises.set_positions', ["modal_id" => "positions_modal_{$section->id}", "section" => $section])
+@endforeach
+@foreach($unit->sections->sortBy('position') as $section)
+    @foreach($section->exercises->sortBy('position') as $exercise)
+        @include('components.delete-confirmation-modal', [
+            'modalId' => 'deleteExerciseModal' . $exercise->id,
+            'title' => 'Delete Exercise',
+            'itemName' => $exercise->title,
+            'route' => route('exercises.destroy', [$exercise->section->unit_id, $exercise->exercise_type_id, $exercise->id]),
+            'deleteButtonText' => 'Delete Exercise'
+        ])
+    @endforeach
+@endforeach
+
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var unitId = {{ $unit->id }};
+    var baseUrl = '/units/' + unitId + '/exercises';
+
+    // Prevenir que eventos wheel sobre el modal disparen scroll en el body
+    document.querySelectorAll('.modal').forEach(function(modal) {
+        modal.addEventListener('wheel', function(e) {
+            if (modal.classList.contains('show')) {
+                e.stopPropagation();
+            }
+        }, { passive: false });
+    });
+
+    // TinyMCE lazy: init al abrir, destroy al cerrar
+    var mceConfig = {
+        statusbar: false,
+        license_key: 'gpl',
+        plugins: 'advlist lists link',
+        toolbar: 'undo redo | bold italic underline | link | checklist numlist bullist',
+        menubar: false,
+        height: 200,
+        relative_urls: false,
+    };
+
+    function initTinyMCEInModal(modal) {
+        var textarea = modal.querySelector('textarea.mce-editor-lazy');
+        if (textarea && typeof tinymce !== 'undefined' && !tinymce.get(textarea.id)) {
+            tinymce.init(Object.assign({ target: textarea }, mceConfig));
+        }
+    }
+
+    function destroyTinyMCEInModal(modal) {
+        var textarea = modal.querySelector('textarea.mce-editor-lazy');
+        if (textarea && typeof tinymce !== 'undefined') {
+            var ed = tinymce.get(textarea.id);
+            if (ed) ed.remove();
+        }
+    }
+
+    // Add Exercise: cargar formulario por AJAX
+    document.querySelectorAll('.btn-add-exercise').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var typeId = this.dataset.typeId;
+            var typeName = this.dataset.typeName;
+            var sectionId = this.dataset.sectionId;
+            var category = this.dataset.category || 'comprehension';
+            var modal = document.getElementById('addExerciseModal');
+            var body = document.getElementById('addExerciseModalBody');
+            var title = document.getElementById('addExerciseModalTitle');
+
+            body.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+            title.textContent = 'New ' + typeName + ' activity';
+
+            fetch(baseUrl + '/add-form/' + typeId + '/' + sectionId + '?category=' + encodeURIComponent(category) + '&_=' + Date.now(), {
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'text/html' }
+            })
+            .then(function(r) { return r.text(); })
+            .then(function(html) {
+                body.innerHTML = html;
+                var bsModal = bootstrap.Modal.getOrCreateInstance(modal);
+                modal.addEventListener('shown.bs.modal', function onShown() {
+                    modal.removeEventListener('shown.bs.modal', onShown);
+                    initTinyMCEInModal(modal);
+                }, { once: true });
+                bsModal.show();
+            })
+            .catch(function() {
+                body.innerHTML = '<p class="text-danger">Error loading form. Please try again.</p>';
+            });
+        });
+    });
+
+    var addExerciseModal = document.getElementById('addExerciseModal');
+    if (addExerciseModal) {
+        addExerciseModal.addEventListener('hidden.bs.modal', function() { destroyTinyMCEInModal(addExerciseModal); });
+    }
+
+    // Add Metacognition: cargar formulario por AJAX
+    document.querySelectorAll('.btn-add-metacognition').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var sectionId = this.dataset.sectionId;
+            var underscoreType = this.dataset.underscoreType;
+            var typeName = this.dataset.typeName;
+            var modal = document.getElementById('addMetacognitionModal');
+            var body = document.getElementById('addMetacognitionModalBody');
+            var title = document.getElementById('addMetacognitionModalTitle');
+
+            body.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+            title.textContent = 'New ' + typeName + ' activity';
+
+            fetch(baseUrl + '/metacognition-form/' + sectionId + '/' + underscoreType + '?_=' + Date.now(), {
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'text/html' }
+            })
+            .then(function(r) { return r.text(); })
+            .then(function(html) {
+                body.innerHTML = html;
+                var bsModal = bootstrap.Modal.getOrCreateInstance(modal);
+                bsModal.show();
+            })
+            .catch(function() {
+                body.innerHTML = '<p class="text-danger">Error loading form. Please try again.</p>';
+            });
+        });
+    });
+});
+</script>
 @endsection

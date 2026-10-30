@@ -23,7 +23,32 @@ class ExerciseController extends Controller
         $unit = Unit::find($unit_id);
 
         return view('exercises.index', compact('unit', 'types'));
-     }
+    }
+
+    public function addForm(Request $request, Unit $unit, ExerciseType $exercise_type, Section $section)
+    {
+        return view('modals.exercises.add_form', [
+            'type' => $exercise_type,
+            'section' => $section,
+            'section_id' => $section->id,
+            'category' => $request->query('category', 'comprehension'),
+        ]);
+    }
+
+    public function metacognitionForm(Unit $unit, Section $section, string $underscore_type)
+    {
+        $typeNames = [
+            'multiple_choice' => 'Multiple Choice',
+            'drag_and_drop' => 'Drag and Drop',
+            'open_ended' => 'Open Ended',
+            'form' => 'Form',
+        ];
+        return view('modals.exercises.metacognition_form', [
+            'section' => $section,
+            'underscore_type' => $underscore_type,
+            'type' => $typeNames[$underscore_type] ?? 'Activity',
+        ]);
+    }
 
      public function create(Request $request, $unit_id, $exercise_type_id, $section_id)
      {
@@ -55,6 +80,12 @@ class ExerciseController extends Controller
             $exercise->subtype = '99';
         }
 
+        $exercise->show_forum_link = $request->has('show_forum_link')
+            ? $request->boolean('show_forum_link')
+            : false;
+        $exercise->forum_button_label = $this->normalizedForumButtonLabel($request->input('forum_button_label'));
+        $exercise->category = $request->input('category');
+
         $exercise->save();
         
         return redirect()->route('exercises.show', $exercise->id);
@@ -79,6 +110,13 @@ class ExerciseController extends Controller
         $exercise->translated_instructions = $request->translated_instructions;
         $exercise->section_id = $request->section;
         $exercise->extra_info = $request->extra_info;
+
+        if ($request->has('show_forum_link')) {
+            $exercise->show_forum_link = $request->boolean('show_forum_link');
+        }
+        if ($request->has('forum_button_label')) {
+            $exercise->forum_button_label = $this->normalizedForumButtonLabel($request->input('forum_button_label'));
+        }
 
         if($this->getVideoFrom($request) == null) {
             $exercise->image_name = $exercise->image_name;
@@ -114,6 +152,16 @@ class ExerciseController extends Controller
         $exercise->delete();
 
         return redirect()->route('exercises.index', [$exercise->section->unit_id]);
+    }
+
+    private function normalizedForumButtonLabel(mixed $value): ?string
+    {
+        if ($value === null || ! is_string($value)) {
+            return null;
+        }
+        $trimmed = trim($value);
+
+        return $trimmed === '' ? null : $trimmed;
     }
 
     private function getVideoFrom(Request $request)

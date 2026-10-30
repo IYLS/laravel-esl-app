@@ -4,7 +4,7 @@
         <p class="text-secondary">{{ $e->description }}</p>
         @isset($e->instructions) <div class="text-dark">{!! $e->instructions !!}</div> @endisset
         @isset($e->translated_instructions) <div class="text-secondary">{!! $e->translated_instructions !!}</div> @endisset
-        @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
+        @isset($e->extra_info) <p class="text-info"><span class="material-symbols-outlined text-info">info</span> &nbsp; {{ $e->extra_info }}</p> @endisset
         @php
             $words = array();
             $definitions = array();
@@ -36,10 +36,10 @@
                         <div class="d-inline col-5 border d-flex align-items-center" style="height:45px; width: 140px;" id="word-destination-{{ $question->answer }}" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
                         <div class="d-inline col-7" id="word-definition-{{ $question->answer }}">{{ $question->answer }}</div>
                     </div>
-                    @if($e->subtype != '99' && $e->subtype != '991')
-                        @include('feedback.question', ['feedbacks' => isset($question->feedbacks) ? $question->feedbacks : null])
-                    @endif
+                    @include('feedback.question', ['feedbacks' => isset($question->feedbacks) ? $question->feedbacks : null])
                 @endforeach
+
+                <x-exercise-forum-link :exercise="$e" />
 
                 @include('layouts.tracking.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
             </div>

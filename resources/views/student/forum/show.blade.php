@@ -1,101 +1,100 @@
 @extends('layouts.app')
+@section('title', $comment->title ?? 'Forum')
+
 @section('main')
+<div class="forum-page">
+    <a href="{{ route('forum.index') }}" class="forum-back-link">
+        <span class="material-symbols-outlined" style="font-size:1.2rem;">arrow_back</span>
+        Volver al foro
+    </a>
 
-@php use Carbon\Carbon; @endphp
-
-<style>
-    #forum-content-container { height: 60vh; }
-    #forum-comment-container { height: 20%; }
-    .forum-self-comment { background-color: #f2f5fa !important; }
-    #forum-reply-list { height: 30vh; }
-</style>
-<div class="container mt-2">
-    <div class="row">
-        <div class="col-12 d-flex justify-content-end">
-            <a href="{{ route('forum.index') }}">Go back</a>
-        </div>
-    </div>
-</div>
-<div class="container mt-3 border">
-    <h3 class="m-4">{{ $comment->title }}</h3>
-    <p class="m-4">{{ $comment->content }}</p>
-    <div class="row m-3">
-        <div class="col-6 d-flex align-items-center justify-content-start">
-            @php $posted_by = "posted by @unknown"; @endphp
-            @if(isset($comment->user->name) and $comment->user->name == $current_user->name)
-                @php $posted_by = "posted by @me"; @endphp
-            @elseif(isset($comment->user->name) and $comment->user->name != $current_user->name)
-                @php $posted_by = "posted by @" . $comment->user->name; @endphp
-            @endif
-
-            @if ($comment->created_at->diffInSeconds(Carbon::now()) <= 59)
-                @if ($comment->created_at->diffInSeconds(Carbon::now()) == 0)
-                    @php $posted_on = " just now"; @endphp
-                @else
-                    @php $posted_on = " " . $comment->created_at->diffInSeconds(Carbon::now()) . " seconds ago"; @endphp
-                @endif
-            @elseif ($comment->created_at->diffInMinutes(Carbon::now()) <= 59)
-                @php $posted_on = " " . $comment->created_at->diffInMinutes(Carbon::now()) . " minutes ago"; @endphp
-            @elseif ($comment->created_at->diffInHours(Carbon::now()) <= 23)
-                @php $posted_on = " " . $comment->created_at->diffInHours(Carbon::now()) . " hours ago"; @endphp
-            @elseif ($comment->created_at->diffInDays(Carbon::now()) >= 1)
-                @if ($comment->created_at->diffInDays(Carbon::now()) == 1)
-                    @php $posted_on = " yesterday"; @endphp
-                @else
-                    @php $posted_on = " " . $comment->created_at->diffInDays(Carbon::now()) . " days ago"; @endphp
-                @endif
-            @endif
-
-            <p class="text-secondary"><small>{{ $posted_by . $posted_on }}</small></p>
-        </div>
-        <div class="col-6 d-flex align-items-center justify-content-end">
-            <div class="d-flex me-1">
-                <i class="mdi mdi-18px mdi-comment-multiple-outline me-1 text-primary"></i><p class="text-primary"><small>{{ $replies_number }} replies</small></p>
-            </div>
-            @if ($comment->user_id == $current_user->id)
-                <div class="d-flex me-1">
-                    <form action="{{ route('forum.destroy', $comment->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn d-flex" type="submit">
-                            <i class="mdi mdi-delete text-danger"></i><p class="text-danger"><small>delete</small></p>
-                        </button>
-                    </form>
-                </div>
-            @endif
-        </div>
-    </div>
-
-    <div class="overflow-auto border mt-4 mb-4" id="forum-reply-list">
-        <h5 class="m-2">Replies to this post</h5>
-        @forelse($replies as $reply)
-            <div class="border rounded p-2 m-2 d-flex">
-                <p>{{ $reply->content }}</p>
-                <div class="d-flex">
-                    <p class="text-secondary ms-1"><small>{{ "@".$reply->user->user_id . " on " }}</small></p>
-                    <p class="text-secondary ms-1"><small>{{ $reply->created_at }}</small></p>
+    {{-- Post principal --}}
+    @php
+        $isOwn = $comment->user_id == $current_user->id;
+        $authorName = ($comment->user->name ?? '') == $current_user->name ? 'me' : ($comment->user->name ?? '');
+    @endphp
+    <article class="forum-card forum-detail-card {{ $isOwn ? 'own' : '' }}">
+        <div class="forum-post-header">
+            <x-forum-avatar :user="$comment->user ?? null" size="lg" />
+            <div class="forum-post-body">
+                <h1 class="forum-detail-title">{{ $comment->title }}</h1>
+                <div class="forum-detail-content">{{ $comment->content }}</div>
+                <div class="forum-post-meta">
+                    <x-user-mention :name="$authorName" />
+                    <span>·</span>
+                    <x-forum-time :datetime="$comment->created_at" />
                 </div>
             </div>
-        @empty
-            <div class="d-flex justify-content-center align-items-center">
-                <p class="text-secondary"><small>No replies yet.</small></p>
-            </div>
-        @endforelse
-    </div>
-</div>
-
-<div class="container mt-3 pt-2 pb-2" id="forum-comment-container">
-    <h5>Reply to this post</h5>
-    <form action="{{ route('replies.store', $comment->id) }}" method="POST" class="row">
-        @csrf
-        <div class="col-11">
-            <textarea class="form-control" name="content" type="text" placeholder="Type here your reply"></textarea>
         </div>
-        <button class="col-1 text-center btn btn-primary" type="submit">
-            <i class="mdi mdi-24px mdi-send"></i>
-        </button>
-    </form>
+        <div class="forum-post-footer">
+            <div class="forum-post-actions">
+                <span class="forum-stat">
+                    <span class="material-symbols-outlined">chat_bubble</span>
+                    {{ $replies_number }} {{ $replies_number == 1 ? 'respuesta' : 'respuestas' }}
+                </span>
+                <x-reaction-picker type="comment" :id="$comment->id" :reactions="$comment->reactions ?? collect()" />
+            </div>
+            @if($isOwn || Auth::user()->role == 'teacher')
+                <form action="{{ route('forum.destroy', $comment->id) }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="forum-btn-delete" onclick="return confirm('¿Eliminar este post?');">
+                        <span class="material-symbols-outlined" style="font-size:1rem;">delete</span>
+                        Eliminar
+                    </button>
+                </form>
+            @endif
+        </div>
+    </article>
+
+    {{-- Respuestas --}}
+    <section class="forum-replies-section">
+        <h2 class="forum-section-title">Respuestas ({{ $replies_number }})</h2>
+        <div class="forum-replies-list">
+            @forelse($replies as $reply)
+                @php
+                    $replyAuthorName = ($reply->user->name ?? '') == $current_user->name ? 'me' : ($reply->user->name ?? '');
+                @endphp
+                <div class="forum-reply-item">
+                    <x-forum-avatar :user="$reply->user ?? null" size="sm" />
+                    <div class="flex-grow-1" style="min-width:0;">
+                        <div class="forum-reply-text">{{ $reply->content }}</div>
+                        <div class="forum-reply-meta mb-2">
+                            <x-user-mention :name="$replyAuthorName" />
+                            <span> · </span>
+                            <x-forum-time :datetime="$reply->created_at" />
+                        </div>
+                        <x-reaction-picker type="reply" :id="$reply->id" :reactions="$reply->reactions ?? collect()" />
+                    </div>
+                </div>
+            @empty
+                <div class="forum-empty py-4">
+                    <p class="text-muted mb-0">Sin respuestas aún. ¡Sé el primero en responder!</p>
+                </div>
+            @endforelse
+        </div>
+    </section>
+
+    {{-- Formulario responder --}}
+    <section class="forum-reply-form-section">
+        <div class="forum-form-card">
+            <h2 class="forum-section-title">Responder</h2>
+            <form action="{{ route('replies.store', $comment->id) }}" method="POST">
+                @csrf
+                <div class="mb-3">
+                    <div class="forum-compose-wrap position-relative">
+                        <textarea id="forum-reply-content" name="content" class="form-control" rows="4" placeholder="Escribe tu respuesta..." required></textarea>
+                        <div class="forum-compose-actions">
+                            <x-emoji-picker target="forum-reply-content" />
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <span class="material-symbols-outlined" style="font-size:1.1rem; vertical-align:middle;">send</span>
+                    Enviar respuesta
+                </button>
+            </form>
+        </div>
+    </section>
 </div>
-
-
 @endsection

@@ -1,5 +1,5 @@
 <!-- Multiple choice modal -->
-<div class="modal fade" id="add_meta_{{ $underscore_type }}_exercise_modal_{{ $section->id }}" tabindex="-1" aria-labelledby="add_meta_{{ $underscore_type }}_exercise_modal_{{ $section->id }}" aria-hidden="true">
+<div class="modal fade" id="add_meta_{{ $underscore_type }}_exercise_modal_{{ $section->id }}" tabindex="-1" aria-labelledby="add_meta_{{ $underscore_type }}_exercise_modal_{{ $section->id }}" aria-hidden="true" data-bs-focus="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -42,6 +42,7 @@
                             <option value="991">Table style</option>
                         </select>
                     @endif
+                    @include('modals.exercises._forum_create_fields', ['suffix' => 'meta_' . $section->id . '_' . $underscore_type])
                     <input type="text" class="form-control mt-1" placeholder="(Optional) Additional Information" name="extra_info">
                     <p class="text-info"><small>(Optional) Enter here any relevant information about the exercise. e.g. An example of how to complete the exercise.</small></p>
                     <div class="modal-footer">

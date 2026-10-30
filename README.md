@@ -1,6 +1,6 @@
 # Laravel ESL App
 
-Aplicación web de aprendizaje de inglés (ESL) construida con **Laravel 9**. Permite a docentes gestionar unidades, ejercicios y seguimiento, y a estudiantes completar actividades interactivas.
+Aplicación web de aprendizaje de inglés (ESL) construida con **Laravel 13**. Permite a docentes gestionar unidades, ejercicios y seguimiento, y a estudiantes completar actividades interactivas.
 
 ## Documentación
 
@@ -9,6 +9,12 @@ La guía técnica completa (prerrequisitos, instalación, arquitectura, debuggin
 **[docs/TECHNICAL.md](docs/TECHNICAL.md)**
 
 ## Inicio rápido
+
+### Validación en GitHub
+
+El workflow **CI / Build and smoke test** instala las dependencias, compila los assets, revisa la sintaxis PHP, levanta la aplicación con `php artisan serve` y comprueba `/login`. No ejecuta migraciones, ya que el historial actual requiere compatibilidad y revisión antes de validarlo contra una base vacía. Para impedir merges cuando falle, configura `Build and smoke test` como *required status check* en las reglas de protección de la rama destino.
+
+### Instalación manual
 
 ```bash
 # 1. Dependencias
@@ -34,7 +40,7 @@ Credenciales de demo tras el seeder: ver [docs/TECHNICAL.md §4](docs/TECHNICAL.
 
 ## Stack
 
-- PHP 8.0+ / Laravel 9
+- PHP 8.5+ / Laravel 13
 - MySQL
 - Laravel Mix (Webpack)
 - TinyMCE (CDN)

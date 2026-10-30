@@ -1,5 +1,5 @@
 <!-- Multiple choice modal -->
-<div class="modal fade" id="add_feedback_modal" tabindex="-1" aria-labelledby="add_feedback_modal" aria-hidden="true">
+<div class="modal fade" id="add_feedback_modal" tabindex="-1" aria-labelledby="add_feedback_modal" aria-hidden="true" data-bs-focus="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -17,7 +17,7 @@
                             </div>
                             <div class="mt-2">
                                 <button class="btn btn-link btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#feedback_description_{{ $type->id }}_modal">
-                                    <i class="mdi mdi-information-outline" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $type->description }}"></i>
+                                    <span class="material-symbols-outlined" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $type->description }}">info</span>
                                 </button>
                             </div>
                         </div>

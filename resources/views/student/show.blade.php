@@ -3,10 +3,60 @@
 
 @section('title', 'Student Module')
 
-<div class="p-4 row w-100 h-100 col-12">
-    <h5 class="pl-2">{{ $unit->title }}</h5>
+<div class="p-4 row w-100 h-100 col-12 student-module">
+    <div class="col-12 mb-2">
+        <h5 class="mb-2">{{ $unit->title }}</h5>
+        <div class="row g-2">
+            {{-- Individual progress --}}
+            <div class="col-6"
+                 data-bs-toggle="tooltip"
+                 data-bs-placement="bottom"
+                 title="Check your progress here">
+                <div class="d-flex align-items-center mb-1">
+                    <span class="me-1" style="font-size:.9rem;">🎯</span>
+                    <small class="text-muted fw-semibold">My progress</small>
+                    <small class="text-muted ms-auto" id="progress-text">{{ $completed_count ?? 0 }}/{{ $total_exercises ?? 0 }}</small>
+                </div>
+                <div class="progress" style="height: 6px; border-radius: 3px;">
+                    <div
+                        class="progress-bar"
+                        id="unit-progress-bar"
+                        role="progressbar"
+                        style="width: {{ $unit_progress ?? 0 }}%; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); transition: width 0.6s ease;"
+                        aria-valuenow="{{ $unit_progress ?? 0 }}"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    ></div>
+                </div>
+            </div>
+            {{-- Group progress --}}
+            @if($user->group_id)
+            <div class="col-6"
+                 data-bs-toggle="tooltip"
+                 data-bs-placement="bottom"
+                 title="Check the progress of your classmates here">
+                <div class="d-flex align-items-center mb-1">
+                    <span class="me-1" style="font-size:.9rem;">👥</span>
+                    <small class="text-muted fw-semibold">Group</small>
+                    <small class="text-muted ms-auto" id="group-progress-text">...</small>
+                </div>
+                <div class="progress" style="height: 6px; border-radius: 3px;">
+                    <div
+                        class="progress-bar"
+                        id="group-progress-bar"
+                        role="progressbar"
+                        style="width: 0%; background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%); transition: width 0.8s ease;"
+                        aria-valuenow="0"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    ></div>
+                </div>
+            </div>
+            @endif
+        </div>
+    </div>
     <div class="row sticky-top p-1" id="sticky-bar" style="background-color: white;">
-        <div class="col-12 col-xl-4">
+        <div class="col-12 col-lg-4 col-xl-4">
             @forelse($keywords as $keyword)
                 @php $modal_id = "keyword_modal-$keyword->id"; @endphp
                 <button type="button" id="{{ $modal_id . "_button" }}" class="mt-1 btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#{{ $modal_id }}" onclick="unstick()">{{ $keyword->keyword }}</button>
@@ -15,7 +65,7 @@
                 <p class="text-center text-secondary"><small>No keywords added for this unit.</small></p>
             @endforelse
         </div>
-        <div class="col-12 col-xl-8">
+        <div class="col-12 col-lg-8 col-xl-8">
             @include('exercises.help_options', ['unit' => $unit])
         </div>
     </div>
@@ -24,7 +74,7 @@
     <div class="col-12 col-xl-4">
         @if(isset($unit->video_name) and $unit->video_name != null and $unit->video_name != '')
             <div class="ratio ratio-16x9 mt-3">
-                <video title="Video" allowfullscreen controls>
+                <video id="unit-video-{{ $unit->id }}" title="Video" allowfullscreen controls>
                     <source src="{{ asset('storage/files') . "/" . $unit->video_name }}">
                 </video>
             </div>
@@ -38,16 +88,32 @@
 
     {{-- Exercises and content section --}}
     <div class="col-12 col-xl-8 bg-light mt-2 p-3 rounded shadow overflow-auto" id="top_student_area" style="max-height: calc(100vh - 120px);">
+        @if(!isset($has_exercises) || !$has_exercises)
+            {{-- Mensaje cuando no hay ejercicios --}}
+            <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px;">
+                <span class="material-symbols-outlined" style="font-size: 80px; color: #6c757d; margin-bottom: 20px;">assignment</span>
+                <h4 class="text-secondary mb-3">No hay ejercicios disponibles</h4>
+                <p class="text-muted text-center mb-4" style="max-width: 500px;">
+                    Esta unidad aún no tiene ejercicios creados en sus secciones. Por favor, contacta a tu profesor para más información.
+                </p>
+                <a href="{{ route('student.level_selection') }}" class="btn btn-primary">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    Volver a selección de unidades
+                </a>
+            </div>
+        @else
         <ul class="nav nav-tabs" id="sectionsTabs" role="tablist">
             @foreach($unit->sections->sortBy('position') as $section)
                 @php 
                     $index = $loop->index + 1;
-                    if(isset($section_first_exercise_id)) {
-                        $section_first_exercise_id = $section->exercises->first()->id;
+                    $section_exercises = $section->exercises->sortBy('position');
+                    if($section_exercises->count() > 0) {
+                        $section_first_exercise_id = $section_exercises->first()->id;
                     } else {
                         $section_first_exercise_id = 0;
                     }
                 @endphp
+                @if($section_exercises->count() > 0)
                 <li class="nav-item" role="presentation">
                     @if($index-1 == 0)
                         <button 
@@ -59,7 +125,7 @@
                             role="tab" 
                             aria-controls="{{ $section->underscore_name }}" 
                             aria-selected="true"
-                            onclick="setCurrentExercise({{ json_encode($section_first_exercise_id) }}); onExerciseClicked({{ json_encode($section_first_exercise_id) }});"
+                            data-first-exercise-id="{{ $section_first_exercise_id }}"
                         >
                             {{ $index . ". " . $section->name }}
                         </button>
@@ -73,34 +139,39 @@
                             role="tab" 
                             aria-controls="{{ $section->underscore_name }}" 
                             aria-selected="false"
-                            onclick="setCurrentExercise({{ json_encode($section_first_exercise_id) }}); onExerciseClicked({{ json_encode($section_first_exercise_id) }});"
+                            data-first-exercise-id="{{ $section_first_exercise_id }}"
                         >
                             {{ $index . ". " . $section->name }}
                         </button>
                     @endif
                 </li>
+                @endif
             @endforeach
         </ul>
         <div class="tab-content" id="myTabContent">
             @foreach($unit->sections->sortBy('position') as $section)
-                @if($loop->index == 0)
-                    <div class="tab-pane fade show section-pane active m-2" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
-                @else
-                    <div class="tab-pane fade section-pane m-2" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
-                @endif
-                <div class="d-flex align-items-start row mt-2">
+                @php
+                    $section_exercises = $section->exercises->sortBy('position');
+                @endphp
+                @if($section_exercises->count() > 0)
+                    @if($loop->index == 0)
+                        <div class="tab-pane fade show section-pane active m-2" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
+                    @else
+                        <div class="tab-pane fade section-pane m-2" id="{{ $section->underscore_name }}" role="tabpanel" aria-labelledby="{{ $section->underscore_name }}-tab">
+                    @endif
+                    <div class="d-flex align-items-start row mt-2">
 
                     {{-- (Optional) Additional Information --}}
                     @if(isset($section->instructions) and $section->instructions != '')
                     <div class="card pt-1 mb-2 pb-1 d-flex justify-content-center">
-                        <p class="text-primary"><i class="mdi mdi-information-outline text-primary"></i>&nbsp;{{ $section->instructions }}</p>
+                        <p class="text-primary"><span class="material-symbols-outlined text-primary">info</span>&nbsp;{{ $section->instructions }}</p>
                     </div>
                     @endif
-                    <div class="nav flex-column mt-2 nav-pills col-12 col-xl-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <div class="nav flex-column mt-2 nav-pills col-12 col-xl-2" id="v-pills-tab-{{ $section->underscore_name }}" role="tablist" aria-orientation="vertical">
                         @forelse($section->exercises->sortBy('position') as $e)
                             @php $index = $loop->index; @endphp
                             <button 
-                                class="nav-link exercise-btn @if($e->subtype == 99 || $e->subtype == 991) meta @endif @if($index == 0) active @endif"
+                                class="nav-link exercise-btn @if($e->category == 'metacognition') meta @elseif($e->category == 'engagement') engagement @endif @if($index == 0) active @endif"
                                 id="{{ $e->exerciseType->underscore_name . $e->id }}-tab" 
                                 data-bs-toggle="pill" 
                                 data-bs-target="#{{ $e->exerciseType->underscore_name . $e->id }}" 
@@ -112,7 +183,7 @@
                                 @else
                                     aria-selected="false"
                                 @endif
-                                onclick="startTimer(); onExerciseClicked({{ json_encode($e->id) }})">
+                                data-exercise-id="{{ $e->id }}">
                                     @if($e->title == '' or $e->title == null) 
                                         @if(count($completed_exercises) != 0 and in_array($e->id, $completed_exercises)) 
                                             <div class="d-flex justify-content-between">
@@ -138,7 +209,7 @@
                             <p class="text-center text-secondary"><small>No exercises added yet.</small></p>    
                         @endforelse
                     </div>
-                    <div class="tab-content container-fluid col-12 col-xl-10" id="v-pills-tabContent">
+                    <div class="tab-content container-fluid col-12 col-xl-10" id="v-pills-tabContent-{{ $section->underscore_name }}">
                         @foreach($section->exercises->sortBy('position') as $e)
                             @php
                                 $feedback_content = array(
@@ -167,7 +238,7 @@
                                     <div class="container">
                                         <h4>{{ $e->title }}</h4>
                                         @include('layouts.tracking.tracking_complete')
-                                        @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
+                                        @isset($e->extra_info) <p class="text-info"><span class="material-symbols-outlined text-info">info</span> &nbsp; {{ $e->extra_info }}</p> @endisset
                                         <p class="text-secondary">{{ $e->description }}</p>
                                         @isset($e->instructions) <div class="text-dark">{!! $e->instructions !!}</div> @endisset
                                         @isset($e->translated_instructions) <div class="text-secondary">{!! $e->translated_instructions !!}</div> @endisset
@@ -178,6 +249,7 @@
                                             @elseif($e->subtype == 991)
                                                 @include('exercises.open_ended.double_text')
                                             @endif
+                                            <x-exercise-forum-link :exercise="$e" />
                                             @include('layouts.tracking.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
                                         </form>
                                     </div>
@@ -193,11 +265,11 @@
                                         <p class="text-secondary">{{ $e->description }}</p>
                                         @isset($e->instructions) <div class="text-dark">{!! $e->instructions !!}</div> @endisset
                                         @isset($e->translated_instructions) <div class="text-secondary">{!! $e->translated_instructions !!}</div> @endisset
-                                        @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
+                                        @isset($e->extra_info) <p class="text-info"><span class="material-symbols-outlined text-info">info</span> &nbsp; {{ $e->extra_info }}</p> @endisset
                                         @include('layouts.tracking.tracking_complete')
 
                                         @if(isset($e->video_name) and $e->video_name != null and $e->video_name != '')
-                                            <video title="Video" allowfullscreen controls class="ratio ratio-16x9 mt-3 w-75">
+                                            <video id="exercise-video-{{ $e->id }}" title="Video" allowfullscreen controls class="ratio ratio-16x9 mt-3 w-75">
                                                 <source src="{{ asset('storage/files') . "/" . $e->video_name }}">
                                             </video>
                                         @endif
@@ -226,7 +298,8 @@
                                             @elseif($e->subtype == 4 or $e->subtype == 99)
                                                 @include('exercises.multiple_choice.multiple_choice')
                                             @endif
-                                            
+
+                                            <x-exercise-forum-link :exercise="$e" />
                                             <br>
                                             @include('layouts.tracking.tracking_buttons', ['tracking' => $e->tracking, 'questions' => $e->questions, 'exercise_id' => $e->id, 'subtype' => $e->subtype])
                                         </form>
@@ -240,7 +313,7 @@
                                         <p class="text-secondary">{{ $e->description }}</p>
                                         @isset($e->instructions) <div class="text-dark">{!! $e->instructions !!}</div> @endisset
                                         @isset($e->translated_instructions) <div class="text-secondary">{!! $e->translated_instructions !!}</div> @endisset
-                                        @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
+                                        @isset($e->extra_info) <p class="text-info"><span class="material-symbols-outlined text-info">info</span> &nbsp; {{ $e->extra_info }}</p> @endisset
 
                                         {{--  Dictation Cloze  --}}
                                         @if($e->subtype == 1) 
@@ -260,7 +333,7 @@
                                         <p class="text-secondary">{{ $e->description }}</p>
                                         @isset($e->instructions) <div class="text-dark">{!! $e->instructions !!}</div> @endisset
                                         @isset($e->translated_instructions) <div class="text-secondary">{!! $e->translated_instructions !!}</div> @endisset
-                                        @isset($e->extra_info) <p class="text-info"><i class="mdi mdi-information-outline text-info"></i> &nbsp; {{ $e->extra_info }}</p> @endisset
+                                        @isset($e->extra_info) <p class="text-info"><span class="material-symbols-outlined text-info">info</span> &nbsp; {{ $e->extra_info }}</p> @endisset
 
                                         {{-- Form --}}
                                         @include('exercises.form.dashboard')
@@ -268,843 +341,222 @@
                                     </div>
                                 </div>
                                 @break
+                            @case('poll')
+                                <div class="tab-pane fade exercise-pane @if($loop->index == 0) show active @endif" id="{{ $e->exerciseType->underscore_name . $e->id }}" role="tabpanel" aria-labelledby="{{ $e->exerciseType->underscore_name . $e->id }}-tab">
+                                    <div class="container">
+                                        <h4>{{ $e->title }}</h4>
+                                        <p class="text-secondary">{{ $e->description }}</p>
+                                        @isset($e->instructions) <div class="text-dark">{!! $e->instructions !!}</div> @endisset
+                                        @isset($e->translated_instructions) <div class="text-secondary">{!! $e->translated_instructions !!}</div> @endisset
+                                        @isset($e->extra_info) <p class="text-info"><span class="material-symbols-outlined text-info">info</span> &nbsp; {{ $e->extra_info }}</p> @endisset
+
+                                        {{-- Poll Likert 1-7 --}}
+                                        @include('exercises.poll.likert')
+                                    </div>
+                                </div>
+                                @break
                                 @default
                             @endswitch
                         @endforeach
-                    </div>
-                    </div>
-                </div>
+                    </div> {{-- Cierra tab-content --}}
+                    </div> {{-- Cierra d-flex align-items-start row mt-2 --}}
+                    </div> {{-- Cierra section-pane --}}
+                @endif
             @endforeach
         </div>
+        @endif
     </div>
 </div>
 
+{{-- JavaScript modularizado y organizado --}}
+<script src="{{ asset('js/student-exercises.js') }}"></script>
+<script src="{{ asset('js/modules/videoHandler.js') }}"></script>
+
 <script>
-    window.unstick = function () {
-        document.getElementById('sticky-bar')?.classList.remove('sticky-top');
-    };
-
-    // Time spent on exercise
-    var startTime;
-    function startTimer() {
-        window.startTime = new Date().getTime();
-    }
-
-    function millisToHms(ms) {
-        const n = Number(ms);
-        if (!Number.isFinite(n) || n < 0) return '00:00';
-
-        const totalSeconds = Math.floor(n / 1000);
-        const h = Math.floor(totalSeconds / 3600);
-        const m = Math.floor((totalSeconds % 3600) / 60);
-        const s = totalSeconds % 60;
-        const base = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-        return (h > 0) ? `${h}:${base}` : base;
-    }
-</script>
-
-{{-- Drag and Drop --}}
-<script>
-    function allowDrop(ev) {
-      ev.preventDefault();
-    }
+    // Inicializar variables necesarias desde PHP
+    @if(isset($has_exercises) && $has_exercises)
+    window.current_exercise_id = {{ json_encode($first_exercise_id) }};
     
-    function drag(ev) {
-      ev.dataTransfer.setData("text", ev.target.id);
+    // Inicializar timer al cargar la página
+    if (typeof startTimer === 'function') {
+        startTimer();
     }
+    @endif
     
-    function drop(ev) {
-      ev.preventDefault();
-      var data = ev.dataTransfer.getData("text");
-      ev.target.appendChild(document.getElementById(data));
-    }
-</script>
-
-{{-- Fill In the gaps --}}
-<script>
-    function strikeWord(item) {
-        if(!item.classList.contains('strikable')) {
-            item.classList.add('strikable');
-            item.classList.add('bg-warning');
-        } else {
-            item.classList.remove('strikable');
-            item.classList.remove('bg-warning');
-        }
-    }
-</script>
-
-{{-- Feedback Visibility  --}}
-<script>
-    function setFeedbackHidden(value, exercise_id, questions) {
-        questions.forEach(function (question) {
-            const questionFeedback = document.getElementById(`question-feedback-container-${question.id}`);
-            if (questionFeedback != null) {
-                questionFeedback.hidden = value;
+    // Carga el progreso grupal vía AJAX
+    function loadGroupProgress() {
+        var groupBar = document.getElementById('group-progress-bar');
+        if (!groupBar) return;
+        fetch('{{ route("student.group_progress", $unit->id) }}', {
+            headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var bar = document.getElementById('group-progress-bar');
+            var text = document.getElementById('group-progress-text');
+            if (bar) {
+                bar.style.width = data.progress + '%';
+                bar.setAttribute('aria-valuenow', data.progress);
             }
+            if (text) text.textContent = data.progress + '%';
+        })
+        .catch(function() {
+            var text = document.getElementById('group-progress-text');
+            if (text) text.textContent = '—';
         });
-
-        var exerciseFeedback = document.getElementById(`feedback-exercise-details-container-${exercise_id}`);
-        if (exerciseFeedback != null) {
-            exerciseFeedback.hidden = value;
-        }
     }
-</script>
 
-{{-- Get Response Data --}}
-<script>
-    function getResponseData(questions, exercise, type) {
-        var answers = {};
-        switch(type) {
-        case 'drag_and_drop':
-            answers = getDragAndDropResults(questions, exercise);
-            break;
-        case 'multiple_choice':
-            answers = getMultipleChoiceResults(questions, exercise);
-            break;
-        case 'fill_in_the_gaps':
-            if (exercise.subtype == 2) {
-                answers = getFillInTheGapsResults(questions, exercise);
-            } else {
-                answers = getDictationClozeResults(questions, exercise);
-            }
-            break;
-        case 'open_ended':
-            answers = getOpenEndedResults(questions, exercise);
-            break;
-        }
-
-        appendTrackingValues(exercise.id, type);
-
-        var currentTime = new Date().getTime();
-        var timeSpent = millisToHms(currentTime - window.startTime);
-    
-        var form = document.getElementById(`${type}_form_${exercise.id}`);
-
-        if(type != 'open_ended' && type != 'form' && exercise.subtype != 99 && exercise.subtype != 991) {
-            var wrong = document.createElement('input');
-            wrong.setAttribute('value', `${answers.wrong}`);
-            wrong.setAttribute('name', `wrong`);
-            wrong.hidden = true;
-            form.appendChild(wrong);
+    // Función para actualizar la barra de progreso individual y refrescar la grupal
+    function updateUnitProgress(progress, completed, total) {
+        const progressBar = document.getElementById('unit-progress-bar');
+        const progressText = document.getElementById('progress-text');
         
-            var correct = document.createElement('input');
-            correct.setAttribute('value', `${answers.correct}`);
-            correct.setAttribute('name', `correct`);
-            correct.hidden = true;
-            form.appendChild(correct);
+        if (progressBar) {
+            progressBar.style.width = progress + '%';
+            progressBar.setAttribute('aria-valuenow', progress);
+        }
+        
+        if (progressText) {
+            progressText.textContent = completed + '/' + total;
         }
 
-        var time = document.createElement('input');
-        time.setAttribute('value', `${timeSpent}`);
-        time.setAttribute('name', `time`);
-        time.hidden = true;
-        form.appendChild(time);
-
-        if (type != 'form' && answers.responses.length > 0) {
-            answers.responses.forEach(function (item){
-                var responseItem = document.createElement('input');
-                responseItem.setAttribute('value', `${item.response}`);
-                responseItem.setAttribute('name', `responses[${item.id}]`);
-                responseItem.hidden = true;
-
-                form.appendChild(responseItem);
-            });
-        }
+        loadGroupProgress();
     }
-</script>
-
-{{--  Multiple choice questions --}}
-<script>
-    function getMultipleChoiceResults(questions, exercise) {
-        var correct_questions = 0;
-        var wrong_questions = 0;
-        var questions_number = questions.length;
-
-        var responses = [];
-
-        questions.forEach(function (question) {
-            const alternatives = document.getElementsByName(`question-${question.id}`);
-
-            alternatives.forEach((alternative) => {
-                if (document.getElementById(`${alternative.value}-explanatory`) != null) {
-                    document.getElementById(`${alternative.value}-explanatory`).hidden = true;
-                }
+    
+    // Hacer la función disponible globalmente
+    window.updateUnitProgress = updateUnitProgress;
+    
+    // Inicializar manejo de eventos de video
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof VideoHandler !== 'undefined') {
+            VideoHandler.init();
+        }
+        
+        // Inicializar botones reset (verificar límite de 3 resets)
+        if (typeof initResetButton === 'function') {
+            // Buscar todos los botones reset en la página
+            const resetButtons = document.querySelectorAll('[id^="reset-button-"]');
+            resetButtons.forEach(function(button) {
+                const exerciseId = button.id.replace('reset-button-', '');
+                initResetButton(exerciseId);
             });
-
-            alternatives.forEach((alternative) => {
-                // Alternativa correcta
-                if (alternative.checked && question.correct_answer == alternative.value) {
-                    responses.push({'id': `${question.id}`, 'response': `${question.correct_answer}`});
+        }
+        
+        // Inicializar manejo de tabs de Bootstrap para secciones
+        const sectionTabs = document.querySelectorAll('#sectionsTabs button[data-bs-toggle="tab"]');
+        
+        sectionTabs.forEach(function(tab) {
+            tab.addEventListener('show.bs.tab', function(event) {
+                // Ocultar TODOS los panes de sección ANTES de mostrar el nuevo
+                const allSectionPanes = document.querySelectorAll('.section-pane');
+                allSectionPanes.forEach(function(pane) {
+                    pane.classList.remove('show', 'active');
+                });
+                
+                // Ocultar TODOS los panes de ejercicios de todas las secciones
+                const allExercisePanes = document.querySelectorAll('.exercise-pane');
+                allExercisePanes.forEach(function(pane) {
+                    pane.classList.remove('show', 'active');
+                });
+                
+                // Desactivar TODOS los botones de ejercicios
+                const allExerciseButtons = document.querySelectorAll('.exercise-btn');
+                allExerciseButtons.forEach(function(btn) {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-selected', 'false');
+                });
+            });
+            
+            tab.addEventListener('shown.bs.tab', function(event) {
+                // DESPUÉS de que Bootstrap haya mostrado la sección, activar el primer ejercicio
+                const targetId = event.target.getAttribute('data-bs-target');
+                const targetPane = document.querySelector(targetId);
+                const firstExerciseId = event.target.getAttribute('data-first-exercise-id');
+                
+                if (targetPane && firstExerciseId) {
+                    // Buscar el botón del primer ejercicio usando el data-exercise-id
+                    const firstExerciseButton = targetPane.querySelector(`[data-exercise-id="${firstExerciseId}"]`);
                     
-                    if(exercise.subtype != 99 && exercise.subtype != 991 && !question.personal_response) {
-                        if(question.personal_response == null || !question.personal_response) {
-                            document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
-                            document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
+                    if (firstExerciseButton) {
+                        // Obtener el data-bs-target del botón para encontrar el pane correspondiente
+                        const exerciseTargetId = firstExerciseButton.getAttribute('data-bs-target');
+                        const firstExercisePane = exerciseTargetId ? document.querySelector(exerciseTargetId) : null;
+                        
+                        if (firstExercisePane) {
+                            // Activar el primer ejercicio
+                            firstExerciseButton.classList.add('active');
+                            firstExerciseButton.setAttribute('aria-selected', 'true');
+                            firstExercisePane.classList.add('show', 'active');
+                            
+                            // Ejecutar funciones necesarias
+                            if (typeof setCurrentExercise === 'function') {
+                                setCurrentExercise(parseInt(firstExerciseId));
+                            }
+                            if (typeof onExerciseClicked === 'function') {
+                                onExerciseClicked(parseInt(firstExerciseId));
+                            }
+                            if (typeof startTimer === 'function') {
+                                startTimer();
+                            }
                         } else {
-                            document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
-                            document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
+                            console.warn(`No se encontró el pane para el ejercicio ${firstExerciseId}`);
+                        }
+                    } else {
+                        // Fallback: buscar el primer ejercicio disponible en la sección
+                        const fallbackButton = targetPane.querySelector('.exercise-btn');
+                        const fallbackPane = targetPane.querySelector('.exercise-pane');
+                        
+                        if (fallbackButton && fallbackPane) {
+                            fallbackButton.classList.add('active');
+                            fallbackButton.setAttribute('aria-selected', 'true');
+                            fallbackPane.classList.add('show', 'active');
+                            
+                            const fallbackExerciseId = fallbackButton.getAttribute('data-exercise-id');
+                            if (fallbackExerciseId) {
+                                if (typeof setCurrentExercise === 'function') {
+                                    setCurrentExercise(parseInt(fallbackExerciseId));
+                                }
+                                if (typeof onExerciseClicked === 'function') {
+                                    onExerciseClicked(parseInt(fallbackExerciseId));
+                                }
+                                if (typeof startTimer === 'function') {
+                                    startTimer();
+                                }
+                            }
                         }
                     }
-                    correct_questions += 1;
-                // Alternativa incorrecta
-                } else if(alternative.checked) {
-                    if(exercise.subtype != 99 && exercise.subtype != 991 && !question.personal_response) {
-                        if(question.personal_response == null || !question.personal_response) {
-                            document.getElementById(`question-${question.id}-feedback-wrong`).hidden = false;
-                            document.getElementById(`question-${question.id}-feedback-correct`).hidden = true;
-                        } else {
-                            document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
-                            document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
-                            correct_questions += 1;
-                        }
-    
-                        if (document.getElementById(`${alternative.value}-explanatory`) != null) {
-                            document.getElementById(`${alternative.value}-explanatory`).hidden = false;
-                        }
+                }
+            });
+        });
+        
+        // Inicializar manejo de tabs de Bootstrap para ejercicios (pills)
+        const exerciseTabs = document.querySelectorAll('.exercise-btn[data-bs-toggle="pill"]');
+        exerciseTabs.forEach(function(tab) {
+            tab.addEventListener('shown.bs.tab', function(event) {
+                // DESPUÉS de que Bootstrap haya activado el ejercicio, ejecutar funciones necesarias
+                const exerciseId = event.target.getAttribute('data-exercise-id');
+                if (exerciseId) {
+                    if (typeof setCurrentExercise === 'function') {
+                        setCurrentExercise(parseInt(exerciseId));
                     }
-
-                    responses.push({'id': `${question.id}`, 'response': `${alternative.parentNode.children[1].innerHTML.trim()}`});
+                    if (typeof onExerciseClicked === 'function') {
+                        onExerciseClicked(parseInt(exerciseId));
+                    }
+                    if (typeof startTimer === 'function') {
+                        startTimer();
+                    }
                 }
             });
         });
 
-        wrong_questions = questions_number - correct_questions;
+        // Cargar progreso grupal al iniciar
+        loadGroupProgress();
 
-        if (document.getElementsByClassName(`show-on-all-correct-${exercise.id}`).length != 0) {
-            var shortMessageB = document.getElementsByClassName(`show-on-all-correct-${exercise.id}`)[0];
-            
-            if (questions_number == correct_questions) {
-                shortMessageB.hidden = false;
-            } else {
-                shortMessageB.hidden = true;
-            }
-        }
-
-        if (document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`).length != 0) {
-            var shortMessageC = document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`)[0];
-            
-            if (questions_number != correct_questions) {
-                shortMessageC.hidden = false;
-            } else {
-                shortMessageC.hidden = true;
-            }
-        }
-
-        var is_personal_response = false;
-
-        if(questions[0].personal_response == true) {
-            is_personal_response = true;    
-        }
-
-        if(exercise.subtype != 99 && exercise.subtype != 991 && !is_personal_response) {
-            var correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
-            var wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
-            correctAnswersItem.innerHTML = `<strong>${correct_questions}</strong>  ✅`;
-            correctAnswersItem.hidden = false;
-            wrongAnswersItem.innerHTML = `<strong>${wrong_questions}</strong>  ❌`;
-            wrongAnswersItem.hidden = false;
-
-            setFeedbackHidden(false, exercise.id, questions);
-        }
-
-        return { 'correct': correct_questions, 'wrong': wrong_questions, 'responses': responses };
-    }
-</script>
-
-{{--  Fill In The Gaps questions --}}
-<script>
-    function getFillInTheGapsResults(questions, exercise) {
-        var correct_questions = 0;
-        var wrong_questions = 0;
-        var questions_number = questions.length;
-
-        var responses = [];
-        questions.forEach(function (question) {
-            var correct_words = question.answer;
-            var answers = document.getElementsByName(`answer-${question.id}`);
-            var question_responses = [];
-
-            answers.forEach(function callback(answerItem, index) {
-                question_responses.push(answerItem.value);
-            });
-
-            const final_responses = question_responses.join(',');
-            responses.push({'id': `${question.id}`, 'response': `${final_responses}` });
-
-            if(final_responses == correct_words) {
-                document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
-                document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
-                correct_questions += 1;
-            } else {
-                document.getElementById(`question-${question.id}-feedback-correct`).hidden = true;
-                document.getElementById(`question-${question.id}-feedback-wrong`).hidden = false;
-            }
+        // Inicializar tooltips de Bootstrap
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function(el) {
+            new bootstrap.Tooltip(el);
         });
-
-        wrong_questions = questions_number - correct_questions;
-
-        if (document.getElementsByClassName(`show-on-all-correct-${exercise.id}`).length != 0) {
-            var shortMessageB = document.getElementsByClassName(`show-on-all-correct-${exercise.id}`)[0];
-            
-            if (questions_number == correct_questions) {
-                shortMessageB.hidden = false;
-            } else {
-                shortMessageB.hidden = true;
-            }
-        }
-
-        if (document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`).length != 0) {
-            var shortMessageC = document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`)[0];
-            
-            if (questions_number != correct_questions) {
-                shortMessageC.hidden = false;
-            } else {
-                shortMessageC.hidden = true;
-            }
-        }
-
-        correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
-        wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
-        correctAnswersItem.innerHTML = `<strong> ${correct_questions}</strong>  ✅`;
-        wrongAnswersItem.innerHTML = `<strong> ${wrong_questions}</strong>  ❌`;
-        correctAnswersItem.hidden = false;
-        wrongAnswersItem.hidden = false;
-
-        setFeedbackHidden(false, exercise.id, questions);
-
-        return { 'correct': correct_questions, 'wrong': wrong_questions, 'responses': responses };
-    }
-</script>
-
-{{--  Dictation Cloze questions --}}
-<script>
-    function getDictationClozeResults(questions, exercise) {
-        var correct_questions = 0;
-        var wrong_questions = 0;
-        var questions_number = 0;
-        var responses = [];
-
-        questions.forEach(function (question) {
-            var correct_words = question.answer;
-            var answers = document.getElementsByName(`answer-${question.id}`);
-            var question_responses = [];
-            var correct_answer = question.answer.split(",");
-
-            answers.forEach(function (answer) {
-                if (question.answer.includes(`${answer.value}`) && answer.value != "") {
-                    answer.style.setProperty('border-color', 'lime', 'important');
-                    correct_questions += 1;
-                } else if (!question.answer.includes(`${answer.value}`)) {
-                    answer.style.setProperty('border-color', 'red', 'important');
-                }
-
-                question_responses.push(answer.value);
-            });
-
-            questions_number = answers.length;
-
-            const final_responses = question_responses.join(',');
-            responses.push({'id': `${question.id}`, 'response': `${final_responses}` });
-        });
-
-        wrong_questions = questions_number - correct_questions;
-
-        if (document.getElementsByClassName(`show-on-all-correct-${exercise.id}`).length != 0) {
-            var shortMessageB = document.getElementsByClassName(`show-on-all-correct-${exercise.id}`)[0];
-            
-            if (questions_number == correct_questions) {
-                shortMessageB.hidden = false;
-            } else {
-                shortMessageB.hidden = true;
-            }
-        }
-
-        if (document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`).length != 0) {
-            var shortMessageC = document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`)[0];
-            
-            if (questions_number != correct_questions) {
-                shortMessageC.hidden = false;
-            } else {
-                shortMessageC.hidden = true;
-            }
-        }
-
-        correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
-        wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
-        correctAnswersItem.innerHTML = `<strong> ${correct_questions}</strong>  ✅`;
-        wrongAnswersItem.innerHTML = `<strong> ${wrong_questions}</strong>  ❌`;
-        correctAnswersItem.hidden = false;
-        wrongAnswersItem.hidden = false;
-
-        var exerciseFeedback = document.getElementById(`feedback-exercise-details-container-${exercise.id}`);
-        exerciseFeedback.hidden = false;
-
-        toggleTryAgainButton("disabled", exercise.id);
-
-        return { 'correct': correct_questions, 'wrong': wrong_questions, 'responses': responses };
-    }
-</script>
-
-{{--  Open Ended questions --}}
-<script>
-    function getOpenEndedResults(questions, exercise) {
-        var responses = [];
-        var questions_number = 0;
-        var correct_questions = 0;
-        
-        questions.forEach(function (question) {
-            var answers = document.getElementsByName(`answer-${question.id}`);
-            answers.forEach(function (answer) {
-                responses.push({'id': `${question.id}`, 'response': `${answer.value}` });
-            });
-
-            if (document.getElementById(`question-${question.id}-feedback-correct`) != null) {
-                document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
-            }
-
-            questions_number = answers.length;
-            correct_questions = questions_number;
-        });
-
-        if (document.getElementsByClassName(`show-on-all-correct-${exercise.id}`).length != 0) {
-            var shortMessageB = document.getElementsByClassName(`show-on-all-correct-${exercise.id}`)[0];
-            
-            if (questions_number == correct_questions) {
-                shortMessageB.hidden = false;
-            } else {
-                shortMessageB.hidden = true;
-            }
-        }
-
-        if (document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`).length != 0) {
-            var shortMessageC = document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`)[0];
-            
-            if (questions_number != correct_questions) {
-                shortMessageC.hidden = false;
-            } else {
-                shortMessageC.hidden = true;
-            }
-        }
-
-        setFeedbackHidden(false, exercise.id, questions);
-
-        return { 'responses': responses };
-    }
-</script>
-
-{{-- Drag And Drop --}}
-<script>
-    function getDragAndDropResults(questions, exercise) {
-        var correct_questions = 0;
-        var wrong_questions = 0;
-        var empty_questions = 0;
-        var questions_number = questions.length;
-
-        var responses = [];
-
-        questions.forEach(function (question) {
-            const definitionContainer = document.getElementById(`word-destination-${question.answer}`);
-            const wordContainer = document.getElementById(`word-${question.statement}`);
-
-            if(definitionContainer.firstChild != null) {
-                const actualResponse = definitionContainer.firstChild.innerHTML.trim();
-                responses.push({'id': `${question.id}`, 'response': `${actualResponse}`})
-            } else {
-                const actualResponse = "";
-                return 'missing_responses';
-            }
-
-            if (exercise.subtype != 991 && exercise.subtype != 99) {
-                if (definitionContainer.contains(wordContainer)) {
-                    document.getElementById(`question-${question.id}-feedback-correct`).hidden = false;
-                    document.getElementById(`question-${question.id}-feedback-wrong`).hidden = true;
-                    correct_questions += 1;
-                } else {
-                    document.getElementById(`question-${question.id}-feedback-correct`).hidden = true;
-                    document.getElementById(`question-${question.id}-feedback-wrong`).hidden = false;
-                    wrong_questions +=1;
-                }
-            }
-        });
-
-        if (exercise.subtype != 991 && exercise.subtype != 99) {
-
-            wrong_questions = questions_number - correct_questions;
-
-            if (document.getElementsByClassName(`show-on-all-correct-${exercise.id}`).length != 0) {
-                var shortMessageB = document.getElementsByClassName(`show-on-all-correct-${exercise.id}`)[0];
-                
-                if (questions_number == correct_questions) {
-                    shortMessageB.hidden = false;
-                } else {
-                    shortMessageB.hidden = true;
-                }
-            }
-
-            if (document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`).length != 0) {
-                var shortMessageC = document.getElementsByClassName(`show-on-any-wrong-${exercise.id}`)[0];
-                
-                if (questions_number != correct_questions) {
-                    shortMessageC.hidden = false;
-                } else {
-                    shortMessageC.hidden = true;
-                }
-            }
-
-            correctAnswersItem = document.getElementById(`feedback-exercise-correct-${exercise.id}`);
-            wrongAnswersItem = document.getElementById(`feedback-exercise-wrong-${exercise.id}`);
-            correctAnswersItem.innerHTML = `<strong> ${correct_questions}</strong>  ✅`;
-            wrongAnswersItem.innerHTML = `<strong> ${wrong_questions}</strong>  ❌`;
-            correctAnswersItem.hidden = false;
-            wrongAnswersItem.hidden = false;
-        
-            setFeedbackHidden(false, exercise.id, questions);
-        }
-
-        return { 'correct': correct_questions, 'wrong': wrong_questions, 'responses': responses }
-    }
-</script>
-
-{{-- Resets the exercise's feedback and answers --}}
-<script>
-    function resetExercise(exercise_id, questions) {
-        var elements = document.getElementsByClassName(`multiple-choice-${exercise_id}-check`);
-        for (let element of elements) {
-            element.checked = false;
-        }
-        
-        setFeedbackHidden(true, exercise_id, questions);
-    }
-</script>
-
-<script>
-    function presentModal(feedback_message, status_message, url, type, current_exercise_url) {
-        var modalContainer = document.createElement('div');
-        modalContainer.setAttribute('class', 'modal fade');
-        modalContainer.setAttribute('id', 'alert-modal');
-        modalContainer.setAttribute('tabindex', '-1');
-        modalContainer.setAttribute('aria-labelledby', 'alert-modal');
-        modalContainer.setAttribute('aria-hidden', 'true');
-
-        var modalDialog = document.createElement('div');
-        modalDialog.setAttribute('class', 'modal-dialog modal-dialog-centered');
-
-        var modalContent = document.createElement('div');
-        modalContent.setAttribute('class', 'modal-content');
-
-        var modalHeader = document.createElement('div');
-        modalHeader.setAttribute('class', 'd-flex justify-content-end pt-2 pe-2');
-        modalHeader.innerHTML = '<button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>'
-
-        var modalBody = document.createElement('div');
-        modalBody.setAttribute('class', 'modal-body');
-
-        var modalMessageContainer = document.createElement('div');
-        modalMessageContainer.setAttribute('class', 'p-2');
-
-        var messageText = document.createElement('p');
-        messageText.setAttribute('class', 'text-center text-success');
-        messageText.setAttribute('id', 'alert-modal-message');
-        messageText.innerHTML = `${feedback_message}`;
-
-        var statusMessage = document.createElement('h4');
-        statusMessage.setAttribute('class', 'text-center text-dark');
-        statusMessage.setAttribute('id', 'alert-modal-message');
-        statusMessage.innerHTML = `${status_message}`;
-        
-        var statusButtonContainer = document.createElement('div');
-        statusButtonContainer.setAttribute('class', 'd-flex justify-content-center p-2');
-
-        var statusButton = document.createElement('button');
-        statusButton.setAttribute('class', 'text-center btn btn-primary btn-sm');
-        statusButton.setAttribute('type', 'button');
-        statusButton.setAttribute('onclick', `goTo('${url}', '${type}', '${current_exercise_url}')`);
-
-        var cancelButton = document.createElement('button');
-        cancelButton.setAttribute('class', 'btn btn-sm btn-secondary me-2');
-        cancelButton.setAttribute('type', 'button');
-        cancelButton.setAttribute('data-bs-dismiss', 'modal');
-        cancelButton.innerHTML = 'Check results'
-
-        if(type == 'section') {
-            statusButton.innerHTML = `Next stage`;
-        } else {
-            statusButton.innerHTML = `Next ${type}`;
-        }
-
-        statusButtonContainer.appendChild(cancelButton);
-        statusButtonContainer.appendChild(statusButton);
-        modalMessageContainer.appendChild(messageText);
-        modalMessageContainer.appendChild(statusMessage);
-        modalMessageContainer.appendChild(statusButtonContainer);
-        modalBody.appendChild(modalMessageContainer);
-        modalContent.appendChild(modalHeader);
-        modalContent.appendChild(modalBody);
-        modalDialog.appendChild(modalContent);
-        modalContainer.appendChild(modalDialog);
-
-        if (document.getElementById("alert-modal") != null) {
-            var modal = document.getElementById("alert-modal");
-            modal.remove();
-        }
-
-        document.getElementsByTagName('body')[0].appendChild(modalContainer);
-
-        $(function() {
-            $("#alert-modal").modal("show");
-        });
-    }
-
-    function checkAction(exercise, questions, type, exercise_id, user_id, route) {
-        if(type != 'voice_recognition') {
-            getResponseData(questions, exercise, type);
-        }
-
-        event.preventDefault();
-        $.ajax({
-            url: `${route}`,
-            type: 'post',
-            data: $(`#${type}_form_${exercise_id}`).serialize(), // Remember that you need to have your csrf token included
-            dataType: 'json',
-            success: function( _response ) {
-                const current_exercise_url = `${type}${exercise.id}`;
-                presentModal(_response.feedback_message, _response.status_message, _response.navigation_url, _response.navigation_type, current_exercise_url);
-            },
-            error: function( _response ) {
-                console.log(_response);
-            }
-        });
-    }
-</script>
-
-<script>
-    function goTo(uri, type, current_exercise_url) {
-        if (type == 'unit') {
-            if (uri != "") {
-                window.location.href = `${uri}`;
-            } else {
-                window.location.reload();
-            }
-        } 
-        if (type == 'section') {
-            var wantedTabButton = document.querySelector(`button#${uri}-tab`);
-            var activeTabButton = document.querySelector(`button.${type}-btn.active`);
-
-            var wantedTabPane = document.querySelector(`div#${uri}`);
-            var activeTabPane = document.querySelector(`div.${type}-pane.active`);
-
-            activeTabButton.classList.remove('active');
-            wantedTabButton.classList.add('active');
-
-            activeTabPane.classList.remove('active');
-            activeTabPane.classList.remove('show');
-            wantedTabPane.classList.add('show');
-            wantedTabPane.classList.add('active');
-
-            wantedTabButton.click();
-        }
-
-        if (type == 'exercise') {
-            var wantedTabButton = document.querySelector(`button#${uri}-tab`);
-            var activeTabButton = document.querySelector(`button#${current_exercise_url}-tab`);
-
-            var wantedTabPane = document.querySelector(`div#${uri}`);
-            var activeTabPane = document.querySelector(`div#${current_exercise_url}`);
-
-            activeTabButton.classList.remove('active');
-            wantedTabButton.classList.add('active');
-
-            activeTabPane.classList.remove('active');
-            activeTabPane.classList.remove('show');
-            wantedTabPane.classList.add('show');
-            wantedTabPane.classList.add('active');
-
-            wantedTabButton.click();
-        }
-
-        $('#alert-modal').modal('hide')
-    }
-</script>
-
-{{-- Tracking system for Help Options info --}}
-<script>
-    var transcript_count = 0;
-    var transcript_total_time = 0;
-    var listening_tips_count = 0;
-    var listening_tips_total_time = 0;
-    var cultural_notes_count = 0;
-    var cultural_notes_total_time = 0;
-    var glossary_count = 0;
-    var glossary_total_time = 0;
-    var translation_count = 0;
-    var translation_total_time = 0;
-    var dictionary_count = 0;
-    var dictionary_total_time = 0;
-
-    var help_option_start_time;
- 
-    var current_exercise_id = {{ json_encode($first_exercise_id) }};
-
-    function onHelpOptionClicked(type) {
-        window.help_option_start_time = new Date().getTime();
-    }
-
-    function onHelpOptionDismissed(type) {
-        var dismiss_time = new Date().getTime();
-        var time_spent = dismiss_time - window.help_option_start_time;
-        
-        switch (type) {
-            case "transcript":
-                window.transcript_count += 1;
-                window.transcript_total_time += time_spent;
-                console.log(`Total time spent in Transcript: ${millisToHms(window.transcript_total_time)}`);
-                console.log(`transcript_count: ${window.transcript_count}`);
-                break;
-            case "listening_tips":
-                window.listening_tips_count += 1;
-                window.listening_tips_total_time += time_spent;
-                console.log(`Total time spent in Listening Tips: ${millisToHms(window.listening_tips_total_time)}`);
-                console.log(`listening_tips_count: ${window.listening_tips_count}`);
-                break;
-            case "cultural_notes":
-                window.cultural_notes_count += 1;
-                window.cultural_notes_total_time += time_spent;
-                console.log(`Total time spent in Cultural notes: ${millisToHms(window.cultural_notes_total_time)}`);
-                console.log(`cultural_notes_count: ${window.cultural_notes_count}`);
-                break;
-            case "glossary":
-                window.glossary_count += 1;
-                window.glossary_total_time += time_spent;
-                console.log(`Total time spent in Glossary: ${millisToHms(window.glossary_total_time)}`);
-                console.log(`glossary_count: ${window.glossary_count}`);
-                break;
-            case "translation":
-                window.translation_count += 1;
-                window.translation_total_time += time_spent;
-                console.log(`Total time spent in Translation: ${millisToHms(window.translation_total_time)}`);
-                console.log(`translation_count: ${window.translation_count}`);
-                break;
-            case "dictionary":
-                window.dictionary_count += 1;
-                window.dictionary_total_time += time_spent;
-                console.log(`Total time spent in Dictionary: ${millisToHms(window.dictionary_total_time)}`);
-                console.log(`dictionary_count: ${window.dictionary_count}`);
-                break;
-        }
-    }
-
-    function setCurrentExercise(exercise_id) {
-        window.current_exercise_id = exercise_id;
-        console.log(`Current exercise id: ${exercise_id}`);
-    }
-
-    function onExerciseClicked(exercise_id) {
-        window.transcript_count = 0;
-        window.transcript_total_time = 0;
-        window.listening_tips_count = 0;
-        window.listening_tips_total_time = 0;
-        window.cultural_notes_count = 0;
-        window.cultural_notes_total_time = 0;
-        window.glossary_count = 0;
-        window.glossary_total_time = 0;
-        window.translation_count = 0;
-        window.translation_total_time = 0;
-        window.dictionary_count = 0;
-        window.dictionary_total_time = 0;
-
-        setCurrentExercise(exercise_id);
-        resetFeedbackInteractionsCount(exercise_id);
-    }
-
-    function resetFeedbackInteractionsCount(exercise_id) {
-        var items = document.getElementsByClassName(`feedback_interactions_count_${exercise_id}`);
-
-        for (let item of items) {
-            item.setAttribute('value', '0');
-        }
-    }
-
-    function appendTrackingValues(exercise_id, type) {
-        var current_form = document.getElementById(`${type}_form_${exercise_id}`);
-
-        var transcript_count_input = document.createElement('input');
-        transcript_count_input.setAttribute('name', 'transcript_count');
-        transcript_count_input.setAttribute('value', `${transcript_count}`);
-        transcript_count_input.hidden = true;
-
-        var transcript_total_time_input = document.createElement('input');
-        transcript_total_time_input.setAttribute('name', 'transcript_total_time');
-        transcript_total_time_input.setAttribute('value', `${millisToHms(transcript_total_time)}`);
-        transcript_total_time_input.hidden = true;
-
-        var listening_tips_count_input = document.createElement('input');
-        listening_tips_count_input.setAttribute('name', 'listening_tips_count');
-        listening_tips_count_input.setAttribute('value', `${listening_tips_count}`);
-        listening_tips_count_input.hidden = true;
-
-        var listening_tips_total_time_input = document.createElement('input');
-        listening_tips_total_time_input.setAttribute('name', 'listening_tips_total_time');
-        listening_tips_total_time_input.setAttribute('value', `${millisToHms(listening_tips_total_time)}`);
-        listening_tips_total_time_input.hidden = true;
-
-        var cultural_notes_count_input = document.createElement('input');
-        cultural_notes_count_input.setAttribute('name', 'cultural_notes_count');
-        cultural_notes_count_input.setAttribute('value', `${cultural_notes_count}`);
-        cultural_notes_count_input.hidden = true;
-
-        var cultural_notes_total_time_input = document.createElement('input');
-        cultural_notes_total_time_input.setAttribute('name', 'cultural_notes_total_time');
-        cultural_notes_total_time_input.setAttribute('value', `${millisToHms(cultural_notes_total_time)}`);
-        cultural_notes_total_time_input.hidden = true;
-
-        var glossary_count_input = document.createElement('input');
-        glossary_count_input.setAttribute('name', 'glossary_count');
-        glossary_count_input.setAttribute('value', `${glossary_count}`);
-        glossary_count_input.hidden = true;
-
-        var glossary_total_time_input = document.createElement('input');
-        glossary_total_time_input.setAttribute('name', 'glossary_total_time');
-        glossary_total_time_input.setAttribute('value', `${millisToHms(glossary_total_time)}`);
-        glossary_total_time_input.hidden = true;
-
-        var translation_count_input = document.createElement('input');
-        translation_count_input.setAttribute('name', 'translation_count');
-        translation_count_input.setAttribute('value', `${translation_count}`);
-        translation_count_input.hidden = true;
-
-        var translation_total_time_input = document.createElement('input');
-        translation_total_time_input.setAttribute('name', 'translation_total_time');
-        translation_total_time_input.setAttribute('value', `${millisToHms(translation_total_time)}`);
-        translation_total_time_input.hidden = true;
-
-        var dictionary_count_input = document.createElement('input');
-        dictionary_count_input.setAttribute('name', 'dictionary_count');
-        dictionary_count_input.setAttribute('value', `${dictionary_count}`);
-        dictionary_count_input.hidden = true;
-
-        var dictionary_total_time_input = document.createElement('input');
-        dictionary_total_time_input.setAttribute('name', 'dictionary_total_time');
-        dictionary_total_time_input.setAttribute('value', `${millisToHms(dictionary_total_time)}`);
-        dictionary_total_time_input.hidden = true;
-
-        current_form.appendChild(transcript_count_input);
-        current_form.appendChild(transcript_total_time_input);
-
-        current_form.appendChild(listening_tips_count_input);
-        current_form.appendChild(listening_tips_total_time_input);
-        
-        current_form.appendChild(cultural_notes_count_input);
-        current_form.appendChild(cultural_notes_total_time_input);
-
-        current_form.appendChild(glossary_count_input);
-        current_form.appendChild(glossary_total_time_input);
-
-        current_form.appendChild(translation_count_input);
-        current_form.appendChild(translation_total_time_input);
-
-        current_form.appendChild(dictionary_count_input);
-        current_form.appendChild(dictionary_total_time_input);
-    }
+    });
 </script>
 
 @endsection
