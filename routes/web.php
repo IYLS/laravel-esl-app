@@ -127,6 +127,7 @@ Route::post('tracking/store/{exercise}/{user}', [TrackingController::class, 'sto
 Route::get('/tracking/show/{tracking}', [TrackingController::class, 'show'])->name('tracking.show');
 Route::post('/tracking/filter', [TrackingController::class, 'executeFilter'])->name('tracking.execute_filter');
 Route::post('/tracking/exportData', [TrackingController::class, 'exportData'])->name('tracking.export_data');
+Route::post('/tracking/exportTimeline', [TrackingController::class, 'exportTimeline'])->name('tracking.export_timeline');
 
 // Set positions
 Route::post('/exercises/{unit}/set_positions', [ExerciseController::class, 'setPositions'])->name('exercises.positions');

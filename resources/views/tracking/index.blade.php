@@ -381,6 +381,10 @@
                         <span class="material-symbols-outlined">download</span>
                         <span>Export Data</span>
                     </button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exportTimelineModal">
+                        <span class="material-symbols-outlined">timeline</span>
+                        <span>Export Interactions</span>
+                    </button>
                 </div>
             </div>
         </form>
@@ -545,6 +549,7 @@
 </div>
 
 @include('modals.tracking.export_data')
+@include('modals.tracking.export_timeline')
 
 <script>
     function navigateTo(url) {

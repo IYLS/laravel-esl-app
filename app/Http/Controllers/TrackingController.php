@@ -12,6 +12,7 @@ use App\Models\Group;
 use App\Models\TrackingHelpUsage;
 use App\Models\TrackingFeedbackUsage;
 use App\Exports\ExportTracking;
+use App\Exports\InteractionTimelineExport;
 use Carbon\Carbon;
 
 class TrackingController extends Controller
@@ -333,6 +334,35 @@ class TrackingController extends Controller
         // Si no se seleccionó ni grupo ni estudiante, retornar error
         return redirect()->route('tracking.index')
             ->with('error', 'Por favor seleccione un grupo o un estudiante para exportar.');
+    }
+
+    /**
+     * Exporta la línea de tiempo de interacciones (Checking understanding y
+     * Dictation cloze) de todos los estudiantes de un grupo.
+     */
+    public function exportTimeline(Request $request)
+    {
+        set_time_limit(300);
+
+        $groupId = $request->group;
+
+        if (! $groupId) {
+            return redirect()->route('tracking.index')
+                ->with('error', 'Por favor seleccione un grupo para exportar las interacciones.');
+        }
+
+        $group = Group::findOrFail($groupId);
+        $userIds = User::where('group_id', $group->id)->where('role', 'student')->pluck('id')->toArray();
+
+        if (empty($userIds)) {
+            return redirect()->route('tracking.index')
+                ->with('error', 'El grupo seleccionado no tiene estudiantes.');
+        }
+
+        $currentDate = Carbon::now()->format('d-m-Y H:i');
+        $fileName = "{$group->name} - Interacciones - {$currentDate}.xlsx";
+
+        return $this->withDownloadToken($request, (new InteractionTimelineExport($userIds))->download($fileName));
     }
 
     /**
